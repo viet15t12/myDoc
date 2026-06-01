@@ -1,8 +1,8 @@
 {
-  "title": "Trung tâm tài liệu học tập",
-  "description": "Quản lý và mở nhanh các website bài học trong thư mục này. Tìm theo tên, lọc theo trạng thái, rồi vào thẳng lộ trình cần học.",
+  "title": "Learning Hub",
+  "description": "Manage and quickly access learning websites in this directory. Search by name, filter by status, then navigate directly to the desired learning path.",
   "mark": "LH",
-  "footer": "Mở file này từ thư mục tổng để quản lý nhanh các website con.",
+  "footer": "Open this file from the main directory to quickly manage sub-websites.",
   "projects": [
     {
       "id": "python-zero2hero",
@@ -35,7 +35,7 @@
       "href": "lpic-101-102/index.html",
       "folder": "lpic-101-102",
       "badge": "LP",
-      "accent": "#34d399",
+      "accent": "#CC0000",
       "status": "ready",
       "lessons": 42,
       "tags": ["linux", "lpic", "sysadmin", "terminal"]
