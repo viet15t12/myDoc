@@ -97,61 +97,73 @@
       flex: 0 0 auto;
     }
 
-    /* --- HIỆU ỨNG TIÊU ĐỀ ĐƯỢC THÊM TẠI ĐÂY --- */
+    /* ================= HIỆU ỨNG TITLE CYBERPUNK TỰ ĐỘNG CHẠY ================= */
     h1 {
+      position: relative;
       margin: 0;
       font-size: clamp(28px, 4vw, 42px);
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.02em;
       display: inline-block;
-      
-      /* Tạo nền chữ dạng Gradient */
-      background: linear-gradient(
-        120deg, 
-        var(--text) 0%, 
-        var(--accent) 25%, 
-        var(--text) 50%, 
-        var(--accent) 75%, 
-        var(--text) 100%
-      );
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      
-      /* Kích hoạt hiệu ứng xuất hiện & chuyển động lấp lánh tuần hoàn */
-      animation: 
-        titleFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both,
-        titleShimmer 8s linear infinite;
-      
-      transition: transform 0.3s ease;
+      color: var(--text);
+      /* Hiệu ứng hào quang Neon thở nhẹ ở nền */
+      text-shadow: 0 0 15px color-mix(in srgb, var(--accent) 15%, transparent);
+      animation: pulseGlow 4s infinite ease-in-out;
     }
 
-    /* Hiệu ứng tương tác nhẹ khi di chuột vào tiêu đề */
-    h1:hover {
-      transform: translateX(4px);
+    h1::before,
+    h1::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
     }
 
-    /* Keyframes cho hiệu ứng trượt mượt mà khi load trang */
-    @keyframes titleFadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* Lớp màu Đỏ - Tự động giật quét từ trên xuống */
+    h1::before {
+      color: #ff0055;
+      z-index: -1;
+      animation: glitchTopAuto 4s linear infinite;
     }
 
-    /* Keyframes dịch chuyển dải màu liên tục */
-    @keyframes titleShimmer {
-      to {
-        background-position: 200% center;
-      }
+    /* Lớp màu Xanh Cyan - Tự động giật quét lệch pha từ dưới lên */
+    h1::after {
+      color: #00ffcc;
+      z-index: -2;
+      animation: glitchBottomAuto 4s linear infinite;
     }
-    /* ----------------------------------------- */
+
+    /* Hiệu ứng nhịp thở Neon */
+    @keyframes pulseGlow {
+      0%, 100% { text-shadow: 0 0 15px color-mix(in srgb, var(--accent) 15%, transparent); }
+      50% { text-shadow: 0 0 25px color-mix(in srgb, var(--accent) 40%, transparent); }
+    }
+
+    /* Chu kỳ 4 giây: 0% -> 70% (khoảng 2.8 giây) đứng im. 30% còn lại giật liên tục */
+    @keyframes glitchTopAuto {
+      0%, 70%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); opacity: 0; }
+      71% { transform: translate(3px, -2px); clip-path: inset(10% 0 65% 0); opacity: 1; }
+      74% { transform: translate(-3px, 1px); clip-path: inset(30% 0 40% 0); opacity: 1; }
+      77% { transform: translate(2px, -3px); clip-path: inset(5% 0 80% 0); opacity: 1; }
+      80% { transform: translate(0); clip-path: inset(100% 0 0 0); opacity: 0; }
+      90% { transform: translate(2px, 2px); clip-path: inset(15% 0 55% 0); opacity: 1; }
+      94% { transform: translate(-1px, 1px); clip-path: inset(0 0 70% 0); opacity: 1; }
+    }
+
+    @keyframes glitchBottomAuto {
+      0%, 70%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); opacity: 0; }
+      72% { transform: translate(-2px, 3px); clip-path: inset(45% 0 0 0); opacity: 1; }
+      75% { transform: translate(2px, -1px); clip-path: inset(60% 0 10% 0); opacity: 1; }
+      78% { transform: translate(-3px, 2px); clip-path: inset(20% 0 40% 0); opacity: 1; }
+      82% { transform: translate(0); clip-path: inset(100% 0 0 0); opacity: 0; }
+      88% { transform: translate(-2px, -2px); clip-path: inset(75% 0 5% 0); opacity: 1; }
+      93% { transform: translate(3px, 1px); clip-path: inset(35% 0 0 0); opacity: 1; }
+    }
+    /* ================================================================= */
 
     .lead {
       margin: 8px 0 0;
@@ -159,7 +171,6 @@
       color: var(--muted);
       line-height: 1.6;
       font-size: 15px;
-      animation: titleFadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .toolbar {
@@ -481,7 +492,7 @@
       <div class="brand">
         <div class="mark" id="hubMark">LH</div>
         <div>
-          <h1 id="hubTitle">Trung tâm tài liệu học tập</h1>
+          <h1 id="hubTitle" data-text="Trung tâm tài liệu học tập">Trung tâm tài liệu học tập</h1>
           <p class="lead" id="hubDesc">Quản lý và mở nhanh các website bài học trong thư mục này. Tìm theo tên, lọc theo trạng thái, rồi vào thẳng lộ trình cần học.</p>
         </div>
       </div>
@@ -653,7 +664,13 @@
 
     function applyDashboardData(data) {
       projects = Array.isArray(data.projects) ? data.projects : fallbackProjects;
-      document.getElementById('hubTitle').textContent = data.title || 'Trung tâm tài liệu học tập';
+      
+      const titleEl = document.getElementById('hubTitle');
+      const titleText = data.title || 'Trung tâm tài liệu học tập';
+      titleEl.textContent = titleText;
+      // Cập nhật attribute data-text để hiệu ứng CSS hoạt động chính xác với text động từ JSON
+      titleEl.setAttribute('data-text', titleText); 
+
       document.getElementById('hubDesc').textContent = data.description || '';
       document.getElementById('hubMark').textContent = data.mark || 'LH';
       document.getElementById('hubFooter').textContent = data.footer || '';
