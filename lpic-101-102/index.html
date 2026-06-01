@@ -340,7 +340,7 @@ function closeQuickNav(event) {
 }
 
 function loadQuickLinks() {
-  fetch('quick-links.json')
+  fetch('../quick-links.json')
     .then(r => r.json())
     .then(data => {
       document.getElementById('quickNavTitle').textContent = data.title || 'Lộ trình học tập';
