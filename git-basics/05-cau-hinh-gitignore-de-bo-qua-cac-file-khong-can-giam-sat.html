@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Cấu hình GITIGNORE để bỏ qua các file không cần giám sát</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 05</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="04" href="#04">← Bài trước</a>
+      <span class="nav-pill disabled">Bài sau →</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#gitignore-la-gi">1. .gitignore là gì?</a>
+      <a href="#tai-sao-can">2. Tại sao cần .gitignore?</a>
+      <a href="#tao-file">3. Cách tạo file .gitignore</a>
+      <a href="#cu-phap">4. Cú pháp cấu hình</a>
+      <a href="#thuc-hanh">5. Thực hành từng bước</a>
+      <a href="#luu-y">6. Những điều cần lưu ý</a>
+      <a href="#template">7. Template thực tế</a>
+      <a href="#tom-tat">8. Tóm tắt cú pháp</a>
+      <a href="#bai-tap">9. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>5. Cấu hình GITIGNORE để bỏ qua các file không cần giám sát</h1>
+        <p class="meta">Tài liệu học Git cơ bản, tập trung vào cách tạo và cấu hình <code>.gitignore</code> để bỏ qua file log, file tạm, thư mục upload, cache, dependency và các file nhạy cảm.</p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>Khi làm việc với Git, không phải file nào trong dự án cũng nên được theo dõi hoặc đưa lên repository. Một số file chỉ phục vụ máy cá nhân, một số file được hệ điều hành tự tạo, một số file chứa dữ liệu nhạy cảm hoặc có dung lượng lớn.</p>
+          <div class="note"><strong>Ý chính:</strong> <code>.gitignore</code> giúp bạn nói với Git rằng: “những file/thư mục này không cần giám sát”.</div>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <p>Sau bài này, bạn sẽ hiểu được:</p>
+          <ul>
+            <li><code>.gitignore</code> là gì và tại sao cần dùng nó.</li>
+            <li>Cách tạo và cấu hình file <code>.gitignore</code>.</li>
+            <li>Các pattern phổ biến để bỏ qua file và thư mục.</li>
+            <li>Cách kiểm tra bằng <code>git status</code>.</li>
+            <li>Cách xử lý trường hợp file đã được Git theo dõi trước đó.</li>
+          </ul>
+        </section>
+
+        <section id="gitignore-la-gi">
+          <h2>1. <code>.gitignore</code> là gì?</h2>
+          <p><strong><code>.gitignore</code></strong> là một tập tin đặc biệt trong Git, dùng để chỉ định những file và thư mục mà Git sẽ bỏ qua, không theo dõi và không đưa lên repository.</p>
+          <p>Khi bạn chạy các lệnh như:</p>
+          <pre><code>git status
+git add .
+git commit -m "noi dung commit"</code></pre>
+          <p>Git sẽ tự động bỏ qua các file/thư mục đã được khai báo trong <code>.gitignore</code>.</p>
+          <div class="success"><strong>Ghi nhớ nhanh:</strong> <code>.gitignore</code> không xóa file khỏi máy bạn. Nó chỉ làm Git không theo dõi những file đó.</div>
+        </section>
+
+        <section id="tai-sao-can">
+          <h2>2. Tại sao cần <code>.gitignore</code>?</h2>
+          <p>Trong thực tế, có nhiều file không nên đưa lên repository vì chúng không cần thiết, quá nặng hoặc có thể gây rủi ro bảo mật.</p>
+          <table>
+            <thead><tr><th>Loại file</th><th>Ví dụ</th><th>Lý do bỏ qua</th></tr></thead>
+            <tbody>
+              <tr><td>File hệ điều hành tự sinh</td><td><code>.DS_Store</code>, <code>Thumbs.db</code></td><td>Không có ích với người khác.</td></tr>
+              <tr><td>File log</td><td><code>*.log</code>, <code>error.log</code></td><td>Là dữ liệu runtime, thường thay đổi liên tục.</td></tr>
+              <tr><td>Thư mục upload/media</td><td><code>uploads/</code></td><td>Có thể rất nặng, không cần lưu trong repo.</td></tr>
+              <tr><td>Dependencies</td><td><code>node_modules/</code>, <code>vendor/</code></td><td>Có thể cài lại bằng package manager.</td></tr>
+              <tr><td>File cấu hình nhạy cảm</td><td><code>.env</code>, <code>secret.json</code></td><td>Có thể chứa password, token, API key.</td></tr>
+              <tr><td>File build/cache</td><td><code>dist/</code>, <code>__pycache__/</code>, <code>*.pyc</code></td><td>Tự sinh lại được.</td></tr>
+            </tbody>
+          </table>
+          <div class="warning"><strong>Lưu ý bảo mật:</strong> Không nên đưa <code>.env</code>, token, mật khẩu, private key hoặc file cấu hình thật lên GitHub.</div>
+        </section>
+
+        <section id="tao-file">
+          <h2>3. Cách tạo file <code>.gitignore</code></h2>
+          <p>File <code>.gitignore</code> nên được đặt ở thư mục gốc của dự án, cùng cấp với thư mục <code>.git</code>.</p>
+          <h3>Tạo bằng Terminal</h3>
+          <pre><code>touch .gitignore</code></pre>
+          <h3>Tạo trên Windows bằng PowerShell</h3>
+          <pre><code>New-Item .gitignore -ItemType File</code></pre>
+          <h3>Tạo bằng CMD</h3>
+          <pre><code>type nul &gt; .gitignore</code></pre>
+          <div class="note"><strong>Quan trọng:</strong> tên file là <code>.gitignore</code>, bắt đầu bằng dấu chấm và không có phần mở rộng như <code>.txt</code>.</div>
+        </section>
+
+        <section id="cu-phap">
+          <h2>4. Cú pháp cấu hình trong <code>.gitignore</code></h2>
+
+          <h3>4.1. Ghi chú bằng dấu <code>#</code></h3>
+          <pre><code># Đây là dòng ghi chú
+# Bỏ qua file log</code></pre>
+          <p>Các dòng bắt đầu bằng <code>#</code> chỉ là ghi chú, Git sẽ bỏ qua.</p>
+
+          <h3>4.2. Bỏ qua tất cả file có đuôi nhất định</h3>
+          <pre><code># Bỏ qua tất cả file .log
+*.log
+
+# Bỏ qua tất cả file .tmp
+*.tmp</code></pre>
+          <p>Ký tự <code>*</code> có nghĩa là “mọi tên file”. Vì vậy <code>*.log</code> sẽ khớp với <code>app.log</code>, <code>error.log</code>, <code>debug.log</code>.</p>
+
+          <h3>4.3. Bỏ qua một thư mục</h3>
+          <pre><code># Bỏ qua thư mục node_modules
+node_modules/
+
+# Bỏ qua thư mục uploads
+uploads/</code></pre>
+          <p>Khi bỏ qua một thư mục, toàn bộ nội dung bên trong thư mục đó cũng bị bỏ qua.</p>
+
+          <h3>4.4. Bỏ qua một file cụ thể</h3>
+          <pre><code># Bỏ qua file .env
+.env
+
+# Bỏ qua file secret.json
+secret.json</code></pre>
+
+          <h3>4.5. Tạo ngoại lệ bằng dấu <code>!</code></h3>
+          <pre><code># Bỏ qua tất cả file .log
+*.log
+
+# Nhưng không bỏ qua file important.log
+!important.log</code></pre>
+          <p>Dấu <code>!</code> dùng để tạo ngoại lệ cho một rule đã khai báo phía trên.</p>
+
+          <h3>4.6. Ví dụ <code>.gitignore</code> đầy đủ</h3>
+          <pre><code># ==========================================
+# HỆ ĐIỀU HÀNH
+# ==========================================
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# FILE LOG
+# ==========================================
+*.log
+
+# ==========================================
+# THƯ MỤC KHÔNG CẦN THIẾT
+# ==========================================
+node_modules/
+uploads/
+dist/
+__pycache__/
+
+# ==========================================
+# FILE CẤU HÌNH NHẠY CẢM
+# ==========================================
+.env
+*.secret</code></pre>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>5. Thực hành từng bước</h2>
+
+          <div class="step">
+            <h3>Bước 1 — Tạo dự án và khởi tạo Git</h3>
+            <pre><code>mkdir my-project
+cd my-project
+git init</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2 — Tạo file <code>.gitignore</code></h3>
+            <pre><code>touch .gitignore</code></pre>
+            <p>Mở file <code>.gitignore</code> và thêm nội dung:</p>
+            <pre><code># Bỏ qua file log
+*.log
+
+# Bỏ qua thư mục thu-muc-1
+thu-muc-1/</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3 — Tạo các file thử nghiệm</h3>
+            <pre><code># Tạo file .log
+echo "log content" &gt; error.log
+
+# Tạo thư mục bị bỏ qua
+mkdir thu-muc-1
+echo "some content" &gt; thu-muc-1/data.txt
+
+# Tạo thư mục bình thường
+mkdir thu-muc-2
+echo "hello" &gt; thu-muc-2/abc.txt</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4 — Kiểm tra trạng thái</h3>
+            <pre><code>git status</code></pre>
+            <p>Kết quả mong đợi: <code>error.log</code> và <code>thu-muc-1/</code> không xuất hiện trong danh sách file chưa được track. Chỉ <code>.gitignore</code> và <code>thu-muc-2/</code> được liệt kê.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5 — Commit bình thường</h3>
+            <pre><code>git add .
+git commit -m "bai tap gitignore"</code></pre>
+          </div>
+        </section>
+
+        <section id="luu-y">
+          <h2>6. Những điều cần lưu ý</h2>
+
+          <h3><code>.gitignore</code> phải ở đúng vị trí</h3>
+          <p>File <code>.gitignore</code> nên nằm ở thư mục gốc của repository. Nếu tạo <code>.gitignore</code> bên trong thư mục con, nó chỉ có tác dụng trong phạm vi thư mục đó.</p>
+
+          <h3>File đã được track thì <code>.gitignore</code> không có tác dụng</h3>
+          <p>Nếu một file đã được <code>git add</code> hoặc <code>git commit</code> trước khi bạn thêm nó vào <code>.gitignore</code>, Git vẫn sẽ tiếp tục theo dõi file đó.</p>
+          <p>Cần dùng:</p>
+          <pre><code>git rm --cached &lt;tên-file&gt;</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>git rm --cached error.log</code></pre>
+          <p>Nếu là thư mục:</p>
+          <pre><code>git rm -r --cached uploads/</code></pre>
+          <div class="danger"><strong>Chú ý:</strong> <code>--cached</code> chỉ bỏ file khỏi Git index, không xóa file khỏi máy tính.</div>
+
+          <h3>Nên commit <code>.gitignore</code></h3>
+          <p>File <code>.gitignore</code> nên được commit vào repository để các thành viên khác trong nhóm dùng chung quy tắc bỏ qua file.</p>
+        </section>
+
+        <section id="template">
+          <h2>7. Template <code>.gitignore</code> thực tế theo ngôn ngữ</h2>
+          <p>Trong dự án thật, bạn không nhất thiết phải tự viết từ đầu. Có thể dùng template sẵn theo ngôn ngữ hoặc framework.</p>
+          <table>
+            <thead><tr><th>Dự án</th><th>Nên bỏ qua</th></tr></thead>
+            <tbody>
+              <tr><td>Python</td><td><code>__pycache__/</code>, <code>*.pyc</code>, <code>.venv/</code>, <code>.env</code></td></tr>
+              <tr><td>Node.js</td><td><code>node_modules/</code>, <code>dist/</code>, <code>.env</code>, <code>*.log</code></td></tr>
+              <tr><td>Java</td><td><code>target/</code>, <code>*.class</code>, <code>.idea/</code></td></tr>
+              <tr><td>C#/.NET</td><td><code>bin/</code>, <code>obj/</code>, <code>.vs/</code></td></tr>
+              <tr><td>Web tĩnh</td><td><code>.DS_Store</code>, <code>Thumbs.db</code>, <code>*.log</code></td></tr>
+            </tbody>
+          </table>
+          <div class="note"><strong>Gợi ý:</strong> có thể tham khảo template trên trang gitignore.io theo tên ngôn ngữ như Python, Node, Java, VisualStudioCode.</div>
+        </section>
+
+        <section id="tom-tat">
+          <h2>8. Tóm tắt cú pháp</h2>
+          <table>
+            <thead><tr><th>Pattern</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td><code>#</code></td><td>Ghi chú.</td></tr>
+              <tr><td><code>*.log</code></td><td>Bỏ qua tất cả file có đuôi <code>.log</code>.</td></tr>
+              <tr><td><code>ten-thu-muc/</code></td><td>Bỏ qua toàn bộ thư mục.</td></tr>
+              <tr><td><code>ten-file.txt</code></td><td>Bỏ qua một file cụ thể.</td></tr>
+              <tr><td><code>!important.log</code></td><td>Ngoại lệ, không bỏ qua file này dù khớp rule phía trên.</td></tr>
+              <tr><td><code>**/logs</code></td><td>Bỏ qua thư mục <code>logs</code> ở bất kỳ cấp nào.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bai-tap">
+          <h2>9. Bài tập thực hành</h2>
+          <div class="qa">
+            <h3>Yêu cầu</h3>
+            <ol>
+              <li>Khởi tạo một repo Git mới.</li>
+              <li>Tạo file <code>.gitignore</code>.</li>
+              <li>Bỏ qua tất cả file <code>*.log</code>.</li>
+              <li>Bỏ qua thư mục <code>uploads/</code>.</li>
+              <li>Bỏ qua file <code>.env</code>.</li>
+              <li>Tạo một số file test tương ứng và kiểm tra bằng <code>git status</code>.</li>
+              <li>Commit những file không bị bỏ qua.</li>
+            </ol>
+          </div>
+          <div class="qa">
+            <h3>Gợi ý lời giải</h3>
+            <pre><code>mkdir demo-gitignore
+cd demo-gitignore
+git init
+
+echo "*.log" &gt; .gitignore
+echo "uploads/" &gt;&gt; .gitignore
+echo ".env" &gt;&gt; .gitignore
+
+echo "error" &gt; error.log
+mkdir uploads
+echo "image" &gt; uploads/a.txt
+echo "SECRET=123" &gt; .env
+echo "# Demo Gitignore" &gt; README.md
+
+git status
+git add .
+git commit -m "add gitignore demo"</code></pre>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài học này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>.gitignore</code> dùng để bỏ qua file/thư mục không cần Git theo dõi.</li>
+            <li>Dùng <code>*.log</code> để bỏ qua tất cả file có đuôi <code>.log</code>.</li>
+            <li>Dùng <code>uploads/</code> để bỏ qua toàn bộ thư mục.</li>
+            <li>Dùng <code>#</code> để viết ghi chú trong file <code>.gitignore</code>.</li>
+            <li>Dùng <code>!</code> để tạo ngoại lệ.</li>
+            <li>File đã được Git track trước đó cần dùng <code>git rm --cached</code> nếu muốn bỏ theo dõi.</li>
+          </ul>
+          <div class="success"><strong>Mẹo:</strong> Hãy thêm <code>.gitignore</code> vào commit đầu tiên của mỗi dự án để tránh vô tình đưa file không cần thiết lên repository.</div>
+        </section>
+
+        <div class="footer">Tài liệu: 5. Cấu hình GITIGNORE để bỏ qua các file không cần giám sát</div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

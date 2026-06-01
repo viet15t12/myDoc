@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Cấu hình thông tin cho Repository</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 03</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="02" href="#02">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="04" href="#04">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tai-sao">1. Tại sao cần cấu hình?</a>
+      <a href="#dinh-danh">2. user.name và user.email</a>
+      <a href="#cap-do">3. Các cấp độ cấu hình</a>
+      <a href="#xem-cau-hinh">4. Xem cấu hình hiện tại</a>
+      <a href="#thiet-lap">5. Thiết lập thông tin</a>
+      <a href="#global-local">6. Global và Local</a>
+      <a href="#tep-config">7. Kiểm tra tệp config</a>
+      <a href="#thuc-hanh">8. Thực hành</a>
+      <a href="#hoi-dap">9. Câu hỏi ôn tập</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>3. Cấu hình thông tin cho Repository</h1>
+        <p class="meta">
+          Tài liệu học Git cơ bản, tập trung vào cấu hình định danh người dùng bằng <code>git config</code>, phân biệt cấu hình <code>--global</code> và <code>--local</code>, đồng thời kiểm tra thông tin trong tệp <code>.git/config</code>.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Sau khi biết cách tạo repository bằng <code>git init</code>, bước quan trọng tiếp theo là cấu hình thông tin cá nhân cho Git.
+            Git cần biết ai là người tạo commit để lưu lịch sử thay đổi một cách rõ ràng và chính xác.
+          </p>
+          <div class="note">
+            <strong>Phạm vi bài học:</strong> bài này tập trung vào <code>git config</code>, <code>user.name</code>, <code>user.email</code>, cấu hình Global, cấu hình Local và cách kiểm tra tệp cấu hình bên trong repository.
+          </div>
+        </section>
+
+        <section id="tai-sao">
+          <h2>1. Tại sao cần cấu hình định danh?</h2>
+          <p>
+            Khi làm việc với Git, đặc biệt là trong môi trường làm việc nhóm, việc xác định rõ người thực hiện thay đổi là rất quan trọng.
+            Mỗi commit không chỉ lưu nội dung thay đổi mà còn lưu thông tin về tác giả commit.
+          </p>
+
+          <p>Git cần trả lời được ba câu hỏi chính:</p>
+          <ul>
+            <li><strong>Ai</strong> là người thực hiện hành động?</li>
+            <li><strong>Khi nào</strong> hành động được thực hiện?</li>
+            <li><strong>Cái gì</strong> đã được thay đổi?</li>
+          </ul>
+
+          <div class="note">
+            <strong>Ví dụ:</strong> nếu một file bị sửa lỗi hoặc bị thay đổi sai, lịch sử commit giúp nhóm biết ai đã thay đổi, thay đổi vào thời điểm nào và nội dung thay đổi là gì.
+          </div>
+
+          <h3>Ví dụ thông tin trong một commit</h3>
+          <pre><code>commit a1b2c3d4
+Author: Nguyen Quoc Viet &lt;viet@example.com&gt;
+Date:   Sat May 30 10:20:00 2026 +0700
+
+    Add README file</code></pre>
+
+          <p>
+            Trong ví dụ trên, <code>Author</code> được lấy từ cấu hình <code>user.name</code> và <code>user.email</code> của Git.
+          </p>
+        </section>
+
+        <section id="dinh-danh">
+          <h2>2. Git dùng thông tin nào để định danh?</h2>
+          <p>Git dùng hai thông tin chính để xác định tác giả commit:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Thông tin</th>
+                <th>Ý nghĩa</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>user.name</code></td>
+                <td>Tên người thực hiện commit.</td>
+                <td><code>Nguyen Quoc Viet</code></td>
+              </tr>
+              <tr>
+                <td><code>user.email</code></td>
+                <td>Email gắn với commit.</td>
+                <td><code>viet@example.com</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> email trong Git nên trùng với email GitHub nếu bạn muốn commit hiển thị đúng tài khoản trên GitHub.
+          </div>
+        </section>
+
+        <section id="cap-do">
+          <h2>3. Các cấp độ cấu hình Git</h2>
+          <p>
+            Git có nhiều cấp độ cấu hình. Trong quá trình học và làm dự án thông thường, bạn cần nắm chắc hai cấp độ quan trọng nhất:
+            <code>--global</code> và <code>--local</code>.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Cấp độ</th>
+                <th>Phạm vi áp dụng</th>
+                <th>Khi nào dùng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--global</code></td>
+                <td>Áp dụng cho tất cả repository trên máy tính của người dùng hiện tại.</td>
+                <td>Dùng cho thiết lập chung khi học Git hoặc làm dự án cá nhân.</td>
+              </tr>
+              <tr>
+                <td><code>--local</code></td>
+                <td>Chỉ áp dụng cho repository hiện tại.</td>
+                <td>Dùng khi một dự án cần tên hoặc email riêng.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Thứ tự ưu tiên</h3>
+          <p>Nếu cùng một thông tin được cấu hình ở nhiều nơi, Git sẽ ưu tiên cấu hình gần repository hơn.</p>
+          <pre><code>Local
+↓
+Global
+↓
+System</code></pre>
+
+          <div class="note">
+            <strong>Hiểu đơn giản:</strong> cấu hình Local có thể ghi đè cấu hình Global trong repository hiện tại.
+          </div>
+        </section>
+
+        <section id="xem-cau-hinh">
+          <h2>4. Các câu lệnh xem cấu hình hiện tại</h2>
+
+          <h3>Xem danh sách cấu hình</h3>
+          <pre><code>git config -l</code></pre>
+          <p>Lệnh này hiển thị toàn bộ cấu hình Git đang có hiệu lực.</p>
+
+          <h3>Xem cấu hình Global</h3>
+          <pre><code>git config --global -l</code></pre>
+          <p>Lệnh này chỉ hiển thị cấu hình Global của người dùng hiện tại.</p>
+
+          <h3>Xem cấu hình Local</h3>
+          <pre><code>git config --local -l</code></pre>
+          <p>Lệnh này chỉ hiển thị cấu hình Local của repository hiện tại.</p>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> muốn dùng <code>git config --local -l</code>, bạn phải đứng bên trong một thư mục đã được khởi tạo Git bằng <code>git init</code> hoặc được clone từ repository khác.
+          </div>
+
+          <h3>Xem riêng từng giá trị</h3>
+          <pre><code>git config user.name
+git config user.email</code></pre>
+        </section>
+
+        <section id="thiet-lap">
+          <h2>5. Thiết lập tên và email</h2>
+
+          <h3>Cấu hình Global</h3>
+          <p>Đây là cách khuyên dùng cho thiết lập chung trên máy cá nhân.</p>
+          <pre><code>git config --global user.name "Tên của bạn"
+git config --global user.email "email@example.com"</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>git config --global user.name "Nguyen Quoc Viet"
+git config --global user.email "viet@example.com"</code></pre>
+
+          <h3>Kiểm tra sau khi cấu hình Global</h3>
+          <pre><code>git config --global -l</code></pre>
+
+          <h3>Cấu hình Local</h3>
+          <p>Cấu hình Local chỉ dành riêng cho repository hiện tại.</p>
+          <pre><code>git config --local user.name "Tên của bạn"
+git config --local user.email "email@example.com"</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>git config --local user.name "Nguyen Quoc Viet - Project A"
+git config --local user.email "viet.project@example.com"</code></pre>
+
+          <h3>Kiểm tra sau khi cấu hình Local</h3>
+          <pre><code>git config --local -l</code></pre>
+        </section>
+
+        <section id="global-local">
+          <h2>6. Khi nào dùng Global và khi nào dùng Local?</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Trường hợp</th>
+                <th>Nên dùng</th>
+                <th>Lý do</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Học Git cá nhân</td>
+                <td><code>--global</code></td>
+                <td>Cấu hình một lần, dùng cho mọi bài thực hành.</td>
+              </tr>
+              <tr>
+                <td>Làm nhiều project cá nhân</td>
+                <td><code>--global</code></td>
+                <td>Cùng một tên và email cho tất cả project.</td>
+              </tr>
+              <tr>
+                <td>Một project công ty cần email riêng</td>
+                <td><code>--local</code></td>
+                <td>Chỉ repository đó dùng email công ty.</td>
+              </tr>
+              <tr>
+                <td>Dùng nhiều tài khoản GitHub</td>
+                <td><code>--local</code></td>
+                <td>Mỗi repository có thể gắn với một email khác nhau.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> nếu mới bắt đầu học Git, hãy cấu hình Global trước. Sau này khi làm nhiều dự án chuyên nghiệp, bạn có thể dùng thêm Local.
+          </div>
+        </section>
+
+        <section id="tep-config">
+          <h2>7. Kiểm tra cấu hình trong tệp tin</h2>
+          <p>
+            Ngoài việc dùng lệnh <code>git config</code>, bạn có thể mở trực tiếp tệp cấu hình để xem Git đã lưu thông tin ở đâu.
+          </p>
+
+          <h3>Tệp cấu hình Local</h3>
+          <p>Trong mỗi repository, Git lưu cấu hình Local tại:</p>
+          <pre><code>.git/config</code></pre>
+
+          <p>Cấu trúc thư mục có dạng:</p>
+          <pre><code>my-project/
+├── .git/
+│   └── config
+├── README.md
+└── index.html</code></pre>
+
+          <h3>Mở tệp config trên Windows</h3>
+          <pre><code>notepad .git/config</code></pre>
+
+          <h3>Mở tệp config trên Linux/macOS</h3>
+          <pre><code>cat .git/config</code></pre>
+
+          <h3>Ví dụ nội dung tệp config</h3>
+          <pre><code>[core]
+    repositoryformatversion = 0
+    filemode = false
+    bare = false
+    logallrefupdates = true
+[user]
+    name = Nguyen Quoc Viet
+    email = viet@example.com</code></pre>
+
+          <div class="warning">
+            <strong>Không nên xóa thư mục <code>.git</code>:</strong> đây là nơi Git lưu toàn bộ dữ liệu quản lý phiên bản của repository.
+          </div>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>8. Thực hành cấu hình Git</h2>
+
+          <div class="step">
+            <h3>Bước 1: Kiểm tra Git đã cài đặt</h3>
+            <pre><code>git --version</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Cấu hình thông tin Global</h3>
+            <pre><code>git config --global user.name "Nguyen Quoc Viet"
+git config --global user.email "viet@example.com"</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Kiểm tra cấu hình Global</h3>
+            <pre><code>git config --global -l</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Tạo repository thử nghiệm</h3>
+            <pre><code>git init test-config
+cd test-config</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Thiết lập cấu hình Local</h3>
+            <pre><code>git config --local user.name "Nguyen Quoc Viet - Local"
+git config --local user.email "local@example.com"</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6: Kiểm tra tệp cấu hình</h3>
+            <pre><code>git config --local -l
+notepad .git/config</code></pre>
+          </div>
+
+          <div class="success">
+            <strong>Kết quả mong muốn:</strong> bạn hiểu được Git đang dùng tên và email nào cho commit, đồng thời biết cách kiểm tra cấu hình trong repository.
+          </div>
+        </section>
+
+        <section id="hoi-dap">
+          <h2>9. Câu hỏi ôn tập nhanh</h2>
+
+          <div class="qa">
+            <h3>Câu 1: Git dùng thông tin nào để xác định tác giả commit?</h3>
+            <p><strong>Trả lời:</strong> Git dùng <code>user.name</code> và <code>user.email</code>.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 2: Lệnh xem toàn bộ cấu hình Git là gì?</h3>
+            <pre><code>git config -l</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 3: Lệnh cấu hình tên Global là gì?</h3>
+            <pre><code>git config --global user.name "Tên của bạn"</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 4: Local khác Global như thế nào?</h3>
+            <p><strong>Global</strong> áp dụng cho tất cả repository trên máy.</p>
+            <p><strong>Local</strong> chỉ áp dụng cho repository hiện tại.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 5: Cấu hình Local được lưu ở đâu?</h3>
+            <pre><code>.git/config</code></pre>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Git cần định danh người dùng để lưu thông tin tác giả commit.</li>
+            <li><code>user.name</code> là tên người thực hiện commit.</li>
+            <li><code>user.email</code> là email gắn với commit.</li>
+            <li><code>git config -l</code> dùng để xem danh sách cấu hình.</li>
+            <li><code>git config --global -l</code> dùng để xem cấu hình Global.</li>
+            <li><code>git config --local -l</code> dùng để xem cấu hình Local.</li>
+            <li><code>--global</code> áp dụng cho toàn bộ repository của người dùng hiện tại.</li>
+            <li><code>--local</code> chỉ áp dụng cho repository hiện tại.</li>
+            <li>Cấu hình Local được lưu trong tệp <code>.git/config</code>.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Ghi nhớ nhanh:</strong> trước khi commit, hãy cấu hình <code>user.name</code> và <code>user.email</code> để lịch sử Git rõ ràng, chính xác và dễ quản lý.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 3. Cấu hình thông tin cho Repository
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

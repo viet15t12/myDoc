@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trung tâm tài liệu học tập</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    const savedTheme = localStorage.getItem('learning_hub_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f17;
+      --surface: #111827;
+      --surface-2: #172033;
+      --border: rgba(148, 163, 184, .18);
+      --text: #e5edf7;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --good: #34d399;
+      --warn: #facc15;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .32);
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef4fb;
+      --border: rgba(15, 23, 42, .13);
+      --text: #0f172a;
+      --muted: #526174;
+      --accent: #0284c7;
+      --shadow: 0 22px 60px rgba(15, 23, 42, .10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, .16), transparent 36rem),
+        linear-gradient(135deg, var(--bg), #101725 62%, var(--bg));
+      color: var(--text);
+      font-family: Sora, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(56, 189, 248, .18), rgba(52, 211, 153, .10));
+      box-shadow: var(--shadow);
+      font: 800 22px/1 "JetBrains Mono", monospace;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4.8vw, 56px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 10px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(17, 24, 39, .68);
+      backdrop-filter: blur(16px);
+      margin-bottom: 20px;
+    }
+
+    [data-theme="light"] .toolbar { background: rgba(255, 255, 255, .72); }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: min(420px, 100%);
+      flex: 1;
+      padding: 0 13px;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .search svg, .icon-btn svg, .open-icon {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+    }
+
+    input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font: 500 14px Sora, sans-serif;
+    }
+
+    input::placeholder { color: var(--muted); }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      font: 700 13px Sora, sans-serif;
+      cursor: pointer;
+    }
+
+    .pill, .icon-btn {
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .pill {
+      padding: 0 14px;
+      color: var(--muted);
+    }
+
+    .pill.active {
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--accent) 62%, transparent);
+      background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+    }
+
+    .icon-btn {
+      width: 42px;
+      display: grid;
+      place-items: center;
+    }
+
+    .pill:hover, .icon-btn:hover, .project-card:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      min-height: 88px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 310px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--accent-card) 16%, transparent), transparent 46%),
+        var(--surface);
+      box-shadow: var(--shadow);
+      transition: transform .18s ease, border-color .18s ease;
+      overflow: hidden;
+    }
+
+    .project-card[hidden] { display: none; }
+
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .project-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--accent-card);
+      background: color-mix(in srgb, var(--accent-card) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-card) 30%, transparent);
+      font: 800 18px/1 "JetBrains Mono", monospace;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: var(--status-color);
+      background: color-mix(in srgb, var(--status-color) 13%, transparent);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .project-title {
+      margin: 22px 0 8px;
+      font-size: 22px;
+      line-height: 1.18;
+    }
+
+    .project-desc {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.58;
+      font-size: 14px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font: 700 12px "JetBrains Mono", monospace;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .open-label {
+      color: var(--text);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .open-icon {
+      color: var(--accent-card);
+    }
+
+    .empty {
+      display: none;
+      padding: 32px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+      background: var(--surface);
+    }
+
+    .empty.show { display: block; }
+
+    footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      header { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(100% - 22px, 1180px);
+        padding-top: 18px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .mark {
+        width: 46px;
+        height: 46px;
+        font-size: 18px;
+      }
+
+      .toolbar {
+        padding: 10px;
+      }
+
+      .search {
+        min-width: 100%;
+      }
+
+      .filters, .pill {
+        width: 100%;
+      }
+
+      .pill {
+        flex: 1 1 0;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card {
+        min-height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="mark" id="hubMark">LH</div>
+        <div>
+          <h1 id="hubTitle">Trung tâm tài liệu học tập</h1>
+          <p class="lead" id="hubDesc">Quản lý và mở nhanh các website bài học trong thư mục này. Tìm theo tên, lọc theo trạng thái, rồi vào thẳng lộ trình cần học.</p>
+        </div>
+      </div>
+      <button class="icon-btn" type="button" id="themeToggle" title="Đổi giao diện" aria-label="Đổi giao diện"></button>
+    </header>
+
+    <section class="toolbar" aria-label="Công cụ quản lý">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m16.5 16.5 4 4"></path>
+        </svg>
+        <input id="searchInput" type="search" placeholder="Tìm Python, Git, LPIC..." autocomplete="off" />
+      </label>
+      <div class="filters" role="group" aria-label="Lọc trạng thái">
+        <button class="pill active" type="button" data-filter="all">Tất cả</button>
+        <button class="pill" type="button" data-filter="ready">Đã sẵn sàng</button>
+        <button class="pill" type="button" data-filter="planned">Dự phòng</button>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Thống kê">
+      <div class="stat">
+        <strong id="projectCount">0</strong>
+        <span>website tài liệu</span>
+      </div>
+      <div class="stat">
+        <strong id="lessonCount">0</strong>
+        <span>bài học có thể mở</span>
+      </div>
+      <div class="stat">
+        <strong id="readyCount">0</strong>
+        <span>lộ trình đã sẵn sàng</span>
+      </div>
+    </section>
+
+    <main>
+      <div class="grid" id="projectGrid"></div>
+      <div class="empty" id="emptyState">Không tìm thấy lộ trình phù hợp.</div>
+    </main>
+
+    <footer id="hubFooter">Mở file này từ thư mục tổng để quản lý nhanh các website con.</footer>
+  </div>
+
+  <script>
+    const fallbackProjects = [
+      {
+        id: 'python-zero2hero',
+        title: 'Python Zero2Hero',
+        description: 'Lộ trình Python từ nền tảng đến dữ liệu, web API, GUI và xử lý ảnh.',
+        href: 'python-zero2hero/index.html',
+        folder: 'python-zero2hero',
+        badge: 'PY',
+        accent: '#facc15',
+        status: 'ready',
+        lessons: 29,
+        tags: ['python', 'lap trinh', 'data', 'fastapi', 'opencv']
+      },
+      {
+        id: 'git-basics',
+        title: 'Git Basics',
+        description: 'Nắm nền tảng Git: repository, cấu hình, status, diff, commit và gitignore.',
+        href: 'git-basics/index.html',
+        folder: 'git-basics',
+        badge: 'git',
+        accent: '#38bdf8',
+        status: 'ready',
+        lessons: 20,
+        tags: ['git', 'repository', 'commit', 'version control']
+      },
+      {
+        id: 'lpic-101-102',
+        title: 'LPIC-1 101 & 102',
+        description: 'Bộ tài liệu Linux theo hướng chứng chỉ LPIC-1, chia theo nhóm chủ đề quản trị hệ thống.',
+        href: 'lpic-101-102/index.html',
+        folder: 'lpic-101-102',
+        badge: 'LP',
+        accent: '#34d399',
+        status: 'ready',
+        lessons: 42,
+        tags: ['linux', 'lpic', 'sysadmin', 'terminal']
+      }
+    ];
+
+    let projects = [];
+    let currentFilter = 'all';
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('learning_hub_theme', theme);
+      renderThemeIcon(theme);
+    }
+
+    function renderThemeIcon(theme) {
+      const btn = document.getElementById('themeToggle');
+      btn.innerHTML = theme === 'light'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    }
+
+    function statusLabel(status) {
+      return status === 'ready' ? 'Đã sẵn sàng' : 'Dự phòng';
+    }
+
+    function normalize(text) {
+      return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projectGrid');
+      grid.innerHTML = '';
+
+      projects.forEach(project => {
+        const card = document.createElement('a');
+        card.className = 'project-card';
+        card.href = project.href;
+        card.style.setProperty('--accent-card', project.accent);
+        card.style.setProperty('--status-color', project.status === 'ready' ? 'var(--good)' : 'var(--warn)');
+        card.dataset.status = project.status;
+        card.dataset.search = normalize(`${project.title} ${project.description} ${project.folder} ${project.tags.join(' ')}`);
+        card.innerHTML = `
+          <div class="project-head">
+            <div class="project-icon">${project.badge}</div>
+            <span class="status">${statusLabel(project.status)}</span>
+          </div>
+          <div>
+            <h2 class="project-title">${project.title}</h2>
+            <p class="project-desc">${project.description}</p>
+            <div class="meta">
+              <span>${project.lessons || 'N/A'} bai</span>
+              <span>${project.folder}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <span class="open-label">Mở lộ trình</span>
+            <svg class="open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M7 17 17 7"></path>
+              <path d="M7 7h10v10"></path>
+            </svg>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function applyFilters() {
+      const query = normalize(document.getElementById('searchInput').value.trim());
+      const cards = document.querySelectorAll('.project-card');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const statusMatch = currentFilter === 'all' || card.dataset.status === currentFilter;
+        const searchMatch = !query || card.dataset.search.includes(query);
+        const show = statusMatch && searchMatch;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      document.getElementById('emptyState').classList.toggle('show', visible === 0);
+    }
+
+    function renderStats() {
+      const ready = projects.filter(project => project.status === 'ready').length;
+      const lessons = projects.reduce((sum, project) => sum + (project.lessons || 0), 0);
+      document.getElementById('projectCount').textContent = projects.length;
+      document.getElementById('lessonCount').textContent = lessons;
+      document.getElementById('readyCount').textContent = ready;
+    }
+
+    function applyDashboardData(data) {
+      projects = Array.isArray(data.projects) ? data.projects : fallbackProjects;
+      document.getElementById('hubTitle').textContent = data.title || 'Trung tâm tài liệu học tập';
+      document.getElementById('hubDesc').textContent = data.description || '';
+      document.getElementById('hubMark').textContent = data.mark || 'LH';
+      document.getElementById('hubFooter').textContent = data.footer || '';
+      renderProjects();
+      renderStats();
+      applyFilters();
+    }
+
+    function loadDashboardData() {
+      fetch('dashboard.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Cannot load dashboard.json');
+          return response.json();
+        })
+        .then(applyDashboardData)
+        .catch(() => {
+          applyDashboardData({
+            title: 'Trung tâm tài liệu học tập',
+            description: 'Quản lý và mở nhanh các website bài học trong thư mục này. Tìm theo tên, lọc theo trạng thái, rồi vào thẳng lộ trình cần học.',
+            mark: 'LH',
+            footer: 'Mở file này từ thư mục tổng để quản lý nhanh các website con.',
+            projects: fallbackProjects
+          });
+        });
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    document.querySelectorAll('.pill').forEach(button => {
+      button.addEventListener('click', () => {
+        currentFilter = button.dataset.filter;
+        document.querySelectorAll('.pill').forEach(item => item.classList.remove('active'));
+        button.classList.add('active');
+        applyFilters();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+    renderThemeIcon(savedTheme);
+    loadDashboardData();
+  </script>
+</body>
+</html>

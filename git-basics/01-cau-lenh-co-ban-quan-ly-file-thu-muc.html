@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Các câu lệnh cơ bản để quản lý file và thư mục</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right">
+      <span class="nav-pill disabled">← Bài trước</span>
+      <a class="nav-pill" data-lesson-id="02" href="#02">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#dieu-huong">1. Điều hướng thư mục</a>
+      <a href="#tao-thu-muc">2. Tạo thư mục</a>
+      <a href="#quan-ly-file">3. Quản lý file</a>
+      <a href="#ghi-file">4. Ghi nội dung vào file</a>
+      <a href="#doc-file">5. Đọc nội dung file</a>
+      <a href="#so-sanh-file">6. So sánh file</a>
+      <a href="#xoa">7. Xóa file và thư mục</a>
+      <a href="#terminal">8. Mẹo terminal</a>
+      <a href="#lenh-huu-ich">9. Lệnh hữu ích khác</a>
+      <a href="#duong-dan">10. Đường dẫn</a>
+      <a href="#quyen-file">11. Quyền file</a>
+      <a href="#thuc-hanh">12. Bài tập thực hành</a>
+      <a href="#git">13. Liên hệ với Git</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>1. Các câu lệnh cơ bản để quản lý file và thư mục</h1>
+        <p class="meta">Tài liệu học Terminal / Command Line cơ bản, tổng hợp từ nội dung video và bổ sung kiến thức thực tế.</p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>Tài liệu này giúp bạn nắm các thao tác cơ bản:</p>
+          <ul>
+            <li>Điều hướng thư mục</li>
+            <li>Tạo, đọc, ghi, xóa file</li>
+            <li>Tạo và xóa thư mục</li>
+            <li>So sánh file</li>
+            <li>Sử dụng terminal hiệu quả hơn</li>
+          </ul>
+        </section>
+
+        <section id="dieu-huong">
+          <h2>1. Điều hướng và quản lý thư mục</h2>
+
+          <h3><code>pwd</code> — Hiển thị thư mục hiện tại</h3>
+          <pre><code>pwd</code></pre>
+          <p><code>pwd</code> là viết tắt của <strong>Print Working Directory</strong>, dùng để xem terminal đang đứng ở thư mục nào.</p>
+
+          <h3><code>ls</code> / <code>dir</code> — Liệt kê file và thư mục</h3>
+          <pre><code>ls</code></pre>
+          <p>Trên Linux/macOS thường dùng <code>ls</code>. Trên Windows Command Prompt thường dùng <code>dir</code>.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lệnh</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ls</code></td>
+                <td>Liệt kê file và thư mục</td>
+              </tr>
+              <tr>
+                <td><code>ls -l</code></td>
+                <td>Hiển thị chi tiết</td>
+              </tr>
+              <tr>
+                <td><code>ls -a</code></td>
+                <td>Hiển thị cả file ẩn</td>
+              </tr>
+              <tr>
+                <td><code>ls -la</code></td>
+                <td>Kết hợp hiển thị chi tiết và file ẩn</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3><code>cd</code> — Chuyển thư mục</h3>
+          <pre><code>cd Documents</code></pre>
+          <p>Đi vào thư mục con tên là <code>Documents</code>.</p>
+
+          <pre><code>cd ..</code></pre>
+          <p>Quay lại thư mục cha.</p>
+
+          <pre><code>cd
+cd ~</code></pre>
+          <p>Quay về thư mục home của người dùng.</p>
+
+          <div class="note">
+            <strong>Mẹo:</strong> Gõ vài ký tự đầu của tên thư mục rồi nhấn <code>Tab</code> để terminal tự động gợi ý tên đầy đủ.
+          </div>
+        </section>
+
+        <section id="tao-thu-muc">
+          <h2>2. Tạo và quản lý thư mục</h2>
+
+          <h3><code>mkdir</code> — Tạo thư mục mới</h3>
+          <pre><code>mkdir ten_thu_muc</code></pre>
+
+          <h3>Tạo nhiều thư mục cùng lúc</h3>
+          <pre><code>mkdir folder1 folder2 folder3</code></pre>
+
+          <h3>Tạo thư mục lồng nhau</h3>
+          <pre><code>mkdir -p project/src/components</code></pre>
+          <p>Tùy chọn <code>-p</code> giúp tạo toàn bộ cây thư mục nếu các thư mục cha chưa tồn tại.</p>
+        </section>
+
+        <section id="quan-ly-file">
+          <h2>3. Quản lý file</h2>
+
+          <h3><code>touch</code> — Tạo file mới</h3>
+          <pre><code>touch file.txt</code></pre>
+
+          <h3>Tạo file có khoảng trắng trong tên</h3>
+          <pre><code>touch "ten file.txt"</code></pre>
+
+          <h3>Tạo nhiều file</h3>
+          <pre><code>touch a.txt b.txt c.txt</code></pre>
+        </section>
+
+        <section id="ghi-file">
+          <h2>4. Ghi nội dung vào file</h2>
+
+          <h3><code>echo</code> — Xuất nội dung</h3>
+          <pre><code>echo "Hello World"</code></pre>
+
+          <h3>Ghi đè nội dung vào file</h3>
+          <pre><code>echo "Noi dung moi" &gt; file.txt</code></pre>
+          <p>Ký hiệu <code>&gt;</code> sẽ ghi đè toàn bộ nội dung cũ trong file.</p>
+
+          <h3>Thêm nội dung vào cuối file</h3>
+          <pre><code>echo "Dong moi" &gt;&gt; file.txt</code></pre>
+          <p>Ký hiệu <code>&gt;&gt;</code> dùng để thêm nội dung vào cuối file mà không xóa dữ liệu cũ.</p>
+        </section>
+
+        <section id="doc-file">
+          <h2>5. Đọc nội dung file</h2>
+
+          <h3><code>cat</code> — Hiển thị nội dung file</h3>
+          <pre><code>cat file.txt</code></pre>
+
+          <h3>Hiển thị nhiều file</h3>
+          <pre><code>cat file1.txt file2.txt</code></pre>
+
+          <h3>Hiển thị kèm số dòng</h3>
+          <pre><code>cat -n file.txt</code></pre>
+        </section>
+
+        <section id="so-sanh-file">
+          <h2>6. So sánh file</h2>
+
+          <h3><code>diff</code> — So sánh sự khác nhau giữa hai file</h3>
+          <pre><code>diff file1.txt file2.txt</code></pre>
+          <p>Lệnh này rất hữu ích khi kiểm tra sự thay đổi giữa hai phiên bản file, đặc biệt khi học Git.</p>
+        </section>
+
+        <section id="xoa">
+          <h2>7. Xóa file và thư mục</h2>
+
+          <h3><code>rm</code> — Xóa file</h3>
+          <pre><code>rm file.txt</code></pre>
+
+          <h3>Xóa thư mục rỗng</h3>
+          <pre><code>rm -d folder</code></pre>
+
+          <h3>Xóa thư mục có dữ liệu</h3>
+          <pre><code>rm -r folder</code></pre>
+
+          <div class="warning">
+            <strong>Cảnh báo:</strong> Lệnh <code>rm</code> trên Linux thường xóa trực tiếp, không đưa vào Recycle Bin. Cần kiểm tra kỹ trước khi chạy.
+          </div>
+
+          <h3>Xóa cưỡng bức</h3>
+          <pre><code>rm -rf folder</code></pre>
+          <p>Trong đó:</p>
+          <ul>
+            <li><code>-r</code>: xóa đệ quy cả thư mục con</li>
+            <li><code>-f</code>: force, không hỏi xác nhận</li>
+          </ul>
+        </section>
+
+        <section id="terminal">
+          <h2>8. Mẹo vận hành Terminal</h2>
+
+          <h3><code>clear</code> — Làm sạch màn hình</h3>
+          <pre><code>clear</code></pre>
+          <p>Có thể dùng phím tắt:</p>
+          <pre><code>Ctrl + L</code></pre>
+
+          <h3>Dùng phím mũi tên để xem lịch sử lệnh</h3>
+          <pre><code>↑  ↓</code></pre>
+          <p>Phím mũi tên lên/xuống giúp duyệt lại các lệnh đã gõ trước đó.</p>
+
+          <h3><code>history</code> — Xem lịch sử command</h3>
+          <pre><code>history</code></pre>
+        </section>
+
+        <section id="lenh-huu-ich">
+          <h2>9. Một số lệnh hữu ích khác</h2>
+
+          <h3><code>cp</code> — Sao chép file</h3>
+          <pre><code>cp file.txt backup.txt</code></pre>
+
+          <h3><code>mv</code> — Di chuyển hoặc đổi tên file</h3>
+          <pre><code>mv old.txt new.txt</code></pre>
+          <pre><code>mv file.txt Documents/</code></pre>
+
+          <h3><code>rmdir</code> — Xóa thư mục rỗng</h3>
+          <pre><code>rmdir folder</code></pre>
+
+          <h3><code>man</code> — Xem tài liệu lệnh</h3>
+          <pre><code>man ls</code></pre>
+          <p>Nhấn <code>q</code> để thoát khỏi màn hình tài liệu.</p>
+        </section>
+
+        <section id="duong-dan">
+          <h2>10. Đường dẫn trong Linux</h2>
+
+          <h3>Đường dẫn tuyệt đối</h3>
+          <pre><code>/home/user/Documents/file.txt</code></pre>
+          <p>Đường dẫn tuyệt đối bắt đầu từ thư mục gốc <code>/</code>.</p>
+
+          <h3>Đường dẫn tương đối</h3>
+          <pre><code>Documents/file.txt</code></pre>
+          <p>Đường dẫn tương đối phụ thuộc vào vị trí thư mục hiện tại.</p>
+        </section>
+
+        <section id="quyen-file">
+          <h2>11. Quyền file Linux cơ bản</h2>
+
+          <h3>Xem quyền file</h3>
+          <pre><code>ls -l</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>-rw-r--r--</code></pre>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Ký tự</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>r</code></td>
+                <td>Read — quyền đọc</td>
+              </tr>
+              <tr>
+                <td><code>w</code></td>
+                <td>Write — quyền ghi</td>
+              </tr>
+              <tr>
+                <td><code>x</code></td>
+                <td>Execute — quyền thực thi</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>12. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Tạo cấu trúc thư mục project</h3>
+            <pre><code>project/
+├── src/
+├── docs/
+└── README.md</code></pre>
+
+            <p>Gợi ý:</p>
+            <pre><code>mkdir -p project/src project/docs
+touch project/README.md</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Ghi nội dung vào README.md</h3>
+            <pre><code>echo "# My Project" &gt; README.md</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: So sánh hai file</h3>
+            <pre><code>diff a.txt b.txt</code></pre>
+          </div>
+        </section>
+
+        <section id="git">
+          <h2>13. Mối liên hệ với Git</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lệnh Terminal</th>
+                <th>Liên quan khi học Git</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ls</code></td>
+                <td>Xem nội dung project/repository</td>
+              </tr>
+              <tr>
+                <td><code>cd</code></td>
+                <td>Di chuyển vào thư mục repository</td>
+              </tr>
+              <tr>
+                <td><code>mkdir</code></td>
+                <td>Tạo thư mục project</td>
+              </tr>
+              <tr>
+                <td><code>rm</code></td>
+                <td>Xóa file khỏi project</td>
+              </tr>
+              <tr>
+                <td><code>cat</code></td>
+                <td>Đọc nội dung file cấu hình hoặc code</td>
+              </tr>
+              <tr>
+                <td><code>diff</code></td>
+                <td>Hiểu sự khác biệt giữa các phiên bản file</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau khi học xong bài này, bạn cần nắm được:</p>
+          <ul>
+            <li>Cách di chuyển giữa các thư mục bằng <code>cd</code></li>
+            <li>Cách xem nội dung thư mục bằng <code>ls</code> hoặc <code>dir</code></li>
+            <li>Cách tạo thư mục bằng <code>mkdir</code></li>
+            <li>Cách tạo file bằng <code>touch</code></li>
+            <li>Cách ghi nội dung bằng <code>echo</code>, <code>&gt;</code>, <code>&gt;&gt;</code></li>
+            <li>Cách đọc file bằng <code>cat</code></li>
+            <li>Cách so sánh file bằng <code>diff</code></li>
+            <li>Cách xóa file/thư mục bằng <code>rm</code></li>
+          </ul>
+
+          <div class="note">
+            Thành thạo các lệnh này sẽ giúp bạn học Git, GitHub, Linux, DevOps, Backend và Cloud dễ hơn rất nhiều.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 1. Các câu lệnh cơ bản để quản lý file và thư mục
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+{
+  "types": [
+    {
+      "id": "lpic101-sys",
+      "title": "LPIC-101: Hệ thống & Khởi động",
+      "icon": "💻",
+      "color": "#38bdf8"
+    },
+    {
+      "id": "lpic101-cmd",
+      "title": "LPIC-101: Thao tác & Lệnh Shell",
+      "icon": "🐚",
+      "color": "#CC0000"
+    },
+    {
+      "id": "lpic101-fs",
+      "title": "LPIC-101: Filesystem & Lưu trữ",
+      "icon": "🗄️",
+      "color": "#fb923c"
+    },
+    {
+      "id": "lpic102-admin",
+      "title": "LPIC-102: Quản trị & Tự động hóa",
+      "icon": "⚙️",
+      "color": "#a78bfa"
+    },
+    {
+      "id": "lpic102-net",
+      "title": "LPIC-102: Mạng & Bảo mật",
+      "icon": "🌐",
+      "color": "#34d399"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "type": "lpic101-sys",
+      "title": "Cấu hình thiết bị Phần cứng",
+      "description": "Exam 101 - Tìm hiểu thiết lập phần cứng, các thông số IRQ, I/O ports và thiết bị ngoại vi trong Linux.",
+      "file": "01-cau-hinh-thiet-bi-phan-cung.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["hardware", "lpic1", "exam101"]
+    },
+    {
+      "id": "02",
+      "type": "lpic101-sys",
+      "title": "Khởi động hệ điều hành Linux (Boot the System)",
+      "description": "Exam 101 - Chi tiết quá trình boot từ BIOS/UEFI, tìm hiểu vai trò của SysVinit, Systemd và Upstart.",
+      "file": "02-khoi-dong-he-dieu-hanh-linux.html",
+      "minutes": 30,
+      "sections": 8,
+      "status": "published",
+      "tags": ["boot", "systemd", "exam101"]
+    },
+    {
+      "id": "03",
+      "type": "lpic101-sys",
+      "title": "Thay đổi Runlevels, Boot Targets và Shutdown/Reboot",
+      "description": "Exam 101 - Quản lý các chế độ vận hành (runlevels), chuyển đổi boot targets và các lệnh tắt máy an toàn.",
+      "file": "03-thay-doi-runlevels-boot-targets-shutdown.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["runlevels", "target", "shutdown"]
+    },
+    {
+      "id": "04",
+      "type": "lpic101-sys",
+      "title": "Thiết kế cấu trúc phân vùng ổ cứng",
+      "description": "Exam 101 - Chiến lược phân bổ dung lượng cho các thư mục gốc, phân vùng swap và tối ưu hóa hiệu năng hệ thống.",
+      "file": "04-thiet-ke-cau-truc-phan-vung-o-cung.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["partitioning", "disk", "exam101"]
+    },
+    {
+      "id": "05",
+      "type": "lpic101-sys",
+      "title": "Cấu hình trình quản lý khởi động (Boot Manager)",
+      "description": "Exam 101 - Cấu hình và tùy chỉnh các tham số nạp hệ điều hành thông qua GRUB Legacy và GRUB 2.",
+      "file": "05-cau-hinh-boot-manager.html",
+      "minutes": 30,
+      "sections": 7,
+      "status": "published",
+      "tags": ["grub", "grub2", "bootloader"]
+    },
+    {
+      "id": "06",
+      "type": "lpic101-sys",
+      "title": "Quản lý thư viện trong Linux",
+      "description": "Exam 101 - Định vị và quản lý các thư viện chia sẻ (Shared Libraries), sử dụng ldd, ldconfig và biến LD_LIBRARY_PATH.",
+      "file": "06-quan-ly-thu-vien-trong-linux.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["libraries", "ldd", "shared-objects"]
+    },
+    {
+      "id": "07",
+      "type": "lpic101-sys",
+      "title": "Quản lý gói phần mềm trong Linux Debian",
+      "description": "Exam 101 - Sử dụng các công cụ quản lý gói dpkg, apt, apt-get và cấu hình kho chứa phần mềm repositories.",
+      "file": "07-quan-ly-goi-debian.html",
+      "minutes": 25,
+      "sections": 7,
+      "status": "published",
+      "tags": ["debian", "apt", "dpkg"]
+    },
+    {
+      "id": "08",
+      "type": "lpic101-sys",
+      "title": "Quản lý gói phần mềm trong Red Hat Based Linux",
+      "description": "Exam 101 - Làm việc với các lệnh rpm, yum, dnf để cài đặt, nâng cấp và gỡ bỏ phần mềm trên các hệ thống RHEL/CentOS.",
+      "file": "08-quan-ly-goi-redhat.html",
+      "minutes": 25,
+      "sections": 7,
+      "status": "published",
+      "tags": ["rpm", "yum", "dnf", "rhel"]
+    },
+    {
+      "id": "09",
+      "type": "lpic101-sys",
+      "title": "Giới thiệu về ảo hóa (Virtualization) trong Linux",
+      "description": "Exam 101 - Hiểu về kiến trúc ảo hóa phần cứng, hypervisors và các giải pháp máy ảo phổ biến trên nền tảng Linux.",
+      "file": "09-gioi-thieu-ao-hoa-linux.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["virtualization", "kvm", "hypervisor"]
+    },
+    {
+      "id": "10",
+      "type": "lpic101-cmd",
+      "title": "Các lệnh cơ bản trong Linux",
+      "description": "Exam 101 - Làm quen với môi trường dòng lệnh CLI, cú pháp câu lệnh tổng quát và các biến môi trường.",
+      "file": "10-cac-lenh-co-ban-linux.html",
+      "minutes": 20,
+      "sections": 9,
+      "status": "published",
+      "tags": ["cli", "commands", "basics"]
+    },
+    {
+      "id": "11",
+      "type": "lpic101-cmd",
+      "title": "Các lệnh xử lý văn bản trong Linux",
+      "description": "Exam 101 - Sử dụng các công cụ lọc và biến đổi văn bản mạnh mẽ như cat, tac, head, tail, sort, uniq, cut, wc.",
+      "file": "11-cac-lenh-xu-ly-van-ban.html",
+      "minutes": 25,
+      "sections": 8,
+      "status": "published",
+      "tags": ["text-processing", "filter", "text"]
+    },
+    {
+      "id": "12",
+      "type": "lpic101-cmd",
+      "title": "Các lệnh cơ bản Quản Lý File trong Linux",
+      "description": "Exam 101 - Sao chép, di chuyển, tạo mới, nén và giải nén tệp tin cũng như thư mục bằng tar, cpio, gzip, bzip2.",
+      "file": "12-cac-lenh-quan-ly-file.html",
+      "minutes": 20,
+      "sections": 6,
+      "status": "published",
+      "tags": ["file-management", "tar", "archive"]
+    },
+    {
+      "id": "13",
+      "type": "lpic101-cmd",
+      "title": "Sử dụng Streams (Luồng), Pipes và Redirects",
+      "description": "Exam 101 - Làm chủ các luồng chuẩn STDIN, STDOUT, STDERR, kỹ thuật nối lệnh bằng đường ống và chuyển hướng dữ liệu.",
+      "file": "13-streams-pipes-redirects.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["pipes", "redirect", "stdout"]
+    },
+    {
+      "id": "14",
+      "type": "lpic101-cmd",
+      "title": "Quản lý tiến trình (Processes)",
+      "description": "Exam 101 - Theo dõi và điều khiển tiến trình hệ thống bằng ps, top, kill, pkill, bg, fg, jobs và thay đổi độ ưu tiên với nice/renice.",
+      "file": "14-quan-ly-tien-trinh-processes.html",
+      "minutes": 30,
+      "sections": 8,
+      "status": "published",
+      "tags": ["process", "kill", "top", "nice"]
+    },
+    {
+      "id": "15",
+      "type": "lpic101-cmd",
+      "title": "Tìm kiếm Văn bản bằng Biểu thức chính quy (Regex)",
+      "description": "Exam 101 - Ứng dụng công cụ grep, egrep kết hợp regex để bóc tách thông tin phức tạp từ các tệp log và văn bản lớn.",
+      "file": "15-tim-kiem-van-ban-regex.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["regex", "grep", "search"]
+    },
+    {
+      "id": "16",
+      "type": "lpic101-cmd",
+      "title": "Thao tác Chỉnh sửa Tập tin bằng Trình biên soạn vi",
+      "description": "Exam 101 - Làm chủ các chế độ Command mode, Insert mode và Ex mode trong vi để sửa đổi tập tin cấu hình nhanh chóng.",
+      "file": "16-chinh-sua-tap-tin-vi.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["vi", "vim", "editor"]
+    },
+    {
+      "id": "17",
+      "type": "lpic101-fs",
+      "title": "Tạo Phân Vùng (Partitions) và Filesystem",
+      "description": "Exam 101 - Sử dụng fdisk, gdisk, parted để phân chia ổ đĩa và khởi tạo các hệ thống tệp tin ext4, xfs, vfat.",
+      "file": "17-tao-phan-vung-filesystem.html",
+      "minutes": 30,
+      "sections": 8,
+      "status": "published",
+      "tags": ["fdisk", "mkfs", "filesystem"]
+    },
+    {
+      "id": "18",
+      "type": "lpic101-fs",
+      "title": "Duy trì tính toàn vẹn của Filesystem",
+      "description": "Exam 101 - Kiểm tra, sửa lỗi đĩa cứng bằng fsck, e2fsck và giám sát không gian dung lượng trống với df, du.",
+      "file": "18-duy-tri-toan-ven-filesystem.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["fsck", "df", "du", "integrity"]
+    },
+    {
+      "id": "19",
+      "type": "lpic101-fs",
+      "title": "Kiểm soát Mount và Unmount các Filesystems",
+      "description": "Exam 101 - Gắn kết thủ công bằng lệnh mount/umount và cấu hình tự động mount thiết bị lúc khởi động trong tệp /etc/fstab.",
+      "file": "19-kiem-soat-mount-unmount-filesystem.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["mount", "fstab", "umount"]
+    },
+    {
+      "id": "20",
+      "type": "lpic101-fs",
+      "title": "Quản lý Quyền Truy cập và Sở hữu Tập tin",
+      "description": "Exam 101 - Phân quyền đọc/ghi/thực thi bằng chmod, thay đổi chủ sở hữu sở hữu nhóm bằng chown, chgrp và thiết lập umask.",
+      "file": "20-quan-ly-quyen-truy-cap-owner.html",
+      "minutes": 25,
+      "sections": 7,
+      "status": "published",
+      "tags": ["permissions", "chmod", "chown", "umask"]
+    },
+    {
+      "id": "21",
+      "type": "lpic101-fs",
+      "title": "Tạo và thay đổi liên kết Hard Links và Soft Links",
+      "description": "Exam 101 - Phân biệt bản chất liên kết cứng và liên kết mềm (Symbolic Link), cách tạo và ứng dụng liên kết bằng lệnh ln.",
+      "file": "21-hardlink-softlink-linux.html",
+      "minutes": 15,
+      "sections": 4,
+      "status": "published",
+      "tags": ["links", "ln", "symlink"]
+    },
+    {
+      "id": "22",
+      "type": "lpic101-fs",
+      "title": "Tìm kiếm System Files và Đặt Tập tin Đúng Vị trí",
+      "description": "Exam 101 - Tìm tệp tin hệ thống với find, locate, updatedb, which, whereis tuân thủ theo tiêu chuẩn phân cấp thư mục FHS.",
+      "file": "22-tim-kiem-system-files-fhs.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["find", "locate", "fhs"]
+    },
+    {
+      "id": "23",
+      "type": "lpic101-fs",
+      "title": "Làm bài tập các câu hỏi đề thi LPIC-1 Exam 101",
+      "description": "Tổng ôn tập - Giải chi tiết bộ câu hỏi trắc nghiệm, các kịch bản thực tế có trong đề thi thật LPIC-1 101-500.",
+      "file": "23-giai-de-thi-lpic1-exam-101.html",
+      "minutes": 45,
+      "sections": 10,
+      "status": "published",
+      "tags": ["exam", "mock-test", "quiz-101"]
+    },
+    {
+      "id": "24",
+      "type": "lpic102-admin",
+      "title": "Tùy chỉnh và Sử dụng Môi trường Shell",
+      "description": "Exam 102 - Cấu hình các tệp tin profile toàn cục và cá nhân, quản lý aliases và viết hàm xử lý tự động trong Shell.",
+      "file": "24-tuy-chinh-moi-truong-shell.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["shell", "profile", "alias"]
+    },
+    {
+      "id": "25",
+      "type": "lpic102-admin",
+      "title": "Tùy chỉnh và viết chương trình Bash Shell Scripts cơ bản",
+      "description": "Exam 102 - Lập trình tự động hóa với biến, cấu trúc điều kiện if-else, vòng lặp for/while và xử lý giá trị trả về của tập lệnh.",
+      "file": "25-viet-bash-shell-script-co-ban.html",
+      "minutes": 35,
+      "sections": 8,
+      "status": "published",
+      "tags": ["scripting", "bash", "automation"]
+    },
+    {
+      "id": "26",
+      "type": "lpic102-admin",
+      "title": "Cài đặt và cấu hình X11",
+      "description": "Exam 102 - Hiểu cấu trúc máy chủ đồ họa Xorg, cấu hình Display Managers, môi trường Desktop và xử lý chuyển tiếp X11 forwarding.",
+      "file": "26-cai-dat-cau-hinh-x11.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["x11", "xorg", "gui", "desktop"]
+    },
+    {
+      "id": "27",
+      "type": "lpic102-admin",
+      "title": "Quản lý Tài khoản Người dùng (users) và Nhóm (groups)",
+      "description": "Exam 102 - Quản trị định danh hệ thống qua các tệp /etc/passwd, /etc/shadow, /etc/group. Thêm, sửa, xóa tài khoản người dùng.",
+      "file": "27-quan-ly-user-group-system-files.html",
+      "minutes": 25,
+      "sections": 7,
+      "status": "published",
+      "tags": ["useradd", "usermod", "shadow", "group"]
+    },
+    {
+      "id": "28",
+      "type": "lpic102-admin",
+      "title": "Sử dụng công cụ Lập lịch Công việc (Automation Task)",
+      "description": "Exam 102 - Đặt lịch chạy mã tự động định kỳ với cron, crontab và lập lịch tác vụ chạy một lần duy nhất với at.",
+      "file": "28-lap-lich-cong-viec-cron-at.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["cron", "crontab", "at", "automation"]
+    },
+    {
+      "id": "29",
+      "type": "lpic102-admin",
+      "title": "Khu vực địa lý (Localization) và Đa ngôn ngữ",
+      "description": "Exam 102 - Thiết lập múi giờ hệ thống, định dạng ngày tháng, tiền tệ và cấu hình mã hóa ngôn ngữ (locale, UTF-8).",
+      "file": "29-localization-internationalization.html",
+      "minutes": 15,
+      "sections": 4,
+      "status": "published",
+      "tags": ["locale", "timezone", "env"]
+    },
+    {
+      "id": "30",
+      "type": "lpic102-admin",
+      "title": "Quản lý phân tích nhật ký hệ thống (System Logging)",
+      "description": "Exam 102 - Cấu hình daemon thu thập log syslog/rsyslog, theo dõi log thời gian thực với journalctl và xoay vòng log bằng logrotate.",
+      "file": "30-phan-tich-nhat-ky-system-logging.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["rsyslog", "journalctl", "logrotate"]
+    },
+    {
+      "id": "31",
+      "type": "lpic102-admin",
+      "title": "Căn bản về dịch vụ gửi và nhận mail (MTA)",
+      "description": "Exam 102 - Hiểu giao thức SMTP, cơ chế hoạt động của Mail Transfer Agent và cấu hình các bí danh chuyển tiếp mail (aliases).",
+      "file": "31-dich-vu-gui-nhan-mail-mta.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["mta", "smtp", "postfix", "mail"]
+    },
+    {
+      "id": "32",
+      "type": "lpic102-admin",
+      "title": "Quản lý hệ thống máy in trong Linux",
+      "description": "Exam 102 - Cấu hình kiến trúc in ấn CUPS, quản lý hàng đợi tài liệu in thông qua các lệnh lpr, lpq, rm và lpc.",
+      "file": "32-quan-ly-may-in-cups.html",
+      "minutes": 15,
+      "sections": 4,
+      "status": "published",
+      "tags": ["cups", "printing", "lpr"]
+    },
+    {
+      "id": "33",
+      "type": "lpic102-net",
+      "title": "Cơ bản về giao thức Internet (TCP/IP)",
+      "description": "Exam 102 - Mô hình mạng, cấu trúc địa chỉ IPv4/IPv6, mặt nạ mạng subnet mask và các cổng dịch vụ (ports) tiêu chuẩn.",
+      "file": "33-co-ban-giao-thuc-internet.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["tcp-ip", "networking", "ipv4", "ports"]
+    },
+    {
+      "id": "34",
+      "type": "lpic102-net",
+      "title": "Cấu hình mạng (Network Configuration) trong Linux",
+      "description": "Exam 102 - Gán IP, cấu hình định tuyến bảng routing bằng các công cụ hiện đại ip, nmcli, nmtui hoặc file cấu hình mạng tĩnh.",
+      "file": "34-cau-hinh-mang-network.html",
+      "minutes": 30,
+      "sections": 7,
+      "status": "published",
+      "tags": ["iproute2", "nmcli", "ifconfig", "routing"]
+    },
+    {
+      "id": "35",
+      "type": "lpic102-net",
+      "title": "Căn bản về xử lý sự cố mạng (Troubleshooting)",
+      "description": "Exam 102 - Sử dụng các công cụ chẩn đoán lỗi đường truyền, kết nối dịch vụ như ping, traceroute, netstat, ss, lsof.",
+      "file": "35-xu-ly-su-co-mang-troubleshoot.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["ping", "traceroute", "ss", "netstat"]
+    },
+    {
+      "id": "36",
+      "type": "lpic102-net",
+      "title": "Cấu hình Client-Side DNS",
+      "description": "Exam 102 - Cơ chế phân giải tên miền ở máy trạm, vai trò của tệp /etc/hosts, /etc/resolv.conf và lệnh tra cứu host, dig, nslookup.",
+      "file": "36-cau-hinh-client-side-dns.html",
+      "minutes": 20,
+      "sections": 5,
+      "status": "published",
+      "tags": ["dns", "resolv.conf", "dig", "hosts"]
+    },
+    {
+      "id": "37",
+      "type": "lpic102-net",
+      "title": "Thực hiện quản trị bảo mật trong Linux",
+      "description": "Exam 102 - Giám sát tài nguyên hệ thống, tìm các tiến trình chạy ngầm bất thường bằng các công cụ kiểm toán và quản lý tệp tin cấu hình sudo.",
+      "file": "37-quan-tri-bao-mat-linux.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["security", "sudo", "audit", "ulimit"]
+    },
+    {
+      "id": "38",
+      "type": "lpic102-net",
+      "title": "Cài đặt cấu hình bảo mật hệ thống Linux",
+      "description": "Exam 102 - Đóng/mở dịch vụ, quản lý hạn chế cổng mạng, thiết lập bảo mật máy chủ, chặn truy cập trái phép qua TCP Wrappers.",
+      "file": "38-cai-dat-bao-mat-he-thong.html",
+      "minutes": 25,
+      "sections": 6,
+      "status": "published",
+      "tags": ["system-security", "tcp-wrappers", "inetd"]
+    },
+    {
+      "id": "39",
+      "type": "lpic102-net",
+      "title": "Bảo mật mã hóa dữ liệu với SSH và GPG",
+      "description": "Exam 102 - Tạo cặp khóa SSH Key-based authentication bảo mật, cấu hình OpenSSH Server và mã hóa tệp tin cá nhân với GPG.",
+      "file": "39-bao-mat-ma-hoa-du-lieu-ssh.html",
+      "minutes": 30,
+      "sections": 7,
+      "status": "published",
+      "tags": ["ssh", "gpg", "encryption", "openssh"]
+    },
+    {
+      "id": "40",
+      "type": "lpic102-net",
+      "title": "Cơ Bản Cài đặt Cấu hình dịch vụ Web, Database, Docker",
+      "description": "Mở rộng - Triển khai thực tế các dịch vụ cốt lõi: Web Server (Apache/Nginx), Cơ sở dữ liệu (MySQL/MariaDB) và ảo hóa Container Docker.",
+      "file": "40-cau-hinh-web-database-docker.html",
+      "minutes": 40,
+      "sections": 9,
+      "status": "published",
+      "tags": ["nginx", "mysql", "docker", "containers"]
+    },
+    {
+      "id": "41",
+      "type": "lpic102-net",
+      "title": "Làm bài tập các câu hỏi đề thi LPIC-1 Exam 102",
+      "description": "Tổng ôn tập - Bộ đề trắc nghiệm mô phỏng và phân tích đáp án kỳ thi chứng chỉ LPIC-1 mã đề 102-500.",
+      "file": "41-giai-de-thi-lpic1-exam-102.html",
+      "minutes": 45,
+      "sections": 10,
+      "status": "published",
+      "tags": ["exam", "mock-test", "quiz-102"]
+    },
+    {
+      "id": "42",
+      "type": "lpic102-net",
+      "title": "Tổng kết khóa học LPIC-1 101 & 102",
+      "description": "Bảo vệ & Định hướng - Hệ thống hóa kiến thức trọng tâm, mẹo phân bổ thời gian làm bài thi và lộ trình thăng tiến lên LPIC-2.",
+      "file": "42-tong-ket-khoa-hoc-lpic1.html",
+      "minutes": 20,
+      "sections": 4,
+      "status": "published",
+      "tags": ["wrap-up", "summary", "lpic2-path"]
+    }
+  ],
+  "series": {
+    "title": "Quản Trị Hệ Thống Linux",
+    "description": "Lộ trình học tập toàn diện chuẩn hóa theo khung chương trình chứng chỉ quốc tế LPIC-1 (Exam 101 & Exam 102)"
+  }
+}

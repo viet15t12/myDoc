@@ -1,0 +1,282 @@
+{
+  "types": [
+    {
+      "color": "#38bdf8",
+      "icon": "💻",
+      "id": "terminal",
+      "title": "Terminal"
+    },
+    {
+      "color": "#fb923c",
+      "icon": "🔀",
+      "id": "git",
+      "title": "Git"
+    },
+    {
+      "color": "#818cf8",
+      "icon": "☁️",
+      "id": "github",
+      "title": "GitHub"
+    },
+    {
+      "color": "#34d399",
+      "icon": "🚀",
+      "id": "nangcao",
+      "title": "Nâng cao"
+    }
+  ],
+  "lessons": [
+    {
+      "type": "terminal",
+      "description": "pwd, ls, cd, mkdir, touch, cat, cp, mv, rm, diff — nền tảng trước khi học Git",
+      "file": "01-cau-lenh-co-ban-quan-ly-file-thu-muc.html",
+      "id": "01",
+      "minutes": 20,
+      "sections": 13,
+      "status": "published",
+      "tags": [
+        "terminal",
+        "command-line",
+        "linux"
+      ],
+      "title": "Các câu lệnh cơ bản quản lý file và thư mục"
+    },
+    {
+      "type": "git",
+      "description": "git init, git clone, cấu trúc thư mục .git, git config để thiết lập tên và email",
+      "file": "02-cach-tao-repository-git.html",
+      "id": "02",
+      "minutes": 15,
+      "sections": 8,
+      "status": "published",
+      "tags": [
+        "git",
+        "repository",
+        "init",
+        "clone"
+      ],
+      "title": "Cách tạo Repository mới trong Git"
+    },
+    {
+      "type": "git",
+      "description": "user.name, user.email, Global và Local configuration, kiểm tra file .git/config",
+      "file": "03-cau-hinh-thong-tin-cho-repository.html",
+      "id": "03",
+      "minutes": 15,
+      "sections": 7,
+      "status": "published",
+      "tags": [
+        "git",
+        "config",
+        "user.name",
+        "user.email"
+      ],
+      "title": "Cấu hình thông tin cho Repository"
+    },
+    {
+      "type": "git",
+      "description": "Working Directory, Staging Area, Repository và quy trình add, commit, status, diff, log",
+      "file": "04-thuc-hanh-git-add-commit-status-diff-log.html",
+      "id": "04",
+      "minutes": 25,
+      "sections": 8,
+      "status": "published",
+      "tags": [
+        "git",
+        "add",
+        "commit",
+        "status",
+        "diff",
+        "log"
+      ],
+      "title": "Thực hành GIT add, commit, status, diff, log"
+    },
+    {
+      "type": "git",
+      "description": ".gitignore, bỏ qua file log, file tạm, thư mục upload, cache và các file không cần đưa lên repository",
+      "file": "05-cau-hinh-gitignore-de-bo-qua-cac-file-khong-can-giam-sat.html",
+      "id": "05",
+      "minutes": 20,
+      "sections": 7,
+      "status": "published",
+      "tags": [
+        "git",
+        "gitignore",
+        "ignore",
+        "log",
+        "upload",
+        "cache"
+      ],
+      "title": "Cấu hình GITIGNORE để bỏ qua các file không cần giám sát"
+    },
+    {
+  "type": "git",
+  "description": "Remote repository, git remote, git fetch, git pull, git push và cách đồng bộ mã nguồn",
+  "file": "08-cach-tuong-tac-voi-remote-repository.html",
+  "id": "08",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["git", "remote", "push", "pull", "fetch"],
+  "title": "Cách tương tác với Remote Repository"
+},
+{
+  "type": "git",
+  "description": "Nguyên nhân xung đột, cách xử lý merge conflict và các tình huống thường gặp",
+  "file": "09-xu-ly-xung-dot-trong-git-merge-conflict.html",
+  "id": "09",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["git", "merge", "conflict"],
+  "title": "Xử lý xung đột trong Git - Merge Conflict"
+},
+{
+  "type": "git",
+  "description": "Chuyển đổi giữa commit, branch và khôi phục trạng thái làm việc bằng git checkout",
+  "file": "10-cau-lenh-git-checkout-chuyen-doi-giua-cac-commit-trong-git.html",
+  "id": "10",
+  "minutes": 15,
+  "sections": 7,
+  "status": "published",
+  "tags": ["git", "checkout", "commit", "branch"],
+  "title": "Câu lệnh GIT CHECKOUT chuyển đổi giữa các commit trong Git"
+},
+{
+  "type": "git",
+  "description": "Khái niệm branch, tạo nhánh, chuyển nhánh và quy trình làm việc nhiều nhánh",
+  "file": "11-branches-cach-lam-viec-voi-nhieu-nhanh-trong-git.html",
+  "id": "11",
+  "minutes": 25,
+  "sections": 9,
+  "status": "published",
+  "tags": ["git", "branch", "workflow"],
+  "title": "Branches - cách làm việc với nhiều nhánh trong Git"
+},
+{
+  "type": "git",
+  "description": "Kết hợp nội dung giữa các branch bằng git merge",
+  "file": "12-git-merge-ket-hop-noi-dung-tu-cac-nhanh.html",
+  "id": "12",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["git", "merge", "branch"],
+  "title": "Git Merge - Kết hợp nội dung từ các nhánh"
+},
+{
+  "type": "git",
+  "description": "Git rebase, tái cơ sở branch, ưu nhược điểm và so sánh với merge",
+  "file": "13-git-rebase-tai-co-so-cho-mot-nhanh-trong-git.html",
+  "id": "13",
+  "minutes": 25,
+  "sections": 9,
+  "status": "published",
+  "tags": ["git", "rebase", "branch"],
+  "title": "Git Rebase - tái cơ sở cho một nhánh trong Git"
+},
+{
+  "type": "git",
+  "description": "Xóa branch cục bộ và branch trên remote",
+  "file": "14-cach-xoa-nhanh-trong-git.html",
+  "id": "14",
+  "minutes": 10,
+  "sections": 5,
+  "status": "published",
+  "tags": ["git", "branch", "delete"],
+  "title": "Cách xóa nhánh trong GIT"
+},
+{
+  "type": "git",
+  "description": "Git reset, soft reset, mixed reset và hard reset",
+  "file": "15-git-reset-huy-bo-commit.html",
+  "id": "15",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["git", "reset", "commit"],
+  "title": "Git Reset - Hủy bỏ commit"
+},
+{
+  "type": "git",
+  "description": "Git revert để tạo commit đảo ngược và khôi phục lịch sử an toàn",
+  "file": "16-git-revert-quay-lai-cac-commit-truoc-day.html",
+  "id": "16",
+  "minutes": 15,
+  "sections": 7,
+  "status": "published",
+  "tags": ["git", "revert", "commit"],
+  "title": "Git Revert - Quay lại các commit trước đây"
+},
+{
+  "type": "github",
+  "description": "Đăng ký tài khoản GitHub và thiết lập hồ sơ ban đầu",
+  "file": "17-tao-tai-khoan-moi-tren-github.html",
+  "id": "17",
+  "minutes": 10,
+  "sections": 5,
+  "status": "published",
+  "tags": ["github", "account"],
+  "title": "Tạo tài khoản mới trên GitHub"
+},
+{
+  "type": "github",
+  "description": "Tạo repository trên GitHub, public/private và các thiết lập cơ bản",
+  "file": "18-tao-repository-moi-trong-github.html",
+  "id": "18",
+  "minutes": 15,
+  "sections": 6,
+  "status": "published",
+  "tags": ["github", "repository"],
+  "title": "Tạo Repository mới trong GitHub"
+},
+{
+  "type": "github",
+  "description": "Clone repository từ GitHub về máy bằng HTTPS hoặc SSH",
+  "file": "19-cach-clone-du-an-tu-github-ve-may.html",
+  "id": "19",
+  "minutes": 15,
+  "sections": 6,
+  "status": "published",
+  "tags": ["github", "clone"],
+  "title": "Cách clone dự án từ GitHub về máy"
+},
+{
+  "type": "github",
+  "description": "Push dự án từ máy cá nhân lên GitHub lần đầu và cập nhật các lần sau",
+  "file": "20-day-du-an-tu-may-ca-nhan-len-github.html",
+  "id": "20",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["github", "push", "remote"],
+  "title": "Đẩy dự án từ máy cá nhân lên GitHub"
+},
+{
+  "type": "github",
+  "description": "Fork repository, đồng bộ với upstream và cập nhật thay đổi",
+  "file": "21-fork-va-cap-nhat-repo-cua-nguoi-khac-tren-github.html",
+  "id": "21",
+  "minutes": 25,
+  "sections": 8,
+  "status": "published",
+  "tags": ["github", "fork", "upstream"],
+  "title": "Fork và cập nhật Repo của người khác trên GitHub"
+},
+{
+  "type": "github",
+  "description": "Tạo Pull Request, review code và quy trình đóng góp mã nguồn",
+  "file": "22-cach-tao-pull-request-trong-github.html",
+  "id": "22",
+  "minutes": 20,
+  "sections": 8,
+  "status": "published",
+  "tags": ["github", "pull-request", "collaboration"],
+  "title": "Cách tạo Pull Request trong Github"
+}
+  ],
+  "series": {
+    "description": "Lộ trình học Git & GitHub bài bản, từ Terminal đến GitHub Actions",
+    "title": "Học Git từ cơ bản"
+  }
+}

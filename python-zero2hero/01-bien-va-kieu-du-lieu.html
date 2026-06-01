@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01. Biến và Kiểu dữ liệu trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right">
+      <span class="nav-pill disabled">← Bài trước</span>
+      <a class="nav-pill" data-lesson-id="02" href="02-cac-phep-toan-so-hoc.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#keyword">1. Keyword trong Python</a>
+      <a href="#bien">2. Biến là gì?</a>
+      <a href="#quy-tac-dat-ten">3. Quy tắc đặt tên biến</a>
+      <a href="#gan-gia-tri">4. Gán giá trị cho biến</a>
+      <a href="#type">5. Kiểm tra kiểu dữ liệu</a>
+      <a href="#number">6. Kiểu số</a>
+      <a href="#boolean">7. Kiểu luận lý</a>
+      <a href="#string">8. Kiểu chuỗi</a>
+      <a href="#input">9. Nhập dữ liệu từ bàn phím</a>
+      <a href="#ep-kieu">10. Ép kiểu dữ liệu</a>
+      <a href="#vi-du-tuoi-ten">11. Ví dụ tuổi và tên</a>
+      <a href="#vi-du-nhiet-do">12. Ví dụ đổi độ C sang độ F</a>
+      <a href="#vi-du-trung-binh">13. Ví dụ tính trung bình</a>
+      <a href="#loi-thuong-gap">14. Lỗi thường gặp</a>
+      <a href="#bai-tap">15. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>01. Biến và Kiểu dữ liệu trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản, tập trung vào keyword, biến, kiểu dữ liệu, hàm <code>type()</code>, nhập dữ liệu bằng <code>input()</code> và ép kiểu dữ liệu.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Khi lập trình Python, bạn thường cần lưu trữ dữ liệu để xử lý. Dữ liệu đó có thể là số tuổi, tên người dùng, điểm số, nhiệt độ,
+            giá tiền hoặc kết quả tính toán. <strong>Biến</strong> giúp đặt tên cho dữ liệu để chương trình có thể sử dụng lại nhiều lần.
+          </p>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> hiểu biến là gì, biết cách đặt tên biến đúng, nhận biết các kiểu dữ liệu cơ bản và biết cách nhập dữ liệu từ bàn phím.
+          </div>
+        </section>
+
+        <section id="keyword">
+          <h2>1. Keyword trong Python</h2>
+          <p>
+            <strong>Keyword</strong> là các từ khóa đã được Python định nghĩa sẵn và có ý nghĩa đặc biệt trong cú pháp ngôn ngữ.
+            Vì vậy, bạn không được dùng keyword để đặt tên biến.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Keyword</th>
+                <th>Ý nghĩa thường gặp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>def</code></td>
+                <td>Dùng để định nghĩa hàm.</td>
+              </tr>
+              <tr>
+                <td><code>class</code></td>
+                <td>Dùng để định nghĩa lớp.</td>
+              </tr>
+              <tr>
+                <td><code>if</code>, <code>else</code>, <code>elif</code></td>
+                <td>Dùng trong cấu trúc điều kiện.</td>
+              </tr>
+              <tr>
+                <td><code>for</code>, <code>while</code></td>
+                <td>Dùng trong vòng lặp.</td>
+              </tr>
+              <tr>
+                <td><code>True</code>, <code>False</code></td>
+                <td>Giá trị luận lý đúng/sai.</td>
+              </tr>
+              <tr>
+                <td><code>lambda</code></td>
+                <td>Dùng để tạo hàm ẩn danh.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Có thể kiểm tra danh sách keyword bằng đoạn code sau:</p>
+          <pre><code>import keyword
+
+print(keyword.kwlist)</code></pre>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> không đặt tên biến là <code>class</code>, <code>def</code>, <code>if</code>, <code>for</code>, <code>True</code>, <code>False</code> vì đây là từ khóa của Python.
+          </div>
+        </section>
+
+        <section id="bien">
+          <h2>2. Biến là gì?</h2>
+          <p>
+            <strong>Biến</strong> là tên đại diện cho một giá trị trong chương trình. Bạn có thể hiểu biến giống như một chiếc hộp có nhãn,
+            trong đó nhãn là tên biến và nội dung bên trong là dữ liệu.
+          </p>
+
+          <pre><code>age = 18
+name = "Việt"
+height = 1.80
+is_student = True</code></pre>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Biến</th>
+                <th>Giá trị</th>
+                <th>Kiểu dữ liệu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>age</code></td>
+                <td><code>18</code></td>
+                <td>Số nguyên — <code>int</code></td>
+              </tr>
+              <tr>
+                <td><code>name</code></td>
+                <td><code>"Việt"</code></td>
+                <td>Chuỗi — <code>str</code></td>
+              </tr>
+              <tr>
+                <td><code>height</code></td>
+                <td><code>1.80</code></td>
+                <td>Số thực — <code>float</code></td>
+              </tr>
+              <tr>
+                <td><code>is_student</code></td>
+                <td><code>True</code></td>
+                <td>Luận lý — <code>bool</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="quy-tac-dat-ten">
+          <h2>3. Quy tắc đặt tên biến</h2>
+          <p>Tên biến trong Python cần tuân thủ một số quy tắc cơ bản.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Quy tắc</th>
+                <th>Ví dụ đúng</th>
+                <th>Ví dụ sai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Có thể chứa chữ cái, số và dấu gạch dưới.</td>
+                <td><code>student_name</code>, <code>age2</code></td>
+                <td><code>student-name</code></td>
+              </tr>
+              <tr>
+                <td>Không được bắt đầu bằng số.</td>
+                <td><code>number1</code></td>
+                <td><code>1number</code></td>
+              </tr>
+              <tr>
+                <td>Không chứa ký tự đặc biệt.</td>
+                <td><code>total_price</code></td>
+                <td><code>total@price</code>, <code>price?</code></td>
+              </tr>
+              <tr>
+                <td>Không trùng keyword.</td>
+                <td><code>class_name</code></td>
+                <td><code>class</code></td>
+              </tr>
+              <tr>
+                <td>Phân biệt chữ hoa và chữ thường.</td>
+                <td><code>age</code> khác <code>Age</code></td>
+                <td>Không nên đặt dễ gây nhầm lẫn.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Nên dùng:</strong> kiểu đặt tên <code>snake_case</code> cho biến Python, ví dụ <code>student_name</code>, <code>total_money</code>, <code>average_score</code>.
+          </div>
+        </section>
+
+        <section id="gan-gia-tri">
+          <h2>4. Gán giá trị cho biến</h2>
+          <p>Python dùng dấu bằng <code>=</code> để gán giá trị cho biến.</p>
+
+          <pre><code>integer_number = 10
+float_number = 10.2
+message = "Hello anh em"
+is_valid = True</code></pre>
+
+          <p>Để in giá trị của biến ra màn hình, dùng hàm <code>print()</code>:</p>
+          <pre><code>integer_number = 10
+print(integer_number)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>10</code></pre>
+        </section>
+
+        <section id="type">
+          <h2>5. Kiểm tra kiểu dữ liệu bằng <code>type()</code></h2>
+          <p>
+            Hàm <code>type()</code> dùng để kiểm tra kiểu dữ liệu của một giá trị hoặc một biến.
+          </p>
+
+          <pre><code>integer_number = 10
+float_number = 10.2
+name = "Python"
+is_student = True
+
+print(type(integer_number))
+print(type(float_number))
+print(type(name))
+print(type(is_student))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>&lt;class 'int'&gt;
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;
+&lt;class 'bool'&gt;</code></pre>
+        </section>
+
+        <section id="number">
+          <h2>6. Kiểu số trong Python</h2>
+          <p>Python có nhiều kiểu số, trong đó người mới học thường dùng nhiều nhất là <code>int</code> và <code>float</code>.</p>
+
+          <h3><code>int</code> — số nguyên</h3>
+          <pre><code>age = 18
+quantity = 100
+negative_number = -5</code></pre>
+
+          <h3><code>float</code> — số thực</h3>
+          <pre><code>height = 1.80
+temperature = 25.5
+price = 10.0</code></pre>
+
+          <div class="warning">
+            <strong>Chú ý:</strong> khi viết số thập phân trong Python, dùng dấu chấm <code>.</code>, không dùng dấu phẩy <code>,</code>. Ví dụ đúng: <code>25.5</code>.
+          </div>
+        </section>
+
+        <section id="boolean">
+          <h2>7. Kiểu luận lý <code>bool</code></h2>
+          <p>
+            Kiểu luận lý chỉ có hai giá trị: <code>True</code> và <code>False</code>. Kiểu này thường xuất hiện khi so sánh hoặc kiểm tra điều kiện.
+          </p>
+
+          <pre><code>print(6 == 8)
+print(type(6 == 8))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>False
+&lt;class 'bool'&gt;</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> <code>=</code> là gán giá trị, còn <code>==</code> là so sánh bằng.
+          </div>
+        </section>
+
+        <section id="string">
+          <h2>8. Kiểu chuỗi <code>str</code></h2>
+          <p>
+            Chuỗi dùng để lưu văn bản. Trong Python, bạn có thể tạo chuỗi bằng dấu nháy đơn, dấu nháy kép hoặc ba dấu nháy.
+          </p>
+
+          <h3>Chuỗi một dòng</h3>
+          <pre><code>message1 = 'Hello anh em'
+message2 = "Hello anh em"</code></pre>
+
+          <h3>Chuỗi có dấu nháy bên trong</h3>
+          <pre><code>message = "Hello 'anh em'"
+print(message)</code></pre>
+
+          <h3>Chuỗi nhiều dòng</h3>
+          <pre><code>long_message = """
+Hello anh em.
+Anh em khỏe không?
+"""
+
+print(long_message)</code></pre>
+
+          <div class="note">
+            <strong>Mẹo:</strong> nếu bên trong chuỗi cần dùng dấu nháy đơn, bạn có thể bao chuỗi bằng dấu nháy kép để code dễ đọc hơn.
+          </div>
+        </section>
+
+        <section id="input">
+          <h2>9. Nhập dữ liệu từ bàn phím bằng <code>input()</code></h2>
+          <p>
+            Hàm <code>input()</code> cho phép chương trình nhận dữ liệu người dùng nhập từ bàn phím.
+          </p>
+
+          <pre><code>name = input("Nhập tên của bạn: ")
+print("Tên của bạn là:", name)</code></pre>
+
+          <div class="warning">
+            <strong>Quan trọng:</strong> dữ liệu nhận từ <code>input()</code> luôn có kiểu <code>str</code>, kể cả khi bạn nhập số.
+          </div>
+        </section>
+
+        <section id="ep-kieu">
+          <h2>10. Ép kiểu dữ liệu</h2>
+          <p>
+            Khi cần tính toán với số nhập từ bàn phím, bạn phải chuyển chuỗi sang kiểu số bằng <code>int()</code> hoặc <code>float()</code>.
+          </p>
+
+          <h3>Ép kiểu sang số nguyên</h3>
+          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+print("Tuổi của bạn là:", age)</code></pre>
+
+          <h3>Ép kiểu sang số thực</h3>
+          <pre><code>temperature = float(input("Nhập nhiệt độ: "))
+print("Nhiệt độ là:", temperature)</code></pre>
+
+          <h3>Viết tách thành hai bước</h3>
+          <pre><code>age = input("Nhập tuổi của bạn: ")
+age = int(age)</code></pre>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Hàm ép kiểu</th>
+                <th>Công dụng</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>int()</code></td>
+                <td>Chuyển sang số nguyên</td>
+                <td><code>int("18")</code> → <code>18</code></td>
+              </tr>
+              <tr>
+                <td><code>float()</code></td>
+                <td>Chuyển sang số thực</td>
+                <td><code>float("25.5")</code> → <code>25.5</code></td>
+              </tr>
+              <tr>
+                <td><code>str()</code></td>
+                <td>Chuyển sang chuỗi</td>
+                <td><code>str(100)</code> → <code>"100"</code></td>
+              </tr>
+              <tr>
+                <td><code>bool()</code></td>
+                <td>Chuyển sang luận lý</td>
+                <td><code>bool(1)</code> → <code>True</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="vi-du-tuoi-ten">
+          <h2>11. Ví dụ thực hành: Nhập tuổi và tên</h2>
+          <p>Chương trình nhận tuổi và tên từ bàn phím, sau đó in ra màn hình.</p>
+
+          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+print("Tuổi của bạn là:", age)
+
+name = input("Nhập tên của bạn: ")
+print("Tên của bạn là:", name)</code></pre>
+
+          <p>Ví dụ chạy chương trình:</p>
+          <pre><code>Nhập tuổi của bạn: 20
+Tuổi của bạn là: 20
+Nhập tên của bạn: Minh Tâm
+Tên của bạn là: Minh Tâm</code></pre>
+        </section>
+
+        <section id="vi-du-nhiet-do">
+          <h2>12. Ví dụ thực hành: Chuyển đổi độ C sang độ F</h2>
+          <p>Công thức chuyển đổi:</p>
+          <pre><code>F = C × 1.8 + 32</code></pre>
+
+          <pre><code>celsius = float(input("Nhập vào nhiệt độ độ C: "))
+fahrenheit = celsius * 1.8 + 32
+
+print("Độ F của chúng ta là:", fahrenheit)</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>Nhập vào nhiệt độ độ C: 20
+Độ F của chúng ta là: 68.0</code></pre>
+        </section>
+
+        <section id="vi-du-trung-binh">
+          <h2>13. Ví dụ thực hành: Nhập ba số và tính trung bình</h2>
+          <p>Vì số nhập vào có thể là số nguyên hoặc số thực, ta dùng <code>float()</code> để ép kiểu.</p>
+
+          <pre><code>x = float(input("Nhập vào số thứ nhất: "))
+y = float(input("Nhập vào số thứ hai: "))
+z = float(input("Nhập vào số thứ ba: "))
+
+average = (x + y + z) / 3
+
+print("Giá trị trung bình của ba số nhập vào là:", average)</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>Nhập vào số thứ nhất: 10
+Nhập vào số thứ hai: 20
+Nhập vào số thứ ba: 30
+Giá trị trung bình của ba số nhập vào là: 20.0</code></pre>
+        </section>
+
+        <section id="loi-thuong-gap">
+          <h2>14. Lỗi thường gặp</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lỗi</th>
+                <th>Nguyên nhân</th>
+                <th>Cách sửa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dùng keyword làm tên biến</td>
+                <td><code>class = "Python"</code></td>
+                <td>Đổi thành <code>class_name = "Python"</code></td>
+              </tr>
+              <tr>
+                <td>Quên ép kiểu khi tính toán</td>
+                <td><code>age = input(...)</code> trả về chuỗi</td>
+                <td>Dùng <code>int(input(...))</code> hoặc <code>float(input(...))</code></td>
+              </tr>
+              <tr>
+                <td>Dùng dấu phẩy cho số thập phân</td>
+                <td><code>25,5</code> không phải số thực đúng trong Python</td>
+                <td>Dùng <code>25.5</code></td>
+              </tr>
+              <tr>
+                <td>Nhầm <code>=</code> và <code>==</code></td>
+                <td><code>=</code> là gán, <code>==</code> là so sánh</td>
+                <td>Dùng đúng theo mục đích</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bai-tap">
+          <h2>15. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Thông tin cá nhân</h3>
+            <p>Nhập tên, tuổi, chiều cao rồi in ra màn hình.</p>
+            <pre><code>name = input("Nhập tên: ")
+age = int(input("Nhập tuổi: "))
+height = float(input("Nhập chiều cao: "))
+
+print("Tên:", name)
+print("Tuổi:", age)
+print("Chiều cao:", height)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Chuyển độ F sang độ C</h3>
+            <p>Viết chương trình nhập độ F và chuyển sang độ C.</p>
+            <pre><code>fahrenheit = float(input("Nhập độ F: "))
+celsius = (fahrenheit - 32) / 1.8
+
+print("Độ C là:", celsius)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Tính điểm trung bình</h3>
+            <p>Nhập điểm Toán, Lý, Hóa và tính điểm trung bình.</p>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Keyword là từ khóa có ý nghĩa đặc biệt trong Python.</li>
+            <li>Biến dùng để lưu dữ liệu trong chương trình.</li>
+            <li>Tên biến không được bắt đầu bằng số, không chứa ký tự đặc biệt và không trùng keyword.</li>
+            <li><code>int</code> là số nguyên, <code>float</code> là số thực, <code>str</code> là chuỗi, <code>bool</code> là kiểu luận lý.</li>
+            <li><code>type()</code> dùng để kiểm tra kiểu dữ liệu.</li>
+            <li><code>input()</code> luôn trả về chuỗi.</li>
+            <li>Khi cần tính toán với dữ liệu nhập vào, phải ép kiểu bằng <code>int()</code> hoặc <code>float()</code>.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> hãy tự gõ lại từng ví dụ, chạy thử với nhiều giá trị khác nhau và quan sát kiểu dữ liệu bằng <code>type()</code>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 01. Biến và Kiểu dữ liệu trong Python
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

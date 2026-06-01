@@ -1,0 +1,353 @@
+{
+  "types": [
+    {
+      "color": "#facc15",
+      "icon": "🧱",
+      "id": "coban",
+      "title": "Cơ bản"
+    },
+    {
+      "color": "#34d399",
+      "icon": "🔧",
+      "id": "nangcao",
+      "title": "Nâng cao"
+    },
+    {
+      "color": "#60a5fa",
+      "icon": "📦",
+      "id": "thuvien",
+      "title": "Thư viện"
+    },
+    {
+      "color": "#f472b6",
+      "icon": "🚀",
+      "id": "ungdung",
+      "title": "Ứng dụng"
+    }
+  ],
+  "lessons": [
+    {
+      "type": "coban",
+      "description": "int, float, str, bool, None — nền tảng đầu tiên của mọi chương trình Python",
+      "file": "01-bien-va-kieu-du-lieu.html",
+      "id": "01",
+      "minutes": 20,
+      "sections": 8,
+      "status": "published",
+      "tags": ["biến", "kiểu dữ liệu", "int", "str", "float", "bool"],
+      "title": "Biến và Kiểu dữ liệu"
+    },
+    {
+      "type": "coban",
+      "description": "+, -, *, /, //, %, ** — các phép toán số học và cách dùng trong thực tế",
+      "file": "02-cac-phep-toan-so-hoc.html",
+      "id": "02",
+      "minutes": 15,
+      "sections": 6,
+      "status": "published",
+      "tags": ["phép toán", "arithmetic", "operators"],
+      "title": "Các phép toán số học"
+    },
+    {
+      "type": "coban",
+      "description": "Tạo, cắt, nối, định dạng chuỗi — f-string, format(), slice, các method phổ biến",
+      "file": "03-chuoi-string-trong-python.html",
+      "id": "03",
+      "minutes": 25,
+      "sections": 10,
+      "status": "published",
+      "tags": ["string", "chuỗi", "f-string", "format"],
+      "title": "Chuỗi (String) trong Python"
+    },
+    {
+      "type": "coban",
+      "description": "==, !=, >, <, and, or, not — so sánh và logic để kiểm soát luồng chương trình",
+      "file": "04-cac-phep-toan-so-sanh-va-logic.html",
+      "id": "04",
+      "minutes": 15,
+      "sections": 6,
+      "status": "published",
+      "tags": ["so sánh", "logic", "comparison", "boolean"],
+      "title": "Các phép toán so sánh và logic"
+    },
+    {
+      "type": "coban",
+      "description": "Tạo, truy cập, slice, append, sort, pop — List là kiểu dữ liệu linh hoạt nhất Python",
+      "file": "05-kieu-du-lieu-list.html",
+      "id": "05",
+      "minutes": 20,
+      "sections": 9,
+      "status": "published",
+      "tags": ["list", "danh sách", "append", "sort", "slice"],
+      "title": "Kiểu dữ liệu List — Danh sách"
+    },
+    {
+      "type": "coban",
+      "description": "Tuple là bộ dữ liệu bất biến — khi nào dùng Tuple thay cho List?",
+      "file": "06-kieu-du-lieu-tuple.html",
+      "id": "06",
+      "minutes": 15,
+      "sections": 6,
+      "status": "coming",
+      "tags": ["tuple", "immutable", "unpacking"],
+      "title": "Kiểu dữ liệu Tuple"
+    },
+    {
+      "type": "coban",
+      "description": "key-value pairs, truy cập, thêm, xóa, lặp qua Dictionary — cấu trúc dữ liệu quan trọng",
+      "file": "07-kieu-du-lieu-dictionary.html",
+      "id": "07",
+      "minutes": 20,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["dictionary", "dict", "key", "value"],
+      "title": "Kiểu dữ liệu Dictionary — Từ điển"
+    },
+    {
+      "type": "coban",
+      "description": "Set — tập hợp không trùng lặp, hợp, giao, hiệu — khi nào nên dùng Set?",
+      "file": "08-kieu-du-lieu-set.html",
+      "id": "08",
+      "minutes": 15,
+      "sections": 6,
+      "status": "coming",
+      "tags": ["set", "tập hợp", "union", "intersection"],
+      "title": "Kiểu dữ liệu Set — Tập hợp"
+    },
+    {
+      "type": "coban",
+      "description": "if, elif, else — kiểm soát luồng thực thi dựa trên điều kiện",
+      "file": "09-cau-truc-dieu-khien-if-else.html",
+      "id": "09",
+      "minutes": 15,
+      "sections": 7,
+      "status": "coming",
+      "tags": ["if", "else", "elif", "điều kiện", "flow control"],
+      "title": "Cấu trúc điều khiển (if / else)"
+    },
+    {
+      "type": "coban",
+      "description": "for, while, break, continue, range() — lặp đi lặp lại thông minh hơn",
+      "file": "10-vong-lap-for-while.html",
+      "id": "10",
+      "minutes": 20,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["for", "while", "loop", "vòng lặp", "range"],
+      "title": "Vòng lặp For và While"
+    },
+    {
+      "type": "nangcao",
+      "description": "def, return, tham số, *args, **kwargs — tổ chức code thành khối tái sử dụng",
+      "file": "11-ham-functions-trong-python.html",
+      "id": "11",
+      "minutes": 25,
+      "sections": 10,
+      "status": "coming",
+      "tags": ["function", "hàm", "def", "return", "args", "kwargs"],
+      "title": "Hàm (Functions) trong Python"
+    },
+    {
+      "type": "nangcao",
+      "description": "open(), read(), write(), with statement — đọc ghi file text và binary",
+      "file": "12-xu-ly-file-file-handling.html",
+      "id": "12",
+      "minutes": 20,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["file", "open", "read", "write", "with"],
+      "title": "Xử lý file (File Handling)"
+    },
+    {
+      "type": "nangcao",
+      "description": "[x for x in list if condition] — cách viết gọn thay cho vòng lặp for truyền thống",
+      "file": "13-list-comprehension.html",
+      "id": "13",
+      "minutes": 15,
+      "sections": 6,
+      "status": "coming",
+      "tags": ["list comprehension", "one-liner", "pythonic"],
+      "title": "List Comprehension"
+    },
+    {
+      "type": "nangcao",
+      "description": "venv, activate, deactivate — cách ly môi trường dự án để tránh xung đột thư viện",
+      "file": "14-moi-truong-ao-virtual-environment.html",
+      "id": "14",
+      "minutes": 15,
+      "sections": 6,
+      "status": "coming",
+      "tags": ["venv", "virtualenv", "environment", "môi trường ảo"],
+      "title": "Môi trường ảo (Virtual Environment)"
+    },
+    {
+      "type": "nangcao",
+      "description": "pip install, freeze, requirements.txt, conda — quản lý gói thư viện trong Python",
+      "file": "15-python-package-manager-pip-conda.html",
+      "id": "15",
+      "minutes": 15,
+      "sections": 6,
+      "status": "coming",
+      "tags": ["pip", "conda", "package", "requirements"],
+      "title": "Python Package Manager — pip, conda"
+    },
+    {
+      "type": "nangcao",
+      "description": "TypeError, ValueError, IndexError — nhận diện và debug các lỗi phổ biến nhất",
+      "file": "16-python-type-errors.html",
+      "id": "16",
+      "minutes": 20,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["error", "debug", "TypeError", "ValueError", "lỗi"],
+      "title": "Python Type Errors — Các lỗi phổ biến"
+    },
+    {
+      "type": "nangcao",
+      "description": "try, except, finally, raise — bắt và xử lý ngoại lệ để code bền vững hơn",
+      "file": "17-xu-ly-ngoai-le-exception-handling.html",
+      "id": "17",
+      "minutes": 20,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["exception", "try", "except", "finally", "raise"],
+      "title": "Xử lý ngoại lệ — Exception Handling"
+    },
+    {
+      "type": "nangcao",
+      "description": "re module, pattern matching, search, findall, sub — xử lý văn bản nâng cao",
+      "file": "18-bieu-thuc-chinh-quy-regular-expressions.html",
+      "id": "18",
+      "minutes": 25,
+      "sections": 9,
+      "status": "coming",
+      "tags": ["regex", "regular expression", "re", "pattern"],
+      "title": "Biểu thức chính quy — Regular Expressions"
+    },
+    {
+      "type": "nangcao",
+      "description": "class, __init__, self, kế thừa, encapsulation — lập trình hướng đối tượng trong Python",
+      "file": "19-lop-va-doi-tuong-classes-and-objects.html",
+      "id": "19",
+      "minutes": 30,
+      "sections": 11,
+      "status": "coming",
+      "tags": ["class", "object", "OOP", "kế thừa", "inheritance"],
+      "title": "Lớp và đối tượng — Classes & Objects"
+    },
+    {
+      "type": "nangcao",
+      "description": "map(), filter(), reduce(), decorator — nâng tầm code với lập trình hàm",
+      "file": "20-higher-order-functions-va-decorators.html",
+      "id": "20",
+      "minutes": 25,
+      "sections": 9,
+      "status": "coming",
+      "tags": ["decorator", "higher order", "map", "filter", "lambda"],
+      "title": "Higher Order Functions & Decorators"
+    },
+    {
+      "type": "thuvien",
+      "description": "ndarray, shape, reshape, operations — nền tảng không thể thiếu cho Data Science và AI",
+      "file": "21-numpy-nen-tang-data-science-ai.html",
+      "id": "21",
+      "minutes": 30,
+      "sections": 10,
+      "status": "coming",
+      "tags": ["numpy", "ndarray", "data science", "AI", "matrix"],
+      "title": "NumPy — Nền tảng cho Data Science & AI"
+    },
+    {
+      "type": "thuvien",
+      "description": "pyplot, plot, bar, scatter, hist — trực quan hóa dữ liệu sinh động và hiệu quả",
+      "file": "22-matplotlib-data-visualization.html",
+      "id": "22",
+      "minutes": 25,
+      "sections": 8,
+      "status": "coming",
+      "tags": ["matplotlib", "visualization", "chart", "plot", "biểu đồ"],
+      "title": "Matplotlib — Trực quan hóa dữ liệu"
+    },
+    {
+      "type": "thuvien",
+      "description": "DataFrame, Series, read_csv, groupby, merge — công cụ xử lý dữ liệu mạnh nhất Python",
+      "file": "23-pandas-xu-ly-data.html",
+      "id": "23",
+      "minutes": 35,
+      "sections": 12,
+      "status": "coming",
+      "tags": ["pandas", "DataFrame", "csv", "groupby", "data"],
+      "title": "Pandas — Xử lý và phân tích dữ liệu"
+    },
+    {
+      "type": "thuvien",
+      "description": "SQLite3, CREATE TABLE, INSERT, SELECT, JOIN — kết nối Python với cơ sở dữ liệu SQL",
+      "file": "24-co-so-du-lieu-sql-sqlite.html",
+      "id": "24",
+      "minutes": 30,
+      "sections": 10,
+      "status": "coming",
+      "tags": ["sqlite", "sql", "database", "cơ sở dữ liệu", "query"],
+      "title": "Cơ sở dữ liệu SQL — SQLite"
+    },
+    {
+      "type": "ungdung",
+      "description": "Label, Button, Entry, Frame — xây dựng ứng dụng desktop có giao diện đồ họa bằng Python",
+      "file": "25-tkinter-ung-dung-giao-dien.html",
+      "id": "25",
+      "minutes": 30,
+      "sections": 9,
+      "status": "coming",
+      "tags": ["tkinter", "GUI", "giao diện", "desktop", "widget"],
+      "title": "Tkinter — Xây dựng ứng dụng giao diện"
+    },
+    {
+      "type": "ungdung",
+      "description": "requests, BeautifulSoup, Selenium — thu thập dữ liệu tự động từ các trang web",
+      "file": "26-web-scraping-data-crawling.html",
+      "id": "26",
+      "minutes": 30,
+      "sections": 10,
+      "status": "coming",
+      "tags": ["scraping", "crawling", "BeautifulSoup", "requests", "selenium"],
+      "title": "Web Scraping — Thu thập dữ liệu"
+    },
+    {
+      "type": "ungdung",
+      "description": "FastAPI, route, Pydantic, async — xây dựng REST API nhanh, hiện đại với Python",
+      "file": "27-fastapi-xay-dung-web-api.html",
+      "id": "27",
+      "minutes": 35,
+      "sections": 11,
+      "status": "coming",
+      "tags": ["fastapi", "api", "REST", "async", "backend"],
+      "title": "FastAPI — Xây dựng Web API"
+    },
+    {
+      "type": "ungdung",
+      "description": "cv2, imread, resize, filter, detect — xử lý và phân tích hình ảnh với OpenCV",
+      "file": "28-opencv-xu-ly-anh.html",
+      "id": "28",
+      "minutes": 30,
+      "sections": 10,
+      "status": "coming",
+      "tags": ["opencv", "cv2", "image", "hình ảnh", "computer vision"],
+      "title": "OpenCV — Xử lý hình ảnh"
+    },
+    {
+      "type": "ungdung",
+      "description": "walrus operator, unpacking nâng cao, dataclass, match/case — những viên đá quý ít người biết",
+      "file": "29-tips-and-tricks.html",
+      "id": "29",
+      "minutes": 25,
+      "sections": 9,
+      "status": "coming",
+      "tags": ["tips", "tricks", "pythonic", "best practices", "walrus"],
+      "title": "Tips & Tricks — Những điều bạn ít thấy"
+    }
+  ],
+  "series": {
+    "description": "Lộ trình học Python bài bản, từ nền tảng đến ứng dụng thực chiến",
+    "title": "Học Python từ cơ bản"
+  }
+}

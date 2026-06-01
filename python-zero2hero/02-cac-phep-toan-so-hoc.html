@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>02. Các phép toán số học trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 02</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="01" href="01-bien-va-kieu-du-lieu.html">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="03" href="#03">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#bang-phep-toan">1. Bảng phép toán số học</a>
+      <a href="#cong">2. Phép cộng</a>
+      <a href="#tru">3. Phép trừ</a>
+      <a href="#nhan">4. Phép nhân</a>
+      <a href="#chia">5. Phép chia</a>
+      <a href="#ep-kieu-chia">6. Ép kiểu kết quả chia</a>
+      <a href="#modulus">7. Phép chia lấy dư</a>
+      <a href="#luy-thua">8. Phép lũy thừa</a>
+      <a href="#floor-division">9. Floor division</a>
+      <a href="#cong-thuc-chia">10. Công thức chia nguyên và dư</a>
+      <a href="#gan-ket-hop">11. Toán tử gán kết hợp</a>
+      <a href="#do-uu-tien">12. Độ ưu tiên toán tử</a>
+      <a href="#vi-du-di-cho">13. Ví dụ tính tiền đi chợ</a>
+      <a href="#vi-du-con-lai">14. Ví dụ tính tiền còn lại</a>
+      <a href="#loi-thuong-gap">15. Lỗi thường gặp</a>
+      <a href="#bai-tap">16. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>02. Các phép toán số học trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản, tập trung vào các phép toán số học: cộng, trừ, nhân, chia, chia lấy dư, lũy thừa, floor division và toán tử gán kết hợp.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Sau khi đã biết biến và kiểu dữ liệu, bạn có thể dùng Python để thực hiện các phép tính trên số nguyên <code>int</code> và số thực <code>float</code>.
+            Các phép toán số học là nền tảng cho bài toán tính tiền, tính điểm, chuyển đổi đơn vị, xử lý dữ liệu và rất nhiều chương trình thực tế.
+          </p>
+
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> biết cú pháp các phép toán số học, hiểu sự khác nhau giữa <code>/</code>, <code>//</code>, <code>%</code> và biết áp dụng vào ví dụ thực tế.
+          </div>
+        </section>
+
+        <section id="bang-phep-toan">
+          <h2>1. Bảng phép toán số học trong Python</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Phép toán</th>
+                <th>Ký hiệu</th>
+                <th>Ví dụ</th>
+                <th>Kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cộng</td>
+                <td><code>+</code></td>
+                <td><code>3 + 10</code></td>
+                <td><code>13</code></td>
+              </tr>
+              <tr>
+                <td>Trừ</td>
+                <td><code>-</code></td>
+                <td><code>3 - 10</code></td>
+                <td><code>-7</code></td>
+              </tr>
+              <tr>
+                <td>Nhân</td>
+                <td><code>*</code></td>
+                <td><code>3 * 10</code></td>
+                <td><code>30</code></td>
+              </tr>
+              <tr>
+                <td>Chia</td>
+                <td><code>/</code></td>
+                <td><code>10 / 3</code></td>
+                <td><code>3.333...</code></td>
+              </tr>
+              <tr>
+                <td>Chia lấy dư</td>
+                <td><code>%</code></td>
+                <td><code>10 % 3</code></td>
+                <td><code>1</code></td>
+              </tr>
+              <tr>
+                <td>Lũy thừa</td>
+                <td><code>**</code></td>
+                <td><code>2 ** 4</code></td>
+                <td><code>16</code></td>
+              </tr>
+              <tr>
+                <td>Chia lấy phần nguyên dưới</td>
+                <td><code>//</code></td>
+                <td><code>10 // 3</code></td>
+                <td><code>3</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="cong">
+          <h2>2. Phép cộng <code>+</code></h2>
+          <p>Phép cộng dùng để cộng hai giá trị số.</p>
+
+          <pre><code>print(3 + 10)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>13</code></pre>
+        </section>
+
+        <section id="tru">
+          <h2>3. Phép trừ <code>-</code></h2>
+          <p>Phép trừ dùng để lấy số bên trái trừ đi số bên phải.</p>
+
+          <pre><code>print(3 - 10)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>-7</code></pre>
+        </section>
+
+        <section id="nhan">
+          <h2>4. Phép nhân <code>*</code></h2>
+          <p>Phép nhân dùng dấu sao <code>*</code>, không dùng ký hiệu <code>x</code>.</p>
+
+          <pre><code>print(3 * 10)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>30</code></pre>
+        </section>
+
+        <section id="chia">
+          <h2>5. Phép chia <code>/</code></h2>
+          <p>
+            Phép chia bằng dấu <code>/</code> luôn trả về kết quả kiểu số thực <code>float</code>, kể cả khi chia hai số nguyên.
+          </p>
+
+          <pre><code>print(10 / 3)
+print(type(10 / 3))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>3.3333333333333335
+&lt;class 'float'&gt;</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> <code>10 / 3</code> là chia thông thường, kết quả có phần thập phân.
+          </div>
+        </section>
+
+        <section id="ep-kieu-chia">
+          <h2>6. Ép kiểu kết quả chia về số nguyên</h2>
+          <p>
+            Nếu muốn lấy phần nguyên của kết quả chia dương, bạn có thể dùng <code>int()</code> để ép kiểu.
+          </p>
+
+          <pre><code>result = 10 / 3
+print(result)
+print(int(result))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>3.3333333333333335
+3</code></pre>
+
+          <div class="warning">
+            <strong>Chú ý:</strong> <code>int()</code> không giống hoàn toàn <code>//</code> khi làm việc với số âm. Ví dụ <code>int(-10 / 3)</code> ra <code>-3</code>, còn <code>-10 // 3</code> ra <code>-4</code>.
+          </div>
+        </section>
+
+        <section id="modulus">
+          <h2>7. Phép chia lấy dư <code>%</code></h2>
+          <p>Phép chia lấy dư trả về phần dư của phép chia.</p>
+
+          <pre><code>print(10 % 3)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>1</code></pre>
+
+          <p>Với số âm, kết quả có thể khác cách nghĩ thông thường nếu chỉ quen chia tay:</p>
+          <pre><code>print(-10 % 3)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>2</code></pre>
+
+          <div class="note">
+            <strong>Giải thích nhanh:</strong> Python giữ quan hệ <code>n = d * (n // d) + (n % d)</code>. Vì <code>-10 // 3 = -4</code>, nên <code>-10 = 3 * (-4) + 2</code>.
+          </div>
+        </section>
+
+        <section id="luy-thua">
+          <h2>8. Phép lũy thừa <code>**</code></h2>
+          <p>Phép lũy thừa dùng hai dấu sao <code>**</code>.</p>
+
+          <pre><code>print(2 ** 4)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>16</code></pre>
+
+          <p>Có thể dùng số thực làm số mũ:</p>
+          <pre><code>print(2 ** 4.5)</code></pre>
+
+          <p>Kết quả xấp xỉ:</p>
+          <pre><code>22.627416997969522</code></pre>
+        </section>
+
+        <section id="floor-division">
+          <h2>9. Floor division <code>//</code></h2>
+          <p>
+            <strong>Floor division</strong> là phép chia lấy số nguyên lớn nhất nhỏ hơn hoặc bằng kết quả chia thật.
+            Có thể hiểu đơn giản là phép chia làm tròn xuống.
+          </p>
+
+          <pre><code>print(10 // 3)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>3</code></pre>
+
+          <p>Với số âm:</p>
+          <pre><code>print(-10 // 3)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>-4</code></pre>
+
+          <div class="warning">
+            <strong>Dễ nhầm:</strong> <code>-10 / 3</code> xấp xỉ <code>-3.333</code>. Số nguyên lớn nhất nhỏ hơn hoặc bằng <code>-3.333</code> là <code>-4</code>, không phải <code>-3</code>.
+          </div>
+        </section>
+
+        <section id="cong-thuc-chia">
+          <h2>10. Công thức liên hệ giữa <code>//</code> và <code>%</code></h2>
+          <p>Trong Python, phép chia nguyên và phép chia lấy dư có quan hệ:</p>
+
+          <pre><code>n = d * (n // d) + (n % d)</code></pre>
+
+          <p>Ví dụ với <code>n = 20</code>, <code>d = 3</code>:</p>
+
+          <pre><code>n = 20
+d = 3
+
+floor_division = n // d
+remainder = n % d
+
+print("Floor division:", floor_division)
+print("Remainder:", remainder)
+print(d * floor_division + remainder)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Floor division: 6
+Remainder: 2
+20</code></pre>
+        </section>
+
+        <section id="gan-ket-hop">
+          <h2>11. Toán tử gán kết hợp</h2>
+          <p>
+            Khi muốn lấy giá trị hiện tại của biến để tính tiếp rồi gán lại vào chính biến đó, bạn có thể viết ngắn gọn bằng toán tử gán kết hợp.
+          </p>
+
+          <h3>Cách viết thông thường</h3>
+          <pre><code>number = 10
+number = number + 5
+print(number)</code></pre>
+
+          <h3>Cách viết ngắn gọn</h3>
+          <pre><code>number = 10
+number += 5
+print(number)</code></pre>
+
+          <p>Cả hai đoạn đều cho kết quả:</p>
+          <pre><code>15</code></pre>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Tương đương</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>x += 5</code></td>
+                <td><code>x = x + 5</code></td>
+                <td>Cộng thêm 5</td>
+              </tr>
+              <tr>
+                <td><code>x -= 5</code></td>
+                <td><code>x = x - 5</code></td>
+                <td>Trừ đi 5</td>
+              </tr>
+              <tr>
+                <td><code>x *= 5</code></td>
+                <td><code>x = x * 5</code></td>
+                <td>Nhân với 5</td>
+              </tr>
+              <tr>
+                <td><code>x /= 5</code></td>
+                <td><code>x = x / 5</code></td>
+                <td>Chia cho 5</td>
+              </tr>
+              <tr>
+                <td><code>x %= 5</code></td>
+                <td><code>x = x % 5</code></td>
+                <td>Lấy dư khi chia cho 5</td>
+              </tr>
+              <tr>
+                <td><code>x //= 5</code></td>
+                <td><code>x = x // 5</code></td>
+                <td>Chia lấy phần nguyên dưới</td>
+              </tr>
+              <tr>
+                <td><code>x **= 5</code></td>
+                <td><code>x = x ** 5</code></td>
+                <td>Nâng lên lũy thừa 5</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="do-uu-tien">
+          <h2>12. Độ ưu tiên toán tử</h2>
+          <p>
+            Python tính toán theo thứ tự ưu tiên. Nếu muốn chắc chắn thứ tự tính, hãy dùng dấu ngoặc tròn <code>()</code>.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Mức ưu tiên</th>
+                <th>Toán tử</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cao</td>
+                <td><code>**</code></td>
+                <td><code>2 ** 3</code></td>
+              </tr>
+              <tr>
+                <td>Trung bình</td>
+                <td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td>
+                <td><code>2 + 3 * 4</code> → <code>14</code></td>
+              </tr>
+              <tr>
+                <td>Thấp</td>
+                <td><code>+</code>, <code>-</code></td>
+                <td><code>(2 + 3) * 4</code> → <code>20</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="vi-du-di-cho">
+          <h2>13. Ví dụ thực hành: Tính tiền đi chợ</h2>
+          <p>
+            Bài toán: giá rau là 15.000đ/kg, giá thịt là 120.000đ/kg. Mua 2kg rau và 0.5kg thịt. Hỏi tổng số tiền là bao nhiêu?
+          </p>
+
+          <pre><code>gia_rau = 15000
+gia_thit = 120000
+
+tong_so_tien = 2 * gia_rau + 0.5 * gia_thit
+
+print("Tổng số tiền đi chợ:", tong_so_tien)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Tổng số tiền đi chợ: 90000.0</code></pre>
+
+          <div class="note">
+            <strong>Giải thích:</strong> <code>2 * 15000 = 30000</code> và <code>0.5 * 120000 = 60000</code>, tổng cộng là <code>90000</code>.
+          </div>
+        </section>
+
+        <section id="vi-du-con-lai">
+          <h2>14. Ví dụ thực hành: Tính số tiền còn lại</h2>
+          <p>
+            Nếu ban đầu có 91.000đ và đi chợ hết 90.000đ, ta tính số tiền còn lại bằng phép trừ.
+          </p>
+
+          <pre><code>so_tien_ban_dau = 91000
+
+gia_rau = 15000
+gia_thit = 120000
+
+tong_so_tien = 2 * gia_rau + 0.5 * gia_thit
+so_tien_con_lai = so_tien_ban_dau - tong_so_tien
+
+print("Tổng số tiền đi chợ:", tong_so_tien)
+print("Số tiền thừa sau khi đi chợ:", so_tien_con_lai)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Tổng số tiền đi chợ: 90000.0
+Số tiền thừa sau khi đi chợ: 1000.0</code></pre>
+        </section>
+
+        <section id="loi-thuong-gap">
+          <h2>15. Lỗi thường gặp</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lỗi</th>
+                <th>Nguyên nhân</th>
+                <th>Cách sửa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dùng <code>x</code> để nhân</td>
+                <td>Python không hiểu <code>3 x 10</code></td>
+                <td>Dùng <code>3 * 10</code></td>
+              </tr>
+              <tr>
+                <td>Nhầm <code>/</code> và <code>//</code></td>
+                <td><code>/</code> chia thật, <code>//</code> chia làm tròn xuống</td>
+                <td>Chọn đúng toán tử theo yêu cầu</td>
+              </tr>
+              <tr>
+                <td>Nhầm <code>%</code> là phần trăm</td>
+                <td>Trong Python, <code>%</code> là chia lấy dư</td>
+                <td>Dùng <code>10 % 3</code> để lấy dư</td>
+              </tr>
+              <tr>
+                <td>Quên ngoặc khi cần ưu tiên</td>
+                <td><code>x + y / 3</code> khác <code>(x + y) / 3</code></td>
+                <td>Dùng dấu ngoặc rõ ràng</td>
+              </tr>
+              <tr>
+                <td>Nhập số từ bàn phím nhưng không ép kiểu</td>
+                <td><code>input()</code> trả về chuỗi</td>
+                <td>Dùng <code>int(input(...))</code> hoặc <code>float(input(...))</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bai-tap">
+          <h2>16. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Tính tổng tiền mua hàng</h3>
+            <p>Nhập đơn giá và số lượng, sau đó tính tổng tiền.</p>
+            <pre><code>don_gia = float(input("Nhập đơn giá: "))
+so_luong = float(input("Nhập số lượng: "))
+
+tong_tien = don_gia * so_luong
+print("Tổng tiền:", tong_tien)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Tính chu vi và diện tích hình chữ nhật</h3>
+            <p>Nhập chiều dài và chiều rộng, sau đó tính chu vi và diện tích.</p>
+            <pre><code>chieu_dai = float(input("Nhập chiều dài: "))
+chieu_rong = float(input("Nhập chiều rộng: "))
+
+chu_vi = (chieu_dai + chieu_rong) * 2
+dien_tich = chieu_dai * chieu_rong
+
+print("Chu vi:", chu_vi)
+print("Diện tích:", dien_tich)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Tách phần nguyên và phần dư</h3>
+            <p>Nhập hai số nguyên <code>n</code>, <code>d</code>. In ra <code>n // d</code> và <code>n % d</code>.</p>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>+</code> dùng để cộng.</li>
+            <li><code>-</code> dùng để trừ.</li>
+            <li><code>*</code> dùng để nhân.</li>
+            <li><code>/</code> dùng để chia và luôn trả về <code>float</code>.</li>
+            <li><code>%</code> dùng để chia lấy dư.</li>
+            <li><code>**</code> dùng để tính lũy thừa.</li>
+            <li><code>//</code> dùng để chia làm tròn xuống.</li>
+            <li><code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code> là các toán tử gán kết hợp.</li>
+            <li>Nên dùng ngoặc <code>()</code> để làm rõ thứ tự tính toán.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> hãy chạy thử các phép toán với cả số dương, số âm, số nguyên và số thực để hiểu rõ sự khác nhau giữa <code>/</code>, <code>//</code> và <code>%</code>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 02. Các phép toán số học trong Python
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

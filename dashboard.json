@@ -1,0 +1,44 @@
+{
+  "title": "Trung tâm tài liệu học tập",
+  "description": "Quản lý và mở nhanh các website bài học trong thư mục này. Tìm theo tên, lọc theo trạng thái, rồi vào thẳng lộ trình cần học.",
+  "mark": "LH",
+  "footer": "Mở file này từ thư mục tổng để quản lý nhanh các website con.",
+  "projects": [
+    {
+      "id": "python-zero2hero",
+      "title": "Python Zero2Hero",
+      "description": "Lộ trình Python từ nền tảng đến dữ liệu, web API, GUI và xử lý ảnh.",
+      "href": "python-zero2hero/index.html",
+      "folder": "python-zero2hero",
+      "badge": "PY",
+      "accent": "#facc15",
+      "status": "ready",
+      "lessons": 29,
+      "tags": ["python", "lap trinh", "data", "fastapi", "opencv"]
+    },
+    {
+      "id": "git-basics",
+      "title": "Git Basics",
+      "description": "Nắm nền tảng Git: repository, cấu hình, status, diff, commit và gitignore.",
+      "href": "git-basics/index.html",
+      "folder": "git-basics",
+      "badge": "git",
+      "accent": "#38bdf8",
+      "status": "ready",
+      "lessons": 20,
+      "tags": ["git", "repository", "commit", "version control"]
+    },
+    {
+      "id": "lpic-101-102",
+      "title": "LPIC-1 101 & 102",
+      "description": "Bộ tài liệu Linux theo hướng chứng chỉ LPIC-1, chia theo nhóm chủ đề quản trị hệ thống.",
+      "href": "lpic-101-102/index.html",
+      "folder": "lpic-101-102",
+      "badge": "LP",
+      "accent": "#34d399",
+      "status": "ready",
+      "lessons": 42,
+      "tags": ["linux", "lpic", "sysadmin", "terminal"]
+    }
+  ]
+}

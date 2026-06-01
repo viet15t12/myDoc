@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. Thực hành Git add, commit, status, diff, log</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 04</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="03" href="#03">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="05" href="#05">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#ba-trang-thai">1. Ba trạng thái chính</a>
+      <a href="#working-directory">2. Working Directory</a>
+      <a href="#staging-area">3. Staging Area</a>
+      <a href="#repository">4. Repository</a>
+      <a href="#lenh-thiet-yeu">5. Bộ câu lệnh thiết yếu</a>
+      <a href="#quy-trinh">6. Quy trình thực hành</a>
+      <a href="#git-diff-log">7. Diff và Log</a>
+      <a href="#luu-y">8. Lưu ý quan trọng</a>
+      <a href="#hoi-dap">9. Câu hỏi ôn tập</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>4. Thực hành Git add, Git commit, Git status, Git diff, Git log</h1>
+        <p class="meta">
+          Bài học thực hành quy trình lưu thay đổi trong Git: từ Working Directory → Staging Area → Repository, kết hợp các lệnh <code>git add</code>, <code>git commit</code>, <code>git status</code>, <code>git diff</code> và <code>git log</code>.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Sau khi đã biết cách tạo repository và cấu hình thông tin người dùng, bước tiếp theo là học cách lưu lại thay đổi bằng commit.
+            Đây là phần cốt lõi nhất khi sử dụng Git trong lập trình, học tập hoặc làm việc nhóm.
+          </p>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> hiểu ba khu vực làm việc của Git, biết dùng <code>git status</code> để kiểm tra trạng thái, dùng <code>git add</code> để đưa file vào vùng chờ, dùng <code>git commit</code> để lưu lịch sử, và dùng <code>git diff</code>, <code>git log</code> để kiểm tra thay đổi.
+          </div>
+        </section>
+
+        <section id="ba-trang-thai">
+          <h2>1. Ba trạng thái chính trong Git</h2>
+          <p>
+            Để quản lý dự án hiệu quả, Git chia không gian làm việc thành ba khu vực chính:
+          </p>
+
+          <div class="diagram">
+            <div class="box">
+              <h3>Working Directory</h3>
+              <p>Nơi trực tiếp tạo, sửa, xóa file.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <h3>Staging Area</h3>
+              <p>Khu vực chờ trước khi commit.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <h3>Repository</h3>
+              <p>Kho lưu lịch sử commit trong <code>.git</code>.</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Khu vực</th>
+                <th>Vai trò</th>
+                <th>Lệnh liên quan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Working Directory</strong></td>
+                <td>Nơi bạn thao tác trực tiếp với file trong project.</td>
+                <td><code>touch</code>, <code>echo</code>, chỉnh sửa file</td>
+              </tr>
+              <tr>
+                <td><strong>Staging Area</strong> / <strong>Index</strong></td>
+                <td>Khu vực chuẩn bị các thay đổi sẽ được lưu vào commit.</td>
+                <td><code>git add</code>, <code>git add .</code></td>
+              </tr>
+              <tr>
+                <td><strong>Repository</strong></td>
+                <td>Kho lưu trữ chính thức lịch sử các phiên bản.</td>
+                <td><code>git commit</code>, <code>git log</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="working-directory">
+          <h2>2. Working Directory</h2>
+          <p>
+            <strong>Working Directory</strong> là thư mục dự án mà bạn đang nhìn thấy và chỉnh sửa hằng ngày.
+            Khi bạn tạo file mới, sửa nội dung hoặc xóa file, các thay đổi đầu tiên sẽ nằm ở khu vực này.
+          </p>
+
+          <p>Ví dụ tạo file mới:</p>
+          <pre><code>touch note.txt</code></pre>
+
+          <p>Hoặc ghi nội dung vào file:</p>
+          <pre><code>echo "Hoc Git co ban" &gt; note.txt</code></pre>
+
+          <p>Sau đó kiểm tra trạng thái:</p>
+          <pre><code>git status</code></pre>
+
+          <div class="warning">
+            <strong>Ghi nhớ:</strong> file mới tạo thường có trạng thái <code>untracked</code>, nghĩa là Git thấy file nhưng chưa theo dõi file đó.
+          </div>
+        </section>
+
+        <section id="staging-area">
+          <h2>3. Staging Area</h2>
+          <p>
+            <strong>Staging Area</strong> là khu vực trung gian. Bạn đưa các thay đổi muốn lưu vào đây trước khi tạo commit.
+            Có thể hiểu đây là “hàng đợi” chuẩn bị cho lần lưu chính thức.
+          </p>
+
+          <h3>Đưa một file cụ thể vào Staging</h3>
+          <pre><code>git add note.txt</code></pre>
+
+          <h3>Đưa tất cả thay đổi vào Staging</h3>
+          <pre><code>git add .</code></pre>
+
+          <p>Sau khi add, kiểm tra lại:</p>
+          <pre><code>git status</code></pre>
+
+          <div class="note">
+            <strong>Mẹo:</strong> <code>git add .</code> rất tiện khi bạn muốn đưa toàn bộ thay đổi hiện tại vào commit, đặc biệt trong dự án nhỏ hoặc bài thực hành.
+          </div>
+        </section>
+
+        <section id="repository">
+          <h2>4. Repository</h2>
+          <p>
+            <strong>Repository</strong> là nơi Git lưu lịch sử chính thức của project. Khi bạn chạy <code>git commit</code>, Git tạo một snapshot từ Staging Area và lưu vào thư mục ẩn <code>.git</code>.
+          </p>
+
+          <h3>Tạo commit</h3>
+          <pre><code>git commit -m "Add note file"</code></pre>
+
+          <p>Trong đó:</p>
+          <ul>
+            <li><code>git commit</code>: tạo một mốc lưu lịch sử.</li>
+            <li><code>-m</code>: viết commit message trực tiếp trên dòng lệnh.</li>
+            <li><code>"Add note file"</code>: nội dung mô tả thay đổi.</li>
+          </ul>
+
+          <div class="success">
+            <strong>Kết quả:</strong> thay đổi đã được lưu vào lịch sử Git. Sau này bạn có thể xem lại bằng <code>git log</code>.
+          </div>
+        </section>
+
+        <section id="lenh-thiet-yeu">
+          <h2>5. Bộ câu lệnh thiết yếu</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Câu lệnh</th>
+                <th>Công dụng</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>git add</code></td>
+                <td>Đưa file cụ thể vào Staging Area.</td>
+                <td><code>git add index.html</code></td>
+              </tr>
+              <tr>
+                <td><code>git add .</code></td>
+                <td>Đưa tất cả thay đổi hiện tại vào Staging Area.</td>
+                <td><code>git add .</code></td>
+              </tr>
+              <tr>
+                <td><code>git commit -m "nội dung"</code></td>
+                <td>Lưu snapshot từ Staging vào Repository.</td>
+                <td><code>git commit -m "Add homepage"</code></td>
+              </tr>
+              <tr>
+                <td><code>git status</code></td>
+                <td>Kiểm tra trạng thái file.</td>
+                <td><code>git status</code></td>
+              </tr>
+              <tr>
+                <td><code>git diff</code></td>
+                <td>Xem sự khác biệt giữa các file trong dự án.</td>
+                <td><code>git diff</code></td>
+              </tr>
+              <tr>
+                <td><code>git log</code></td>
+                <td>Xem lịch sử các commit đã thực hiện.</td>
+                <td><code>git log</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="quy-trinh">
+          <h2>6. Quy trình thực hành từng bước</h2>
+
+          <div class="step">
+            <h3>Bước 1: Khởi tạo repository</h3>
+            <pre><code>mkdir git-practice
+cd git-practice
+git init</code></pre>
+            <p>Lệnh <code>git init</code> giúp Git bắt đầu quản lý thư mục hiện tại.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Tạo nội dung</h3>
+            <pre><code>echo "Day la bai thuc hanh Git" &gt; file.txt</code></pre>
+            <p>Hoặc tạo file rỗng:</p>
+            <pre><code>touch file.txt</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Kiểm tra trạng thái</h3>
+            <pre><code>git status</code></pre>
+            <p>
+              Git sẽ hiển thị file mới ở trạng thái chưa được theo dõi. Trong nhiều terminal, các file chưa được add thường hiển thị màu đỏ.
+            </p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Đưa thay đổi vào Staging Area</h3>
+            <pre><code>git add .</code></pre>
+            <p>Lệnh này đưa toàn bộ thay đổi hiện tại vào vùng chờ.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Kiểm tra lại trạng thái</h3>
+            <pre><code>git status</code></pre>
+            <p>
+              Lúc này file đã nằm trong Staging Area. Trong nhiều terminal, file đã được add thường hiển thị màu xanh.
+            </p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6: Lưu lịch sử bằng commit</h3>
+            <pre><code>git commit -m "Add first file"</code></pre>
+            <p>Commit message nên ngắn gọn, rõ ràng và mô tả đúng thay đổi.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 7: Kiểm tra lịch sử commit</h3>
+            <pre><code>git log</code></pre>
+            <p>Dạng ngắn gọn hơn:</p>
+            <pre><code>git log --oneline</code></pre>
+          </div>
+        </section>
+
+        <section id="git-diff-log">
+          <h2>7. Xem thay đổi bằng <code>git diff</code> và lịch sử bằng <code>git log</code></h2>
+
+          <h3>Thử sửa file</h3>
+          <pre><code>echo "Dong noi dung thu hai" &gt;&gt; file.txt</code></pre>
+
+          <h3>Xem sự khác biệt</h3>
+          <pre><code>git diff</code></pre>
+
+          <p>
+            <code>git diff</code> cho biết phần nào đã thêm, xóa hoặc chỉnh sửa so với trạng thái Git đang theo dõi.
+          </p>
+
+          <h3>Lưu thay đổi mới</h3>
+          <pre><code>git add .
+git commit -m "Update file content"</code></pre>
+
+          <h3>Xem lịch sử</h3>
+          <pre><code>git log --oneline</code></pre>
+
+          <p>Ví dụ kết quả:</p>
+          <pre><code>a1b2c3d Update file content
+e4f5g6h Add first file</code></pre>
+        </section>
+
+        <section id="luu-y">
+          <h2>8. Lưu ý quan trọng từ tác giả</h2>
+
+          <div class="note">
+            <h3>Tự tay gõ lệnh</h3>
+            <p>
+              Khi mới học Git, bạn nên tự gõ lệnh thay vì chỉ copy-paste. Việc tự gõ giúp nhớ cú pháp, hiểu lỗi và phản xạ tốt hơn khi thao tác thật.
+            </p>
+          </div>
+
+          <div class="note">
+            <h3>Commit message nên rõ ràng</h3>
+            <p>
+              Trong môi trường chuyên nghiệp, nên tập viết commit message bằng tiếng Anh để đồng nghiệp quốc tế dễ hiểu.
+            </p>
+            <p>Ví dụ tốt:</p>
+            <pre><code>git commit -m "Add login form"
+git commit -m "Fix navbar layout"
+git commit -m "Update README instructions"</code></pre>
+          </div>
+
+          <div class="warning">
+            <h3>Dùng <code>git add .</code> linh hoạt</h3>
+            <p>
+              <code>git add .</code> rất nhanh, nhưng trước khi commit nên kiểm tra lại bằng <code>git status</code> để tránh đưa nhầm file không cần thiết vào commit.
+            </p>
+          </div>
+        </section>
+
+        <section id="hoi-dap">
+          <h2>9. Câu hỏi ôn tập nhanh</h2>
+
+          <div class="qa">
+            <h3>Câu 1: Ba khu vực chính trong Git là gì?</h3>
+            <p><strong>Trả lời:</strong> Working Directory, Staging Area và Repository.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 2: Lệnh nào đưa toàn bộ thay đổi vào Staging Area?</h3>
+            <pre><code>git add .</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 3: Lệnh nào lưu thay đổi vào lịch sử Git?</h3>
+            <pre><code>git commit -m "Mo ta thay doi"</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 4: Lệnh nào xem trạng thái file?</h3>
+            <pre><code>git status</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 5: Lệnh nào xem lịch sử commit?</h3>
+            <pre><code>git log</code></pre>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>Working Directory</code> là nơi chỉnh sửa file trực tiếp.</li>
+            <li><code>Staging Area</code> là nơi chuẩn bị thay đổi trước khi commit.</li>
+            <li><code>Repository</code> là nơi lưu lịch sử commit chính thức.</li>
+            <li><code>git status</code> dùng để kiểm tra trạng thái file.</li>
+            <li><code>git add</code> dùng để đưa thay đổi vào Staging Area.</li>
+            <li><code>git commit</code> dùng để lưu snapshot vào Repository.</li>
+            <li><code>git diff</code> dùng để xem sự khác biệt.</li>
+            <li><code>git log</code> dùng để xem lịch sử commit.</li>
+          </ul>
+          <div class="success">
+            <strong>Quy trình chuẩn:</strong> sửa file → <code>git status</code> → <code>git add .</code> → <code>git commit -m "message"</code> → <code>git log</code>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 4. Thực hành Git add, Git commit, Git status, Git diff, Git log
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

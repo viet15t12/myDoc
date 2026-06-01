@@ -1,0 +1,383 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Cách tạo Repository mới trong Git</title>
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 02</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="01" href="#01">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="03" href="#03">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#thuat-ngu">1. Thuật ngữ cốt lõi</a>
+      <a href="#lenh-thong-tin">2. Lệnh thông tin & hỗ trợ</a>
+      <a href="#lenh-trang-thai">3. Lệnh kiểm tra trạng thái</a>
+      <a href="#khoi-tao">4. Lệnh khởi tạo Repository</a>
+      <a href="#config">5. Cấu hình Git</a>
+      <a href="#thuc-hanh">6. Thực hành tạo Repository</a>
+      <a href="#kiem-tra">7. Kiểm tra sau khi init</a>
+      <a href="#hoi-dap">8. Câu hỏi ôn tập</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>2. Cách tạo Repository mới trong Git</h1>
+        <p class="meta">
+          Tài liệu học Git cơ bản, tập trung vào khái niệm Repository, Commit, Branch, cấu hình Git và quy trình tạo repository mới bằng <code>git init</code>.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Git là hệ thống quản lý phiên bản dùng để theo dõi sự thay đổi của mã nguồn hoặc tài liệu trong một dự án.
+            Bài này tập trung vào bước nền tảng nhất: hiểu repository và biết cách tạo một repository mới trên máy tính.
+          </p>
+
+          <div class="note">
+            <strong>Phạm vi bài học:</strong> bài này chỉ tập trung vào Git cục bộ, chưa đi sâu vào GitHub, push, pull, remote hoặc xử lý conflict.
+          </div>
+        </section>
+
+        <section id="thuat-ngu">
+          <h2>1. Các thuật ngữ cốt lõi trong Git</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Thuật ngữ</th>
+                <th>Ý nghĩa</th>
+                <th>Ví dụ dễ hiểu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Repository</strong> / <strong>Repo</strong></td>
+                <td>Kho lưu trữ dự án được Git theo dõi.</td>
+                <td>Một thư mục project có chứa lịch sử thay đổi.</td>
+              </tr>
+              <tr>
+                <td><strong>Commit</strong></td>
+                <td>Một lần lưu lại trạng thái thay đổi của dự án vào Git.</td>
+                <td>Giống như tạo một mốc lưu game để có thể xem lại hoặc quay lại.</td>
+              </tr>
+              <tr>
+                <td><strong>Branch</strong></td>
+                <td>Nhánh làm việc độc lập, dùng để phát triển tính năng song song.</td>
+                <td>Tạo nhánh riêng để làm chức năng đăng nhập mà không ảnh hưởng nhánh chính.</td>
+              </tr>
+              <tr>
+                <td><strong>Main</strong> / <strong>Master</strong></td>
+                <td>Nhánh chính của repository.</td>
+                <td>Nơi chứa phiên bản chính hoặc ổn định của dự án.</td>
+              </tr>
+              <tr>
+                <td><strong>Merge</strong></td>
+                <td>Gộp thay đổi từ một nhánh vào nhánh khác.</td>
+                <td>Gộp tính năng đã làm xong vào nhánh chính.</td>
+              </tr>
+              <tr>
+                <td><strong>Rebase</strong></td>
+                <td>Sắp xếp lại lịch sử commit bằng cách đặt commit của nhánh hiện tại lên nền mới.</td>
+                <td>Dùng để làm lịch sử commit gọn hơn, nhưng cần cẩn thận khi dùng.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Ghi nhớ nhanh:</strong> Repository là kho dự án, Commit là một lần lưu thay đổi, Branch là nhánh làm việc, Main/Master là nhánh chính.
+          </div>
+        </section>
+
+        <section id="lenh-thong-tin">
+          <h2>2. Nhóm câu lệnh thông tin và hỗ trợ</h2>
+
+          <h3><code>git --help</code> — Xem hướng dẫn sử dụng Git</h3>
+          <pre><code>git --help</code></pre>
+          <p>
+            Lệnh này mở phần hướng dẫn của Git. Khi chưa nhớ cách dùng một lệnh, bạn có thể dùng help để tra cứu.
+          </p>
+
+          <h3>Xem hướng dẫn của một lệnh cụ thể</h3>
+          <pre><code>git help init
+git help status
+git help config</code></pre>
+
+          <h3><code>git --version</code> — Kiểm tra phiên bản Git</h3>
+          <pre><code>git --version</code></pre>
+          <p>
+            Lệnh này dùng để kiểm tra Git đã được cài đặt chưa và phiên bản hiện tại là gì.
+          </p>
+
+          <p>Ví dụ kết quả:</p>
+          <pre><code>git version 2.45.0</code></pre>
+        </section>
+
+        <section id="lenh-trang-thai">
+          <h2>3. Nhóm câu lệnh kiểm tra trạng thái</h2>
+
+          <h3><code>git status</code> — Xem trạng thái repository</h3>
+          <pre><code>git status</code></pre>
+
+          <p>Đây là một trong những lệnh quan trọng nhất khi làm việc với Git. Lệnh này cho biết:</p>
+          <ul>
+            <li>Thư mục hiện tại có phải repository Git không</li>
+            <li>File nào đang bị thay đổi</li>
+            <li>File nào chưa được Git theo dõi</li>
+            <li>File nào đã sẵn sàng để commit</li>
+          </ul>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> <code>git status</code> chỉ có ý nghĩa khi bạn đang đứng trong một thư mục đã được khởi tạo Git bằng <code>git init</code> hoặc được clone từ repository khác.
+          </div>
+
+          <h3><code>git log</code> — Xem lịch sử commit</h3>
+          <pre><code>git log</code></pre>
+
+          <p>Lệnh này hiển thị lịch sử các commit đã được tạo trong repository.</p>
+
+          <h3>Dạng ngắn gọn hơn</h3>
+          <pre><code>git log --oneline</code></pre>
+
+          <p>Ví dụ:</p>
+          <pre><code>a1b2c3d Add README file
+e4f5g6h Initial commit</code></pre>
+        </section>
+
+        <section id="khoi-tao">
+          <h2>4. Nhóm câu lệnh khởi tạo Repository</h2>
+
+          <h3><code>git init</code> — Khởi tạo repository Git mới</h3>
+          <pre><code>git init</code></pre>
+
+          <p>
+            Lệnh này biến thư mục hiện tại thành một Git repository.
+            Sau khi chạy, Git sẽ tạo thư mục ẩn <code>.git</code> để lưu thông tin quản lý phiên bản.
+          </p>
+
+          <h3>Tạo repository trong thư mục mới</h3>
+          <pre><code>git init ten_thu_muc</code></pre>
+
+          <p>
+            Lệnh này vừa tạo thư mục mới, vừa khởi tạo repository Git bên trong thư mục đó.
+          </p>
+
+          <p>Ví dụ:</p>
+          <pre><code>git init my-project</code></pre>
+
+          <h3><code>git clone</code> — Sao chép repository có sẵn</h3>
+          <pre><code>git clone duong_dan_repository</code></pre>
+
+          <p>
+            <code>git clone</code> dùng để sao chép một repository đã tồn tại từ nơi khác về máy.
+            Trong phạm vi bài này, bạn chỉ cần hiểu đây là cách lấy một repository có sẵn, khác với <code>git init</code> là tạo repository mới.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lệnh</th>
+                <th>Khi nào dùng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>git init</code></td>
+                <td>Khi muốn tạo repository mới từ thư mục trên máy.</td>
+              </tr>
+              <tr>
+                <td><code>git clone</code></td>
+                <td>Khi muốn sao chép repository đã tồn tại.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="config">
+          <h2>5. Cấu hình Git với <code>git config</code></h2>
+
+          <p>
+            <code>git config</code> dùng để thiết lập cấu hình cho Git, ví dụ tên người dùng, email hoặc các tùy chọn hoạt động.
+          </p>
+
+          <h3>Ba cấp độ cấu hình trong Git</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Cấp độ</th>
+                <th>Phạm vi áp dụng</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--system</code></td>
+                <td>Áp dụng cho toàn bộ người dùng trên máy tính.</td>
+                <td><code>git config --system</code></td>
+              </tr>
+              <tr>
+                <td><code>--global</code></td>
+                <td>Áp dụng cho người dùng hiện tại trên mọi repository.</td>
+                <td><code>git config --global</code></td>
+              </tr>
+              <tr>
+                <td><code>--local</code></td>
+                <td>Chỉ áp dụng cho repository hiện tại.</td>
+                <td><code>git config --local</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Cấu hình tên người dùng</h3>
+          <pre><code>git config --global user.name "Ten Cua Ban"</code></pre>
+
+          <h3>Cấu hình email</h3>
+          <pre><code>git config --global user.email "email@example.com"</code></pre>
+
+          <h3>Xem toàn bộ cấu hình hiện tại</h3>
+          <pre><code>git config --list</code></pre>
+
+          <h3>Xem riêng tên hoặc email</h3>
+          <pre><code>git config user.name
+git config user.email</code></pre>
+
+          <div class="note">
+            <strong>Nên dùng:</strong> với người mới học, thường dùng <code>--global</code> để cấu hình tên và email một lần cho toàn bộ repository của người dùng hiện tại.
+          </div>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>6. Thực hành: Tạo Repository mới trong Git</h2>
+
+          <p>Quy trình cơ bản gồm 5 bước:</p>
+
+          <div class="step">
+            <h3>Bước 1: Chọn thư mục làm việc</h3>
+            <p>Chọn nơi bạn muốn tạo project, ví dụ Desktop hoặc Documents.</p>
+            <pre><code>cd Desktop</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Mở Git Bash hoặc Terminal</h3>
+            <p>
+              Trên Windows có thể dùng Git Bash. Trên Linux/macOS có thể dùng Terminal.
+            </p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Khởi tạo repository mới</h3>
+            <pre><code>git init my-project</code></pre>
+            <p>Lệnh này tạo thư mục <code>my-project</code> và khởi tạo Git repository bên trong.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Di chuyển vào thư mục project</h3>
+            <pre><code>cd my-project</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Kiểm tra trạng thái repository</h3>
+            <pre><code>git status</code></pre>
+            <p>Nếu Git báo đang ở branch chính và chưa có commit nào, nghĩa là repository đã được khởi tạo thành công.</p>
+          </div>
+
+          <div class="success">
+            <strong>Kết quả mong muốn:</strong> thư mục của bạn đã trở thành một Git repository cục bộ, sẵn sàng để theo dõi thay đổi.
+          </div>
+        </section>
+
+        <section id="kiem-tra">
+          <h2>7. Kiểm tra sau khi chạy <code>git init</code></h2>
+
+          <h3>Kiểm tra thư mục ẩn <code>.git</code></h3>
+          <p>Sau khi chạy <code>git init</code>, Git tạo một thư mục ẩn tên là <code>.git</code>.</p>
+
+          <pre><code>ls -a</code></pre>
+
+          <p>Nếu thấy kết quả có <code>.git</code>, repository đã được khởi tạo.</p>
+
+          <h3>Không nên xóa thư mục <code>.git</code></h3>
+          <div class="warning">
+            Thư mục <code>.git</code> chứa dữ liệu quản lý phiên bản. Nếu xóa thư mục này, project sẽ không còn là Git repository nữa.
+          </div>
+        </section>
+
+        <section id="hoi-dap">
+          <h2>8. Câu hỏi ôn tập nhanh</h2>
+
+          <div class="qa">
+            <h3>Câu 1: Lệnh nào tạo kho lưu trữ mới?</h3>
+            <p><strong>Trả lời:</strong> <code>git init</code>.</p>
+            <pre><code>git init</code></pre>
+            <p>Hoặc tạo repository trong thư mục mới:</p>
+            <pre><code>git init ten_thu_muc</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 2: “Commit” nghĩa là gì trong Git?</h3>
+            <p>
+              <strong>Commit</strong> là một lần lưu lại trạng thái thay đổi của dự án vào lịch sử Git.
+              Mỗi commit thường đi kèm một thông điệp mô tả thay đổi đã thực hiện.
+            </p>
+          </div>
+
+          <div class="qa">
+            <h3>Câu 3: Ba mức cấu hình trong Git là gì?</h3>
+            <p><strong>Trả lời:</strong></p>
+            <ul>
+              <li><code>--system</code>: áp dụng cho toàn hệ thống</li>
+              <li><code>--global</code>: áp dụng cho người dùng hiện tại</li>
+              <li><code>--local</code>: áp dụng cho repository hiện tại</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>Repository</code> là kho lưu trữ dự án.</li>
+            <li><code>Commit</code> là một lần lưu thay đổi vào lịch sử Git.</li>
+            <li><code>Branch</code> là nhánh làm việc độc lập.</li>
+            <li><code>git --version</code> dùng để kiểm tra phiên bản Git.</li>
+            <li><code>git --help</code> dùng để xem hướng dẫn.</li>
+            <li><code>git status</code> dùng để xem trạng thái repository.</li>
+            <li><code>git log</code> dùng để xem lịch sử commit.</li>
+            <li><code>git init</code> dùng để tạo repository mới.</li>
+            <li><code>git clone</code> dùng để sao chép repository có sẵn.</li>
+            <li><code>git config</code> dùng để cấu hình Git.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> nên tự gõ từng lệnh thay vì chỉ sao chép. Việc tự gõ giúp nhớ cú pháp, hiểu luồng làm việc và giảm lỗi khi thao tác thật.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 2. Cách tạo Repository mới trong Git
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>
