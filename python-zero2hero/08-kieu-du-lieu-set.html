@@ -3,78 +3,537 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>08. Kiểu dữ liệu Set trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 08</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="07-kieu-du-lieu-dictionary.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tao-set">1. Tạo set</a>
+      <a href="#set-rong">2. Set rỗng</a>
+      <a href="#khong-lap-lai">3. Không cho phép trùng lặp</a>
+      <a href="#khong-thu-tu">4. Không có thứ tự cố định</a>
+      <a href="#them-xoa">5. Thêm & xóa phần tử</a>
+      <a href="#duyet-set">6. Duyệt qua set</a>
+      <a href="#kiem-tra-pt">7. Kiểm tra phần tử</a>
+      <a href="#intersection">8. Giao (intersection)</a>
+      <a href="#union">9. Hợp (union)</a>
+      <a href="#difference">10. Hiệu (difference)</a>
+      <a href="#symmetric-diff">11. Hiệu đối xứng (symmetric difference)</a>
+      <a href="#toan-tu">12. Toán tử tập hợp</a>
+      <a href="#bang-tong-hop">13. Bảng tổng hợp</a>
+      <a href="#loi-thuong-gap">14. Lỗi thường gặp</a>
+      <a href="#bai-tap">15. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>08. Kiểu dữ liệu Set trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về kiểu dữ liệu <code>set</code>: tạo set, thêm / xóa phần tử, duyệt qua set, và các phép toán tập hợp: giao, hợp, hiệu, hiệu đối xứng — bằng cả phương thức lẫn toán tử ký hiệu.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Set</strong> là một trong bốn kiểu collection của Python. Set có hai đặc điểm cốt lõi:
+          </p>
+          <ul>
+            <li><strong>Các phần tử không được trùng lặp</strong> — set tự động loại bỏ giá trị trùng.</li>
+            <li><strong>Không có thứ tự cố định</strong> — thứ tự phần tử khi duyệt có thể thay đổi mỗi lần chạy.</li>
+          </ul>
+
+          <table class="pro-table collection-table" aria-label="So sánh các kiểu collection trong Python">
+            <caption>So sánh nhanh 4 kiểu collection phổ biến trong Python</caption>
+            <thead>
+              <tr>
+                <th>Kiểu dữ liệu</th>
+                <th>Ký hiệu</th>
+                <th>Thay đổi được?</th>
+                <th>Có thứ tự?</th>
+                <th>Cho phép trùng lặp?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong><code>list</code></strong><span class="table-hint">Danh sách linh hoạt</span></td>
+                <td><code>[...]</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td><strong><code>tuple</code></strong><span class="table-hint">Danh sách cố định</span></td>
+                <td><code>(...)</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr class="is-current-topic">
+                <td><strong><code>set</code></strong><span class="table-hint">Tập hợp giá trị duy nhất</span></td>
+                <td><code>{...}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+              </tr>
+              <tr>
+                <td><strong><code>dict</code></strong><span class="table-hint">Cặp khóa – giá trị</span></td>
+                <td><code>{k: v}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-limited">Không trùng key</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            Set hữu dụng khi bạn cần lưu danh sách giá trị <strong>duy nhất</strong> và thực hiện các phép toán tập hợp (giao, hợp, hiệu) một cách nhanh chóng.
+          </p>
+        </section>
+
+        <!-- ======================== TẠO SET ======================== -->
+        <section id="tao-set">
+          <h2>1. Tạo set</h2>
+          <p>Dùng cặp dấu ngoặc nhọn <code>{}</code> với ít nhất một phần tử, hoặc hàm <code>set()</code>:</p>
+          <pre><code># Cách 1: dùng dấu ngoặc nhọn
+my_set = {"a", "b", "c"}
+print(my_set)        # {'a', 'b', 'c'}  (thứ tự có thể khác)
+print(type(my_set))  # &lt;class 'set'&gt;
+
+# Cách 2: chuyển từ list sang set
+my_set2 = set([1, 2, 3, 4])
+print(my_set2)       # {1, 2, 3, 4}</code></pre>
+
+          <div class="note">
+            <strong>Phần tử của set</strong> phải là immutable (int, float, string, tuple). Không thể cho list hay dict vào set.
+          </div>
+        </section>
+
+        <!-- ======================== SET RỖNG ======================== -->
+        <section id="set-rong">
+          <h2>2. Set rỗng</h2>
+          <p>Để tạo set rỗng, bạn <strong>bắt buộc</strong> phải dùng hàm <code>set()</code>:</p>
+          <pre><code># ĐÚNG: set rỗng
+empty_set = set()
+print(type(empty_set))   # &lt;class 'set'&gt;
+
+# SAI: đây là dictionary rỗng, không phải set!
+not_a_set = {}
+print(type(not_a_set))   # &lt;class 'dict'&gt;</code></pre>
+
+          <div class="danger">
+            <strong>Bẫy hay gặp:</strong> <code>{}</code> tạo ra <em>dictionary rỗng</em>, không phải set rỗng. Luôn dùng <code>set()</code> khi muốn có set không chứa phần tử.
+          </div>
+        </section>
+
+        <!-- ======================== KHÔNG TRÙNG LẶP ======================== -->
+        <section id="khong-lap-lai">
+          <h2>3. Không cho phép trùng lặp</h2>
+          <p>
+            Khi khởi tạo hoặc thêm phần tử đã tồn tại, set tự động bỏ qua — không báo lỗi, không thêm bản sao.
+          </p>
+          <pre><code>my_set = {"a", "a", "b"}
+print(my_set)   # {'a', 'b'}  — chỉ còn 1 phần tử 'a'
+
+# Ứng dụng: xóa trùng lặp khỏi list
+numbers = [1, 2, 2, 3, 4, 3, 5]
+unique  = list(set(numbers))
+print(unique)   # [1, 2, 3, 4, 5]  (thứ tự không đảm bảo)</code></pre>
+
+          <div class="note">
+            <strong>Mẹo hay:</strong> Chuyển list → set → list là cách nhanh nhất để xóa phần tử trùng lặp, nhưng thứ tự ban đầu <em>không</em> được bảo toàn.
+          </div>
+        </section>
+
+        <!-- ======================== KHÔNG THỨ TỰ ======================== -->
+        <section id="khong-thu-tu">
+          <h2>4. Không có thứ tự cố định</h2>
+          <p>
+            Thứ tự phần tử khi duyệt set <strong>không xác định</strong> và có thể thay đổi giữa các lần chạy (phụ thuộc vào Python interpreter và phiên bản). Không thể truy cập phần tử set bằng index.
+          </p>
+          <pre><code>my_set = {"a", "b", "c", "d"}
+
+for item in my_set:
+    print(item)
+# Lần chạy 1: a b c d
+# Lần chạy 2: d c a b  ← thứ tự có thể khác!
+
+# LỖI: set không hỗ trợ index
+# print(my_set[0])   # TypeError: 'set' object is not subscriptable</code></pre>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> Vì không có thứ tự, bạn <em>không thể</em> dùng index (<code>set[0]</code>) hay slicing với set. Nếu cần truy cập theo vị trí, hãy dùng list.
+          </div>
+        </section>
+
+        <!-- ======================== THÊM XÓA ======================== -->
+        <section id="them-xoa">
+          <h2>5. Thêm & xóa phần tử</h2>
+
+          <h3>Thêm phần tử – <code>add()</code></h3>
+          <pre><code>my_set = {"a", "b", "c", "d"}
+
+my_set.add("e")
+print(my_set)   # {'a', 'b', 'c', 'd', 'e'}
+
+# Thêm phần tử đã tồn tại → không có gì thay đổi
+my_set.add("a")
+print(my_set)   # {'a', 'b', 'c', 'd', 'e'}  — không lỗi, không thêm</code></pre>
+
+          <h3>Xóa phần tử – <code>discard()</code> và <code>remove()</code></h3>
+          <pre><code>my_set = {"a", "b", "c", "d"}
+
+# discard() – an toàn: không ném lỗi nếu phần tử không tồn tại
+my_set.discard("a")
+print(my_set)          # {'b', 'c', 'd'}
+
+my_set.discard("z")    # phần tử không có → im lặng, không lỗi
+
+# remove() – ném KeyError nếu phần tử không tồn tại
+my_set.remove("b")
+print(my_set)          # {'c', 'd'}
+
+# my_set.remove("z")   # KeyError: 'z'</code></pre>
+
+          <table class="pro-table">
+            <caption>So sánh discard() và remove()</caption>
+            <thead>
+              <tr><th>Phương thức</th><th>Phần tử không tồn tại</th><th>Khi nào dùng</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>discard(x)</code></td>
+                <td>Bỏ qua, không lỗi</td>
+                <td>Khi không chắc phần tử có trong set không</td>
+              </tr>
+              <tr>
+                <td><code>remove(x)</code></td>
+                <td><code>KeyError</code></td>
+                <td>Khi chắc chắn phần tử phải tồn tại</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== DUYỆT ======================== -->
+        <section id="duyet-set">
+          <h2>6. Duyệt qua set</h2>
+          <p>Dùng vòng <code>for</code> — cú pháp giống list, nhưng thứ tự không đảm bảo:</p>
+          <pre><code>my_set = {"a", "b", "c", "d"}
+
+for item in my_set:
+    print(item)</code></pre>
+          <div class="note">
+            Nếu cần duyệt theo thứ tự nhất định, hãy dùng <code>for item in sorted(my_set):</code>.
+          </div>
+        </section>
+
+        <!-- ======================== KIỂM TRA ======================== -->
+        <section id="kiem-tra-pt">
+          <h2>7. Kiểm tra phần tử</h2>
+          <p>Dùng <code>in</code> — tốc độ kiểm tra trên set nhanh hơn list (O(1) thay vì O(n)):</p>
+          <pre><code>my_set = {"a", "b", "c"}
+
+print("a" in my_set)    # True
+print("z" in my_set)    # False
+print("z" not in my_set)  # True</code></pre>
+        </section>
+
+        <!-- ======================== INTERSECTION ======================== -->
+        <section id="intersection">
+          <h2>8. Giao (intersection)</h2>
+          <p>
+            Trả về tập hợp các phần tử <strong>thuộc cả hai set</strong>.
+          </p>
+
+          <div class="diagram">
+            <div class="box">Set A<br><code>{1, 2, 3, 4}</code></div>
+            <div class="arrow">∩</div>
+            <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Giao<br><code>{3, 4}</code></div>
+            <div class="arrow">←</div>
+            <div class="box">Set B<br><code>{3, 4, 5, 6}</code></div>
+          </div>
+
+          <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Dùng phương thức
+result = a.intersection(b)
+print(result)   # {3, 4}
+
+# Dùng toán tử &amp;
+result = a &amp; b
+print(result)   # {3, 4}</code></pre>
+        </section>
+
+        <!-- ======================== UNION ======================== -->
+        <section id="union">
+          <h2>9. Hợp (union)</h2>
+          <p>
+            Trả về tập hợp chứa <strong>tất cả phần tử</strong> của cả hai set (không trùng lặp).
+          </p>
+
+          <div class="diagram">
+            <div class="box">Set A<br><code>{1, 2, 3, 4}</code></div>
+            <div class="arrow">∪</div>
+            <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Hợp<br><code>{1,2,3,4,5,6}</code></div>
+            <div class="arrow">←</div>
+            <div class="box">Set B<br><code>{3, 4, 5, 6}</code></div>
+          </div>
+
+          <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Dùng phương thức
+result = a.union(b)
+print(result)   # {1, 2, 3, 4, 5, 6}
+
+# Dùng toán tử |
+result = a | b
+print(result)   # {1, 2, 3, 4, 5, 6}</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> Cả <code>union()</code> lẫn toán tử <code>|</code> đều tạo ra <em>set mới</em>, không thay đổi set A hay set B. Nếu muốn cập nhật set A trực tiếp, dùng <code>a.update(b)</code> hoặc <code>a |= b</code>.
+          </div>
+        </section>
+
+        <!-- ======================== DIFFERENCE ======================== -->
+        <section id="difference">
+          <h2>10. Hiệu (difference)</h2>
+          <p>
+            Trả về các phần tử <strong>chỉ thuộc set đứng trước</strong>, không có trong set kia. Kết quả phụ thuộc vào thứ tự.
+          </p>
+
+          <div class="diagram">
+            <div class="box" style="background:#eff6ff; border-color:#3b82f6;">A − B<br><code>{1, 2}</code></div>
+            <div class="arrow">←</div>
+            <div class="box">Set A<br><code>{1, 2, 3, 4}</code></div>
+            <div class="arrow">−</div>
+            <div class="box">Set B<br><code>{3, 4, 5, 6}</code></div>
+          </div>
+
+          <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# A - B: chỉ lấy phần tử thuộc A
+diff1 = a.difference(b)
+print(diff1)   # {1, 2}
+
+# Toán tử -
+diff1 = a - b
+print(diff1)   # {1, 2}
+
+# B - A: chỉ lấy phần tử thuộc B
+diff2 = b - a
+print(diff2)   # {5, 6}</code></pre>
+        </section>
+
+        <!-- ======================== SYMMETRIC DIFFERENCE ======================== -->
+        <section id="symmetric-diff">
+          <h2>11. Hiệu đối xứng (symmetric difference)</h2>
+          <p>
+            Trả về các phần tử <strong>chỉ thuộc một trong hai set</strong> — tức là phần của A không thuộc B, cộng với phần của B không thuộc A. Phần giao không được lấy.
+          </p>
+
+          <div class="diagram">
+            <div class="box">Set A<br><code>{1, 2, 3, 4}</code></div>
+            <div class="arrow">△</div>
+            <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Sym. Diff<br><code>{1, 2, 5, 6}</code></div>
+            <div class="arrow">←</div>
+            <div class="box">Set B<br><code>{3, 4, 5, 6}</code></div>
+          </div>
+
+          <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Phương thức
+result = a.symmetric_difference(b)
+print(result)   # {1, 2, 5, 6}
+
+# Toán tử ^
+result = a ^ b
+print(result)   # {1, 2, 5, 6}</code></pre>
+        </section>
+
+        <!-- ======================== TOÁN TỬ ======================== -->
+        <section id="toan-tu">
+          <h2>12. Toán tử tập hợp</h2>
+          <p>
+            Python cho phép dùng các ký hiệu toán học quen thuộc thay cho phương thức. Hai cách hoàn toàn tương đương:
+          </p>
+          <table class="pro-table">
+            <caption>Phương thức và toán tử tương ứng</caption>
+            <thead>
+              <tr><th>Phép toán</th><th>Phương thức</th><th>Toán tử</th><th>Thay đổi set gốc?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Hợp</td><td><code>a.union(b)</code></td><td><code>a | b</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Cập nhật hợp vào A</td><td><code>a.update(b)</code></td><td><code>a |= b</code></td><td><span class="status-badge status-yes">Có (A)</span></td></tr>
+              <tr><td>Giao</td><td><code>a.intersection(b)</code></td><td><code>a &amp; b</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Hiệu A − B</td><td><code>a.difference(b)</code></td><td><code>a - b</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Hiệu đối xứng</td><td><code>a.symmetric_difference(b)</code></td><td><code>a ^ b</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+            </tbody>
+          </table>
+
+          <pre><code>a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+print(a | b)   # {1, 2, 3, 4, 5, 6}  — hợp
+print(a &amp; b)   # {3, 4}              — giao
+print(a - b)   # {1, 2}              — hiệu A−B
+print(b - a)   # {5, 6}              — hiệu B−A
+print(a ^ b)   # {1, 2, 5, 6}        — hiệu đối xứng
+
+# Kiểm tra: a và b không thay đổi
+print(a)   # {1, 2, 3, 4}
+print(b)   # {3, 4, 5, 6}</code></pre>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>13. Bảng tổng hợp</h2>
+          <table class="pro-table">
+            <caption>Các thao tác set hay dùng nhất</caption>
+            <thead>
+              <tr><th>Method / Cú pháp</th><th>Công dụng</th><th>Thay đổi set gốc?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>set()</code></td><td>Tạo set rỗng</td><td>N/A</td></tr>
+              <tr><td><code>set.add(x)</code></td><td>Thêm phần tử <code>x</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>set.discard(x)</code></td><td>Xóa <code>x</code>, không lỗi nếu không có</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>set.remove(x)</code></td><td>Xóa <code>x</code>, ném <code>KeyError</code> nếu không có</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>set.clear()</code></td><td>Xóa toàn bộ phần tử</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>x in set</code></td><td>Kiểm tra phần tử tồn tại (O(1))</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>len(set)</code></td><td>Số phần tử trong set</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a | b</code> / <code>a.union(b)</code></td><td>Hợp của hai set</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a &amp; b</code> / <code>a.intersection(b)</code></td><td>Giao của hai set</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a - b</code> / <code>a.difference(b)</code></td><td>Hiệu A trừ B</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a ^ b</code> / <code>a.symmetric_difference(b)</code></td><td>Hiệu đối xứng</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a.issubset(b)</code></td><td>Kiểm tra A ⊆ B</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>a.issuperset(b)</code></td><td>Kiểm tra A ⊇ B</td><td><span class="status-badge status-no">Không</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>14. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi làm việc với set</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>TypeError: 'set' object is not subscriptable</code></td>
+                <td>Cố gắng truy cập <code>my_set[0]</code></td>
+                <td>Set không có index. Dùng list nếu cần truy cập theo vị trí</td>
+              </tr>
+              <tr>
+                <td><code>KeyError: 'x'</code></td>
+                <td>Gọi <code>remove(x)</code> khi <code>x</code> không có trong set</td>
+                <td>Dùng <code>discard(x)</code> để tránh lỗi</td>
+              </tr>
+              <tr>
+                <td><code>TypeError: unhashable type: 'list'</code></td>
+                <td>Thêm list vào set (<code>my_set.add([1,2])</code>)</td>
+                <td>Chuyển list thành tuple: <code>my_set.add((1, 2))</code></td>
+              </tr>
+              <tr>
+                <td>Set rỗng bị nhầm là dict</td>
+                <td>Dùng <code>{}</code> tưởng là set rỗng</td>
+                <td>Luôn dùng <code>set()</code> để tạo set rỗng</td>
+              </tr>
+              <tr>
+                <td>Thứ tự phần tử không nhất quán</td>
+                <td>Set không đảm bảo thứ tự</td>
+                <td>Dùng <code>sorted(my_set)</code> nếu cần duyệt theo thứ tự</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>15. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Xóa trùng lặp khỏi list</h3>
+            <p>Cho list <code>[1, 2, 2, 3, 4, 3, 5, 1]</code>. Dùng set để loại bỏ phần tử trùng, sau đó chuyển về list và in ra.</p>
+            <pre><code>numbers = [1, 2, 2, 3, 4, 3, 5, 1]
+unique = list(set(numbers))
+print(unique)   # thứ tự có thể khác [1, 2, 3, 4, 5]</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Tìm bạn chung</h3>
+            <p>
+              Cho hai set bạn bè: <code>friends_a = {"an", "binh", "cuong", "dung"}</code> và <code>friends_b = {"cuong", "dung", "em", "phuong"}</code>. Tìm danh sách bạn chung của cả hai.
+            </p>
+            <pre><code>friends_a = {"an", "binh", "cuong", "dung"}
+friends_b = {"cuong", "dung", "em", "phuong"}
+
+common = friends_a & friends_b
+print("Bạn chung:", common)   # {'cuong', 'dung'}</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Phân tích lớp học</h3>
+            <p>
+              Cho <code>passed = {1, 2, 3, 4, 5}</code> và <code>failed = {4, 5, 6, 7, 8}</code>. Tìm: (1) học sinh đỗ và trượt cùng lúc — không thể, nhưng hãy kiểm tra phần giao; (2) tất cả học sinh; (3) học sinh chỉ đỗ (không trượt).
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Kiểm tra tập hợp con</h3>
+            <p>Cho <code>a = {1, 2}</code> và <code>b = {1, 2, 3, 4}</code>. Kiểm tra <code>a</code> có phải tập hợp con của <code>b</code> không bằng <code>issubset()</code>.</p>
+            <pre><code>a = {1, 2}
+b = {1, 2, 3, 4}
+print(a.issubset(b))    # True
+print(b.issuperset(a))  # True</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Set là kiểu <strong>mutable</strong>, <strong>không có thứ tự</strong>, <strong>không cho phép trùng lặp</strong>.</li>
+            <li>Tạo set bằng <code>{a, b}</code> (khi có phần tử) hoặc <code>set()</code> (khi rỗng). <code>{}</code> là dictionary rỗng.</li>
+            <li>Thêm phần tử: <code>add(x)</code>. Xóa an toàn: <code>discard(x)</code>. Xóa kiểm tra lỗi: <code>remove(x)</code>.</li>
+            <li>Không dùng được index với set — không có <code>set[0]</code>.</li>
+            <li>Phép toán tập hợp: hợp (<code>|</code>), giao (<code>&</code>), hiệu (<code>-</code>), hiệu đối xứng (<code>^</code>).</li>
+            <li>Tất cả phép toán trên đều tạo <em>set mới</em> và không thay đổi set gốc.</li>
+            <li>Kiểm tra phần tử với <code>in</code> trên set nhanh hơn list (O(1) vs O(n)).</li>
+          </ul>
+          <div class="success">
+            <strong>Chúc mừng!</strong> Bạn đã hoàn thành cả bốn kiểu collection trong Python: <code>list</code>, <code>tuple</code>, <code>dict</code> và <code>set</code>. Đây là nền tảng quan trọng cho hầu hết mọi bài toán Python thực tế.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 08. Kiểu dữ liệu Set trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>

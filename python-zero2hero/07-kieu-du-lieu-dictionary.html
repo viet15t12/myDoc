@@ -3,78 +3,481 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>07. Kiểu dữ liệu Dictionary trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 07</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="06-kieu-du-lieu-tuple.html">← Bài trước</a>
+      <a class="nav-pill" href="08-kieu-du-lieu-set.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tao-dict">1. Tạo dictionary</a>
+      <a href="#dict-rong">2. Dictionary rỗng</a>
+      <a href="#truy-cap">3. Truy cập phần tử</a>
+      <a href="#get-method">4. Phương thức get()</a>
+      <a href="#them-update">5. Thêm & cập nhật phần tử</a>
+      <a href="#xoa-phan-tu">6. Xóa phần tử</a>
+      <a href="#duyet-keys">7. Duyệt qua keys</a>
+      <a href="#duyet-values">8. Duyệt qua values</a>
+      <a href="#duyet-items">9. Duyệt qua items</a>
+      <a href="#kiem-tra-key">10. Kiểm tra key tồn tại</a>
+      <a href="#dict-comprehension">11. Dictionary comprehension</a>
+      <a href="#bang-tong-hop">12. Bảng tổng hợp methods</a>
+      <a href="#loi-thuong-gap">13. Lỗi thường gặp</a>
+      <a href="#bai-tap">14. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>07. Kiểu dữ liệu Dictionary trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về kiểu dữ liệu <code>dict</code>: khởi tạo, truy cập phần tử bằng key, thêm / cập nhật / xóa phần tử, duyệt qua keys – values – items, và dictionary comprehension.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Dictionary</strong> (<code>dict</code>) là một trong bốn kiểu collection của Python. Dictionary lưu dữ liệu dưới dạng <strong>ánh xạ (map) giữa key và value</strong> — mỗi key tương ứng với một value duy nhất.
+          </p>
+
+          <table class="pro-table collection-table" aria-label="So sánh các kiểu collection trong Python">
+            <caption>So sánh nhanh 4 kiểu collection phổ biến trong Python</caption>
+            <thead>
+              <tr>
+                <th>Kiểu dữ liệu</th>
+                <th>Ký hiệu</th>
+                <th>Thay đổi được?</th>
+                <th>Có thứ tự?</th>
+                <th>Cho phép trùng lặp?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong><code>list</code></strong><span class="table-hint">Danh sách linh hoạt</span></td>
+                <td><code>[...]</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td><strong><code>tuple</code></strong><span class="table-hint">Danh sách cố định</span></td>
+                <td><code>(...)</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td><strong><code>set</code></strong><span class="table-hint">Tập hợp giá trị duy nhất</span></td>
+                <td><code>{...}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+              </tr>
+              <tr class="is-current-topic">
+                <td><strong><code>dict</code></strong><span class="table-hint">Cặp khóa – giá trị</span></td>
+                <td><code>{k: v}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-limited">Không trùng key</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            Dictionary là kiểu <strong>mutable</strong> và có thứ tự (từ Python 3.7+, thứ tự chèn được bảo toàn). Key phải là kiểu <strong>immutable</strong> (string, int, tuple…), còn value có thể là bất kỳ kiểu nào.
+          </p>
+        </section>
+
+        <!-- ======================== TẠO DICT ======================== -->
+        <section id="tao-dict">
+          <h2>1. Tạo dictionary</h2>
+          <p>
+            Dùng cặp dấu ngoặc nhọn <code>{}</code>. Mỗi cặp key–value được ngăn cách nhau bằng dấu hai chấm <code>:</code>, các cặp cách nhau bằng dấu phẩy.
+          </p>
+          <pre><code># Cú pháp: {key: value, key: value, ...}
+name_age = {"min": 5, "na": 6, "bong": 10}
+
+print(name_age)
+print(type(name_age))</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>{'min': 5, 'na': 6, 'bong': 10}
+&lt;class 'dict'&gt;</code></pre>
+
+          <div class="note">
+            <strong>Key phải là immutable:</strong> string, int, float, tuple đều dùng được làm key. List <em>không thể</em> làm key vì list là mutable.
+          </div>
+
+          <p>Bạn cũng có thể tạo dictionary bằng hàm <code>dict()</code> với keyword arguments:</p>
+          <pre><code># Dùng hàm dict()
+name_age = dict(min=5, na=6, bong=10)
+print(name_age)   # {'min': 5, 'na': 6, 'bong': 10}</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> Khi dùng <code>dict()</code> theo cách trên, key phải là identifier Python hợp lệ (không có khoảng trắng, không bắt đầu bằng số).
+          </div>
+        </section>
+
+        <!-- ======================== DICT RỖNG ======================== -->
+        <section id="dict-rong">
+          <h2>2. Dictionary rỗng</h2>
+          <p>Có hai cách tạo dictionary rỗng:</p>
+          <pre><code># Cách 1: cặp ngoặc nhọn rỗng
+empty1 = {}
+
+# Cách 2: hàm dict()
+empty2 = dict()
+
+print(type(empty1))   # &lt;class 'dict'&gt;
+print(type(empty2))   # &lt;class 'dict'&gt;</code></pre>
+
+          <div class="warning">
+            <strong>Cẩn thận – dễ nhầm với set!</strong> <code>{}</code> tạo ra <em>dictionary rỗng</em>, không phải set rỗng. Muốn tạo set rỗng phải dùng <code>set()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== TRUY CẬP ======================== -->
+        <section id="truy-cap">
+          <h2>3. Truy cập phần tử</h2>
+          <p>
+            Dùng cú pháp <code>dict[key]</code> để lấy value tương ứng với key đó.
+          </p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+print(name_age["na"])     # 6
+print(name_age["bong"])   # 10</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>6
+10</code></pre>
+
+          <div class="danger">
+            <strong>KeyError:</strong> Truy cập một key không tồn tại sẽ ném ngay <code>KeyError</code>. Dùng <code>get()</code> (xem phần 4) nếu bạn không chắc key có tồn tại không.
+          </div>
+
+          <pre><code>name_age = {"min": 5, "na": 6}
+print(name_age["xuan"])   # KeyError: 'xuan'</code></pre>
+        </section>
+
+        <!-- ======================== GET ======================== -->
+        <section id="get-method">
+          <h2>4. Phương thức <code>get()</code></h2>
+          <p>
+            <code>dict.get(key)</code> trả về value nếu key tồn tại, ngược lại trả về <code>None</code> — thay vì ném <code>KeyError</code>. Bạn có thể cung cấp giá trị mặc định ở tham số thứ hai.
+          </p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+age = name_age.get("na")
+print(age)                         # 6
+
+age_unknown = name_age.get("xuan")
+print(age_unknown)                 # None
+
+age_default = name_age.get("xuan", 0)
+print(age_default)                 # 0</code></pre>
+
+          <div class="note">
+            <strong>Thực tế:</strong> Khi xử lý dữ liệu không chắc chắn (đọc từ file, API…), dùng <code>get()</code> an toàn hơn nhiều so với <code>dict[key]</code>.
+          </div>
+        </section>
+
+        <!-- ======================== THÊM & CẬP NHẬT ======================== -->
+        <section id="them-update">
+          <h2>5. Thêm & cập nhật phần tử</h2>
+          <p>
+            Cú pháp gán <code>dict[key] = value</code> hoạt động theo hai trường hợp:
+          </p>
+          <ul>
+            <li>Nếu <code>key</code> <strong>chưa có</strong> → thêm cặp key–value mới vào cuối dictionary.</li>
+            <li>Nếu <code>key</code> <strong>đã có</strong> → cập nhật (ghi đè) value cũ.</li>
+          </ul>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+# Cập nhật: bong tăng lên 12 tuổi sau 2 năm
+name_age["bong"] = 12
+
+# Thêm mới: nam 30 tuổi
+name_age["nam"] = 30
+
+print(name_age)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>{'min': 5, 'na': 6, 'bong': 12, 'nam': 30}</code></pre>
+
+          <p>Dùng <code>update()</code> để thêm / cập nhật nhiều cặp cùng lúc:</p>
+          <pre><code>name_age.update({"lan": 22, "bong": 13})
+print(name_age)
+# {'min': 5, 'na': 6, 'bong': 13, 'nam': 30, 'lan': 22}</code></pre>
+        </section>
+
+        <!-- ======================== XÓA ======================== -->
+        <section id="xoa-phan-tu">
+          <h2>6. Xóa phần tử</h2>
+          <p>Python cung cấp nhiều cách xóa phần tử khỏi dictionary:</p>
+
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10, "nam": 30}
+
+# del – xóa theo key, ném KeyError nếu không tồn tại
+del name_age["na"]
+print(name_age)   # {'min': 5, 'bong': 10, 'nam': 30}
+
+# pop(key) – xóa và trả về value
+age = name_age.pop("bong")
+print(age)         # 10
+print(name_age)    # {'min': 5, 'nam': 30}
+
+# pop(key, default) – an toàn, không ném KeyError
+val = name_age.pop("ghost", None)
+print(val)         # None
+
+# clear() – xóa toàn bộ
+name_age.clear()
+print(name_age)    # {}</code></pre>
+
+          <table class="pro-table">
+            <caption>So sánh các cách xóa phần tử</caption>
+            <thead>
+              <tr><th>Cú pháp</th><th>Trả về</th><th>Key không tồn tại</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>del dict[key]</code></td><td>Không trả về</td><td>KeyError</td></tr>
+              <tr><td><code>dict.pop(key)</code></td><td>Value đã xóa</td><td>KeyError</td></tr>
+              <tr><td><code>dict.pop(key, default)</code></td><td>Value hoặc default</td><td>Trả về default</td></tr>
+              <tr><td><code>dict.clear()</code></td><td>Không trả về</td><td>N/A – xóa tất cả</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== DUYỆT KEYS ======================== -->
+        <section id="duyet-keys">
+          <h2>7. Duyệt qua keys</h2>
+          <p>
+            Dùng vòng <code>for</code> trực tiếp trên dictionary (mặc định duyệt qua các key), hoặc gọi rõ phương thức <code>keys()</code>.
+          </p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+# Cách 1: for k in dict
+for k in name_age:
+    print(k)
+
+# Cách 2: for k in dict.keys()  — tương đương
+for k in name_age.keys():
+    print(k)</code></pre>
+          <p>Kết quả (cả hai cách giống nhau):</p>
+          <pre><code>min
+na
+bong</code></pre>
+        </section>
+
+        <!-- ======================== DUYỆT VALUES ======================== -->
+        <section id="duyet-values">
+          <h2>8. Duyệt qua values</h2>
+          <p>Dùng <code>dict.values()</code>:</p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+for v in name_age.values():
+    print(v)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>5
+6
+10</code></pre>
+        </section>
+
+        <!-- ======================== DUYỆT ITEMS ======================== -->
+        <section id="duyet-items">
+          <h2>9. Duyệt qua items</h2>
+          <p>
+            Dùng <code>dict.items()</code> để lấy cả key và value trong cùng một lần lặp — cách được dùng <strong>phổ biến nhất</strong> trong thực tế.
+          </p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+for k, v in name_age.items():
+    print(k, v)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>min 5
+na 6
+bong 10</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> <code>items()</code> trả về chuỗi các tuple <code>(key, value)</code>. Khi dùng <code>for k, v in ...</code>, Python tự động giải nén (unpack) mỗi tuple thành hai biến.
+          </div>
+        </section>
+
+        <!-- ======================== KIỂM TRA KEY ======================== -->
+        <section id="kiem-tra-key">
+          <h2>10. Kiểm tra key tồn tại</h2>
+          <p>Dùng toán tử <code>in</code> để kiểm tra xem một key có trong dictionary không:</p>
+          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+
+print("na" in name_age)      # True
+print("xuan" in name_age)    # False
+print("xuan" not in name_age) # True
+
+# Ứng dụng thực tế: truy cập an toàn
+key = "na"
+if key in name_age:
+    print(f"{key} có trong dictionary, tuổi: {name_age[key]}")
+else:
+    print(f"{key} không tồn tại")</code></pre>
+        </section>
+
+        <!-- ======================== DICT COMPREHENSION ======================== -->
+        <section id="dict-comprehension">
+          <h2>11. Dictionary comprehension</h2>
+          <p>
+            Tương tự list comprehension, bạn có thể tạo dictionary từ một iterable bằng cú pháp ngắn gọn:
+          </p>
+          <pre><code># Tạo dictionary: số -> bình phương của số
+squares = {x: x**2 for x in range(1, 6)}
+print(squares)
+# {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# Tạo dictionary từ hai list
+names  = ["min", "na", "bong"]
+ages   = [5, 6, 10]
+name_age = {k: v for k, v in zip(names, ages)}
+print(name_age)
+# {'min': 5, 'na': 6, 'bong': 10}
+
+# Lọc: chỉ giữ những người dưới 8 tuổi
+young = {k: v for k, v in name_age.items() if v < 8}
+print(young)
+# {'min': 5, 'na': 6}</code></pre>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>12. Bảng tổng hợp các thao tác</h2>
+          <table class="pro-table">
+            <caption>Các thao tác dictionary hay dùng nhất</caption>
+            <thead>
+              <tr>
+                <th>Cú pháp / Method</th>
+                <th>Công dụng</th>
+                <th>Thay đổi dict gốc?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>dict[key]</code></td><td>Truy cập value theo key (KeyError nếu không có)</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>dict.get(key, default)</code></td><td>Truy cập an toàn, trả về default nếu không có key</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>dict[key] = value</code></td><td>Thêm hoặc cập nhật phần tử</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>dict.update({...})</code></td><td>Thêm / cập nhật nhiều cặp cùng lúc</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>del dict[key]</code></td><td>Xóa phần tử theo key</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>dict.pop(key)</code></td><td>Xóa và trả về value</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>dict.clear()</code></td><td>Xóa toàn bộ phần tử</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>dict.keys()</code></td><td>Trả về view chứa tất cả các key</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>dict.values()</code></td><td>Trả về view chứa tất cả các value</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>dict.items()</code></td><td>Trả về view chứa các tuple (key, value)</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>key in dict</code></td><td>Kiểm tra key có tồn tại không</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>len(dict)</code></td><td>Số cặp key–value trong dictionary</td><td><span class="status-badge status-no">Không</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>13. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi làm việc với dictionary</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>KeyError: 'abc'</code></td>
+                <td>Truy cập <code>dict["abc"]</code> khi key không tồn tại</td>
+                <td>Dùng <code>dict.get("abc")</code> hoặc kiểm tra <code>if "abc" in dict</code> trước</td>
+              </tr>
+              <tr>
+                <td>Key bị ghi đè bất ngờ</td>
+                <td>Thêm key đã tồn tại → value cũ bị thay thế</td>
+                <td>Kiểm tra <code>key in dict</code> trước khi gán nếu cần giữ giá trị gốc</td>
+              </tr>
+              <tr>
+                <td><code>TypeError: unhashable type: 'list'</code></td>
+                <td>Dùng list làm key của dictionary</td>
+                <td>Chuyển list thành tuple: <code>dict[tuple(my_list)] = v</code></td>
+              </tr>
+              <tr>
+                <td>Dict thay đổi khi chỉ muốn sao chép</td>
+                <td>Gán <code>b = a</code> không tạo bản sao — cả hai trỏ cùng object</td>
+                <td>Dùng <code>b = a.copy()</code> hoặc <code>b = dict(a)</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>14. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Đếm tần suất ký tự</h3>
+            <p>Cho chuỗi <code>"hello world"</code>. Đếm số lần xuất hiện của mỗi ký tự (bỏ qua khoảng trắng) và lưu vào dictionary.</p>
+            <pre><code>text = "hello world"
+freq = {}
+for ch in text:
+    if ch == " ":
+        continue
+    freq[ch] = freq.get(ch, 0) + 1
+print(freq)
+# {'h': 1, 'e': 1, 'l': 3, 'o': 2, 'w': 1, 'r': 1, 'd': 1}</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Đảo ngược dictionary</h3>
+            <p>Cho <code>{"a": 1, "b": 2, "c": 3}</code>. Tạo dictionary mới với key và value đổi chỗ nhau.</p>
+            <pre><code>original = {"a": 1, "b": 2, "c": 3}
+reversed_dict = {v: k for k, v in original.items()}
+print(reversed_dict)   # {1: 'a', 2: 'b', 3: 'c'}</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Gộp hai dictionary</h3>
+            <p>Cho hai dictionary <code>d1 = {"x": 1, "y": 2}</code> và <code>d2 = {"y": 99, "z": 3}</code>. Gộp chúng lại sao cho key trùng lặp lấy giá trị của <code>d2</code>.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Thống kê điểm thi</h3>
+            <p>Nhập vào danh sách điểm thi của một lớp. In ra điểm cao nhất, thấp nhất và điểm trung bình. Lưu kết quả vào một dictionary <code>{"max": ..., "min": ..., "avg": ...}</code>.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Dictionary lưu dữ liệu dạng cặp <strong>key – value</strong>, ký hiệu <code>{key: value}</code>.</li>
+            <li>Key phải là immutable; mỗi key là <strong>duy nhất</strong> trong dictionary.</li>
+            <li>Tạo dictionary bằng <code>{}</code> hoặc <code>dict()</code>. Dictionary rỗng: <code>{}</code> hoặc <code>dict()</code>.</li>
+            <li>Truy cập: <code>dict[key]</code> (có thể raise <code>KeyError</code>) hoặc <code>dict.get(key, default)</code> (an toàn hơn).</li>
+            <li>Thêm / cập nhật: <code>dict[key] = value</code>. Xóa: <code>del dict[key]</code> hoặc <code>pop(key)</code>.</li>
+            <li>Duyệt: <code>keys()</code>, <code>values()</code>, <code>items()</code> — dùng <code>items()</code> khi cần cả key lẫn value.</li>
+            <li>Dictionary comprehension giúp tạo dict ngắn gọn từ iterable.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Set — kiểu collection chứa các phần tử <strong>không trùng lặp</strong> và không có thứ tự cố định. Set rất hữu ích cho bài toán tập hợp (giao, hợp, hiệu).
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 07. Kiểu dữ liệu Dictionary trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>
