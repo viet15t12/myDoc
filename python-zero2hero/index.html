@@ -119,7 +119,7 @@ function markVisited(file) {
 }
 
 function buildCard(lesson, types, visited) {
-  const isAvailable = Boolean(lesson.file);
+  const isAvailable = lesson.status === 'published' && Boolean(lesson.file);
   const isDone = isAvailable && visited.includes(lesson.file);
   const typeDef = types.find(t => t.id === lesson.type) || {};
   const color = typeDef.color || '#546278';

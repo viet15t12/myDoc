@@ -88,7 +88,7 @@
       "id": "06",
       "minutes": 15,
       "sections": 6,
-      "status": "coming",
+      "status": "published",
       "tags": ["tuple", "immutable", "unpacking"],
       "title": "Kiểu dữ liệu Tuple"
     },
@@ -99,7 +99,7 @@
       "id": "07",
       "minutes": 20,
       "sections": 8,
-      "status": "coming",
+      "status": "published",
       "tags": ["dictionary", "dict", "key", "value"],
       "title": "Kiểu dữ liệu Dictionary — Từ điển"
     },
@@ -110,7 +110,7 @@
       "id": "08",
       "minutes": 15,
       "sections": 6,
-      "status": "coming",
+      "status": "published",
       "tags": ["set", "tập hợp", "union", "intersection"],
       "title": "Kiểu dữ liệu Set — Tập hợp"
     },
@@ -121,7 +121,7 @@
       "id": "09",
       "minutes": 15,
       "sections": 7,
-      "status": "coming",
+      "status": "published",
       "tags": ["if", "else", "elif", "điều kiện", "flow control"],
       "title": "Cấu trúc điều khiển (if / else)"
     },

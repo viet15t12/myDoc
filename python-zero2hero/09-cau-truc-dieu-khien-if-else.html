@@ -3,78 +3,571 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>09. Cấu trúc điều khiển if / elif / else trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 09</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="08-kieu-du-lieu-set.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#cu-phap">1. Cú pháp cơ bản</a>
+      <a href="#if-don">2. Chỉ dùng if</a>
+      <a href="#if-else">3. if … else</a>
+      <a href="#if-elif-else">4. if … elif … else</a>
+      <a href="#kiem-tra-tren-xuong">5. Kiểm tra từ trên xuống</a>
+      <a href="#toan-tu-logic">6. Toán tử logic (and / or / not)</a>
+      <a href="#if-long">7. So sánh kép (chained comparison)</a>
+      <a href="#if-long-2">8. if lồng nhau</a>
+      <a href="#vi-du-1">9. Ví dụ: số chẵn / lẻ</a>
+      <a href="#vi-du-2">10. Ví dụ: xếp loại học lực</a>
+      <a href="#vi-du-3">11. Ví dụ: giá vé theo tuổi</a>
+      <a href="#vi-du-4">12. Ví dụ: năm nhuận</a>
+      <a href="#vi-du-5">13. Ví dụ: chuyển đổi nhiệt độ</a>
+      <a href="#bang-tong-hop">14. Bảng tổng hợp</a>
+      <a href="#loi-thuong-gap">15. Lỗi thường gặp</a>
+      <a href="#bai-tap">16. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>09. Cấu trúc điều khiển if / elif / else trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về cấu trúc điều khiển <code>if</code>, <code>elif</code>, <code>else</code>: cú pháp, cách hoạt động từ trên xuống, toán tử logic, so sánh kép, if lồng nhau — kèm 5 ví dụ thực hành từ đơn giản đến phức tạp.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Trong lập trình, chúng ta thường cần <strong>kiểm tra một điều kiện</strong> rồi thực hiện hành động khác nhau tùy theo điều kiện đó đúng hay sai. Đây chính là chức năng của <strong>cấu trúc điều khiển</strong>.
+          </p>
+          <p>
+            Python cung cấp ba từ khoá cho cấu trúc này:
+          </p>
+          <ul>
+            <li><code>if</code> — kiểm tra điều kiện đầu tiên.</li>
+            <li><code>elif</code> (else if) — kiểm tra thêm điều kiện tiếp theo nếu điều kiện trước sai.</li>
+            <li><code>else</code> — xử lý tất cả các trường hợp còn lại.</li>
+          </ul>
+
+          <table class="pro-table" aria-label="Tổng quan cấu trúc điều khiển">
+            <caption>Ba từ khoá trong cấu trúc điều khiển Python</caption>
+            <thead>
+              <tr>
+                <th>Từ khoá</th>
+                <th>Khi nào dùng?</th>
+                <th>Bắt buộc?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>if</code></td>
+                <td>Luôn luôn — đây là điều kiện đầu tiên</td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td><code>elif</code></td>
+                <td>Khi cần kiểm tra thêm nhiều điều kiện khác</td>
+                <td><span class="status-badge status-no">Không</span></td>
+              </tr>
+              <tr>
+                <td><code>else</code></td>
+                <td>Xử lý trường hợp không có điều kiện nào đúng</td>
+                <td><span class="status-badge status-no">Không</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== CÚ PHÁP ======================== -->
+        <section id="cu-phap">
+          <h2>1. Cú pháp cơ bản</h2>
+          <p>Cú pháp tổng quát của một cấu trúc điều khiển đầy đủ:</p>
+          <pre><code>if &lt;điều_kiện_1&gt;:
+    # Thực thi khi điều_kiện_1 đúng
+elif &lt;điều_kiện_2&gt;:
+    # Thực thi khi điều_kiện_1 sai và điều_kiện_2 đúng
+elif &lt;điều_kiện_3&gt;:
+    # Thực thi khi điều_kiện_1, 2 sai và điều_kiện_3 đúng
+else:
+    # Thực thi khi tất cả các điều kiện trên đều sai</code></pre>
+
+          <div class="note">
+            <strong>Indentation (thụt lề):</strong> Python dùng thụt lề 4 dấu cách (hoặc 1 tab) để phân biệt các khối lệnh. Thiếu hoặc thừa thụt lề sẽ gây lỗi <code>IndentationError</code>.
+          </div>
+        </section>
+
+        <!-- ======================== IF ĐƠN ======================== -->
+        <section id="if-don">
+          <h2>2. Chỉ dùng if</h2>
+          <p>Khi chỉ cần thực thi lệnh nếu điều kiện đúng, dùng mình <code>if</code>:</p>
+          <pre><code>age = 20
+
+if age >= 18:
+    print("Bạn đã đủ tuổi trưởng thành.")
+
+# Nếu age = 20 → in ra: "Bạn đã đủ tuổi trưởng thành."
+# Nếu age = 15 → không in ra gì</code></pre>
+        </section>
+
+        <!-- ======================== IF ELSE ======================== -->
+        <section id="if-else">
+          <h2>3. if … else</h2>
+          <p>Khi cần xử lý cả hai trường hợp đúng và sai:</p>
+          <pre><code>number = int(input("Nhập số nguyên: "))
+
+if number % 2 == 0:
+    print(number, "là số chẵn.")
+else:
+    print(number, "là số lẻ.")</code></pre>
+
+          <p>Flow hoạt động:</p>
+          <ul>
+            <li>Nếu <code>number = 10</code> → <code>10 % 2 == 0</code> đúng → in "10 là số chẵn."</li>
+            <li>Nếu <code>number = 11</code> → <code>11 % 2 == 0</code> sai → vào <code>else</code> → in "11 là số lẻ."</li>
+          </ul>
+        </section>
+
+        <!-- ======================== IF ELIF ELSE ======================== -->
+        <section id="if-elif-else">
+          <h2>4. if … elif … else</h2>
+          <p>Khi có <strong>nhiều hơn hai trường hợp</strong> cần kiểm tra, dùng thêm <code>elif</code>:</p>
+          <pre><code>score = float(input("Nhập điểm môn học (0–10): "))
+
+if score > 8:
+    print("Bạn đạt loại Giỏi.")
+elif score > 6:
+    print("Bạn đạt loại Khá.")
+elif score > 4:
+    print("Bạn đạt loại Trung bình.")
+else:
+    print("Bạn đạt loại Yếu.")</code></pre>
+
+          <div class="note">
+            Python kiểm tra các điều kiện <strong>từ trên xuống dưới</strong>. Khi một điều kiện đúng, nó thực thi khối lệnh tương ứng rồi <strong>bỏ qua toàn bộ các nhánh còn lại</strong> — kể cả khi những nhánh dưới cũng đúng.
+          </div>
+        </section>
+
+        <!-- ======================== KIỂM TRA TỪ TRÊN XUỐNG ======================== -->
+        <section id="kiem-tra-tren-xuong">
+          <h2>5. Kiểm tra từ trên xuống</h2>
+          <p>
+            Đây là nguyên tắc quan trọng nhất cần nhớ khi dùng <code>if/elif/else</code>. Hãy quan sát ví dụ sau với <code>score = 7.5</code>:
+          </p>
+          <pre><code>score = 7.5
+
+if score > 8:       # 7.5 > 8  → SAI → bỏ qua
+    print("Giỏi")
+elif score > 6:     # 7.5 > 6  → ĐÚNG → thực thi, dừng lại
+    print("Khá")
+else:               # Không bao giờ chạy đến đây
+    print("Yếu")
+
+# Output: Khá</code></pre>
+
+          <p>
+            Dù điều kiện <code>score > 6</code> đúng, Python <strong>không tiếp tục</strong> kiểm tra <code>else</code> nữa. Toàn bộ cấu trúc kết thúc ngay khi tìm thấy điều kiện đúng đầu tiên.
+          </p>
+
+          <div class="danger">
+            <strong>Lỗi hay gặp — điều kiện chồng lấn:</strong> Tránh viết các điều kiện <code>elif</code> mà không xét điều kiện trước đó. Ví dụ sai:
+            <pre><code># SAI — điều kiện chồng lấn
+if age &lt; 6:
+    print("Miễn phí")
+if age &lt; 60:        # ← if thứ hai TÁCH BIỆT, không phải elif
+    print("70.000") # Tuổi = 4 vẫn in dòng này!</code></pre>
+            Dùng <code>elif</code> thay vì <code>if</code> thứ hai để tránh nhiều điều kiện cùng đúng.
+          </div>
+        </section>
+
+        <!-- ======================== TOÁN TỬ LOGIC ======================== -->
+        <section id="toan-tu-logic">
+          <h2>6. Toán tử logic (and / or / not)</h2>
+          <p>Kết hợp nhiều điều kiện trong một dòng bằng toán tử logic:</p>
+
+          <table class="pro-table">
+            <caption>Toán tử logic trong Python</caption>
+            <thead>
+              <tr><th>Toán tử</th><th>Ý nghĩa</th><th>Ví dụ</th><th>Kết quả</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>and</code></td><td>Cả hai điều kiện phải đúng</td><td><code>6 &lt;= age and age &lt; 18</code></td><td>True khi age = 10</td></tr>
+              <tr><td><code>or</code></td><td>Ít nhất một điều kiện đúng</td><td><code>age &lt; 6 or age &gt;= 60</code></td><td>True khi age = 3 hoặc 65</td></tr>
+              <tr><td><code>not</code></td><td>Phủ định điều kiện</td><td><code>not (year % 400 == 0)</code></td><td>True khi năm không chia hết 400</td></tr>
+            </tbody>
+          </table>
+
+          <pre><code>age = 15
+
+if 6 <= age and age < 18:
+    print("Vé thiếu niên: 50.000đ")
+
+# Tương đương cách viết dài hơn:
+if age >= 6:
+    if age < 18:
+        print("Vé thiếu niên: 50.000đ")</code></pre>
+        </section>
+
+        <!-- ======================== SO SÁNH KÉP ======================== -->
+        <section id="if-long">
+          <h2>7. So sánh kép (chained comparison)</h2>
+          <p>Python cho phép viết điều kiện kép ngắn gọn hơn so với nhiều ngôn ngữ khác:</p>
+          <pre><code># Cách thông thường
+if 6 <= age and age < 18:
+    ...
+
+# Cách Python — so sánh kép (chained comparison)
+if 6 <= age < 18:
+    ...
+
+# Cả hai cách cho kết quả hoàn toàn giống nhau</code></pre>
+
+          <div class="note">
+            So sánh kép dễ đọc hơn và sát với ký hiệu toán học. Hãy dùng cách này khi kiểm tra một biến nằm trong một khoảng giá trị.
+          </div>
+        </section>
+
+        <!-- ======================== IF LỒNG NHAU ======================== -->
+        <section id="if-long-2">
+          <h2>8. if lồng nhau (nested if)</h2>
+          <p>Bạn có thể đặt một cấu trúc <code>if</code> bên trong một cấu trúc <code>if</code> khác:</p>
+          <pre><code>year = int(input("Nhập năm: "))
+
+if year % 4 == 0:               # chia hết cho 4?
+    if year % 100 == 0 and year % 400 != 0:
+        print(year, "không phải năm nhuận.")
+    else:
+        print(year, "là năm nhuận.")
+else:
+    print(year, "không phải năm nhuận.")</code></pre>
+
+          <div class="note">
+            Nên hạn chế lồng quá nhiều cấp — code trở nên khó đọc. Khi có thể, hãy dùng <code>and</code> / <code>or</code> để gộp điều kiện lại trên một dòng.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ 1 ======================== -->
+        <section id="vi-du-1">
+          <h2>9. Ví dụ: kiểm tra số chẵn / lẻ</h2>
+          <p>Bài toán đơn giản nhất để làm quen với <code>if/else</code>: nhập một số nguyên và xác định chẵn hay lẻ.</p>
+          <pre><code>number = int(input("Nhập số nguyên: "))
+
+if number % 2 == 0:
+    print("Số nhập vào", number, "là số chẵn.")
+else:
+    print("Số nhập vào", number, "là số lẻ.")</code></pre>
+
+          <p><strong>Kết quả chạy thử:</strong></p>
+          <pre><code># Lần 1:
+# Nhập số nguyên: 10
+# → Số nhập vào 10 là số chẵn.
+
+# Lần 2:
+# Nhập số nguyên: 11
+# → Số nhập vào 11 là số lẻ.</code></pre>
+        </section>
+
+        <!-- ======================== VÍ DỤ 2 ======================== -->
+        <section id="vi-du-2">
+          <h2>10. Ví dụ: xếp loại học lực</h2>
+          <p>Nhập điểm từ 0–10 và in ra xếp loại tương ứng. Đây là ví dụ điển hình cho <code>if/elif/else</code> với nhiều nhánh.</p>
+          <pre><code>score = float(input("Nhập điểm môn học (0–10): "))
+
+if score > 8:
+    print("Bạn đạt loại Giỏi.")
+elif score > 6:
+    print("Bạn đạt loại Khá.")
+else:
+    print("Bạn đạt loại Trung bình / Yếu.")</code></pre>
+
+          <p><strong>Bảng kết quả:</strong></p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Điểm nhập vào</th><th>Điều kiện đúng đầu tiên</th><th>Kết quả in ra</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>9.0</td><td><code>score &gt; 8</code> → Đúng</td><td>Bạn đạt loại Giỏi.</td></tr>
+              <tr><td>7.5</td><td><code>score &gt; 8</code> → Sai, <code>score &gt; 6</code> → Đúng</td><td>Bạn đạt loại Khá.</td></tr>
+              <tr><td>5.0</td><td>Cả hai điều kiện Sai → vào else</td><td>Bạn đạt loại Trung bình / Yếu.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== VÍ DỤ 3 ======================== -->
+        <section id="vi-du-3">
+          <h2>11. Ví dụ: giá vé theo tuổi</h2>
+          <p>
+            Nhập tuổi của người dùng và in ra giá vé vào công viên theo quy định:
+          </p>
+          <ul>
+            <li>Dưới 6 tuổi → <strong>Miễn phí</strong></li>
+            <li>6 đến dưới 18 tuổi → <strong>50.000đ</strong></li>
+            <li>18 đến dưới 60 tuổi → <strong>70.000đ</strong></li>
+            <li>Từ 60 tuổi trở lên → <strong>40.000đ</strong></li>
+          </ul>
+          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+
+if age < 6:
+    print("Giá vé: Miễn phí")
+elif 6 <= age < 18:
+    print("Giá vé: 50.000đ")
+elif 18 <= age < 60:
+    print("Giá vé: 70.000đ")
+else:                           # age >= 60
+    print("Giá vé: 40.000đ")</code></pre>
+
+          <p><strong>Kết quả chạy thử:</strong></p>
+          <pre><code># Nhập tuổi của bạn: 4   → Giá vé: Miễn phí
+# Nhập tuổi của bạn: 15  → Giá vé: 50.000đ
+# Nhập tuổi của bạn: 21  → Giá vé: 70.000đ
+# Nhập tuổi của bạn: 65  → Giá vé: 40.000đ</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý thực tế:</strong> Chương trình này không xử lý trường hợp người dùng nhập chữ hoặc số âm. Khi học đến <em>vòng lặp</em> và <em>xử lý ngoại lệ (exception)</em>, bạn có thể quay lại cải tiến phần này.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ 4 ======================== -->
+        <section id="vi-du-4">
+          <h2>12. Ví dụ: kiểm tra năm nhuận</h2>
+          <p>
+            Quy tắc xác định năm nhuận:
+          </p>
+          <ul>
+            <li>Chia hết cho 4 → <em>có thể</em> là năm nhuận.</li>
+            <li>Nhưng nếu chia hết cho 100 <strong>mà không</strong> chia hết cho 400 → <em>không phải</em> năm nhuận.</li>
+            <li>Ví dụ: 2000 là năm nhuận (chia hết 400); 1900 không phải (chia hết 100 nhưng không chia hết 400); 2024 là năm nhuận (chia hết 4, không chia hết 100).</li>
+          </ul>
+          <pre><code>year = int(input("Nhập năm: "))
+
+if year % 4 == 0:
+    # Chia hết 4 — kiểm tra thêm ngoại lệ 100 và 400
+    if year % 100 == 0 and year % 400 != 0:
+        print(year, "không phải năm nhuận.")
+    else:
+        print(year, "là năm nhuận.")
+else:
+    # Không chia hết 4 → chắc chắn không phải năm nhuận
+    print(year, "không phải năm nhuận.")</code></pre>
+
+          <p><strong>Kiểm tra nhanh:</strong></p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Năm</th><th>% 4</th><th>% 100</th><th>% 400</th><th>Kết quả</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2024</td><td>0 ✓</td><td>24 ✗</td><td>—</td><td><span class="status-badge status-yes">Năm nhuận</span></td></tr>
+              <tr><td>1900</td><td>0 ✓</td><td>0 ✓</td><td>300 ✗</td><td><span class="status-badge status-no">Không nhuận</span></td></tr>
+              <tr><td>2000</td><td>0 ✓</td><td>0 ✓</td><td>0 ✓</td><td><span class="status-badge status-yes">Năm nhuận</span></td></tr>
+              <tr><td>2023</td><td>3 ✗</td><td>—</td><td>—</td><td><span class="status-badge status-no">Không nhuận</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== VÍ DỤ 5 ======================== -->
+        <section id="vi-du-5">
+          <h2>13. Ví dụ: chuyển đổi nhiệt độ</h2>
+          <p>
+            Cho phép người dùng chọn chiều chuyển đổi rồi thực hiện tính toán:
+          </p>
+          <ul>
+            <li>Nhập <code>1</code> → chuyển từ °F sang °C</li>
+            <li>Nhập <code>2</code> → chuyển từ °C sang °F</li>
+          </ul>
+          <pre><code>print("Nhập yêu cầu của bạn:")
+print("1. Chuyển đổi từ độ F sang độ C")
+print("2. Chuyển đổi từ độ C sang độ F")
+choice = input("Lựa chọn của bạn: ")
+
+if choice == "1":
+    # F → C
+    f = float(input("Nhập độ F: "))
+    c = (f - 32) / 1.8
+    print("Độ C nhận được:", c)
+
+if choice == "2":
+    # C → F
+    c = float(input("Nhập độ C: "))
+    f = c * 1.8 + 32
+    print("Độ F nhận được:", f)</code></pre>
+
+          <p><strong>Kết quả chạy thử:</strong></p>
+          <pre><code># Lựa chọn: 1 → Nhập độ F: 30 → Độ C nhận được: -1.111...
+# Lựa chọn: 2 → Nhập độ C: 20 → Độ F nhận được: 68.0</code></pre>
+
+          <div class="note">
+            <strong>Công thức:</strong><br>
+            °C = (°F − 32) ÷ 1.8<br>
+            °F = °C × 1.8 + 32
+          </div>
+
+          <div class="warning">
+            Trong ví dụ này, hai khối <code>if</code> được viết <strong>tách biệt nhau</strong> (không dùng <code>elif</code>). Điều này vẫn đúng vì <code>choice</code> không thể đồng thời bằng <code>"1"</code> và <code>"2"</code>. Tuy nhiên, dùng <code>if/elif</code> là best practice và hiệu quả hơn vì tránh kiểm tra điều kiện thừa.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>14. Bảng tổng hợp</h2>
+          <table class="pro-table">
+            <caption>Tổng hợp các thành phần của cấu trúc điều khiển</caption>
+            <thead>
+              <tr><th>Thành phần</th><th>Cú pháp</th><th>Ghi chú</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Điều kiện đơn</td><td><code>if x &gt; 0:</code></td><td>Bắt buộc phải có</td></tr>
+              <tr><td>Nhánh phủ định</td><td><code>else:</code></td><td>Không có điều kiện đi kèm</td></tr>
+              <tr><td>Nhánh bổ sung</td><td><code>elif x &gt; 5:</code></td><td>Có thể có nhiều <code>elif</code></td></tr>
+              <tr><td>Kết hợp điều kiện</td><td><code>if a and b:</code></td><td><code>and</code>, <code>or</code>, <code>not</code></td></tr>
+              <tr><td>So sánh kép</td><td><code>if 0 &lt;= x &lt; 10:</code></td><td>Đặc trưng của Python</td></tr>
+              <tr><td>Lồng nhau</td><td><code>if …:<br>&nbsp;&nbsp;if …:</code></td><td>Hạn chế quá 2 cấp lồng</td></tr>
+              <tr><td>Lệnh rỗng</td><td><code>pass</code></td><td>Giữ chỗ khi khối lệnh chưa có nội dung</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>15. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi dùng cấu trúc điều khiển</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>IndentationError</code></td>
+                <td>Thiếu hoặc thừa thụt lề bên trong khối <code>if</code></td>
+                <td>Dùng đúng 4 dấu cách; không trộn tab và space</td>
+              </tr>
+              <tr>
+                <td><code>SyntaxError: expected ':'</code></td>
+                <td>Quên dấu hai chấm <code>:</code> sau điều kiện</td>
+                <td>Thêm <code>:</code> cuối mỗi dòng <code>if</code> / <code>elif</code> / <code>else</code></td>
+              </tr>
+              <tr>
+                <td>Dùng <code>=</code> thay vì <code>==</code></td>
+                <td><code>if x = 5:</code> — gán thay vì so sánh</td>
+                <td>Dùng <code>==</code> để so sánh bằng</td>
+              </tr>
+              <tr>
+                <td>Điều kiện chồng lấn</td>
+                <td>Viết nhiều <code>if</code> độc lập thay vì <code>elif</code></td>
+                <td>Dùng <code>elif</code> để đảm bảo chỉ một nhánh thực thi</td>
+              </tr>
+              <tr>
+                <td>So sánh string nhập từ bàn phím</td>
+                <td><code>input()</code> trả về string, so sánh <code>== 1</code> (int) luôn sai</td>
+                <td>So sánh <code>== "1"</code> (string) hoặc ép kiểu <code>int(input(...))</code></td>
+              </tr>
+              <tr>
+                <td>Thiếu <code>else</code> khi cần fallback</td>
+                <td>Không có nhánh xử lý trường hợp ngoài dự kiến</td>
+                <td>Luôn thêm <code>else</code> để bắt trường hợp không hợp lệ</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>16. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Số dương, âm hay bằng 0</h3>
+            <p>Nhập một số thực. In ra "Số dương", "Số âm" hoặc "Bằng 0" tương ứng.</p>
+            <pre><code>num = float(input("Nhập số: "))
+
+if num > 0:
+    print("Số dương")
+elif num < 0:
+    print("Số âm")
+else:
+    print("Bằng 0")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Xếp loại học sinh chi tiết hơn</h3>
+            <p>Mở rộng ví dụ xếp loại để có 4 mức: Xuất sắc (&gt;9), Giỏi (&gt;8), Khá (&gt;6), Trung bình (&gt;4), Yếu (còn lại).</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Máy tính đơn giản</h3>
+            <p>
+              Nhập hai số và một phép tính (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>). Dùng <code>if/elif/else</code> để tính và in kết quả. Lưu ý xử lý trường hợp chia cho 0.
+            </p>
+            <pre><code>a = float(input("Nhập số a: "))
+b = float(input("Nhập số b: "))
+op = input("Phép tính (+, -, *, /): ")
+
+if op == "+":
+    print("Kết quả:", a + b)
+elif op == "-":
+    print("Kết quả:", a - b)
+elif op == "*":
+    print("Kết quả:", a * b)
+elif op == "/":
+    if b == 0:
+        print("Lỗi: không thể chia cho 0.")
+    else:
+        print("Kết quả:", a / b)
+else:
+    print("Phép tính không hợp lệ.")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Ngày trong tuần</h3>
+            <p>
+              Nhập vào một số từ 1 đến 7. In ra tên ngày tương ứng (1 = Thứ Hai, …, 7 = Chủ Nhật). Nếu số ngoài khoảng, in "Không hợp lệ".
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: BMI và phân loại</h3>
+            <p>
+              Nhập cân nặng (kg) và chiều cao (m). Tính BMI = cân nặng / chiều cao². Dùng <code>if/elif/else</code> phân loại: Thiếu cân (BMI &lt; 18.5), Bình thường (18.5–24.9), Thừa cân (25–29.9), Béo phì (≥ 30).
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>if</code> luôn là bước đầu — kiểm tra điều kiện đầu tiên.</li>
+            <li><code>elif</code> kiểm tra điều kiện tiếp theo khi điều kiện trước sai. Có thể có nhiều <code>elif</code>.</li>
+            <li><code>else</code> xử lý tất cả trường hợp còn lại — không có điều kiện đi kèm.</li>
+            <li>Python kiểm tra <strong>từ trên xuống dưới</strong>. Khi điều kiện nào đúng, thực thi rồi <strong>bỏ qua hết</strong> những nhánh bên dưới.</li>
+            <li>Kết hợp điều kiện bằng <code>and</code>, <code>or</code>, <code>not</code>.</li>
+            <li>So sánh kép <code>6 &lt;= age &lt; 18</code> là đặc trưng của Python — ngắn gọn và dễ đọc.</li>
+            <li>Hạn chế lồng <code>if</code> quá nhiều cấp. Ưu tiên dùng <code>and</code>/<code>or</code> để đơn giản hóa.</li>
+          </ul>
+          <div class="success">
+            <strong>Chúc mừng!</strong> Bạn đã nắm vững cấu trúc điều khiển — nền tảng để xây dựng mọi chương trình có logic phân nhánh. Bài tiếp theo chúng ta sẽ học về <strong>vòng lặp</strong> (<code>for</code> và <code>while</code>) để xử lý các tác vụ lặp đi lặp lại.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 09. Cấu trúc điều khiển if / elif / else trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>
