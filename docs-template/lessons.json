@@ -1,0 +1,40 @@
+{
+  "title": "Bộ tài liệu mẫu",
+  "description": "Nội dung bài học mẫu để bắt đầu với cấu trúc tài liệu chung.",
+  "types": [
+    {
+      "id": "basic",
+      "title": "Cơ bản",
+      "icon": "⭐",
+      "color": "#38bdf8"
+    },
+    {
+      "id": "advanced",
+      "title": "Nâng cao",
+      "icon": "⚡",
+      "color": "#f59e0b"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "type": "basic",
+      "title": "Giới thiệu cấu trúc tài liệu",
+      "description": "Hướng dẫn cách dùng cấu trúc template, mục đích và cách triển khai.",
+      "file": "01-gioi-thieu.html",
+      "sections": 3,
+      "status": "published",
+      "tags": ["template", "intro"]
+    },
+    {
+      "id": "02",
+      "type": "advanced",
+      "title": "Mở rộng cấu trúc cho khóa học khác",
+      "description": "Cách tái sử dụng template để tạo các tài liệu mới nhanh chóng.",
+      "file": "02-mo-rong-cau-truc.html",
+      "sections": 4,
+      "status": "published",
+      "tags": ["reuse", "guide"]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bộ tài liệu mẫu</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    const savedTheme = localStorage.getItem('docs_dashboard_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo"><span>DOC</span></div>
+    <div class="header-text">
+      <h1 id="seriesTitle"><em>Tài liệu</em> mẫu</h1>
+      <p id="seriesDesc">Đây là cấu trúc chuẩn để dùng cho các tài liệu bài học.</p>
+    </div>
+    <div class="header-search">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm bài học..." oninput="doSearch(this.value)" />
+    </div>
+    <a class="quick-nav-btn" href="../index.html" title="Về trang tổng">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 11 9-8 9 8"/>
+        <path d="M5 10v10h14V10"/>
+        <path d="M9 20v-6h6v6"/>
+      </svg>
+      <span>Trang tổng</span>
+    </a>
+    <button class="quick-nav-btn" type="button" onclick="openQuickNav()" title="Mở dashboard lộ trình">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      <span>Lộ trình</span>
+    </button>
+    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Đổi giao diện"></button>
+  </div>
+  <div class="tabs-shell">
+    <button class="tab-btn active" onclick="filterCat('all', this)">Tất cả</button>
+    <div class="tabs-row" id="tabNav"></div>
+  </div>
+</header>
+
+<div class="quick-nav-overlay" id="quickNavOverlay" onclick="closeQuickNav(event)" aria-hidden="true" hidden>
+  <section class="quick-nav-panel" role="dialog" aria-modal="true" aria-labelledby="quickNavTitle" onclick="event.stopPropagation()">
+    <div class="quick-nav-head">
+      <div>
+        <div class="quick-nav-kicker">Dashboard</div>
+        <h2 id="quickNavTitle">Lộ trình học tập</h2>
+        <p id="quickNavDesc">Đang tải danh sách liên kết...</p>
+      </div>
+      <button class="quick-nav-close" type="button" onclick="closeQuickNav()" aria-label="Đóng dashboard">×</button>
+    </div>
+    <div class="quick-nav-grid" id="quickNavGrid"></div>
+  </section>
+</div>
+
+<div class="page">
+  <main class="content">
+    <div class="sort-bar">
+      <div class="sort-bar-label">Danh sách hiển thị: <strong id="visibleCount">–</strong> bài học</div>
+      <div class="sort-pills">
+        <button class="sort-pill active" onclick="setSortMode('order', this)" title="Theo thứ tự số">Theo thứ tự</button>
+        <button class="sort-pill" onclick="setSortMode('type', this)" title="Nhóm theo loại">Theo danh mục</button>
+      </div>
+    </div>
+
+    <div id="loading">⏳ Đang đồng bộ dữ liệu bài học...</div>
+    <div class="lessons-list" id="lessonGrid" style="display:none"></div>
+    <div id="emptyMsg" style="display:none">🔍 Không tìm thấy kết quả phù hợp với bộ lọc.</div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="widget">
+      <div class="widget-title">Phân loại bài viết</div>
+      <div class="filter-list" id="sidebarCats"></div>
+    </div>
+  </aside>
+</div>
+
+<script src="doc-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Trang tổng",
+    "description": "Trở về trang chính của bộ tài liệu.",
+    "url": "../index.html",
+    "status": "active"
+  },
+  {
+    "title": "Xem mẫu LPIC",
+    "description": "Tham khảo cấu trúc tài liệu đang dùng làm mẫu.",
+    "url": "../lpic-101-102/index.html",
+    "status": "active"
+  }
+]

@@ -1,10 +1,683 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>04. Các phép toán so sánh và logic trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-    <h1>Hello</h1>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 04</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="03" href="03-chuoi-string-trong-python.html">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="05" href="05-kieu-du-lieu-list.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#bang-so-sanh">1. Bảng phép toán so sánh</a>
+      <a href="#bang-logic">2. Bảng phép toán logic</a>
+      <a href="#bang-su-that-and">3. Bảng chân trị — and</a>
+      <a href="#bang-su-that-or">4. Bảng chân trị — or</a>
+      <a href="#bang-su-that-not">5. Bảng chân trị — not</a>
+      <a href="#vi-du-so-sanh">6. Ví dụ: Phép toán so sánh</a>
+      <a href="#vi-du-and">7. Ví dụ: Kiểm tra khoảng (and)</a>
+      <a href="#vi-du-or">8. Ví dụ: Kiểm tra ngoài khoảng (or)</a>
+      <a href="#vi-du-not">9. Ví dụ: Phủ định (not)</a>
+      <a href="#ket-hop-nhieu-dieu-kien">10. Kết hợp nhiều điều kiện</a>
+      <a href="#dau-ngoac">11. Dùng dấu ngoặc để rõ ưu tiên</a>
+      <a href="#vi-du-club">12. Ví dụ: Kiểm tra vào club</a>
+      <a href="#vi-du-rap">13. Ví dụ: Kiểm tra vào rạp chiếu phim</a>
+      <a href="#loi-thuong-gap">14. Lỗi thường gặp</a>
+      <a href="#bai-tap">15. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>04. Các phép toán so sánh và logic trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về comparison operators và logical operators: so sánh bằng, không bằng, lớn hơn, nhỏ hơn, kết hợp điều kiện với <code>and</code> / <code>or</code> / <code>not</code> và áp dụng vào các bài toán thực tế.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Phép toán so sánh</strong> dùng để so sánh hai giá trị với nhau. Kết quả luôn là kiểu <strong>boolean</strong>: <code>True</code> hoặc <code>False</code>.
+          </p>
+          <p>
+            <strong>Phép toán logic</strong> dùng để kết hợp các <em>điều kiện</em> (conditional statements) lại với nhau. Một conditional statement là bất kỳ biểu thức nào chỉ nhận giá trị <code>True</code> hoặc <code>False</code> — ví dụ: một biến boolean, một phép so sánh, hoặc kết quả gọi hàm.
+          </p>
+
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> nắm vững 6 phép toán so sánh, 3 phép toán logic (<code>and</code>, <code>or</code>, <code>not</code>), hiểu bảng chân trị và biết kết hợp chúng để giải các bài toán kiểm tra điều kiện thực tế.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG SO SÁNH ======================== -->
+        <section id="bang-so-sanh">
+          <h2>1. Bảng phép toán so sánh</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Phép toán</th>
+                <th>Ký hiệu</th>
+                <th>Ví dụ</th>
+                <th>Kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bằng nhau</td>
+                <td><code>==</code></td>
+                <td><code>20 == 20</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td>Không bằng</td>
+                <td><code>!=</code></td>
+                <td><code>20 != 10</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td>Lớn hơn</td>
+                <td><code>&gt;</code></td>
+                <td><code>20 &gt; 10</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td>Nhỏ hơn</td>
+                <td><code>&lt;</code></td>
+                <td><code>15 &lt; 10</code></td>
+                <td><code>False</code></td>
+              </tr>
+              <tr>
+                <td>Lớn hơn hoặc bằng</td>
+                <td><code>&gt;=</code></td>
+                <td><code>10 &gt;= 10</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td>Nhỏ hơn hoặc bằng</td>
+                <td><code>&lt;=</code></td>
+                <td><code>15 &lt;= 15</code></td>
+                <td><code>True</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning">
+            <strong>Dễ nhầm:</strong> <code>=</code> là toán tử <em>gán</em> giá trị (<code>x = 5</code>), còn <code>==</code> mới là toán tử <em>so sánh</em> bằng (<code>x == 5</code>). Nhầm lẫn hai ký hiệu này là lỗi rất phổ biến.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG LOGIC ======================== -->
+        <section id="bang-logic">
+          <h2>2. Bảng phép toán logic</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Toán tử</th>
+                <th>Cú pháp</th>
+                <th>Kết quả <code>True</code> khi nào?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>and</code></td>
+                <td><code>stmt1 and stmt2</code></td>
+                <td>Cả hai điều kiện đều <code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>or</code></td>
+                <td><code>stmt1 or stmt2</code></td>
+                <td>Ít nhất một điều kiện là <code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>not</code></td>
+                <td><code>not stmt</code></td>
+                <td>Điều kiện gốc là <code>False</code> (phủ định)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BẢNG CHÂN TRỊ AND ======================== -->
+        <section id="bang-su-that-and">
+          <h2>3. Bảng chân trị — <code>and</code></h2>
+          <p>
+            Toán tử <code>and</code> chỉ trả về <code>True</code> khi <strong>tất cả</strong> các vế đều đúng.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th><code>stmt1</code></th>
+                <th><code>stmt2</code></th>
+                <th><code>stmt1 and stmt2</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>True</code></td>
+                <td><code>True</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>True</code></td>
+                <td><code>False</code></td>
+                <td><code>False</code></td>
+              </tr>
+              <tr>
+                <td><code>False</code></td>
+                <td><code>True</code></td>
+                <td><code>False</code></td>
+              </tr>
+              <tr>
+                <td><code>False</code></td>
+                <td><code>False</code></td>
+                <td><code>False</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BẢNG CHÂN TRỊ OR ======================== -->
+        <section id="bang-su-that-or">
+          <h2>4. Bảng chân trị — <code>or</code></h2>
+          <p>
+            Toán tử <code>or</code> trả về <code>True</code> khi <strong>ít nhất một</strong> vế đúng. Chỉ trả về <code>False</code> khi cả hai vế đều sai.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th><code>stmt1</code></th>
+                <th><code>stmt2</code></th>
+                <th><code>stmt1 or stmt2</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>True</code></td>
+                <td><code>True</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>True</code></td>
+                <td><code>False</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>False</code></td>
+                <td><code>True</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>False</code></td>
+                <td><code>False</code></td>
+                <td><code>False</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BẢNG CHÂN TRỊ NOT ======================== -->
+        <section id="bang-su-that-not">
+          <h2>5. Bảng chân trị — <code>not</code></h2>
+          <p>
+            Toán tử <code>not</code> đảo ngược giá trị boolean của điều kiện.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th><code>stmt</code></th>
+                <th><code>not stmt</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>True</code></td>
+                <td><code>False</code></td>
+              </tr>
+              <tr>
+                <td><code>False</code></td>
+                <td><code>True</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== VÍ DỤ SO SÁNH ======================== -->
+        <section id="vi-du-so-sanh">
+          <h2>6. Ví dụ: Phép toán so sánh</h2>
+          <p>Phép so sánh áp dụng được cho cả số nguyên, số thực lẫn chuỗi.</p>
+
+          <h3>So sánh số</h3>
+          <pre><code># Kiểm tra bằng nhau
+print(20 == 20)   # True
+print(20 == 10)   # False
+
+# Kiểm tra không bằng
+print(20 != 10)   # True
+
+# Lớn hơn / nhỏ hơn
+print(20 > 10)    # True
+print(10 >= 10)   # True
+print(15 < 10)    # False
+print(15 <= 15)   # True</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>True
+False
+True
+True
+True
+False
+True</code></pre>
+
+          <h3>So sánh chuỗi</h3>
+          <p>
+            Python so sánh chuỗi theo thứ tự từ điển (lexicographic). Toán tử <code>==</code> kiểm tra hai chuỗi có giống nhau từng ký tự không.
+          </p>
+          <pre><code>print('anh' == 'anh')   # True
+print('anh' == 'em')    # False
+print('anh' != 'em')    # True</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>True
+False
+True</code></pre>
+        </section>
+
+        <!-- ======================== VÍ DỤ AND ======================== -->
+        <section id="vi-du-and">
+          <h2>7. Ví dụ: Kiểm tra số trong khoảng (<code>and</code>)</h2>
+          <p>
+            Kiểm tra xem một số có nằm trong đoạn <code>[10, 20]</code> không — tức là phải đồng thời lớn hơn hoặc bằng 10 <strong>và</strong> nhỏ hơn hoặc bằng 20.
+          </p>
+
+          <pre><code>number = 15
+in_range = (number >= 10) and (number <= 20)
+print("Số nằm trong khoảng [10, 20]:", in_range)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Số nằm trong khoảng [10, 20]: True</code></pre>
+
+          <h3>Cú pháp gọn hơn — chained comparison</h3>
+          <p>Python hỗ trợ viết chuỗi so sánh liên tiếp rất tự nhiên, giống ký hiệu toán học:</p>
+          <pre><code>number = 15
+in_range = 10 <= number <= 20
+print("Số nằm trong khoảng [10, 20]:", in_range)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Số nằm trong khoảng [10, 20]: True</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> cú pháp <code>10 &lt;= number &lt;= 20</code> hoàn toàn hợp lệ trong Python và tương đương với <code>(10 &lt;= number) and (number &lt;= 20)</code>.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ OR ======================== -->
+        <section id="vi-du-or">
+          <h2>8. Ví dụ: Kiểm tra số ngoài khoảng (<code>or</code>)</h2>
+          <p>
+            Kiểm tra xem một số có nằm <em>ngoài</em> đoạn <code>[10, 20]</code> không — tức là nhỏ hơn 10 <strong>hoặc</strong> lớn hơn 20.
+          </p>
+
+          <pre><code>number = 30
+out_of_range = (number < 10) or (number > 20)
+print("Số nằm ngoài khoảng [10, 20]:", out_of_range)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Số nằm ngoài khoảng [10, 20]: True</code></pre>
+
+          <p>Giải thích với <code>number = 30</code>:</p>
+          <ul>
+            <li><code>30 &lt; 10</code> → <code>False</code></li>
+            <li><code>30 &gt; 20</code> → <code>True</code></li>
+            <li><code>False or True</code> → <code>True</code> ✓ (chỉ cần một vế đúng)</li>
+          </ul>
+        </section>
+
+        <!-- ======================== VÍ DỤ NOT ======================== -->
+        <section id="vi-du-not">
+          <h2>9. Ví dụ: Phủ định (<code>not</code>)</h2>
+          <p>
+            Toán tử <code>not</code> đặt trước một điều kiện để lấy giá trị ngược lại.
+          </p>
+
+          <pre><code>b = False
+print(not b)          # True — phủ định False
+
+print(not (6 > 5))    # False — 6 > 5 là True, not True = False</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>True
+False</code></pre>
+
+          <div class="note">
+            <strong>Dùng khi nào?</strong> <code>not</code> hữu ích khi bạn đã có một biến boolean và muốn kiểm tra trường hợp ngược lại, ví dụ: <code>if not is_logged_in:</code> thay vì <code>if is_logged_in == False:</code>.
+          </div>
+        </section>
+
+        <!-- ======================== KẾT HỢP NHIỀU ĐIỀU KIỆN ======================== -->
+        <section id="ket-hop-nhieu-dieu-kien">
+          <h2>10. Kết hợp nhiều điều kiện</h2>
+          <p>
+            Có thể nối nhiều điều kiện trong một biểu thức bằng cách dùng nhiều <code>and</code> / <code>or</code> liên tiếp:
+          </p>
+
+          <pre><code>age = 30
+has_id = True
+gender = 'Nam'
+
+result = (age >= 18) and has_id and (gender == 'Nam')
+print("Thỏa mãn tất cả điều kiện:", result)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Thỏa mãn tất cả điều kiện: True</code></pre>
+
+          <p>
+            Khi cần nối nhiều điều kiện mà có cả <code>and</code> lẫn <code>or</code>, thứ tự ưu tiên mặc định là: <code>not</code> &gt; <code>and</code> &gt; <code>or</code>. Để rõ ràng hơn, hãy dùng dấu ngoặc.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Mức ưu tiên</th>
+                <th>Toán tử</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cao nhất</td>
+                <td><code>not</code></td>
+              </tr>
+              <tr>
+                <td>Trung bình</td>
+                <td><code>and</code></td>
+              </tr>
+              <tr>
+                <td>Thấp nhất</td>
+                <td><code>or</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== DẤU NGOẶC ======================== -->
+        <section id="dau-ngoac">
+          <h2>11. Dùng dấu ngoặc để làm rõ thứ tự ưu tiên</h2>
+          <p>
+            Khi kết hợp nhiều phép toán, luôn nên dùng dấu ngoặc để tránh nhầm lẫn và dễ đọc hơn. Đây cũng là best practice được khuyến nghị.
+          </p>
+
+          <pre><code># Không có ngoặc — dễ nhầm thứ tự thực thi
+result = a or b and c          # b and c được tính trước
+
+# Có ngoặc — rõ ràng hơn
+result = a or (b and c)        # tường minh ý định
+result = (a or b) and c        # thay đổi kết quả hoàn toàn</code></pre>
+
+          <div class="note">
+            <strong>Lời khuyên:</strong> khi chưa chắc thứ tự ưu tiên, hãy luôn dùng dấu ngoặc để làm rõ điều kiện nào được tính trước. Code rõ ràng quan trọng hơn code ngắn.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ CLUB ======================== -->
+        <section id="vi-du-club">
+          <h2>12. Ví dụ thực hành: Kiểm tra vào club</h2>
+          <p>
+            Yêu cầu: người dùng có được vào club không? Điều kiện: <strong>tuổi ≥ 18</strong> <em>và</em> <strong>có ID</strong>.
+          </p>
+
+          <pre><code>age = 20
+has_id = True
+
+enter_club = (age >= 18) and has_id
+print("User có được vào club:", enter_club)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>User có được vào club: True</code></pre>
+
+          <h3>Thêm điều kiện thứ ba</h3>
+          <p>Mở rộng bài toán: club chỉ dành cho nam giới.</p>
+          <pre><code>age = 30
+has_id = True
+gender = 'Nam'
+
+enter_club = (age >= 18) and has_id and (gender == 'Nam')
+print("User có được vào club:", enter_club)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>User có được vào club: True</code></pre>
+
+          <h3>Kiểm tra các trường hợp</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>age</th>
+                <th>has_id</th>
+                <th>gender</th>
+                <th>Kết quả</th>
+                <th>Lý do</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>20</code></td>
+                <td><code>True</code></td>
+                <td><code>'Nam'</code></td>
+                <td><code>True</code></td>
+                <td>Tất cả điều kiện thỏa mãn</td>
+              </tr>
+              <tr>
+                <td><code>15</code></td>
+                <td><code>True</code></td>
+                <td><code>'Nam'</code></td>
+                <td><code>False</code></td>
+                <td>Tuổi không đủ 18</td>
+              </tr>
+              <tr>
+                <td><code>30</code></td>
+                <td><code>False</code></td>
+                <td><code>'Nam'</code></td>
+                <td><code>False</code></td>
+                <td>Không có ID</td>
+              </tr>
+              <tr>
+                <td><code>30</code></td>
+                <td><code>True</code></td>
+                <td><code>'Nữ'</code></td>
+                <td><code>False</code></td>
+                <td>Không phải nam giới</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== VÍ DỤ RẠP CHIẾU PHIM ======================== -->
+        <section id="vi-du-rap">
+          <h2>13. Ví dụ thực hành: Kiểm tra vào rạp chiếu phim</h2>
+          <p>
+            Yêu cầu: người dùng có được vào rạp chiếu phim không? Điều kiện:
+          </p>
+          <ul>
+            <li>Phải có vé — điều kiện tiên quyết.</li>
+            <li>Tuổi ≥ 18, <strong>hoặc</strong> nhỏ hơn 18 nhưng có bố mẹ đi kèm.</li>
+          </ul>
+
+          <pre><code>age = 15
+has_ticket = True
+has_parent = False
+
+# Điều kiện tuổi tác: đủ 18 HOẶC có bố mẹ đi kèm
+age_condition = (age >= 18) or has_parent
+
+# Điều kiện đầy đủ: phải có vé VÀ thỏa mãn điều kiện tuổi
+can_enter = has_ticket and age_condition
+
+print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
+
+          <p>Kết quả với <code>age=15</code>, <code>has_ticket=True</code>, <code>has_parent=False</code>:</p>
+          <pre><code>Có thể vào rạp chiếu phim: False</code></pre>
+
+          <p>Giải thích từng bước:</p>
+          <ul>
+            <li><code>age >= 18</code> → <code>15 >= 18</code> → <code>False</code></li>
+            <li><code>has_parent</code> → <code>False</code></li>
+            <li><code>age_condition = False or False</code> → <code>False</code></li>
+            <li><code>can_enter = True and False</code> → <code>False</code></li>
+          </ul>
+
+          <h3>Kiểm tra trường hợp có bố mẹ đi kèm</h3>
+          <pre><code>age = 15
+has_ticket = True
+has_parent = True
+
+age_condition = (age >= 18) or has_parent   # False or True = True
+can_enter = has_ticket and age_condition    # True and True  = True
+
+print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Có thể vào rạp chiếu phim: True</code></pre>
+
+          <h3>Kiểm tra trường hợp không có vé</h3>
+          <pre><code>age = 40
+has_ticket = False
+has_parent = True
+
+age_condition = (age >= 18) or has_parent   # True or True = True
+can_enter = has_ticket and age_condition    # False and True = False
+
+print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Có thể vào rạp chiếu phim: False</code></pre>
+
+          <div class="note">
+            <strong>Bài học:</strong> trong biểu thức <code>and</code>, chỉ cần một vế là <code>False</code> thì toàn bộ kết quả là <code>False</code>. Do đó điều kiện tiên quyết như "phải có vé" rất phù hợp đặt vào vế <code>and</code> đầu tiên.
+          </div>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>14. Lỗi thường gặp</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lỗi</th>
+                <th>Nguyên nhân</th>
+                <th>Cách sửa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dùng <code>=</code> thay vì <code>==</code></td>
+                <td><code>=</code> là gán, không phải so sánh</td>
+                <td>Dùng <code>==</code> để so sánh bằng nhau</td>
+              </tr>
+              <tr>
+                <td>Nhầm <code>and</code> / <code>or</code></td>
+                <td><code>and</code> yêu cầu tất cả đúng; <code>or</code> chỉ cần một đúng</td>
+                <td>Xác định rõ "cả hai" hay "ít nhất một"</td>
+              </tr>
+              <tr>
+                <td>Bỏ ngoặc khi kết hợp <code>and</code> và <code>or</code></td>
+                <td><code>and</code> ưu tiên hơn <code>or</code>, dễ cho kết quả sai</td>
+                <td>Luôn dùng dấu ngoặc để tường minh</td>
+              </tr>
+              <tr>
+                <td>So sánh kiểu khác nhau</td>
+                <td><code>'5' == 5</code> → <code>False</code> vì chuỗi ≠ số</td>
+                <td>Ép kiểu trước khi so sánh: <code>int('5') == 5</code></td>
+              </tr>
+              <tr>
+                <td>Viết <code>if x == True</code></td>
+                <td>Thừa, Python đã ngầm hiểu</td>
+                <td>Viết gọn: <code>if x:</code> hoặc <code>if not x:</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>15. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Kiểm tra số chẵn/lẻ</h3>
+            <p>Nhập một số nguyên. Kiểm tra xem số đó có phải số chẵn không và in ra kết quả <code>True</code> / <code>False</code>.</p>
+            <pre><code>n = int(input("Nhập một số nguyên: "))
+is_even = (n % 2 == 0)
+print("Là số chẵn:", is_even)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Kiểm tra tam giác hợp lệ</h3>
+            <p>Nhập ba cạnh <code>a</code>, <code>b</code>, <code>c</code>. Kiểm tra xem chúng có thể tạo thành một tam giác không (mỗi cạnh phải nhỏ hơn tổng hai cạnh còn lại).</p>
+            <pre><code>a = float(input("Nhập cạnh a: "))
+b = float(input("Nhập cạnh b: "))
+c = float(input("Nhập cạnh c: "))
+
+is_valid = (a + b > c) and (a + c > b) and (b + c > a)
+print("Là tam giác hợp lệ:", is_valid)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Phân loại tuổi</h3>
+            <p>Nhập tuổi. In ra <code>True</code> nếu người đó là <em>thiếu niên</em> (từ 13 đến 17 tuổi), ngược lại in ra <code>False</code>.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Kiểm tra đăng nhập đơn giản</h3>
+            <p>Cho trước <code>correct_username = "admin"</code> và <code>correct_password = "1234"</code>. Nhập username và password từ bàn phím. Kiểm tra xem cả hai có khớp không và in ra kết quả.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Có 6 phép toán so sánh: <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> — kết quả luôn là <code>True</code> hoặc <code>False</code>.</li>
+            <li><code>==</code> là so sánh bằng; <code>=</code> là gán giá trị — không được nhầm lẫn.</li>
+            <li><code>and</code>: tất cả vế phải đúng → kết quả mới là <code>True</code>.</li>
+            <li><code>or</code>: chỉ cần một vế đúng → kết quả là <code>True</code>.</li>
+            <li><code>not</code>: đảo ngược giá trị boolean.</li>
+            <li>Thứ tự ưu tiên: <code>not</code> &gt; <code>and</code> &gt; <code>or</code>. Luôn dùng <code>()</code> khi kết hợp để tránh nhầm.</li>
+            <li>Python hỗ trợ <em>chained comparison</em>: <code>10 &lt;= x &lt;= 20</code> thay cho <code>(x &gt;= 10) and (x &lt;= 20)</code>.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> phép toán so sánh và logic là nền tảng của <code>if/else</code>, <code>while</code> và lọc dữ liệu — hãy thử gán kết quả vào biến rồi in ra để kiểm tra từng trường hợp trước khi tích hợp vào cấu trúc điều kiện lớn hơn.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 04. Các phép toán so sánh và logic trong Python
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>

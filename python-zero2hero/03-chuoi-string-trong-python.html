@@ -1,10 +1,738 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>03. Chuỗi (String) trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-    <h1>Hello</h1>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 03</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="02" href="02-cac-phep-toan-so-hoc.html">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="04" href="04-cac-phep-toan-so-sanh-va-logic.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#khai-bao">1. Khai báo chuỗi</a>
+      <a href="#do-dai">2. Lấy chiều dài chuỗi</a>
+      <a href="#truy-cap-ky-tu">3. Truy cập ký tự theo index</a>
+      <a href="#index-duong">4. Index dương</a>
+      <a href="#index-am">5. Index âm</a>
+      <a href="#slicing">6. Slicing – lấy chuỗi con</a>
+      <a href="#noi-chuoi">7. Nối chuỗi</a>
+      <a href="#duyet-ky-tu">8. Duyệt qua các ký tự</a>
+      <a href="#kiem-tra-con">9. Kiểm tra chuỗi con</a>
+      <a href="#built-in-methods">10. Một số built-in methods</a>
+      <a href="#immutable">11. Chuỗi là immutable</a>
+      <a href="#dao-nguoc">12. Đảo ngược chuỗi</a>
+      <a href="#vi-du-ho-ten">13. Ví dụ: Kết hợp họ và tên</a>
+      <a href="#vi-du-chu-so">14. Ví dụ: In ra các chữ số</a>
+      <a href="#vi-du-nguyen-am">15. Ví dụ: Đếm nguyên âm</a>
+      <a href="#vi-du-file">16. Ví dụ: Tách tên file và extension</a>
+      <a href="#loi-thuong-gap">17. Lỗi thường gặp</a>
+      <a href="#bai-tap">18. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>03. Chuỗi (String) trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về kiểu dữ liệu chuỗi: khai báo, truy cập ký tự theo index, slicing, nối chuỗi, duyệt ký tự, kiểm tra chuỗi con và các built-in methods thông dụng.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Chuỗi (string)</strong> là chuỗi của các ký tự. Python không có kiểu dữ liệu riêng cho ký tự đơn lẻ (character) — một ký tự đơn thuần là một chuỗi có chiều dài bằng 1.
+          </p>
+          <p>
+            String là một trong những kiểu dữ liệu được dùng nhiều nhất trong lập trình: xử lý tên người dùng, đường dẫn file, nội dung văn bản, dữ liệu từ API…
+          </p>
+
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> biết khai báo chuỗi, truy cập ký tự bằng index dương/âm, lấy chuỗi con bằng slicing, nối chuỗi, duyệt qua ký tự, kiểm tra chuỗi con, và sử dụng các method cơ bản như <code>upper()</code>, <code>lower()</code>, <code>isdigit()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== KHAI BÁO ======================== -->
+        <section id="khai-bao">
+          <h2>1. Khai báo chuỗi</h2>
+          <p>Python hỗ trợ bốn cách khai báo chuỗi:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Cú pháp</th>
+                <th>Dùng khi nào</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nháy đơn <code>'...'</code></td>
+                <td>Chuỗi một dòng thông thường</td>
+                <td><code>'Hello'</code></td>
+              </tr>
+              <tr>
+                <td>Nháy kép <code>"..."</code></td>
+                <td>Chuỗi một dòng thông thường</td>
+                <td><code>"Hello"</code></td>
+              </tr>
+              <tr>
+                <td>Ba nháy kép <code>"""..."""</code></td>
+                <td>Chuỗi nhiều dòng</td>
+                <td><code>"""Dòng 1<br>Dòng 2"""</code></td>
+              </tr>
+              <tr>
+                <td>Ba nháy đơn <code>'''...'''</code></td>
+                <td>Chuỗi nhiều dòng</td>
+                <td><code>'''Dòng 1<br>Dòng 2'''</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code>my_string = 'Hello'
+print(my_string)
+print(type(my_string))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Hello
+&lt;class 'str'&gt;</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> dùng <code>type()</code> để kiểm tra kiểu dữ liệu của biến.
+          </div>
+        </section>
+
+        <!-- ======================== ĐỘ DÀI ======================== -->
+        <section id="do-dai">
+          <h2>2. Lấy chiều dài chuỗi</h2>
+          <p>
+            Hàm <code>len()</code> trả về số ký tự trong chuỗi.
+          </p>
+
+          <pre><code>my_string = 'Hello'
+print(len(my_string))</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>5</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> chuỗi <code>'Hello'</code> có 5 ký tự: <code>H</code>, <code>e</code>, <code>l</code>, <code>l</code>, <code>o</code>.
+          </div>
+        </section>
+
+        <!-- ======================== TRUY CẬP KÝ TỰ ======================== -->
+        <section id="truy-cap-ky-tu">
+          <h2>3. Truy cập ký tự theo index</h2>
+          <p>
+            Vì chuỗi là một dãy ký tự, ta có thể truy cập từng ký tự bằng cú pháp dấu ngoặc vuông <code>[]</code>.
+            Python hỗ trợ hai kiểu đánh index: <strong>index dương</strong> và <strong>index âm</strong>.
+          </p>
+        </section>
+
+        <!-- ======================== INDEX DƯƠNG ======================== -->
+        <section id="index-duong">
+          <h2>4. Index dương</h2>
+          <p>
+            Index dương bắt đầu từ <code>0</code> (ký tự đầu tiên) đến <code>n - 1</code> (ký tự cuối cùng), trong đó <code>n</code> là chiều dài chuỗi.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Ký tự</th>
+                <th>H</th><th>e</th><th>l</th><th>l</th><th>o</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Index dương</strong></td>
+                <td><code>0</code></td>
+                <td><code>1</code></td>
+                <td><code>2</code></td>
+                <td><code>3</code></td>
+                <td><code>4</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code>my_string = 'Hello'
+print(my_string[0])   # H – ký tự đầu tiên
+print(my_string[1])   # e – ký tự thứ hai
+print(my_string[4])   # o – ký tự cuối cùng</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>H
+e
+o</code></pre>
+
+          <div class="warning">
+            <strong>Lỗi index out of range:</strong> nếu truyền index vượt quá <code>n - 1</code>, Python báo lỗi <code>IndexError: string index out of range</code>.
+          </div>
+        </section>
+
+        <!-- ======================== INDEX ÂM ======================== -->
+        <section id="index-am">
+          <h2>5. Index âm</h2>
+          <p>
+            Index âm đếm ngược từ cuối chuỗi. Ký tự cuối cùng có index <code>-1</code>, tiếp theo là <code>-2</code>… đến <code>-n</code>.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Ký tự</th>
+                <th>H</th><th>e</th><th>l</th><th>l</th><th>o</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Index dương</strong></td>
+                <td><code>0</code></td>
+                <td><code>1</code></td>
+                <td><code>2</code></td>
+                <td><code>3</code></td>
+                <td><code>4</code></td>
+              </tr>
+              <tr>
+                <td><strong>Index âm</strong></td>
+                <td><code>-5</code></td>
+                <td><code>-4</code></td>
+                <td><code>-3</code></td>
+                <td><code>-2</code></td>
+                <td><code>-1</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code>my_string = 'Hello'
+print(my_string[-1])  # o – ký tự cuối cùng
+print(my_string[-2])  # l – ký tự thứ hai từ dưới lên</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>o
+l</code></pre>
+
+          <div class="note">
+            <strong>Tổng quát:</strong> index dương chạy từ <code>0</code> đến <code>n-1</code>; index âm chạy từ <code>-n</code> đến <code>-1</code>. Quy tắc này áp dụng cho cả <strong>list</strong> và <strong>tuple</strong> sau này.
+          </div>
+        </section>
+
+        <!-- ======================== SLICING ======================== -->
+        <section id="slicing">
+          <h2>6. Slicing – lấy chuỗi con</h2>
+          <p>
+            Slicing cho phép lấy một đoạn ký tự của chuỗi bằng cú pháp <code>chuoi[start:stop]</code>. Kết quả bao gồm từ index <code>start</code> đến <code>stop - 1</code> (không bao gồm <code>stop</code>).
+          </p>
+
+          <h3>Cú pháp đầy đủ</h3>
+          <pre><code>chuoi[start:stop]   # lấy từ start đến stop-1
+chuoi[start:]       # lấy từ start đến cuối
+chuoi[:stop]        # lấy từ đầu đến stop-1
+chuoi[:]            # lấy toàn bộ chuỗi</code></pre>
+
+          <h3>Ví dụ với index dương</h3>
+          <pre><code>my_string = 'Hello'
+print(my_string[1:4])  # index 1, 2, 3 → 'ell'
+print(my_string[1:])   # từ index 1 đến cuối → 'ello'
+print(my_string[:3])   # từ đầu đến index 2 → 'Hel'</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>ell
+ello
+Hel</code></pre>
+
+          <h3>Ví dụ với index âm</h3>
+          <pre><code>my_string = 'Hello'
+print(my_string[:-1])   # từ đầu đến ký tự thứ hai từ dưới → 'Hell'
+print(my_string[-3:])   # 3 ký tự cuối → 'llo'</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Hell
+llo</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> <code>stop</code> không bao giờ được tính vào kết quả. Nếu muốn lấy đến ký tự có index <code>k</code>, hãy truyền <code>stop = k + 1</code>.
+          </div>
+
+          <h3>Slicing với bước nhảy (step)</h3>
+          <p>Cú pháp mở rộng <code>chuoi[start:stop:step]</code> cho phép lấy ký tự cách đều nhau:</p>
+          <pre><code>my_string = 'Hello'
+print(my_string[::2])   # lấy mỗi 2 ký tự → 'Hlo'
+print(my_string[::-1])  # đảo ngược chuỗi → 'olleH'</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Hlo
+olleH</code></pre>
+        </section>
+
+        <!-- ======================== NỐI CHUỖI ======================== -->
+        <section id="noi-chuoi">
+          <h2>7. Nối chuỗi</h2>
+          <p>
+            Dùng toán tử <code>+</code> để ghép hai chuỗi lại với nhau (concatenation).
+          </p>
+
+          <pre><code>str1 = 'Anh '
+str2 = 'yêu em'
+concat = str1 + str2
+print(concat)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Anh yêu em</code></pre>
+
+          <p>Khi nối nhiều chuỗi, chú ý thêm khoảng trắng để các từ không bị dính liền:</p>
+          <pre><code>ho = 'Trần'
+ten_dem = 'Văn'
+ten = 'Huy'
+
+full_name = ho + ' ' + ten_dem + ' ' + ten
+print(full_name)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Trần Văn Huy</code></pre>
+        </section>
+
+        <!-- ======================== DUYỆT KÝ TỰ ======================== -->
+        <section id="duyet-ky-tu">
+          <h2>8. Duyệt qua các ký tự</h2>
+          <p>
+            Dùng vòng lặp <code>for</code> để duyệt qua từng ký tự trong chuỗi:
+          </p>
+
+          <pre><code>my_string = 'Hello'
+for char in my_string:
+    print(char)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>H
+e
+l
+l
+o</code></pre>
+
+          <div class="note">
+            <strong>Nhắc lại:</strong> Python không có kiểu <code>char</code> riêng. Biến <code>char</code> trong vòng lặp trên là một chuỗi có chiều dài bằng <code>1</code>.
+          </div>
+        </section>
+
+        <!-- ======================== KIỂM TRA CHUỖI CON ======================== -->
+        <section id="kiem-tra-con">
+          <h2>9. Kiểm tra chuỗi con có nằm trong chuỗi không</h2>
+          <p>
+            Dùng toán tử <code>in</code> để kiểm tra xem một chuỗi con có xuất hiện trong chuỗi khác không. Kết quả trả về <code>True</code> hoặc <code>False</code>.
+          </p>
+
+          <pre><code>my_string = 'Hello anh em'
+if 'anh' in my_string:
+    print('Có')
+else:
+    print('Không')</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>Có</code></pre>
+
+          <p>Ngược lại, dùng <code>not in</code> để kiểm tra chuỗi con <em>không</em> xuất hiện:</p>
+          <pre><code>print('xyz' not in my_string)  # True</code></pre>
+        </section>
+
+        <!-- ======================== BUILT-IN METHODS ======================== -->
+        <section id="built-in-methods">
+          <h2>10. Một số built-in methods thông dụng</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Công dụng</th>
+                <th>Ví dụ</th>
+                <th>Kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>.upper()</code></td>
+                <td>Chuyển tất cả ký tự về in hoa</td>
+                <td><code>'hello'.upper()</code></td>
+                <td><code>'HELLO'</code></td>
+              </tr>
+              <tr>
+                <td><code>.lower()</code></td>
+                <td>Chuyển tất cả ký tự về in thường</td>
+                <td><code>'HELLO'.lower()</code></td>
+                <td><code>'hello'</code></td>
+              </tr>
+              <tr>
+                <td><code>.strip()</code></td>
+                <td>Xóa khoảng trắng đầu và cuối</td>
+                <td><code>'  hi  '.strip()</code></td>
+                <td><code>'hi'</code></td>
+              </tr>
+              <tr>
+                <td><code>.replace(a, b)</code></td>
+                <td>Thay thế chuỗi <code>a</code> bằng <code>b</code></td>
+                <td><code>'abc'.replace('b','x')</code></td>
+                <td><code>'axc'</code></td>
+              </tr>
+              <tr>
+                <td><code>.split(sep)</code></td>
+                <td>Tách chuỗi thành list theo ký tự phân cách</td>
+                <td><code>'a,b,c'.split(',')</code></td>
+                <td><code>['a','b','c']</code></td>
+              </tr>
+              <tr>
+                <td><code>.isdigit()</code></td>
+                <td>Kiểm tra toàn bộ chuỗi có phải chữ số không</td>
+                <td><code>'123'.isdigit()</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>.isalpha()</code></td>
+                <td>Kiểm tra toàn bộ chuỗi có phải chữ cái không</td>
+                <td><code>'abc'.isalpha()</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>.startswith(s)</code></td>
+                <td>Kiểm tra chuỗi có bắt đầu bằng <code>s</code> không</td>
+                <td><code>'Hello'.startswith('He')</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>.endswith(s)</code></td>
+                <td>Kiểm tra chuỗi có kết thúc bằng <code>s</code> không</td>
+                <td><code>'Hello'.endswith('lo')</code></td>
+                <td><code>True</code></td>
+              </tr>
+              <tr>
+                <td><code>.find(s)</code></td>
+                <td>Trả về index đầu tiên của <code>s</code>, nếu không tìm thấy trả về <code>-1</code></td>
+                <td><code>'Hello'.find('l')</code></td>
+                <td><code>2</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Ví dụ: upper và lower</h3>
+          <pre><code>my_string = 'Hello anh em'
+print(my_string.upper())
+print(my_string.lower())</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>HELLO ANH EM
+hello anh em</code></pre>
+
+          <div class="note">
+            <strong>Ghi nhớ:</strong> các method string <em>không thay đổi</em> chuỗi gốc, chúng trả về một chuỗi <em>mới</em>. Bạn cần gán lại nếu muốn lưu kết quả: <code>my_string = my_string.upper()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== IMMUTABLE ======================== -->
+        <section id="immutable">
+          <h2>11. Chuỗi là immutable</h2>
+          <p>
+            Trong Python, string là kiểu <strong>immutable</strong> — một khi đã tạo, bạn <em>không thể thay đổi từng ký tự</em> bên trong chuỗi. Nếu cố gắng gán, Python sẽ báo lỗi.
+          </p>
+
+          <pre><code>my_string = 'Hello'
+my_string[0] = 'h'   # Lỗi!</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>TypeError: 'str' object does not support item assignment</code></pre>
+
+          <p>
+            Để "thay đổi" chuỗi, cách đúng là <strong>gán lại biến</strong> bằng một chuỗi mới:
+          </p>
+
+          <pre><code>my_string = 'Hello'
+my_string = 'h' + my_string[1:]   # thay H → h
+print(my_string)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>hello</code></pre>
+        </section>
+
+        <!-- ======================== ĐẢO NGƯỢC ======================== -->
+        <section id="dao-nguoc">
+          <h2>12. Đảo ngược chuỗi</h2>
+          <p>Python cung cấp cú pháp slicing cực kỳ ngắn gọn để đảo ngược chuỗi:</p>
+
+          <pre><code>my_string = 'Hello'
+reversed_str = my_string[::-1]
+print(reversed_str)</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>olleH</code></pre>
+
+          <p>
+            Cách hoạt động: <code>[::-1]</code> nghĩa là lấy toàn bộ chuỗi với bước nhảy <code>-1</code> — tức là đi từ cuối về đầu.
+          </p>
+
+          <h3>Cách thủ công (dùng vòng for — để hiểu bản chất)</h3>
+          <pre><code>my_string = input("Nhập vào một chuỗi: ")
+reverse_string = ''
+
+for char in my_string:
+    reverse_string = char + reverse_string
+
+print("Chuỗi đảo ngược:", reverse_string)</code></pre>
+
+          <p>Ví dụ nhập <code>ABCD</code>:</p>
+          <pre><code>Chuỗi đảo ngược: DCBA</code></pre>
+
+          <div class="note">
+            <strong>Giải thích logic vòng lặp:</strong>
+            <ul>
+              <li>Lần 1: <code>char = 'A'</code> → <code>reverse = 'A' + '' = 'A'</code></li>
+              <li>Lần 2: <code>char = 'B'</code> → <code>reverse = 'B' + 'A' = 'BA'</code></li>
+              <li>Lần 3: <code>char = 'C'</code> → <code>reverse = 'C' + 'BA' = 'CBA'</code></li>
+              <li>Lần 4: <code>char = 'D'</code> → <code>reverse = 'D' + 'CBA' = 'DCBA'</code></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ HỌ TÊN ======================== -->
+        <section id="vi-du-ho-ten">
+          <h2>13. Ví dụ thực hành: Kết hợp họ và tên</h2>
+          <p>
+            Yêu cầu: nhập riêng họ, tên đệm, tên — nối lại thành họ tên đầy đủ rồi in ra dạng in hoa.
+          </p>
+
+          <pre><code>ho = input("Nhập vào họ của bạn: ")
+ten_dem = input("Nhập vào tên đệm của bạn: ")
+ten = input("Nhập vào tên của bạn: ")
+
+full_name = ho + ' ' + ten_dem + ' ' + ten
+full_name = full_name.upper()
+
+print("Họ và tên đầy đủ:", full_name)</code></pre>
+
+          <p>Ví dụ nhập <code>Trần</code> / <code>Minh</code> / <code>An</code>:</p>
+          <pre><code>Họ và tên đầy đủ: TRẦN MINH AN</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> hàm <code>input()</code> mặc định trả về kiểu <code>str</code>, nên không cần ép kiểu khi làm việc với tên người dùng.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ CHỮ SỐ ======================== -->
+        <section id="vi-du-chu-so">
+          <h2>14. Ví dụ thực hành: In ra các chữ số trong chuỗi</h2>
+          <p>
+            Yêu cầu: nhập một chuỗi bất kỳ, in ra tất cả ký tự là chữ số, cách nhau bởi khoảng trắng.
+          </p>
+
+          <pre><code>my_string = input("Nhập vào một chuỗi: ")
+
+for char in my_string:
+    if char.isdigit():
+        print(char, end=' ')</code></pre>
+
+          <p>Ví dụ nhập <code>A1B2C3D4</code>:</p>
+          <pre><code>1 2 3 4 </code></pre>
+
+          <div class="note">
+            <strong>Giải thích:</strong>
+            <ul>
+              <li><code>.isdigit()</code> trả về <code>True</code> nếu ký tự là chữ số (<code>0</code>–<code>9</code>).</li>
+              <li>Tham số <code>end=' '</code> trong <code>print()</code> thay thế ký tự xuống dòng mặc định bằng khoảng trắng, giúp in tất cả trên một dòng.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ NGUYÊN ÂM ======================== -->
+        <section id="vi-du-nguyen-am">
+          <h2>15. Ví dụ thực hành: Đếm số lượng nguyên âm</h2>
+          <p>
+            Yêu cầu: nhập một câu tiếng Anh, đếm số lượng nguyên âm (không phân biệt hoa/thường) trong câu đó.
+          </p>
+
+          <pre><code>sentence = input("Nhập vào một câu tiếng Anh: ")
+sentence = sentence.lower()   # chuyển về in thường để dễ so sánh
+
+vowels = 'aeiou'
+count = 0
+
+for char in sentence:
+    if char in vowels:
+        count += 1
+
+print("Số lượng nguyên âm xuất hiện trong câu:", count)</code></pre>
+
+          <p>Ví dụ nhập <code>I love you</code>:</p>
+          <pre><code>Số lượng nguyên âm xuất hiện trong câu: 5</code></pre>
+
+          <p>Kiểm tra lại: <code>i</code>(1), <code>o</code>(2), <code>e</code>(3), <code>o</code>(4), <code>u</code>(5) — đúng 5 nguyên âm.</p>
+
+          <div class="note">
+            <strong>Mẹo:</strong> gọi <code>.lower()</code> trước khi so sánh giúp xử lý thống nhất chữ hoa và thường. Câu <code>I love you</code> có chữ <code>I</code> in hoa — sau khi <code>.lower()</code> thành <code>i</code> thường và khớp với chuỗi nguyên âm.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ FILE ======================== -->
+        <section id="vi-du-file">
+          <h2>16. Ví dụ thực hành: Tách tên file và extension</h2>
+          <p>
+            Yêu cầu: nhập tên file đầy đủ (có thể có nhiều dấu chấm, ví dụ <code>abc.def.txt</code>), tách phần tên file và phần extension (phần sau dấu chấm <em>cuối cùng</em>).
+          </p>
+
+          <h3>Ý tưởng</h3>
+          <p>
+            Duyệt qua từng ký tự, mỗi khi gặp dấu chấm thì lưu lại vị trí (index) của nó. Kết thúc vòng lặp, biến <code>dot_position</code> sẽ chứa index của dấu chấm <em>cuối cùng</em>.
+          </p>
+
+          <pre><code>full_name = input("Nhập vào tên file đầy đủ với extension: ")
+
+dot_position = -1   # vị trí tạm của dấu chấm
+
+for i in range(len(full_name)):
+    if full_name[i] == '.':
+        dot_position = i   # lưu index của dấu chấm cuối cùng
+
+# Tách extension và tên file
+print("Extension       :", full_name[dot_position + 1:])
+print("Tên không có ext:", full_name[:dot_position])</code></pre>
+
+          <p>Ví dụ nhập <code>abc.def.txt</code>:</p>
+          <pre><code>Extension       : txt
+Tên không có ext: abc.def</code></pre>
+
+          <p>Ví dụ nhập <code>abc.png</code>:</p>
+          <pre><code>Extension       : png
+Tên không có ext: abc</code></pre>
+
+          <div class="note">
+            <strong>Giải thích slicing:</strong>
+            <ul>
+              <li><code>full_name[dot_position + 1:]</code> — lấy từ ký tự ngay sau dấu chấm đến cuối → extension.</li>
+              <li><code>full_name[:dot_position]</code> — lấy từ đầu đến trước dấu chấm → tên file.</li>
+            </ul>
+          </div>
+
+          <div class="note">
+            <strong>Thực tế:</strong> Python có module <code>os.path</code> với hàm <code>os.path.splitext()</code> thực hiện chính xác tác vụ này. Tuy nhiên, làm thủ công như trên giúp bạn hiểu rõ slicing và cách giải quyết bài toán từ cơ sở.
+          </div>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>17. Lỗi thường gặp</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lỗi</th>
+                <th>Nguyên nhân</th>
+                <th>Cách sửa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>IndexError: string index out of range</code></td>
+                <td>Index vượt quá phạm vi <code>0</code> đến <code>n-1</code></td>
+                <td>Kiểm tra lại index, dùng <code>len()</code> để xác định giới hạn</td>
+              </tr>
+              <tr>
+                <td><code>TypeError: 'str' object does not support item assignment</code></td>
+                <td>Cố gắng thay đổi ký tự trong chuỗi (<code>s[0] = 'x'</code>)</td>
+                <td>Tạo chuỗi mới bằng cách nối hoặc slicing</td>
+              </tr>
+              <tr>
+                <td>Kết quả slicing không như mong đợi</td>
+                <td>Nhầm: <code>stop</code> không được tính vào kết quả</td>
+                <td>Nhớ rằng <code>s[a:b]</code> lấy từ <code>a</code> đến <code>b-1</code></td>
+              </tr>
+              <tr>
+                <td>Cộng số với chuỗi gây lỗi <code>TypeError</code></td>
+                <td><code>input()</code> trả về <code>str</code>, không thể cộng trực tiếp với số</td>
+                <td>Ép kiểu: <code>int(input(...))</code> hoặc <code>float(input(...))</code></td>
+              </tr>
+              <tr>
+                <td>So sánh hoa/thường không khớp</td>
+                <td><code>'A' == 'a'</code> là <code>False</code></td>
+                <td>Chuẩn hóa bằng <code>.lower()</code> hoặc <code>.upper()</code> trước khi so sánh</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>18. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: In ký tự theo vị trí</h3>
+            <p>Nhập một chuỗi bất kỳ và một số nguyên <code>k</code>. In ra ký tự tại vị trí <code>k</code> (index dương) và ký tự tương ứng theo index âm.</p>
+            <pre><code>s = input("Nhập chuỗi: ")
+k = int(input("Nhập vị trí k: "))
+print("Ký tự tại index", k, ":", s[k])
+print("Ký tự tại index âm tương ứng:", s[k - len(s)])</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Kiểm tra palindrome</h3>
+            <p>Nhập một từ. Kiểm tra xem từ đó có đọc xuôi ngược đều như nhau không (ví dụ: <code>madam</code>, <code>racecar</code>).</p>
+            <pre><code>word = input("Nhập một từ: ").lower()
+if word == word[::-1]:
+    print(word, "là palindrome")
+else:
+    print(word, "không phải palindrome")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Đếm số lần xuất hiện của ký tự</h3>
+            <p>Nhập một chuỗi và một ký tự. Đếm số lần ký tự đó xuất hiện trong chuỗi (không phân biệt hoa/thường).</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Tách từ trong câu</h3>
+            <p>Nhập một câu tiếng Anh. Dùng <code>.split()</code> để tách thành các từ, sau đó in ra số lượng từ và từ đầu tiên, từ cuối cùng.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Chuỗi là dãy ký tự — Python không có kiểu <code>char</code>, chỉ có chuỗi độ dài 1.</li>
+            <li>Khai báo bằng nháy đơn, nháy kép hoặc ba nháy (cho chuỗi nhiều dòng).</li>
+            <li><code>len(s)</code> trả về chiều dài chuỗi.</li>
+            <li>Index dương: <code>0</code> → <code>n-1</code>; index âm: <code>-n</code> → <code>-1</code>.</li>
+            <li>Slicing <code>s[start:stop]</code> lấy từ <code>start</code> đến <code>stop-1</code>.</li>
+            <li><code>s[::-1]</code> là cách đảo ngược chuỗi nhanh nhất.</li>
+            <li>Dùng <code>+</code> để nối chuỗi; dùng <code>in</code>/<code>not in</code> để kiểm tra chuỗi con.</li>
+            <li>Các method quan trọng: <code>upper()</code>, <code>lower()</code>, <code>strip()</code>, <code>replace()</code>, <code>split()</code>, <code>isdigit()</code>, <code>find()</code>.</li>
+            <li>Chuỗi là <strong>immutable</strong>: không thể thay đổi từng ký tự, chỉ có thể gán lại biến.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Mẹo học:</strong> hãy thử ngay trong Python shell — gõ <code>'hello'[1:4]</code>, <code>'hello'[::-1]</code>, <code>'hello'.upper()</code>… để thấy kết quả tức thì và khắc sâu kiến thức.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 03. Chuỗi (String) trong Python
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>

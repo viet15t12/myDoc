@@ -1,10 +1,469 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>06. Kiểu dữ liệu Tuple trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-    <h1>Hello</h1>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 06</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="05-kieu-du-lieu-list.html">← Bài trước</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tao-tuple">1. Tạo tuple</a>
+      <a href="#tuple-mot-phan-tu">2. Tuple một phần tử</a>
+      <a href="#do-dai">3. Chiều dài tuple</a>
+      <a href="#duyet-tuple">4. Duyệt qua tuple</a>
+      <a href="#truy-cap-index">5. Truy cập theo index</a>
+      <a href="#noi-tuple">6. Nối tuple</a>
+      <a href="#them-xoa">7. Thêm / xóa phần tử</a>
+      <a href="#count">8. count() – đếm số lần xuất hiện</a>
+      <a href="#index-method">9. index() – tìm vị trí</a>
+      <a href="#immutable">10. Tuple là immutable</a>
+      <a href="#mutable-trong-tuple">11. Phần tử mutable bên trong tuple</a>
+      <a href="#list-vs-tuple">12. List vs Tuple</a>
+      <a href="#bang-tong-hop">13. Bảng tổng hợp</a>
+      <a href="#loi-thuong-gap">14. Lỗi thường gặp</a>
+      <a href="#bai-tap">15. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>06. Kiểu dữ liệu Tuple trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về kiểu dữ liệu <code>tuple</code>: cách tạo, truy cập theo index, duyệt phần tử, nối tuple, hai built-in methods <code>count()</code> và <code>index()</code>, tính chất immutable và khi nào nên dùng tuple thay vì list.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Tuple</strong> là một trong bốn kiểu collection của Python (cùng với list, set, dict). Tuple rất giống list — cũng có thứ tự, cho phép phần tử trùng lặp, hỗ trợ truy cập theo index — nhưng có một điểm khác biệt cốt lõi:
+          </p>
+          <p>
+            Tuple là kiểu <strong>immutable</strong>: sau khi tạo, bạn <em>không thể thay đổi, thêm hay xóa</em> phần tử trực tiếp.
+          </p>
+
+          <table class="pro-table collection-table" aria-label="So sánh nhanh list và tuple">
+            <caption>So sánh nhanh <code>list</code> và <code>tuple</code></caption>
+            <thead>
+              <tr><th>Đặc điểm</th><th>list</th><th>tuple</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ký hiệu</td><td><code>[...]</code></td><td><code>(...)</code></td></tr>
+              <tr><td>Mutable</td><td><span class="status-badge status-yes">Có</span></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Có thứ tự</td><td><span class="status-badge status-yes">Có</span></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td>Trùng lặp</td><td><span class="status-badge status-yes">Có</span></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td>Số built-in methods</td><td>Nhiều (≥ 11)</td><td>Ít (2)</td></tr>
+              <tr><td>Tốc độ truy xuất</td><td>Bình thường</td><td>Nhanh hơn</td></tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> tạo và làm việc với tuple, hiểu tính chất immutable, biết cách thêm/xóa phần tử gián tiếp qua chuyển đổi list, và biết khi nào nên chọn tuple thay vì list.
+          </div>
+        </section>
+
+        <!-- ======================== TẠO TUPLE ======================== -->
+        <section id="tao-tuple">
+          <h2>1. Tạo tuple</h2>
+          <p>
+            Dùng cặp dấu ngoặc đơn <code>()</code>, các phần tử ngăn cách bởi dấu phẩy. Tuple có thể chứa hỗn hợp kiểu dữ liệu giống list.
+          </p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+print(tuple1)
+print(type(tuple1))</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>('a', 3, 4, 'b')
+&lt;class 'tuple'&gt;</code></pre>
+
+          <div class="note">
+            <strong>Nhớ lại:</strong> list dùng <code>[...]</code>, tuple dùng <code>(...)</code>. Đây là cách phân biệt nhanh nhất khi đọc code.
+          </div>
+        </section>
+
+        <!-- ======================== TUPLE MỘT PHẦN TỬ ======================== -->
+        <section id="tuple-mot-phan-tu">
+          <h2>2. Tuple một phần tử — lỗi thường gặp khi mới học</h2>
+          <p>
+            Khi muốn tạo tuple chỉ có <strong>một phần tử</strong>, bạn <em>bắt buộc</em> phải thêm dấu phẩy sau phần tử đó. Nếu không, Python hiểu đây là phép tính trong ngoặc, không phải tuple.
+          </p>
+
+          <pre><code># SAI — không phải tuple, chỉ là string trong ngoặc
+t_wrong = ('a')
+print(type(t_wrong))   # &lt;class 'str'&gt;
+
+# ĐÚNG — có dấu phẩy phía sau
+t_right = ('a',)
+print(type(t_right))   # &lt;class 'tuple'&gt;
+print(t_right)         # ('a',)</code></pre>
+
+          <div class="warning">
+            <strong>Quy tắc quan trọng:</strong> tuple một phần tử <strong>bắt buộc có dấu phẩy</strong> — <code>('a',)</code> chứ không phải <code>('a')</code>. Khi in ra, Python cũng hiển thị dấu phẩy để phân biệt.
+          </div>
+        </section>
+
+        <!-- ======================== ĐỘ DÀI ======================== -->
+        <section id="do-dai">
+          <h2>3. Chiều dài tuple</h2>
+          <p>Dùng hàm <code>len()</code> — hoàn toàn giống list và string.</p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+print(f"Chiều dài của tuple: {len(tuple1)}")   # 4</code></pre>
+        </section>
+
+        <!-- ======================== DUYỆT TUPLE ======================== -->
+        <section id="duyet-tuple">
+          <h2>4. Duyệt qua các phần tử</h2>
+          <p>Dùng vòng lặp <code>for</code> — cú pháp giống list:</p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+for item in tuple1:
+    print(item)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>a
+3
+4
+b</code></pre>
+        </section>
+
+        <!-- ======================== TRUY CẬP INDEX ======================== -->
+        <section id="truy-cap-index">
+          <h2>5. Truy cập phần tử theo index</h2>
+          <p>
+            Cú pháp giống hệt list: dùng <code>[]</code> với index dương hoặc âm.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Phần tử</th><th>'a'</th><th>3</th><th>4</th><th>'b'</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Index dương</strong></td>
+                <td><code>0</code></td><td><code>1</code></td><td><code>2</code></td><td><code>3</code></td>
+              </tr>
+              <tr>
+                <td><strong>Index âm</strong></td>
+                <td><code>-4</code></td><td><code>-3</code></td><td><code>-2</code></td><td><code>-1</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+print(tuple1[1])    # 3   — phần tử thứ hai
+print(tuple1[-1])   # 'b' — phần tử cuối cùng</code></pre>
+        </section>
+
+        <!-- ======================== NỐI TUPLE ======================== -->
+        <section id="noi-tuple">
+          <h2>6. Nối tuple</h2>
+          <p>
+            Dùng toán tử <code>+</code> để ghép hai tuple thành một tuple mới — tương tự list và string:
+          </p>
+          <pre><code>tuple1 = ('a', 3)
+tuple2 = (10, 'hello')
+
+new_tuple = tuple1 + tuple2
+print(new_tuple)   # ('a', 3, 10, 'hello')</code></pre>
+          <div class="note">
+            <strong>Ghi nhớ:</strong> kết quả là một tuple <em>mới</em>. <code>tuple1</code> và <code>tuple2</code> không thay đổi (immutable).
+          </div>
+        </section>
+
+        <!-- ======================== THÊM XÓA ======================== -->
+        <section id="them-xoa">
+          <h2>7. Thêm / xóa phần tử — kỹ thuật chuyển đổi qua list</h2>
+          <p>
+            Tuple không hỗ trợ trực tiếp <code>append()</code>, <code>remove()</code> hay các method thay đổi như list. Cách làm việc là: <strong>chuyển tuple → list → thao tác → chuyển lại tuple</strong>.
+          </p>
+
+          <h3>Thêm phần tử vào cuối tuple</h3>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+# Bước 1: chuyển sang list
+list1 = list(tuple1)
+
+# Bước 2: thao tác trên list
+list1.append('hello')
+
+# Bước 3: chuyển lại thành tuple
+new_tuple = tuple(list1)
+
+print(new_tuple)   # ('a', 3, 4, 'b', 'hello')</code></pre>
+
+          <h3>Xóa phần tử khỏi tuple</h3>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+list1 = list(tuple1)
+list1.remove(4)         # xóa phần tử có giá trị 4
+new_tuple = tuple(list1)
+
+print(new_tuple)   # ('a', 3, 'b')</code></pre>
+
+          <div class="note">
+            <strong>Quy tắc chung:</strong> bất kỳ thao tác nào mà tuple không hỗ trợ trực tiếp đều có thể thực hiện bằng cách chuyển về list, làm xong, rồi chuyển lại tuple.
+            <ul>
+              <li><code>list(tuple)</code> — chuyển tuple sang list</li>
+              <li><code>tuple(list)</code> — chuyển list sang tuple</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== COUNT ======================== -->
+        <section id="count">
+          <h2>8. <code>count()</code> – đếm số lần xuất hiện</h2>
+          <p>
+            <code>count(value)</code> trả về số lần <code>value</code> xuất hiện trong tuple. Nếu không tìm thấy, trả về <code>0</code> (không báo lỗi).
+          </p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b', 'a')
+
+print(tuple1.count('a'))    # 2  — 'a' xuất hiện 2 lần
+print(tuple1.count(4))      # 1  — 4 xuất hiện 1 lần
+print(tuple1.count('xyz'))  # 0  — không tồn tại, trả về 0</code></pre>
+
+          <div class="note">
+            <strong>So sánh với list:</strong> list cũng có <code>count()</code> với cùng cú pháp và hành vi. Đây là điểm giống nhau giữa hai kiểu.
+          </div>
+        </section>
+
+        <!-- ======================== INDEX METHOD ======================== -->
+        <section id="index-method">
+          <h2>9. <code>index()</code> – tìm vị trí phần tử</h2>
+          <p>
+            <code>index(value)</code> trả về index của lần xuất hiện <em>đầu tiên</em> của <code>value</code>. Nếu không tìm thấy, báo <code>ValueError</code>.
+          </p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+
+print(tuple1.index('b'))   # 3 — 'b' nằm ở index 3
+print(tuple1.index(3))     # 1 — 3 nằm ở index 1</code></pre>
+
+          <p>Kết quả:</p>
+          <pre><code>3
+1</code></pre>
+          <div class="warning">
+            <strong>Lỗi khi phần tử không tồn tại:</strong> giống với list — báo <code>ValueError</code>. Kiểm tra trước bằng <code>in</code> nếu cần an toàn.
+          </div>
+        </section>
+
+        <!-- ======================== IMMUTABLE ======================== -->
+        <section id="immutable">
+          <h2>10. Tuple là immutable</h2>
+          <p>
+            Sau khi tạo, bạn không thể thay đổi phần tử của tuple. Nếu cố gắng gán, Python báo lỗi ngay:
+          </p>
+          <pre><code>tuple1 = ('a', 3, 4, 'b')
+tuple1[0] = 'x'   # lỗi!</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>TypeError: 'tuple' object does not support item assignment</code></pre>
+
+          <h3>Tính chất identity — hai tuple cùng giá trị dùng chung bộ nhớ</h3>
+          <p>
+            Do immutable, Python tối ưu bộ nhớ bằng cách cho hai tuple cùng giá trị trỏ đến cùng một địa chỉ. Điều này <em>không</em> xảy ra với list (mutable).
+          </p>
+          <pre><code>t1 = ('a', 3)
+t2 = ('a', 3)
+print(id(t1) == id(t2))   # True — cùng object trong bộ nhớ
+
+l1 = ['a', 3]
+l2 = ['a', 3]
+print(id(l1) == id(l2))   # False — hai object khác nhau</code></pre>
+        </section>
+
+        <!-- ======================== PHẦN TỬ MUTABLE ======================== -->
+        <section id="mutable-trong-tuple">
+          <h2>11. Phần tử mutable bên trong tuple</h2>
+          <p>
+            Tuple immutable có nghĩa là bạn không thể thay đổi <em>tham chiếu</em> của phần tử (tức là không gán lại <code>tuple[i] = ...</code>). Tuy nhiên, nếu phần tử đó là một kiểu mutable như list, bạn <strong>vẫn có thể thay đổi nội dung bên trong</strong> của nó.
+          </p>
+
+          <pre><code>tuple1 = ([1, 2, 3], 'hello')
+
+# SAI — cố gán lại phần tử → TypeError
+# tuple1[0] = [0, 2, 3]
+
+# ĐÚNG — thay đổi nội dung bên trong list (không thay tham chiếu)
+tuple1[0][0] = 0
+
+print(tuple1)   # ([0, 2, 3], 'hello')</code></pre>
+
+          <div class="note">
+            <strong>Giải thích:</strong> <code>tuple1[0]</code> vẫn trỏ đến cùng một list object. Chúng ta không thay đổi <em>tham chiếu</em> của tuple — chỉ thay đổi <em>nội dung</em> của list bên trong. Tuple không "biết" hay ngăn chặn điều đó.
+          </div>
+        </section>
+
+        <!-- ======================== LIST VS TUPLE ======================== -->
+        <section id="list-vs-tuple">
+          <h2>12. Khi nào dùng list, khi nào dùng tuple?</h2>
+
+          <table class="pro-table">
+            <caption>Gợi ý chọn kiểu dữ liệu theo tình huống</caption>
+            <thead>
+              <tr><th>Tiêu chí</th><th>Dùng list</th><th>Dùng tuple</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dữ liệu cần thay đổi?</td>
+                <td><span class="status-badge status-yes">Phù hợp</span> Thêm, xóa, sửa thường xuyên</td>
+                <td><span class="status-badge status-no">Không ưu tiên</span> Dữ liệu cố định, không muốn thay đổi</td>
+              </tr>
+              <tr>
+                <td>Hiệu suất</td>
+                <td>Bình thường</td>
+                <td>Nhanh hơn, tốn ít bộ nhớ hơn</td>
+              </tr>
+              <tr>
+                <td>Bảo vệ dữ liệu</td>
+                <td>Không đảm bảo</td>
+                <td>Đảm bảo không bị thay đổi vô tình</td>
+              </tr>
+              <tr>
+                <td>Ví dụ thực tế</td>
+                <td>Danh sách sản phẩm, kết quả lọc</td>
+                <td>Tọa độ (x, y), màu RGB (255, 128, 0), hằng số cấu hình</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Quy tắc thực tế:</strong> nếu bạn chắc chắn dữ liệu <em>không cần thay đổi</em> sau khi tạo — hãy dùng tuple. Nếu không chắc — dùng list cho linh hoạt.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>13. Bảng tổng hợp thao tác trên tuple</h2>
+          <table class="pro-table">
+            <caption>Các thao tác tuple hay dùng nhất</caption>
+            <thead>
+              <tr>
+                <th>Thao tác / Method</th>
+                <th>Cú pháp</th>
+                <th>Thay đổi tuple gốc?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Tạo tuple</td><td><code>(a, b, c)</code></td><td><span class="status-badge status-neutral">Không áp dụng</span></td></tr>
+              <tr><td>Tạo tuple 1 phần tử</td><td><code>(a,)</code></td><td><span class="status-badge status-neutral">Không áp dụng</span></td></tr>
+              <tr><td>Chiều dài</td><td><code>len(t)</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Truy cập phần tử</td><td><code>t[i]</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Slicing</td><td><code>t[a:b]</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Duyệt phần tử</td><td><code>for x in t</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Nối tuple</td><td><code>t1 + t2</code></td><td><span class="status-badge status-limited">Tạo tuple mới</span></td></tr>
+              <tr><td>Đếm xuất hiện</td><td><code>t.count(v)</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Tìm vị trí</td><td><code>t.index(v)</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Kiểm tra tồn tại</td><td><code>v in t</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Chuyển sang list</td><td><code>list(t)</code></td><td><span class="status-badge status-limited">Tạo list mới</span></td></tr>
+              <tr><td>Thêm/xóa (gián tiếp)</td><td><code>list(t) → thao tác → tuple(...)</code></td><td><span class="status-badge status-limited">Tạo tuple mới</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>14. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi làm việc với tuple</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>TypeError: 'tuple' object does not support item assignment</code></td>
+                <td>Cố gán <code>t[i] = v</code> trực tiếp</td>
+                <td>Chuyển về list, sửa, rồi chuyển lại tuple</td>
+              </tr>
+              <tr>
+                <td>Tạo tuple một phần tử bị thành <code>str</code> hoặc <code>int</code></td>
+                <td>Quên dấu phẩy: <code>('a')</code></td>
+                <td>Thêm dấu phẩy: <code>('a',)</code></td>
+              </tr>
+              <tr>
+                <td><code>ValueError: x is not in tuple</code></td>
+                <td><code>index()</code> với giá trị không tồn tại</td>
+                <td>Kiểm tra <code>if x in t</code> trước</td>
+              </tr>
+              <tr>
+                <td>Nhầm dấu ngoặc khi tạo</td>
+                <td>Dùng <code>[]</code> thay vì <code>()</code> → tạo list, không phải tuple</td>
+                <td>Dùng đúng dấu <code>()</code>; kiểm tra bằng <code>type()</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>15. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Tạo và truy cập</h3>
+            <p>Tạo một tuple chứa tên của 5 thành phố lớn ở Việt Nam. In ra thành phố đầu tiên, thành phố cuối cùng, và hai thành phố ở giữa bằng slicing.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Đếm và tìm</h3>
+            <p>Cho tuple <code>scores = (8, 7, 9, 8, 10, 7, 8, 6)</code>. Đếm số lần điểm <code>8</code> xuất hiện và in ra vị trí đầu tiên của điểm <code>10</code>.</p>
+            <pre><code>scores = (8, 7, 9, 8, 10, 7, 8, 6)
+print("Số lần 8 xuất hiện:", scores.count(8))
+print("Vị trí đầu tiên của 10:", scores.index(10))</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Thêm phần tử mới</h3>
+            <p>Cho tuple <code>t = (1, 2, 3)</code>. Thêm phần tử <code>99</code> vào đầu tuple (không dùng <code>+</code> trực tiếp — hãy thực hiện qua chuyển đổi list).</p>
+            <pre><code>t = (1, 2, 3)
+lst = list(t)
+lst.insert(0, 99)
+t = tuple(lst)
+print(t)   # (99, 1, 2, 3)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Chuyển đổi kiểu</h3>
+            <p>Cho list <code>colors = ['red', 'green', 'blue', 'red', 'yellow']</code>. Chuyển thành tuple, đếm số lần <code>'red'</code> xuất hiện, sau đó xóa tất cả phần tử <code>'red'</code> và chuyển kết quả về tuple mới.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Tuple dùng <code>(...)</code>; list dùng <code>[...]</code>. Tuple một phần tử bắt buộc có dấu phẩy: <code>(x,)</code>.</li>
+            <li><code>len()</code>, truy cập index, slicing, vòng <code>for</code>, toán tử <code>+</code> — tất cả đều hoạt động giống list.</li>
+            <li>Tuple chỉ có 2 built-in methods: <code>count(v)</code> và <code>index(v)</code>.</li>
+            <li>Tuple là <strong>immutable</strong> — không thể gán <code>t[i] = v</code>. Muốn thay đổi thì chuyển qua list rồi chuyển lại.</li>
+            <li>Phần tử bên trong tuple có thể là mutable (như list) — có thể thay đổi <em>nội dung</em> của nó, nhưng không thay được <em>tham chiếu</em>.</li>
+            <li>Dùng tuple khi cần lưu dữ liệu <em>không thay đổi</em>: tốc độ cao hơn, bảo vệ dữ liệu khỏi bị ghi đè vô tình.</li>
+          </ul>
+          <div class="note">
+            <strong>Bức tranh tổng thể:</strong> sau khi học list và tuple, bạn đã nắm hai trong bốn kiểu collection của Python. Hai kiểu còn lại — <strong>set</strong> (không trùng lặp, không thứ tự) và <strong>dict</strong> (key-value) — sẽ hoàn thiện bộ công cụ làm việc với dữ liệu của bạn.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 06. Kiểu dữ liệu Tuple trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>

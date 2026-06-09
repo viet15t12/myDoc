@@ -1,10 +1,607 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>05. Kiểu dữ liệu List trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-    <h1>Hello</h1>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 05</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="04-cac-phep-toan-so-sanh-va-logic.html">← Bài trước</a>
+      <a class="nav-pill" href="06-kieu-du-lieu-tuple.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tao-list">1. Tạo list</a>
+      <a href="#list-trong">2. List trống</a>
+      <a href="#do-dai">3. Chiều dài list</a>
+      <a href="#truy-cap-index">4. Truy cập theo index</a>
+      <a href="#slicing">5. Slicing</a>
+      <a href="#duyet-list">6. Duyệt qua list</a>
+      <a href="#noi-list">7. Nối list</a>
+      <a href="#thay-doi-phan-tu">8. Thay đổi phần tử (mutable)</a>
+      <a href="#append">9. append() – thêm cuối</a>
+      <a href="#extend">10. extend() – mở rộng</a>
+      <a href="#sort">11. sort() và sorted()</a>
+      <a href="#reverse">12. reverse() và [::-1]</a>
+      <a href="#insert">13. insert() – chèn vào vị trí</a>
+      <a href="#del-remove">14. del – xóa theo index</a>
+      <a href="#index-method">15. index() – tìm vị trí</a>
+      <a href="#pop">16. pop() – lấy và xóa</a>
+      <a href="#bang-tong-hop">17. Bảng tổng hợp methods</a>
+      <a href="#loi-thuong-gap">18. Lỗi thường gặp</a>
+      <a href="#bai-tap">19. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>05. Kiểu dữ liệu List trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về kiểu dữ liệu <code>list</code>: tạo list, truy cập theo index, slicing, duyệt phần tử, nối list và các built-in methods quan trọng như <code>append</code>, <code>extend</code>, <code>sort</code>, <code>insert</code>, <code>pop</code>…
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Python có bốn kiểu dữ liệu dùng để lưu <strong>collection of data</strong> (nhiều giá trị cùng lúc):
+          </p>
+          <table class="pro-table collection-table" aria-label="So sánh các kiểu collection trong Python">
+            <caption>So sánh nhanh 4 kiểu collection phổ biến trong Python</caption>
+            <thead>
+              <tr>
+                <th>Kiểu dữ liệu</th>
+                <th>Ký hiệu</th>
+                <th>Thay đổi được?</th>
+                <th>Có thứ tự?</th>
+                <th>Cho phép trùng lặp?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-current-topic">
+                <td>
+                  <strong><code>list</code></strong>
+                  <span class="table-hint">Danh sách linh hoạt</span>
+                </td>
+                <td><code>[...]</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong><code>tuple</code></strong>
+                  <span class="table-hint">Danh sách cố định</span>
+                </td>
+                <td><code>(...)</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong><code>set</code></strong>
+                  <span class="table-hint">Tập hợp giá trị duy nhất</span>
+                </td>
+                <td><code>{...}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <strong><code>dict</code></strong>
+                  <span class="table-hint">Cặp khóa - giá trị</span>
+                </td>
+                <td><code>{k: v}</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-limited">Không trùng key</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Bài này tập trung vào <strong>list</strong> — kiểu được dùng nhiều nhất. List là kiểu <strong>mutable</strong>: sau khi tạo, bạn hoàn toàn có thể thay đổi, thêm, xóa từng phần tử. Đây là điểm khác biệt lớn so với <code>string</code> (immutable) đã học ở bài 03.
+          </p>
+        </section>
+
+        <!-- ======================== TẠO LIST ======================== -->
+        <section id="tao-list">
+          <h2>1. Tạo list</h2>
+          <p>
+            Dùng cặp dấu ngoặc vuông <code>[]</code>. Phần tử trong list có thể là <em>bất kỳ kiểu dữ liệu nào</em> — thậm chí là một list khác.
+          </p>
+          <pre><code>my_list = [1, 3.5, 'string', [5, 7]]
+
+print(my_list)
+print(type(my_list))</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[1, 3.5, 'string', [5, 7]]
+&lt;class 'list'&gt;</code></pre>
+          <div class="note">
+            <strong>Ghi nhớ:</strong> list có thể chứa hỗn hợp các kiểu dữ liệu khác nhau trong cùng một list. Phần tử <code>[5, 7]</code> ở trên là một list lồng bên trong (nested list).
+          </div>
+        </section>
+
+        <!-- ======================== LIST TRỐNG ======================== -->
+        <section id="list-trong">
+          <h2>2. List trống</h2>
+          <p>Có hai cách tạo list trống:</p>
+          <pre><code># Cách 1: dùng dấu ngoặc vuông rỗng
+empty1 = []
+
+# Cách 2: dùng hàm list()
+empty2 = list()
+
+print(empty1)   # []
+print(empty2)   # []</code></pre>
+          <div class="note">
+            <strong>Khi nào dùng?</strong> List trống thường được tạo trước, rồi thêm dần phần tử vào trong vòng lặp bằng <code>append()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== ĐỘ DÀI ======================== -->
+        <section id="do-dai">
+          <h2>3. Chiều dài list</h2>
+          <p>Hàm <code>len()</code> trả về số phần tử trong list — tương tự như với string.</p>
+          <pre><code>my_list = [1, 2, 3, 4]
+print(len(my_list))   # 4</code></pre>
+        </section>
+
+        <!-- ======================== TRUY CẬP INDEX ======================== -->
+        <section id="truy-cap-index">
+          <h2>4. Truy cập phần tử theo index</h2>
+          <p>
+            Cú pháp giống string: dùng dấu ngoặc vuông <code>[]</code>. Index dương bắt đầu từ <code>0</code>; index âm đếm từ cuối (<code>-1</code> là phần tử cuối).
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Phần tử</th><th>1</th><th>3.5</th><th>'string'</th><th>[5,7]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Index dương</strong></td>
+                <td><code>0</code></td><td><code>1</code></td><td><code>2</code></td><td><code>3</code></td>
+              </tr>
+              <tr>
+                <td><strong>Index âm</strong></td>
+                <td><code>-4</code></td><td><code>-3</code></td><td><code>-2</code></td><td><code>-1</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code>my_list = [1, 3.5, 'string', [5, 7]]
+
+print(my_list[1])    # 3.5  — phần tử thứ hai (index 1)
+print(my_list[-1])   # [5, 7] — phần tử cuối cùng</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>3.5
+[5, 7]</code></pre>
+        </section>
+
+        <!-- ======================== SLICING ======================== -->
+        <section id="slicing">
+          <h2>5. Slicing – lấy một đoạn phần tử</h2>
+          <p>
+            Cú pháp slicing của list hoàn toàn giống string: <code>list[start:stop]</code> — lấy từ <code>start</code> đến <code>stop - 1</code>.
+          </p>
+          <pre><code>my_list = [1, 3.5, 'string', [5, 7]]
+
+# Lấy từ index 1 đến cuối
+print(my_list[1:])    # [3.5, 'string', [5, 7]]
+
+# Lấy từ đầu đến index -2 (không bao gồm -1)
+print(my_list[:-1])   # [1, 3.5, 'string']
+
+# Lấy từ index 1 đến index -2 (không bao gồm -1)
+print(my_list[1:-1])  # [3.5, 'string']</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[3.5, 'string', [5, 7]]
+[1, 3.5, 'string']
+[3.5, 'string']</code></pre>
+        </section>
+
+        <!-- ======================== DUYỆT LIST ======================== -->
+        <section id="duyet-list">
+          <h2>6. Duyệt qua các phần tử</h2>
+          <p>Dùng vòng lặp <code>for</code> để duyệt qua từng phần tử:</p>
+          <pre><code>my_list = [1, 3.5, 'string', [5, 7]]
+
+for x in my_list:
+    print(x)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>1
+3.5
+string
+[5, 7]</code></pre>
+          <div class="note">
+            <strong>Lưu ý cú pháp:</strong> dòng <code>print(x)</code> phải được thụt vào (indent) so với <code>for</code> để Python hiểu đó là phần thân của vòng lặp.
+          </div>
+        </section>
+
+        <!-- ======================== NỐI LIST ======================== -->
+        <section id="noi-list">
+          <h2>7. Nối list</h2>
+          <p>Dùng toán tử <code>+</code> để ghép hai list thành một list mới — tương tự nối chuỗi.</p>
+          <pre><code>list1 = [1, 4.5, 10]
+list2 = ['a', 'b']
+
+concat = list1 + list2
+print(concat)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[1, 4.5, 10, 'a', 'b']</code></pre>
+          <div class="note">
+            <strong>Chú ý:</strong> toán tử <code>+</code> tạo ra một list <em>mới</em>, không thay đổi <code>list1</code> hay <code>list2</code>. Nếu muốn thêm phần tử vào list gốc, dùng <code>extend()</code> (xem mục 10).
+          </div>
+        </section>
+
+        <!-- ======================== THAY ĐỔI PHẦN TỬ ======================== -->
+        <section id="thay-doi-phan-tu">
+          <h2>8. Thay đổi phần tử — list là mutable</h2>
+          <p>
+            Khác với string (immutable), list cho phép gán lại giá trị tại một vị trí index bất kỳ:
+          </p>
+          <pre><code>my_list = [1, 4.5, 10]
+my_list[1] = 'hello'   # thay phần tử ở index 1
+print(my_list)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[1, 'hello', 10]</code></pre>
+          <div class="note">
+            <strong>So sánh với string:</strong> <code>s[1] = 'x'</code> trên string sẽ báo <code>TypeError</code>. Với list, thao tác tương tự hoàn toàn hợp lệ vì list là <strong>mutable</strong>.
+          </div>
+        </section>
+
+        <!-- ======================== APPEND ======================== -->
+        <section id="append">
+          <h2>9. <code>append()</code> – thêm phần tử vào cuối</h2>
+          <p>
+            <code>append(value)</code> thêm <code>value</code> vào <strong>cuối</strong> list. Đây là method được dùng nhiều nhất khi làm việc với list.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+my_list.append(50)
+print(my_list)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[1, 3, 6, 10, -5, 50]</code></pre>
+          <div class="note">
+            <strong>Thực tế:</strong> <code>append()</code> thường được dùng trong vòng lặp để xây dựng list dần dần, ví dụ thu thập kết quả tính toán, lọc dữ liệu từ nguồn khác…
+          </div>
+        </section>
+
+        <!-- ======================== EXTEND ======================== -->
+        <section id="extend">
+          <h2>10. <code>extend()</code> – mở rộng list bằng iterable</h2>
+          <p>
+            <code>extend(iterable)</code> thêm <strong>tất cả phần tử</strong> của một iterable (list, tuple, string…) vào cuối list gốc. Khác với <code>+</code>, <code>extend()</code> thay đổi trực tiếp list gốc thay vì tạo list mới.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+list1   = ['anh', 'em']
+
+my_list.extend(list1)
+print(my_list)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>[1, 3, 6, 10, -5, 'anh', 'em']</code></pre>
+
+          <h3>So sánh <code>append</code> vs <code>extend</code></h3>
+          <table class="pro-table">
+            <caption>Khác biệt quan trọng giữa <code>append()</code> và <code>extend()</code></caption>
+            <thead>
+              <tr><th>Method</th><th>Thêm cái gì?</th><th>Ví dụ</th><th>Kết quả</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>append([4,5])</code></td>
+                <td>Thêm <em>cả list</em> như một phần tử</td>
+                <td><code>[1,2].append([4,5])</code></td>
+                <td><code>[1, 2, [4, 5]]</code></td>
+              </tr>
+              <tr>
+                <td><code>extend([4,5])</code></td>
+                <td>Thêm từng phần tử riêng lẻ</td>
+                <td><code>[1,2].extend([4,5])</code></td>
+                <td><code>[1, 2, 4, 5]</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== SORT ======================== -->
+        <section id="sort">
+          <h2>11. <code>sort()</code> và <code>sorted()</code> – sắp xếp</h2>
+
+          <h3><code>sort()</code> — sắp xếp tại chỗ</h3>
+          <p>
+            Sắp xếp các phần tử của list ngay trên list gốc (in-place). Mặc định tăng dần.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+my_list.sort()               # tăng dần
+print(my_list)               # [-5, 1, 3, 6, 10]
+
+my_list.sort(reverse=True)   # giảm dần
+print(my_list)               # [10, 6, 3, 1, -5]</code></pre>
+
+          <h3><code>sorted()</code> — trả về list mới</h3>
+          <p>
+            Không thay đổi list gốc, trả về một list <em>mới</em> đã sắp xếp.
+          </p>
+          <pre><code>my_list  = [1, 3, 6, 10, -5]
+new_list = sorted(my_list)
+
+print(my_list)    # [1, 3, 6, 10, -5]  — không đổi
+print(new_list)   # [-5, 1, 3, 6, 10]  — list mới đã sắp xếp</code></pre>
+
+          <table class="pro-table">
+            <caption>Chọn <code>sort()</code> hay <code>sorted()</code></caption>
+            <thead>
+              <tr><th></th><th><code>sort()</code></th><th><code>sorted()</code></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Thay đổi list gốc?</td><td><span class="status-badge status-yes">Có</span></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td>Trả về list mới?</td><td><span class="status-badge status-no">Không</span> <code>None</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td>Dùng khi nào?</td><td>Muốn sắp xếp luôn list gốc</td><td>Muốn giữ nguyên list gốc</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== REVERSE ======================== -->
+        <section id="reverse">
+          <h2>12. <code>reverse()</code> và <code>[::-1]</code> – đảo ngược</h2>
+
+          <h3><code>reverse()</code> — đảo tại chỗ</h3>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+my_list.reverse()
+print(my_list)   # [-5, 10, 6, 3, 1]</code></pre>
+
+          <h3><code>[::-1]</code> — tạo list mới đảo ngược</h3>
+          <pre><code>my_list  = [1, 3, 6, 10, -5]
+new_list = my_list[::-1]
+
+print(my_list)    # [1, 3, 6, 10, -5]  — không đổi
+print(new_list)   # [-5, 10, 6, 3, 1]  — list mới</code></pre>
+          <div class="note">
+            <strong>Tương tự string:</strong> <code>[::-1]</code> hoạt động với cả string lẫn list theo cùng nguyên lý slicing với step <code>-1</code>.
+          </div>
+        </section>
+
+        <!-- ======================== INSERT ======================== -->
+        <section id="insert">
+          <h2>13. <code>insert()</code> – chèn phần tử vào vị trí chỉ định</h2>
+          <p>
+            <code>insert(index, value)</code> chèn <code>value</code> vào vị trí <code>index</code>, đẩy các phần tử phía sau về bên phải.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+my_list.insert(0, 100)   # chèn 100 vào đầu (index 0)
+print(my_list)           # [100, 1, 3, 6, 10, -5]
+
+my_list.insert(1, 200)   # chèn 200 vào vị trí thứ hai (index 1)
+print(my_list)           # [100, 200, 1, 3, 6, 10, -5]</code></pre>
+        </section>
+
+        <!-- ======================== DEL / REMOVE ======================== -->
+        <section id="del-remove">
+          <h2>14. <code>del</code> – xóa phần tử theo index</h2>
+          <p>
+            Dùng lệnh <code>del</code> để xóa phần tử tại một index cụ thể:
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+del my_list[2]   # xóa phần tử tại index 2 (giá trị 6)
+print(my_list)   # [1, 3, 10, -5]</code></pre>
+
+          <h3>Xóa nhiều phần tử bằng slicing</h3>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+del my_list[:2]   # xóa hai phần tử đầu tiên (index 0 và 1)
+print(my_list)    # [6, 10, -5]</code></pre>
+
+          <h3>Phân biệt <code>del</code> và <code>remove()</code></h3>
+          <table class="pro-table">
+            <caption>So sánh hai cách xóa phần tử khỏi list</caption>
+            <thead>
+              <tr><th>Cách</th><th>Xóa theo</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>del list[i]</code></td><td>Index</td><td><code>del my_list[2]</code></td></tr>
+              <tr><td><code>list.remove(v)</code></td><td>Giá trị (lần xuất hiện đầu tiên)</td><td><code>my_list.remove(6)</code></td></tr>
+            </tbody>
+          </table>
+          <pre><code>my_list = [1, 3, 6, 10, 6, -5]
+my_list.remove(6)   # chỉ xóa phần tử 6 ĐẦU TIÊN
+print(my_list)      # [1, 3, 10, 6, -5]</code></pre>
+        </section>
+
+        <!-- ======================== INDEX METHOD ======================== -->
+        <section id="index-method">
+          <h2>15. <code>index()</code> – tìm vị trí của phần tử</h2>
+          <p>
+            <code>index(value)</code> trả về index của lần xuất hiện <em>đầu tiên</em> của <code>value</code>. Nếu không tìm thấy, báo <code>ValueError</code>.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+idx = my_list.index(10)
+print(idx)   # 3</code></pre>
+
+          <div class="warning">
+            <strong>Lỗi khi phần tử không tồn tại:</strong>
+            <pre><code>my_list.index(100)
+# ValueError: 100 is not in list</code></pre>
+            Để tránh lỗi, kiểm tra trước bằng <code>in</code>:
+            <pre><code>if 100 in my_list:
+    print(my_list.index(100))
+else:
+    print("Không tìm thấy")</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== POP ======================== -->
+        <section id="pop">
+          <h2>16. <code>pop()</code> – lấy và xóa phần tử</h2>
+          <p>
+            <code>pop(index)</code> vừa <strong>xóa</strong> phần tử tại <code>index</code> khỏi list, vừa <strong>trả về</strong> giá trị của phần tử đó. Nếu không truyền index, mặc định xóa phần tử <em>cuối cùng</em>.
+          </p>
+          <pre><code>my_list = [1, 3, 6, 10, -5]
+
+element = my_list.pop(3)   # xóa phần tử tại index 3 (giá trị 10)
+print("Phần tử bị xóa:", element)   # 10
+print("List còn lại:", my_list)     # [1, 3, 6, -5]</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>Phần tử bị xóa: 10
+List còn lại: [1, 3, 6, -5]</code></pre>
+          <div class="note">
+            <strong>So sánh <code>pop()</code> vs <code>del</code>:</strong> cả hai đều xóa phần tử theo index, nhưng <code>pop()</code> trả về giá trị đã xóa còn <code>del</code> thì không.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>17. Bảng tổng hợp các methods</h2>
+          <table class="pro-table">
+            <caption>Các thao tác list hay dùng nhất</caption>
+            <thead>
+              <tr>
+                <th>Method / Cú pháp</th>
+                <th>Công dụng</th>
+                <th>Thay đổi list gốc?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>len(list)</code></td><td>Chiều dài list</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>list[i]</code></td><td>Truy cập phần tử tại index <code>i</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>list[a:b]</code></td><td>Lấy đoạn phần tử từ <code>a</code> đến <code>b-1</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>list.append(v)</code></td><td>Thêm <code>v</code> vào cuối</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list.extend(iter)</code></td><td>Thêm tất cả phần tử của <code>iter</code> vào cuối</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list.insert(i, v)</code></td><td>Chèn <code>v</code> vào vị trí <code>i</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list.sort()</code></td><td>Sắp xếp tăng dần tại chỗ</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>sorted(list)</code></td><td>Trả về list mới đã sắp xếp</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>list.reverse()</code></td><td>Đảo ngược tại chỗ</td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list[::-1]</code></td><td>Trả về list mới đảo ngược</td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>del list[i]</code></td><td>Xóa phần tử tại index <code>i</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list.remove(v)</code></td><td>Xóa lần xuất hiện đầu tiên của <code>v</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>list.index(v)</code></td><td>Trả về index đầu tiên của <code>v</code></td><td><span class="status-badge status-no">Không</span></td></tr>
+              <tr><td><code>list.pop(i)</code></td><td>Xóa và trả về phần tử tại index <code>i</code></td><td><span class="status-badge status-yes">Có</span></td></tr>
+              <tr><td><code>v in list</code></td><td>Kiểm tra phần tử có tồn tại không</td><td><span class="status-badge status-no">Không</span></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>18. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi làm việc với list</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>IndexError: list index out of range</code></td>
+                <td>Index vượt quá <code>len - 1</code></td>
+                <td>Kiểm tra lại index hoặc dùng <code>len()</code></td>
+              </tr>
+              <tr>
+                <td><code>ValueError: x is not in list</code></td>
+                <td><code>index()</code> hoặc <code>remove()</code> với giá trị không tồn tại</td>
+                <td>Kiểm tra <code>if x in list</code> trước</td>
+              </tr>
+              <tr>
+                <td><code>append(list)</code> tạo nested list không mong muốn</td>
+                <td>Nhầm <code>append</code> với <code>extend</code></td>
+                <td>Dùng <code>extend()</code> khi muốn thêm từng phần tử</td>
+              </tr>
+              <tr>
+                <td>List gốc bị thay đổi bất ngờ</td>
+                <td>Gán <code>b = a</code> không tạo bản sao mới — <code>b</code> trỏ cùng object với <code>a</code></td>
+                <td>Dùng <code>b = a.copy()</code> hoặc <code>b = a[:]</code></td>
+              </tr>
+              <tr>
+                <td><code>sort()</code> trả về <code>None</code></td>
+                <td>Viết <code>new = my_list.sort()</code> — <code>sort()</code> trả về <code>None</code></td>
+                <td>Dùng <code>sorted(my_list)</code> nếu cần list mới</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>19. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Xây dựng list từ input</h3>
+            <p>Nhập 5 số nguyên từ bàn phím, lưu vào một list, sau đó in ra list, chiều dài, phần tử lớn nhất và nhỏ nhất.</p>
+            <pre><code>numbers = []
+for i in range(5):
+    n = int(input(f"Nhập số thứ {i+1}: "))
+    numbers.append(n)
+
+print("List:", numbers)
+print("Lớn nhất:", max(numbers))
+print("Nhỏ nhất:", min(numbers))</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Lọc số chẵn</h3>
+            <p>Cho list <code>[3, 8, 1, 12, 7, 4, 9, 6]</code>. Tạo một list mới chỉ chứa các số chẵn.</p>
+            <pre><code>numbers = [3, 8, 1, 12, 7, 4, 9, 6]
+even = []
+for n in numbers:
+    if n % 2 == 0:
+        even.append(n)
+print(even)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Xóa trùng lặp</h3>
+            <p>Cho list <code>[1, 2, 2, 3, 4, 3, 5]</code>. Tạo một list mới không có phần tử trùng lặp, giữ nguyên thứ tự xuất hiện đầu tiên.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Đảo ngược list thủ công</h3>
+            <p>Viết code đảo ngược list mà không dùng <code>reverse()</code> hay <code>[::-1]</code> — chỉ dùng vòng lặp.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>List là kiểu <strong>mutable</strong>, có thứ tự, cho phép trùng lặp, có thể chứa hỗn hợp kiểu dữ liệu.</li>
+            <li>Tạo list bằng <code>[]</code> hoặc <code>list()</code>. List trống: <code>[]</code>.</li>
+            <li>Truy cập phần tử bằng index dương / âm; lấy đoạn bằng slicing.</li>
+            <li>Gán lại <code>list[i] = v</code> hợp lệ vì list là mutable — khác với string.</li>
+            <li><code>append(v)</code> thêm vào cuối; <code>extend(iter)</code> thêm nhiều phần tử từ iterable.</li>
+            <li><code>sort()</code> sắp xếp tại chỗ; <code>sorted()</code> tạo list mới.</li>
+            <li><code>insert(i, v)</code> chèn vào vị trí; <code>del list[i]</code> / <code>remove(v)</code> xóa phần tử.</li>
+            <li><code>pop(i)</code> xóa và trả về phần tử — hữu ích khi cần cả xóa lẫn lấy giá trị.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Tuple — kiểu dữ liệu tương tự list nhưng <strong>immutable</strong>. Hiểu rõ list sẽ giúp bạn học tuple nhanh hơn nhiều vì cú pháp rất giống nhau.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 05. Kiểu dữ liệu List trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>
