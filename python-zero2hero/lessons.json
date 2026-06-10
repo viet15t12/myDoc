@@ -132,7 +132,7 @@
       "id": "10",
       "minutes": 20,
       "sections": 8,
-      "status": "coming",
+      "status": "published",
       "tags": ["for", "while", "loop", "vòng lặp", "range"],
       "title": "Vòng lặp For và While"
     },
@@ -143,7 +143,7 @@
       "id": "11",
       "minutes": 25,
       "sections": 10,
-      "status": "coming",
+      "status": "published",
       "tags": ["function", "hàm", "def", "return", "args", "kwargs"],
       "title": "Hàm (Functions) trong Python"
     },

@@ -3,78 +3,659 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>10. Vòng lặp For &amp; While trong Python</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 10</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="09-cau-truc-dieu-khien-if-else.html">← Bài trước</a>
+      <a class="nav-pill" href="11-ham-functions-trong-python.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#for-co-ban">1. Vòng lặp for cơ bản</a>
+      <a href="#for-range">2. for với range()</a>
+      <a href="#for-index">3. Duyệt theo index</a>
+      <a href="#for-enumerate">4. enumerate() – index + giá trị</a>
+      <a href="#for-zip">5. zip() – duyệt song song</a>
+      <a href="#for-nested">6. Vòng lặp lồng nhau</a>
+      <a href="#while-co-ban">7. Vòng lặp while cơ bản</a>
+      <a href="#while-true">8. while True + break</a>
+      <a href="#break">9. break – thoát vòng lặp</a>
+      <a href="#continue">10. continue – bỏ qua lần lặp</a>
+      <a href="#for-else">11. for/while … else</a>
+      <a href="#string-repeat">12. Lặp lại chuỗi bằng *</a>
+      <a href="#vi-du-dem-ki-tu">13. Ví dụ: đếm ký tự</a>
+      <a href="#vi-du-tam-giac">14. Ví dụ: vẽ tam giác</a>
+      <a href="#vi-du-so-nguyen-to">15. Ví dụ: kiểm tra số nguyên tố</a>
+      <a href="#vi-du-doan-so">16. Ví dụ: trò chơi đoán số</a>
+      <a href="#bang-tong-hop">17. Bảng tổng hợp</a>
+      <a href="#loi-thuong-gap">18. Lỗi thường gặp</a>
+      <a href="#bai-tap">19. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>10. Vòng lặp For &amp; While trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về hai loại vòng lặp: <code>for</code> (lặp qua iterable hoặc range) và <code>while</code> (lặp khi điều kiện còn đúng). Bao gồm <code>break</code>, <code>continue</code>, <code>range()</code>, <code>enumerate()</code>, <code>zip()</code>, vòng lặp lồng nhau và các bài tập thực hành.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Python có <strong>hai loại vòng lặp</strong>:
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Vòng lặp</th><th>Dùng khi nào</th><th>Ký hiệu</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>for</code></td>
+                <td>Biết trước số lần lặp, hoặc duyệt qua một iterable (list, string, dict, range…)</td>
+                <td><code>for x in iterable:</code></td>
+              </tr>
+              <tr>
+                <td><code>while</code></td>
+                <td>Chưa biết trước số lần lặp — lặp cho đến khi điều kiện sai</td>
+                <td><code>while condition:</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note">
+            <strong>Quy tắc chọn:</strong> Nếu biết sẽ lặp bao nhiêu lần (hoặc duyệt qua một collection) → dùng <code>for</code>. Nếu điều kiện dừng phụ thuộc vào logic bên trong → dùng <code>while</code>.
+          </div>
+        </section>
+
+        <!-- ======================== FOR CƠ BẢN ======================== -->
+        <section id="for-co-ban">
+          <h2>1. Vòng lặp <code>for</code> cơ bản</h2>
+          <p>
+            Dùng <code>for</code> để duyệt qua từng phần tử của bất kỳ <strong>iterable</strong> nào (list, tuple, string, dict, set, range…).
+          </p>
+          <pre><code>my_list = [1, 2, 3, 4]
+
+for item in my_list:
+    print(item)</code></pre>
+          <p>Kết quả:</p>
+          <pre><code>1
+2
+3
+4</code></pre>
+
+          <p>Duyệt qua chuỗi:</p>
+          <pre><code>for ch in "Python":
+    print(ch)</code></pre>
+          <pre><code>P
+y
+t
+h
+o
+n</code></pre>
+
+          <div class="note">
+            <strong>Cú pháp:</strong> Sau dấu hai chấm <code>:</code>, <em>toàn bộ thân vòng lặp phải thụt vào (indent)</em> 4 dấu cách. Python dùng thụt lề để xác định phạm vi — không có dấu ngoặc nhọn như C/Java.
+          </div>
+        </section>
+
+        <!-- ======================== RANGE ======================== -->
+        <section id="for-range">
+          <h2>2. <code>for</code> với <code>range()</code></h2>
+          <p>
+            <code>range()</code> sinh ra dãy số nguyên, rất hay dùng khi bạn cần lặp một số lần xác định.
+          </p>
+
+          <table class="pro-table">
+            <caption>Ba dạng của range()</caption>
+            <thead>
+              <tr><th>Cú pháp</th><th>Kết quả</th><th>Ghi chú</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>range(n)</code></td><td>0, 1, …, n−1</td><td>Dạng phổ biến nhất</td></tr>
+              <tr><td><code>range(start, stop)</code></td><td>start, start+1, …, stop−1</td><td>stop không được bao gồm</td></tr>
+              <tr><td><code>range(start, stop, step)</code></td><td>start, start+step, …</td><td>step âm → đếm ngược</td></tr>
+            </tbody>
+          </table>
+
+          <pre><code># range(n): 0 đến n-1
+for i in range(5):
+    print(i)   # 0 1 2 3 4
+
+# range(start, stop)
+for i in range(2, 6):
+    print(i)   # 2 3 4 5
+
+# range(start, stop, step): bước nhảy
+for i in range(0, 10, 2):
+    print(i)   # 0 2 4 6 8
+
+# range đếm ngược
+for i in range(5, 0, -1):
+    print(i)   # 5 4 3 2 1</code></pre>
+
+          <div class="note">
+            <strong>Nhớ:</strong> <code>range(n)</code> sinh số từ <code>0</code> đến <code>n − 1</code>. <code>range(len(my_list))</code> cho ra đúng các index hợp lệ của <code>my_list</code>.
+          </div>
+        </section>
+
+        <!-- ======================== FOR INDEX ======================== -->
+        <section id="for-index">
+          <h2>3. Duyệt theo index</h2>
+          <p>
+            Khi cần biết cả <strong>vị trí (index)</strong> lẫn giá trị, bạn có thể dùng <code>range(len(...))</code>:
+          </p>
+          <pre><code>my_list = [10, 20, 30, 40]
+
+for i in range(len(my_list)):
+    print(f"index {i} → {my_list[i]}")</code></pre>
+          <pre><code>index 0 → 10
+index 1 → 20
+index 2 → 30
+index 3 → 40</code></pre>
+
+          <div class="note">
+            <strong>Gợi ý:</strong> Cách này hoạt động tốt, nhưng Python cung cấp <code>enumerate()</code> (xem mục 4) — gọn hơn và được coi là "Pythonic" hơn.
+          </div>
+        </section>
+
+        <!-- ======================== ENUMERATE ======================== -->
+        <section id="for-enumerate">
+          <h2>4. <code>enumerate()</code> – lấy cả index và giá trị</h2>
+          <p>
+            <code>enumerate(iterable)</code> trả về cặp <code>(index, value)</code> trong mỗi lần lặp — không cần gọi <code>len()</code> hay <code>range()</code>.
+          </p>
+          <pre><code>fruits = ["apple", "banana", "cherry"]
+
+for i, fruit in enumerate(fruits):
+    print(f"{i}: {fruit}")</code></pre>
+          <pre><code>0: apple
+1: banana
+2: cherry</code></pre>
+
+          <p>Bắt đầu đếm từ số khác 0:</p>
+          <pre><code>for i, fruit in enumerate(fruits, start=1):
+    print(f"{i}. {fruit}")</code></pre>
+          <pre><code>1. apple
+2. banana
+3. cherry</code></pre>
+        </section>
+
+        <!-- ======================== ZIP ======================== -->
+        <section id="for-zip">
+          <h2>5. <code>zip()</code> – duyệt song song nhiều iterable</h2>
+          <p>
+            <code>zip(a, b)</code> ghép từng cặp phần tử của hai (hoặc nhiều) iterable lại, duyệt song song cùng lúc.
+          </p>
+          <pre><code>names  = ["min", "na", "bong"]
+ages   = [5, 6, 10]
+cities = ["HCM", "HN", "DN"]
+
+for name, age, city in zip(names, ages, cities):
+    print(f"{name} | {age} tuổi | {city}")</code></pre>
+          <pre><code>min | 5 tuổi | HCM
+na | 6 tuổi | HN
+bong | 10 tuổi | DN</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> <code>zip()</code> dừng khi iterable ngắn nhất kết thúc. Nếu cần xử lý iterable có độ dài khác nhau, dùng <code>itertools.zip_longest()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== NESTED ======================== -->
+        <section id="for-nested">
+          <h2>6. Vòng lặp lồng nhau (nested loops)</h2>
+          <p>
+            Một vòng lặp có thể nằm bên trong vòng lặp khác. Với mỗi lần lặp của vòng ngoài, vòng trong chạy <em>toàn bộ</em>.
+          </p>
+          <pre><code># Bảng cửu chương 2x2
+for i in range(1, 4):
+    for j in range(1, 4):
+        print(f"{i} × {j} = {i*j}", end="   ")
+    print()   # xuống dòng sau mỗi hàng</code></pre>
+          <pre><code>1 × 1 = 1   1 × 2 = 2   1 × 3 = 3
+2 × 1 = 2   2 × 2 = 4   2 × 3 = 6
+3 × 1 = 3   3 × 2 = 6   3 × 3 = 9</code></pre>
+
+          <div class="warning">
+            <strong>Hiệu năng:</strong> Vòng lặp lồng 3 cấp trở lên bắt đầu chạy chậm khi n lớn (độ phức tạp O(n³)). Trong thực tế hãy cân nhắc dùng list comprehension hoặc thư viện như NumPy cho bài toán ma trận.
+          </div>
+        </section>
+
+        <!-- ======================== WHILE CƠ BẢN ======================== -->
+        <section id="while-co-ban">
+          <h2>7. Vòng lặp <code>while</code> cơ bản</h2>
+          <p>
+            <code>while condition:</code> thực thi thân vòng lặp <strong>liên tục miễn là điều kiện còn đúng</strong>. Khi điều kiện sai, thoát ra.
+          </p>
+          <pre><code>count = 1
+
+while count &lt; 5:
+    print("Hello anh em")
+    count += 1   # tăng count lên để tránh vòng lặp vô tận</code></pre>
+          <pre><code>Hello anh em
+Hello anh em
+Hello anh em
+Hello anh em</code></pre>
+
+          <div class="diagram">
+            <div class="box">Khởi tạo<br><code>count = 1</code></div>
+            <div class="arrow">→</div>
+            <div class="box" style="background:#eff6ff;border-color:#3b82f6;">Kiểm tra điều kiện<br><code>count &lt; 5</code></div>
+            <div class="arrow">→</div>
+            <div class="box">Thân vòng lặp<br>+ cập nhật biến</div>
+          </div>
+
+          <div class="danger">
+            <strong>Vòng lặp vô tận:</strong> Nếu bạn quên cập nhật biến điều kiện bên trong, <code>while</code> sẽ chạy mãi mãi. Nhấn <kbd>Ctrl + C</kbd> trong terminal để dừng chương trình.
+          </div>
+        </section>
+
+        <!-- ======================== WHILE TRUE ======================== -->
+        <section id="while-true">
+          <h2>8. <code>while True</code> + <code>break</code></h2>
+          <p>
+            Một pattern phổ biến: dùng <code>while True:</code> để tạo vòng lặp vô hạn, rồi dùng <code>break</code> để thoát ra khi đủ điều kiện bên trong. Pattern này thường dùng cho menu, nhập liệu lặp lại, trò chơi…
+          </p>
+          <pre><code>while True:
+    answer = input("Nhập 'quit' để thoát: ")
+    if answer == "quit":
+        print("Tạm biệt!")
+        break
+    print(f"Bạn nhập: {answer}")</code></pre>
+
+          <div class="note">
+            <strong>Khi nào dùng <code>while True</code>?</strong> Khi điều kiện thoát phức tạp hoặc xuất hiện ở nhiều chỗ bên trong vòng lặp — thay vì lặp lại logic điều kiện ở đầu <code>while</code>, bạn kiểm tra và <code>break</code> ở đúng nơi cần thiết.
+          </div>
+        </section>
+
+        <!-- ======================== BREAK ======================== -->
+        <section id="break">
+          <h2>9. <code>break</code> – thoát vòng lặp</h2>
+          <p>
+            <code>break</code> kết thúc ngay vòng lặp đang thực thi, bỏ qua các lần lặp còn lại.
+          </p>
+          <pre><code>my_list = [1, 2, 3, 4]
+
+for item in my_list:
+    print(item)
+    if item == 3:
+        break   # thoát khi gặp 3</code></pre>
+          <pre><code>1
+2
+3</code></pre>
+
+          <p>Khi gặp <code>item == 3</code>, Python in ra <code>3</code> rồi thoát vòng lặp ngay — phần tử <code>4</code> không được xử lý.</p>
+
+          <div class="note">
+            <strong>Vòng lặp lồng nhau:</strong> <code>break</code> chỉ thoát khỏi <em>vòng lặp trong cùng</em> chứa nó. Vòng ngoài vẫn tiếp tục. Nếu cần thoát nhiều cấp, có thể dùng biến flag hoặc hàm.
+          </div>
+        </section>
+
+        <!-- ======================== CONTINUE ======================== -->
+        <section id="continue">
+          <h2>10. <code>continue</code> – bỏ qua lần lặp hiện tại</h2>
+          <p>
+            <code>continue</code> bỏ qua phần còn lại của thân vòng lặp trong lần lặp <em>hiện tại</em> và chuyển sang lần lặp tiếp theo. Vòng lặp <strong>không</strong> kết thúc.
+          </p>
+          <pre><code>my_list = [1, 2, 3, 4]
+
+for item in my_list:
+    if item == 3:
+        continue   # bỏ qua 3, tiếp tục với 4
+    print(item)</code></pre>
+          <pre><code>1
+2
+4</code></pre>
+
+          <div class="diagram">
+            <div class="box">Lặp qua [1,2,3,4]</div>
+            <div class="arrow">→</div>
+            <div class="box" style="background:#fef3c7;border-color:#f59e0b;">item == 3?<br>→ <code>continue</code><br>bỏ qua print</div>
+            <div class="arrow">→</div>
+            <div class="box">In 1, 2, 4<br>(bỏ qua 3)</div>
+          </div>
+
+          <p>So sánh <code>break</code> và <code>continue</code>:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th></th><th><code>break</code></th><th><code>continue</code></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tác dụng</td><td>Thoát hẳn vòng lặp</td><td>Bỏ qua lần lặp hiện tại, tiếp tục vòng lặp</td></tr>
+              <tr><td>Vòng lặp sau đó</td><td>Kết thúc</td><td>Vẫn tiếp tục</td></tr>
+              <tr><td>Dùng khi</td><td>Đã tìm thấy / điều kiện dừng đạt</td><td>Muốn bỏ qua một số phần tử nhất định</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== FOR/WHILE ELSE ======================== -->
+        <section id="for-else">
+          <h2>11. <code>for</code> / <code>while</code> … <code>else</code></h2>
+          <p>
+            Python cho phép thêm khối <code>else</code> vào sau vòng lặp. Khối <code>else</code> chạy <strong>khi vòng lặp kết thúc bình thường</strong> (không bị <code>break</code> dừng).
+          </p>
+          <pre><code>numbers = [2, 4, 6, 8]
+
+for n in numbers:
+    if n % 2 != 0:
+        print("Tìm thấy số lẻ!")
+        break
+else:
+    print("Không có số lẻ nào trong list.")   # chạy vì không có break</code></pre>
+          <pre><code>Không có số lẻ nào trong list.</code></pre>
+
+          <div class="note">
+            <strong>Ứng dụng hay:</strong> Pattern <code>for…else</code> rất hữu ích để kiểm tra xem vòng lặp có tìm thấy phần tử cần tìm không (thay vì dùng biến flag riêng).
+          </div>
+        </section>
+
+        <!-- ======================== STRING REPEAT ======================== -->
+        <section id="string-repeat">
+          <h2>12. Lặp lại chuỗi bằng <code>*</code></h2>
+          <p>
+            Trong Python, bạn có thể dùng toán tử <code>*</code> để lặp lại một chuỗi nhiều lần — cực kỳ hữu ích khi vẽ hình trong vòng lặp.
+          </p>
+          <pre><code>print("*" * 5)     # *****
+print("ab" * 3)    # ababab
+print("-" * 20)    # --------------------
+
+# Dùng trong vòng for: in từng dòng có số dấu * tăng dần
+for i in range(1, 6):
+    print("* " * i)</code></pre>
+          <pre><code>*
+* *
+* * *
+* * * *
+* * * * *</code></pre>
+        </section>
+
+        <!-- ======================== VÍ DỤ ĐẾM KÝ TỰ ======================== -->
+        <section id="vi-du-dem-ki-tu">
+          <h2>13. Ví dụ thực hành: đếm tần suất ký tự</h2>
+          <p>
+            Dùng vòng <code>for</code> kết hợp dictionary để đếm số lần xuất hiện của từng ký tự trong chuỗi (bỏ qua khoảng trắng).
+          </p>
+          <pre><code>my_string = input("Nhập chuỗi: ")   # ví dụ: "xin chao cac ban"
+my_dict = {}
+
+for ch in my_string:
+    if ch == " ":
+        continue                    # bỏ qua khoảng trắng
+
+    if ch not in my_dict.keys():
+        my_dict[ch] = 1             # lần đầu gặp ký tự này
+    else:
+        my_dict[ch] += 1            # đã gặp → tăng đếm lên 1
+
+print("Số lần xuất hiện của các ký tự:", my_dict)</code></pre>
+          <p>Kết quả với input <code>"xin chao cac ban"</code>:</p>
+          <pre><code>Số lần xuất hiện của các ký tự: {'x': 1, 'i': 1, 'n': 2, 'c': 3, 'h': 1, 'a': 3, 'o': 1, 'b': 1}</code></pre>
+
+          <div class="note">
+            <strong>Cách ngắn hơn:</strong> Dùng <code>dict.get(ch, 0)</code> để bỏ qua bước kiểm tra:
+            <pre><code>my_dict[ch] = my_dict.get(ch, 0) + 1</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ TAM GIÁC ======================== -->
+        <section id="vi-du-tam-giac">
+          <h2>14. Ví dụ thực hành: vẽ tam giác bằng vòng for</h2>
+
+          <h3>Tam giác vuông</h3>
+          <p>In ra tam giác vuông <code>n</code> dòng — dòng <code>i</code> có <code>i + 1</code> dấu sao:</p>
+          <pre><code>n = 5
+for i in range(n):
+    print("* " * (i + 1))</code></pre>
+          <pre><code>*
+* *
+* * *
+* * * *
+* * * * *</code></pre>
+
+          <h3>Tam giác cân</h3>
+          <p>Tam giác cân <code>n</code> dòng — dòng <code>i</code> có <code>n−i−1</code> khoảng trắng và <code>2i+1</code> dấu sao:</p>
+          <pre><code>n = 5
+for i in range(n):
+    print(" " * (n - i - 1), end="")   # khoảng trắng bên trái
+    print("* " * (2 * i + 1))          # các dấu sao</code></pre>
+          <pre><code>        *
+      * * *
+    * * * * *
+  * * * * * * *
+* * * * * * * * *</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý <code>print(..., end="")</code>:</strong> Mặc định <code>print()</code> tự thêm ký tự xuống dòng (<code>\n</code>) sau mỗi lần gọi. Truyền <code>end=""</code> để ngăn xuống dòng — giúp in khoảng trắng và dấu sao trên cùng một dòng.
+          </div>
+
+          <div class="note">
+            <strong>Tư duy quan trọng:</strong> Thay vì in từng dòng thủ công, hãy <em>tìm công thức tổng quát</em> theo biến <code>i</code>. Đây là kỹ năng cốt lõi khi làm việc với vòng lặp trong thực tế.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ SỐ NGUYÊN TỐ ======================== -->
+        <section id="vi-du-so-nguyen-to">
+          <h2>15. Ví dụ thực hành: kiểm tra số nguyên tố</h2>
+          <p>
+            Số nguyên tố là số lớn hơn 1 và chỉ chia hết cho 1 và chính nó. Dùng <code>for…else</code> để kiểm tra:
+          </p>
+          <pre><code>n = int(input("Nhập số nguyên dương: "))
+
+if n &lt; 2:
+    print(f"{n} không phải số nguyên tố")
+else:
+    for i in range(2, n):
+        if n % i == 0:
+            print(f"{n} không phải số nguyên tố (chia hết cho {i})")
+            break
+    else:
+        print(f"{n} là số nguyên tố")</code></pre>
+
+          <div class="note">
+            <strong>Tối ưu hóa:</strong> Thực ra chỉ cần kiểm tra đến <code>√n</code> thay vì <code>n − 1</code>:
+            <pre><code>import math
+for i in range(2, int(math.sqrt(n)) + 1):
+    ...</code></pre>
+            Điều này giảm số lần lặp đáng kể với số lớn.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ ĐOÁN SỐ ======================== -->
+        <section id="vi-du-doan-so">
+          <h2>16. Ví dụ thực hành: trò chơi đoán số</h2>
+          <p>
+            Ứng dụng <code>while True</code> + <code>break</code> kết hợp <code>if/elif/else</code> và biến đếm lượt:
+          </p>
+          <pre><code>import random
+
+secret = random.randint(1, 50)
+max_tries = 5
+tries_left = max_tries
+
+print("Tôi đã chọn một số ngẫu nhiên từ 1 đến 50.")
+print(f"Bạn chỉ có {max_tries} lần đoán.\n")
+
+while True:
+    guess = int(input("Nhập số bạn đoán: "))
+    tries_left -= 1
+
+    if guess == secret:
+        print("Chính xác! Bạn thắng rồi 🎉")
+        break
+    elif guess &lt; secret:
+        print("Số bạn đoán nhỏ hơn.")
+    else:
+        print("Số bạn đoán lớn hơn.")
+
+    if tries_left &lt;= 0:
+        print(f"Hết lượt dự đoán. Số cần đoán là: {secret}")
+        break
+    else:
+        print(f"Bạn còn {tries_left} lần dự đoán.\n")</code></pre>
+
+          <div class="note">
+            <strong>Điểm quan trọng:</strong> Điều kiện <code>while True</code> + hai câu <code>break</code> bên trong (khi đoán đúng và khi hết lượt) là pattern hay dùng trong thực tế — gọn hơn so với đặt điều kiện phức tạp trực tiếp ở <code>while</code>.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>17. Bảng tổng hợp</h2>
+          <table class="pro-table">
+            <caption>Tóm tắt các thành phần vòng lặp trong Python</caption>
+            <thead>
+              <tr><th>Cú pháp / Hàm</th><th>Công dụng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>for x in iterable:</code></td><td>Duyệt từng phần tử của iterable</td></tr>
+              <tr><td><code>range(n)</code></td><td>Sinh dãy 0, 1, …, n−1</td></tr>
+              <tr><td><code>range(start, stop, step)</code></td><td>Sinh dãy từ start đến stop−1, bước step</td></tr>
+              <tr><td><code>enumerate(iterable)</code></td><td>Trả về cặp (index, value) trong mỗi lần lặp</td></tr>
+              <tr><td><code>zip(a, b)</code></td><td>Ghép cặp phần tử của nhiều iterable, duyệt song song</td></tr>
+              <tr><td><code>while condition:</code></td><td>Lặp khi điều kiện còn đúng</td></tr>
+              <tr><td><code>while True:</code></td><td>Vòng lặp vô hạn, dừng bằng <code>break</code></td></tr>
+              <tr><td><code>break</code></td><td>Thoát hẳn vòng lặp</td></tr>
+              <tr><td><code>continue</code></td><td>Bỏ qua phần còn lại của lần lặp hiện tại, chuyển sang lần tiếp</td></tr>
+              <tr><td><code>for/while … else:</code></td><td>Khối else chạy khi vòng lặp kết thúc bình thường (không bị break)</td></tr>
+              <tr><td><code>"str" * n</code></td><td>Lặp lại chuỗi n lần</td></tr>
+              <tr><td><code>print(..., end="")</code></td><td>In không xuống dòng tự động</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>18. Lỗi thường gặp</h2>
+          <table class="pro-table">
+            <caption>Các lỗi phổ biến khi làm việc với vòng lặp</caption>
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách sửa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vòng lặp vô tận</td>
+                <td>Biến điều kiện trong <code>while</code> không bao giờ thay đổi</td>
+                <td>Đảm bảo có cập nhật biến hoặc <code>break</code> bên trong</td>
+              </tr>
+              <tr>
+                <td><code>IndentationError</code></td>
+                <td>Thân vòng lặp không thụt vào đúng</td>
+                <td>Dùng 4 dấu cách nhất quán; không trộn tab và space</td>
+              </tr>
+              <tr>
+                <td><code>off-by-one</code> với range</td>
+                <td><code>range(n)</code> tạo 0…n−1, không phải 1…n</td>
+                <td>Dùng <code>range(1, n+1)</code> nếu cần 1…n</td>
+              </tr>
+              <tr>
+                <td>Kết quả in dính vào nhau</td>
+                <td>Mặc định <code>print()</code> xuống dòng — dùng hai <code>print()</code> riêng khiến in ra hai dòng</td>
+                <td>Dùng <code>print(a, end="")</code> rồi <code>print(b)</code> để in cùng dòng</td>
+              </tr>
+              <tr>
+                <td>Chỉnh sửa list đang duyệt</td>
+                <td>Thêm/xóa phần tử list trong khi <code>for</code> đang duyệt → kết quả sai</td>
+                <td>Duyệt bản sao: <code>for x in my_list[:]:</code></td>
+              </tr>
+              <tr>
+                <td><code>break</code> không thoát vòng lặp ngoài</td>
+                <td><code>break</code> chỉ thoát vòng trong cùng</td>
+                <td>Dùng biến flag (<code>found = True</code>) hoặc tách thành hàm</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>19. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Tổng các số chẵn</h3>
+            <p>Dùng vòng <code>for</code> và <code>range()</code>, tính tổng tất cả số chẵn từ 1 đến 100.</p>
+            <pre><code>total = 0
+for i in range(2, 101, 2):
+    total += i
+print("Tổng:", total)   # 2550</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: FizzBuzz</h3>
+            <p>Duyệt từ 1 đến 30. In <code>Fizz</code> nếu chia hết cho 3, in <code>Buzz</code> nếu chia hết cho 5, in <code>FizzBuzz</code> nếu chia hết cho cả hai, ngược lại in số đó.</p>
+            <pre><code>for i in range(1, 31):
+    if i % 15 == 0:
+        print("FizzBuzz")
+    elif i % 3 == 0:
+        print("Fizz")
+    elif i % 5 == 0:
+        print("Buzz")
+    else:
+        print(i)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Bảng cửu chương</h3>
+            <p>Dùng vòng lặp lồng nhau, in bảng cửu chương từ 2 đến 9. Mỗi bảng in trên một khối riêng.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Tìm số lớn nhất bằng while</h3>
+            <p>Người dùng nhập các số liên tục (nhập <code>0</code> để dừng). Dùng <code>while</code> để nhận input và in ra số lớn nhất đã nhập.</p>
+            <pre><code>max_num = None
+while True:
+    n = int(input("Nhập số (0 để dừng): "))
+    if n == 0:
+        break
+    if max_num is None or n > max_num:
+        max_num = n
+print("Số lớn nhất:", max_num)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: In số nguyên tố từ 1 đến N</h3>
+            <p>Nhập vào <code>N</code>. Dùng vòng <code>for</code> lồng nhau và <code>for…else</code> để in tất cả số nguyên tố từ 2 đến <code>N</code>.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><code>for x in iterable:</code> duyệt từng phần tử — dùng khi biết trước số lần lặp hoặc cần duyệt collection.</li>
+            <li><code>range(n)</code> sinh 0…n−1; <code>range(start, stop, step)</code> kiểm soát bước nhảy và hướng.</li>
+            <li><code>enumerate()</code> trả về <code>(index, value)</code> — cách Pythonic để lấy cả index lẫn giá trị.</li>
+            <li><code>zip()</code> duyệt song song nhiều iterable cùng lúc.</li>
+            <li><code>while condition:</code> lặp khi điều kiện đúng — dùng khi chưa biết số lần lặp.</li>
+            <li><code>while True: … break</code> là pattern phổ biến cho vòng lặp có điều kiện thoát phức tạp.</li>
+            <li><code>break</code> thoát hẳn vòng lặp; <code>continue</code> bỏ qua lần lặp hiện tại.</li>
+            <li><code>for/while … else:</code> khối <code>else</code> chạy khi vòng lặp kết thúc <em>không</em> bị <code>break</code>.</li>
+            <li><code>"str" * n</code> lặp lại chuỗi, <code>print(..., end="")</code> in không xuống dòng — hay dùng khi vẽ hình.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Hàm (Functions) — đóng gói logic thành khối tái sử dụng. Bạn sẽ thấy vòng lặp và hàm thường được kết hợp cùng nhau trong mọi chương trình Python thực tế.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 10. Vòng lặp For &amp; While trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="doc-script.js"></script>
 </body>
 </html>
