@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>09. Cấu trúc điều khiển if / elif / else trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -98,7 +99,7 @@
         <section id="cu-phap">
           <h2>1. Cú pháp cơ bản</h2>
           <p>Cú pháp tổng quát của một cấu trúc điều khiển đầy đủ:</p>
-          <pre><code>if &lt;điều_kiện_1&gt;:
+          <pre><code class="language-python">if &lt;điều_kiện_1&gt;:
     # Thực thi khi điều_kiện_1 đúng
 elif &lt;điều_kiện_2&gt;:
     # Thực thi khi điều_kiện_1 sai và điều_kiện_2 đúng
@@ -116,7 +117,7 @@ else:
         <section id="if-don">
           <h2>2. Chỉ dùng if</h2>
           <p>Khi chỉ cần thực thi lệnh nếu điều kiện đúng, dùng mình <code>if</code>:</p>
-          <pre><code>age = 20
+          <pre><code class="language-python">age = 20
 
 if age >= 18:
     print("Bạn đã đủ tuổi trưởng thành.")
@@ -129,7 +130,7 @@ if age >= 18:
         <section id="if-else">
           <h2>3. if … else</h2>
           <p>Khi cần xử lý cả hai trường hợp đúng và sai:</p>
-          <pre><code>number = int(input("Nhập số nguyên: "))
+          <pre><code class="language-python">number = int(input("Nhập số nguyên: "))
 
 if number % 2 == 0:
     print(number, "là số chẵn.")
@@ -147,7 +148,7 @@ else:
         <section id="if-elif-else">
           <h2>4. if … elif … else</h2>
           <p>Khi có <strong>nhiều hơn hai trường hợp</strong> cần kiểm tra, dùng thêm <code>elif</code>:</p>
-          <pre><code>score = float(input("Nhập điểm môn học (0–10): "))
+          <pre><code class="language-python">score = float(input("Nhập điểm môn học (0–10): "))
 
 if score > 8:
     print("Bạn đạt loại Giỏi.")
@@ -169,7 +170,7 @@ else:
           <p>
             Đây là nguyên tắc quan trọng nhất cần nhớ khi dùng <code>if/elif/else</code>. Hãy quan sát ví dụ sau với <code>score = 7.5</code>:
           </p>
-          <pre><code>score = 7.5
+          <pre><code class="language-python">score = 7.5
 
 if score > 8:       # 7.5 > 8  → SAI → bỏ qua
     print("Giỏi")
@@ -186,7 +187,7 @@ else:               # Không bao giờ chạy đến đây
 
           <div class="danger">
             <strong>Lỗi hay gặp — điều kiện chồng lấn:</strong> Tránh viết các điều kiện <code>elif</code> mà không xét điều kiện trước đó. Ví dụ sai:
-            <pre><code># SAI — điều kiện chồng lấn
+            <pre><code class="language-python"># SAI — điều kiện chồng lấn
 if age &lt; 6:
     print("Miễn phí")
 if age &lt; 60:        # ← if thứ hai TÁCH BIỆT, không phải elif
@@ -212,7 +213,7 @@ if age &lt; 60:        # ← if thứ hai TÁCH BIỆT, không phải elif
             </tbody>
           </table>
 
-          <pre><code>age = 15
+          <pre><code class="language-python">age = 15
 
 if 6 <= age and age < 18:
     print("Vé thiếu niên: 50.000đ")
@@ -227,7 +228,7 @@ if age >= 6:
         <section id="if-long">
           <h2>7. So sánh kép (chained comparison)</h2>
           <p>Python cho phép viết điều kiện kép ngắn gọn hơn so với nhiều ngôn ngữ khác:</p>
-          <pre><code># Cách thông thường
+          <pre><code class="language-python"># Cách thông thường
 if 6 <= age and age < 18:
     ...
 
@@ -246,7 +247,7 @@ if 6 <= age < 18:
         <section id="if-long-2">
           <h2>8. if lồng nhau (nested if)</h2>
           <p>Bạn có thể đặt một cấu trúc <code>if</code> bên trong một cấu trúc <code>if</code> khác:</p>
-          <pre><code>year = int(input("Nhập năm: "))
+          <pre><code class="language-python">year = int(input("Nhập năm: "))
 
 if year % 4 == 0:               # chia hết cho 4?
     if year % 100 == 0 and year % 400 != 0:
@@ -265,7 +266,7 @@ else:
         <section id="vi-du-1">
           <h2>9. Ví dụ: kiểm tra số chẵn / lẻ</h2>
           <p>Bài toán đơn giản nhất để làm quen với <code>if/else</code>: nhập một số nguyên và xác định chẵn hay lẻ.</p>
-          <pre><code>number = int(input("Nhập số nguyên: "))
+          <pre><code class="language-python">number = int(input("Nhập số nguyên: "))
 
 if number % 2 == 0:
     print("Số nhập vào", number, "là số chẵn.")
@@ -273,7 +274,7 @@ else:
     print("Số nhập vào", number, "là số lẻ.")</code></pre>
 
           <p><strong>Kết quả chạy thử:</strong></p>
-          <pre><code># Lần 1:
+          <pre><code class="language-python"># Lần 1:
 # Nhập số nguyên: 10
 # → Số nhập vào 10 là số chẵn.
 
@@ -286,7 +287,7 @@ else:
         <section id="vi-du-2">
           <h2>10. Ví dụ: xếp loại học lực</h2>
           <p>Nhập điểm từ 0–10 và in ra xếp loại tương ứng. Đây là ví dụ điển hình cho <code>if/elif/else</code> với nhiều nhánh.</p>
-          <pre><code>score = float(input("Nhập điểm môn học (0–10): "))
+          <pre><code class="language-python">score = float(input("Nhập điểm môn học (0–10): "))
 
 if score > 8:
     print("Bạn đạt loại Giỏi.")
@@ -320,7 +321,7 @@ else:
             <li>18 đến dưới 60 tuổi → <strong>70.000đ</strong></li>
             <li>Từ 60 tuổi trở lên → <strong>40.000đ</strong></li>
           </ul>
-          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+          <pre><code class="language-python">age = int(input("Nhập tuổi của bạn: "))
 
 if age < 6:
     print("Giá vé: Miễn phí")
@@ -332,7 +333,7 @@ else:                           # age >= 60
     print("Giá vé: 40.000đ")</code></pre>
 
           <p><strong>Kết quả chạy thử:</strong></p>
-          <pre><code># Nhập tuổi của bạn: 4   → Giá vé: Miễn phí
+          <pre><code class="language-python"># Nhập tuổi của bạn: 4   → Giá vé: Miễn phí
 # Nhập tuổi của bạn: 15  → Giá vé: 50.000đ
 # Nhập tuổi của bạn: 21  → Giá vé: 70.000đ
 # Nhập tuổi của bạn: 65  → Giá vé: 40.000đ</code></pre>
@@ -353,7 +354,7 @@ else:                           # age >= 60
             <li>Nhưng nếu chia hết cho 100 <strong>mà không</strong> chia hết cho 400 → <em>không phải</em> năm nhuận.</li>
             <li>Ví dụ: 2000 là năm nhuận (chia hết 400); 1900 không phải (chia hết 100 nhưng không chia hết 400); 2024 là năm nhuận (chia hết 4, không chia hết 100).</li>
           </ul>
-          <pre><code>year = int(input("Nhập năm: "))
+          <pre><code class="language-python">year = int(input("Nhập năm: "))
 
 if year % 4 == 0:
     # Chia hết 4 — kiểm tra thêm ngoại lệ 100 và 400
@@ -389,7 +390,7 @@ else:
             <li>Nhập <code>1</code> → chuyển từ °F sang °C</li>
             <li>Nhập <code>2</code> → chuyển từ °C sang °F</li>
           </ul>
-          <pre><code>print("Nhập yêu cầu của bạn:")
+          <pre><code class="language-python">print("Nhập yêu cầu của bạn:")
 print("1. Chuyển đổi từ độ F sang độ C")
 print("2. Chuyển đổi từ độ C sang độ F")
 choice = input("Lựa chọn của bạn: ")
@@ -407,7 +408,7 @@ if choice == "2":
     print("Độ F nhận được:", f)</code></pre>
 
           <p><strong>Kết quả chạy thử:</strong></p>
-          <pre><code># Lựa chọn: 1 → Nhập độ F: 30 → Độ C nhận được: -1.111...
+          <pre><code class="language-python"># Lựa chọn: 1 → Nhập độ F: 30 → Độ C nhận được: -1.111...
 # Lựa chọn: 2 → Nhập độ C: 20 → Độ F nhận được: 68.0</code></pre>
 
           <div class="note">
@@ -491,7 +492,7 @@ if choice == "2":
           <div class="exercise">
             <h3>Bài tập 1: Số dương, âm hay bằng 0</h3>
             <p>Nhập một số thực. In ra "Số dương", "Số âm" hoặc "Bằng 0" tương ứng.</p>
-            <pre><code>num = float(input("Nhập số: "))
+            <pre><code class="language-python">num = float(input("Nhập số: "))
 
 if num > 0:
     print("Số dương")
@@ -511,7 +512,7 @@ else:
             <p>
               Nhập hai số và một phép tính (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>). Dùng <code>if/elif/else</code> để tính và in kết quả. Lưu ý xử lý trường hợp chia cho 0.
             </p>
-            <pre><code>a = float(input("Nhập số a: "))
+            <pre><code class="language-python">a = float(input("Nhập số a: "))
 b = float(input("Nhập số b: "))
 op = input("Phép tính (+, -, *, /): ")
 
@@ -567,7 +568,10 @@ else:
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>

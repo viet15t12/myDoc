@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>03. Chuỗi (String) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -105,12 +106,12 @@
             </tbody>
           </table>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string)
 print(type(my_string))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Hello
+          <pre><code class="language-text">Hello
 &lt;class 'str'&gt;</code></pre>
 
           <div class="note">
@@ -125,11 +126,11 @@ print(type(my_string))</code></pre>
             Hàm <code>len()</code> trả về số ký tự trong chuỗi.
           </p>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(len(my_string))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>5</code></pre>
+          <pre><code class="language-text">5</code></pre>
 
           <div class="note">
             <strong>Ghi nhớ:</strong> chuỗi <code>'Hello'</code> có 5 ký tự: <code>H</code>, <code>e</code>, <code>l</code>, <code>l</code>, <code>o</code>.
@@ -171,13 +172,13 @@ print(len(my_string))</code></pre>
             </tbody>
           </table>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string[0])   # H – ký tự đầu tiên
 print(my_string[1])   # e – ký tự thứ hai
 print(my_string[4])   # o – ký tự cuối cùng</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>H
+          <pre><code class="language-text">H
 e
 o</code></pre>
 
@@ -220,12 +221,12 @@ o</code></pre>
             </tbody>
           </table>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string[-1])  # o – ký tự cuối cùng
 print(my_string[-2])  # l – ký tự thứ hai từ dưới lên</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>o
+          <pre><code class="language-text">o
 l</code></pre>
 
           <div class="note">
@@ -241,29 +242,29 @@ l</code></pre>
           </p>
 
           <h3>Cú pháp đầy đủ</h3>
-          <pre><code>chuoi[start:stop]   # lấy từ start đến stop-1
+          <pre><code class="language-python">chuoi[start:stop]   # lấy từ start đến stop-1
 chuoi[start:]       # lấy từ start đến cuối
 chuoi[:stop]        # lấy từ đầu đến stop-1
 chuoi[:]            # lấy toàn bộ chuỗi</code></pre>
 
           <h3>Ví dụ với index dương</h3>
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string[1:4])  # index 1, 2, 3 → 'ell'
 print(my_string[1:])   # từ index 1 đến cuối → 'ello'
 print(my_string[:3])   # từ đầu đến index 2 → 'Hel'</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>ell
+          <pre><code class="language-text">ell
 ello
 Hel</code></pre>
 
           <h3>Ví dụ với index âm</h3>
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string[:-1])   # từ đầu đến ký tự thứ hai từ dưới → 'Hell'
 print(my_string[-3:])   # 3 ký tự cuối → 'llo'</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Hell
+          <pre><code class="language-text">Hell
 llo</code></pre>
 
           <div class="note">
@@ -272,12 +273,12 @@ llo</code></pre>
 
           <h3>Slicing với bước nhảy (step)</h3>
           <p>Cú pháp mở rộng <code>chuoi[start:stop:step]</code> cho phép lấy ký tự cách đều nhau:</p>
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 print(my_string[::2])   # lấy mỗi 2 ký tự → 'Hlo'
 print(my_string[::-1])  # đảo ngược chuỗi → 'olleH'</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Hlo
+          <pre><code class="language-text">Hlo
 olleH</code></pre>
         </section>
 
@@ -288,16 +289,16 @@ olleH</code></pre>
             Dùng toán tử <code>+</code> để ghép hai chuỗi lại với nhau (concatenation).
           </p>
 
-          <pre><code>str1 = 'Anh '
+          <pre><code class="language-python">str1 = 'Anh '
 str2 = 'yêu em'
 concat = str1 + str2
 print(concat)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Anh yêu em</code></pre>
+          <pre><code class="language-text">Anh yêu em</code></pre>
 
           <p>Khi nối nhiều chuỗi, chú ý thêm khoảng trắng để các từ không bị dính liền:</p>
-          <pre><code>ho = 'Trần'
+          <pre><code class="language-python">ho = 'Trần'
 ten_dem = 'Văn'
 ten = 'Huy'
 
@@ -305,7 +306,7 @@ full_name = ho + ' ' + ten_dem + ' ' + ten
 print(full_name)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Trần Văn Huy</code></pre>
+          <pre><code class="language-text">Trần Văn Huy</code></pre>
         </section>
 
         <!-- ======================== DUYỆT KÝ TỰ ======================== -->
@@ -315,12 +316,12 @@ print(full_name)</code></pre>
             Dùng vòng lặp <code>for</code> để duyệt qua từng ký tự trong chuỗi:
           </p>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 for char in my_string:
     print(char)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>H
+          <pre><code class="language-text">H
 e
 l
 l
@@ -338,17 +339,17 @@ o</code></pre>
             Dùng toán tử <code>in</code> để kiểm tra xem một chuỗi con có xuất hiện trong chuỗi khác không. Kết quả trả về <code>True</code> hoặc <code>False</code>.
           </p>
 
-          <pre><code>my_string = 'Hello anh em'
+          <pre><code class="language-python">my_string = 'Hello anh em'
 if 'anh' in my_string:
     print('Có')
 else:
     print('Không')</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Có</code></pre>
+          <pre><code class="language-text">Có</code></pre>
 
           <p>Ngược lại, dùng <code>not in</code> để kiểm tra chuỗi con <em>không</em> xuất hiện:</p>
-          <pre><code>print('xyz' not in my_string)  # True</code></pre>
+          <pre><code class="language-python">print('xyz' not in my_string)  # True</code></pre>
         </section>
 
         <!-- ======================== BUILT-IN METHODS ======================== -->
@@ -429,12 +430,12 @@ else:
           </table>
 
           <h3>Ví dụ: upper và lower</h3>
-          <pre><code>my_string = 'Hello anh em'
+          <pre><code class="language-python">my_string = 'Hello anh em'
 print(my_string.upper())
 print(my_string.lower())</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>HELLO ANH EM
+          <pre><code class="language-text">HELLO ANH EM
 hello anh em</code></pre>
 
           <div class="note">
@@ -449,22 +450,22 @@ hello anh em</code></pre>
             Trong Python, string là kiểu <strong>immutable</strong> — một khi đã tạo, bạn <em>không thể thay đổi từng ký tự</em> bên trong chuỗi. Nếu cố gắng gán, Python sẽ báo lỗi.
           </p>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 my_string[0] = 'h'   # Lỗi!</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>TypeError: 'str' object does not support item assignment</code></pre>
+          <pre><code class="language-text">TypeError: 'str' object does not support item assignment</code></pre>
 
           <p>
             Để "thay đổi" chuỗi, cách đúng là <strong>gán lại biến</strong> bằng một chuỗi mới:
           </p>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 my_string = 'h' + my_string[1:]   # thay H → h
 print(my_string)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>hello</code></pre>
+          <pre><code class="language-text">hello</code></pre>
         </section>
 
         <!-- ======================== ĐẢO NGƯỢC ======================== -->
@@ -472,19 +473,19 @@ print(my_string)</code></pre>
           <h2>12. Đảo ngược chuỗi</h2>
           <p>Python cung cấp cú pháp slicing cực kỳ ngắn gọn để đảo ngược chuỗi:</p>
 
-          <pre><code>my_string = 'Hello'
+          <pre><code class="language-python">my_string = 'Hello'
 reversed_str = my_string[::-1]
 print(reversed_str)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>olleH</code></pre>
+          <pre><code class="language-text">olleH</code></pre>
 
           <p>
             Cách hoạt động: <code>[::-1]</code> nghĩa là lấy toàn bộ chuỗi với bước nhảy <code>-1</code> — tức là đi từ cuối về đầu.
           </p>
 
           <h3>Cách thủ công (dùng vòng for — để hiểu bản chất)</h3>
-          <pre><code>my_string = input("Nhập vào một chuỗi: ")
+          <pre><code class="language-python">my_string = input("Nhập vào một chuỗi: ")
 reverse_string = ''
 
 for char in my_string:
@@ -493,7 +494,7 @@ for char in my_string:
 print("Chuỗi đảo ngược:", reverse_string)</code></pre>
 
           <p>Ví dụ nhập <code>ABCD</code>:</p>
-          <pre><code>Chuỗi đảo ngược: DCBA</code></pre>
+          <pre><code class="language-text">Chuỗi đảo ngược: DCBA</code></pre>
 
           <div class="note">
             <strong>Giải thích logic vòng lặp:</strong>
@@ -513,7 +514,7 @@ print("Chuỗi đảo ngược:", reverse_string)</code></pre>
             Yêu cầu: nhập riêng họ, tên đệm, tên — nối lại thành họ tên đầy đủ rồi in ra dạng in hoa.
           </p>
 
-          <pre><code>ho = input("Nhập vào họ của bạn: ")
+          <pre><code class="language-python">ho = input("Nhập vào họ của bạn: ")
 ten_dem = input("Nhập vào tên đệm của bạn: ")
 ten = input("Nhập vào tên của bạn: ")
 
@@ -523,7 +524,7 @@ full_name = full_name.upper()
 print("Họ và tên đầy đủ:", full_name)</code></pre>
 
           <p>Ví dụ nhập <code>Trần</code> / <code>Minh</code> / <code>An</code>:</p>
-          <pre><code>Họ và tên đầy đủ: TRẦN MINH AN</code></pre>
+          <pre><code class="language-text">Họ và tên đầy đủ: TRẦN MINH AN</code></pre>
 
           <div class="note">
             <strong>Lưu ý:</strong> hàm <code>input()</code> mặc định trả về kiểu <code>str</code>, nên không cần ép kiểu khi làm việc với tên người dùng.
@@ -537,14 +538,14 @@ print("Họ và tên đầy đủ:", full_name)</code></pre>
             Yêu cầu: nhập một chuỗi bất kỳ, in ra tất cả ký tự là chữ số, cách nhau bởi khoảng trắng.
           </p>
 
-          <pre><code>my_string = input("Nhập vào một chuỗi: ")
+          <pre><code class="language-python">my_string = input("Nhập vào một chuỗi: ")
 
 for char in my_string:
     if char.isdigit():
         print(char, end=' ')</code></pre>
 
           <p>Ví dụ nhập <code>A1B2C3D4</code>:</p>
-          <pre><code>1 2 3 4 </code></pre>
+          <pre><code class="language-text">1 2 3 4 </code></pre>
 
           <div class="note">
             <strong>Giải thích:</strong>
@@ -562,7 +563,7 @@ for char in my_string:
             Yêu cầu: nhập một câu tiếng Anh, đếm số lượng nguyên âm (không phân biệt hoa/thường) trong câu đó.
           </p>
 
-          <pre><code>sentence = input("Nhập vào một câu tiếng Anh: ")
+          <pre><code class="language-python">sentence = input("Nhập vào một câu tiếng Anh: ")
 sentence = sentence.lower()   # chuyển về in thường để dễ so sánh
 
 vowels = 'aeiou'
@@ -575,7 +576,7 @@ for char in sentence:
 print("Số lượng nguyên âm xuất hiện trong câu:", count)</code></pre>
 
           <p>Ví dụ nhập <code>I love you</code>:</p>
-          <pre><code>Số lượng nguyên âm xuất hiện trong câu: 5</code></pre>
+          <pre><code class="language-text">Số lượng nguyên âm xuất hiện trong câu: 5</code></pre>
 
           <p>Kiểm tra lại: <code>i</code>(1), <code>o</code>(2), <code>e</code>(3), <code>o</code>(4), <code>u</code>(5) — đúng 5 nguyên âm.</p>
 
@@ -596,7 +597,7 @@ print("Số lượng nguyên âm xuất hiện trong câu:", count)</code></pre>
             Duyệt qua từng ký tự, mỗi khi gặp dấu chấm thì lưu lại vị trí (index) của nó. Kết thúc vòng lặp, biến <code>dot_position</code> sẽ chứa index của dấu chấm <em>cuối cùng</em>.
           </p>
 
-          <pre><code>full_name = input("Nhập vào tên file đầy đủ với extension: ")
+          <pre><code class="language-python">full_name = input("Nhập vào tên file đầy đủ với extension: ")
 
 dot_position = -1   # vị trí tạm của dấu chấm
 
@@ -609,11 +610,11 @@ print("Extension       :", full_name[dot_position + 1:])
 print("Tên không có ext:", full_name[:dot_position])</code></pre>
 
           <p>Ví dụ nhập <code>abc.def.txt</code>:</p>
-          <pre><code>Extension       : txt
+          <pre><code class="language-text">Extension       : txt
 Tên không có ext: abc.def</code></pre>
 
           <p>Ví dụ nhập <code>abc.png</code>:</p>
-          <pre><code>Extension       : png
+          <pre><code class="language-text">Extension       : png
 Tên không có ext: abc</code></pre>
 
           <div class="note">
@@ -678,7 +679,7 @@ Tên không có ext: abc</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: In ký tự theo vị trí</h3>
             <p>Nhập một chuỗi bất kỳ và một số nguyên <code>k</code>. In ra ký tự tại vị trí <code>k</code> (index dương) và ký tự tương ứng theo index âm.</p>
-            <pre><code>s = input("Nhập chuỗi: ")
+            <pre><code class="language-python">s = input("Nhập chuỗi: ")
 k = int(input("Nhập vị trí k: "))
 print("Ký tự tại index", k, ":", s[k])
 print("Ký tự tại index âm tương ứng:", s[k - len(s)])</code></pre>
@@ -687,7 +688,7 @@ print("Ký tự tại index âm tương ứng:", s[k - len(s)])</code></pre>
           <div class="exercise">
             <h3>Bài tập 2: Kiểm tra palindrome</h3>
             <p>Nhập một từ. Kiểm tra xem từ đó có đọc xuôi ngược đều như nhau không (ví dụ: <code>madam</code>, <code>racecar</code>).</p>
-            <pre><code>word = input("Nhập một từ: ").lower()
+            <pre><code class="language-python">word = input("Nhập một từ: ").lower()
 if word == word[::-1]:
     print(word, "là palindrome")
 else:
@@ -732,7 +733,10 @@ else:
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>

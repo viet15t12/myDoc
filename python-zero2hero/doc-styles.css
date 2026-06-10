@@ -23,9 +23,9 @@
   --text-heading: var(--title-color);
   --primary: var(--accent);
   --primary-dark: var(--accent2);
-  --code-bg: #020617;
-  --code-text: #e5e7eb;
-  --code-border: rgba(250, 204, 21, 0.14);
+  --code-bg: #202634;
+  --code-text: #e8edf7;
+  --code-border: rgba(59, 130, 246, 0.28);
 
   --warning-bg: rgba(251, 146, 60, 0.09);
   --warning-border: var(--orange);
@@ -252,10 +252,13 @@ pre {
   background: var(--code-bg);
   border: 1px solid var(--code-border);
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 24px rgba(15, 23, 42, 0.14);
 }
 
 pre code {
+  display: block;
   padding: 0;
   color: inherit;
   background: transparent;
@@ -263,6 +266,43 @@ pre code {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.6;
+}
+
+pre code.hljs,
+pre .hljs {
+  color: var(--code-text);
+  background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #9aa8bd;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #d77bff;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #6ec8ff;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #a8e075;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #ffc66d;
 }
 
 table {

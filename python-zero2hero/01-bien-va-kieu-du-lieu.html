@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>01. Biến và Kiểu dữ liệu trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -104,7 +105,7 @@
           </table>
 
           <p>Có thể kiểm tra danh sách keyword bằng đoạn code sau:</p>
-          <pre><code>import keyword
+          <pre><code class="language-python">import keyword
 
 print(keyword.kwlist)</code></pre>
 
@@ -120,7 +121,7 @@ print(keyword.kwlist)</code></pre>
             trong đó nhãn là tên biến và nội dung bên trong là dữ liệu.
           </p>
 
-          <pre><code>age = 18
+          <pre><code class="language-python">age = 18
 name = "Việt"
 height = 1.80
 is_student = True</code></pre>
@@ -208,17 +209,17 @@ is_student = True</code></pre>
           <h2>4. Gán giá trị cho biến</h2>
           <p>Python dùng dấu bằng <code>=</code> để gán giá trị cho biến.</p>
 
-          <pre><code>integer_number = 10
+          <pre><code class="language-python">integer_number = 10
 float_number = 10.2
 message = "Hello anh em"
 is_valid = True</code></pre>
 
           <p>Để in giá trị của biến ra màn hình, dùng hàm <code>print()</code>:</p>
-          <pre><code>integer_number = 10
+          <pre><code class="language-python">integer_number = 10
 print(integer_number)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>10</code></pre>
+          <pre><code class="language-text">10</code></pre>
         </section>
 
         <section id="type">
@@ -227,7 +228,7 @@ print(integer_number)</code></pre>
             Hàm <code>type()</code> dùng để kiểm tra kiểu dữ liệu của một giá trị hoặc một biến.
           </p>
 
-          <pre><code>integer_number = 10
+          <pre><code class="language-python">integer_number = 10
 float_number = 10.2
 name = "Python"
 is_student = True
@@ -238,7 +239,7 @@ print(type(name))
 print(type(is_student))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>&lt;class 'int'&gt;
+          <pre><code class="language-text">&lt;class 'int'&gt;
 &lt;class 'float'&gt;
 &lt;class 'str'&gt;
 &lt;class 'bool'&gt;</code></pre>
@@ -249,12 +250,12 @@ print(type(is_student))</code></pre>
           <p>Python có nhiều kiểu số, trong đó người mới học thường dùng nhiều nhất là <code>int</code> và <code>float</code>.</p>
 
           <h3><code>int</code> — số nguyên</h3>
-          <pre><code>age = 18
+          <pre><code class="language-python">age = 18
 quantity = 100
 negative_number = -5</code></pre>
 
           <h3><code>float</code> — số thực</h3>
-          <pre><code>height = 1.80
+          <pre><code class="language-python">height = 1.80
 temperature = 25.5
 price = 10.0</code></pre>
 
@@ -269,11 +270,11 @@ price = 10.0</code></pre>
             Kiểu luận lý chỉ có hai giá trị: <code>True</code> và <code>False</code>. Kiểu này thường xuất hiện khi so sánh hoặc kiểm tra điều kiện.
           </p>
 
-          <pre><code>print(6 == 8)
+          <pre><code class="language-python">print(6 == 8)
 print(type(6 == 8))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>False
+          <pre><code class="language-text">False
 &lt;class 'bool'&gt;</code></pre>
 
           <div class="note">
@@ -288,15 +289,15 @@ print(type(6 == 8))</code></pre>
           </p>
 
           <h3>Chuỗi một dòng</h3>
-          <pre><code>message1 = 'Hello anh em'
+          <pre><code class="language-python">message1 = 'Hello anh em'
 message2 = "Hello anh em"</code></pre>
 
           <h3>Chuỗi có dấu nháy bên trong</h3>
-          <pre><code>message = "Hello 'anh em'"
+          <pre><code class="language-python">message = "Hello 'anh em'"
 print(message)</code></pre>
 
           <h3>Chuỗi nhiều dòng</h3>
-          <pre><code>long_message = """
+          <pre><code class="language-python">long_message = """
 Hello anh em.
 Anh em khỏe không?
 """
@@ -314,7 +315,7 @@ print(long_message)</code></pre>
             Hàm <code>input()</code> cho phép chương trình nhận dữ liệu người dùng nhập từ bàn phím.
           </p>
 
-          <pre><code>name = input("Nhập tên của bạn: ")
+          <pre><code class="language-python">name = input("Nhập tên của bạn: ")
 print("Tên của bạn là:", name)</code></pre>
 
           <div class="warning">
@@ -329,15 +330,15 @@ print("Tên của bạn là:", name)</code></pre>
           </p>
 
           <h3>Ép kiểu sang số nguyên</h3>
-          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+          <pre><code class="language-python">age = int(input("Nhập tuổi của bạn: "))
 print("Tuổi của bạn là:", age)</code></pre>
 
           <h3>Ép kiểu sang số thực</h3>
-          <pre><code>temperature = float(input("Nhập nhiệt độ: "))
+          <pre><code class="language-python">temperature = float(input("Nhập nhiệt độ: "))
 print("Nhiệt độ là:", temperature)</code></pre>
 
           <h3>Viết tách thành hai bước</h3>
-          <pre><code>age = input("Nhập tuổi của bạn: ")
+          <pre><code class="language-python">age = input("Nhập tuổi của bạn: ")
 age = int(age)</code></pre>
 
           <table>
@@ -377,14 +378,14 @@ age = int(age)</code></pre>
           <h2>11. Ví dụ thực hành: Nhập tuổi và tên</h2>
           <p>Chương trình nhận tuổi và tên từ bàn phím, sau đó in ra màn hình.</p>
 
-          <pre><code>age = int(input("Nhập tuổi của bạn: "))
+          <pre><code class="language-python">age = int(input("Nhập tuổi của bạn: "))
 print("Tuổi của bạn là:", age)
 
 name = input("Nhập tên của bạn: ")
 print("Tên của bạn là:", name)</code></pre>
 
           <p>Ví dụ chạy chương trình:</p>
-          <pre><code>Nhập tuổi của bạn: 20
+          <pre><code class="language-text">Nhập tuổi của bạn: 20
 Tuổi của bạn là: 20
 Nhập tên của bạn: Minh Tâm
 Tên của bạn là: Minh Tâm</code></pre>
@@ -393,15 +394,15 @@ Tên của bạn là: Minh Tâm</code></pre>
         <section id="vi-du-nhiet-do">
           <h2>12. Ví dụ thực hành: Chuyển đổi độ C sang độ F</h2>
           <p>Công thức chuyển đổi:</p>
-          <pre><code>F = C × 1.8 + 32</code></pre>
+          <pre><code class="language-text">F = C × 1.8 + 32</code></pre>
 
-          <pre><code>celsius = float(input("Nhập vào nhiệt độ độ C: "))
+          <pre><code class="language-python">celsius = float(input("Nhập vào nhiệt độ độ C: "))
 fahrenheit = celsius * 1.8 + 32
 
 print("Độ F của chúng ta là:", fahrenheit)</code></pre>
 
           <p>Ví dụ:</p>
-          <pre><code>Nhập vào nhiệt độ độ C: 20
+          <pre><code class="language-text">Nhập vào nhiệt độ độ C: 20
 Độ F của chúng ta là: 68.0</code></pre>
         </section>
 
@@ -409,7 +410,7 @@ print("Độ F của chúng ta là:", fahrenheit)</code></pre>
           <h2>13. Ví dụ thực hành: Nhập ba số và tính trung bình</h2>
           <p>Vì số nhập vào có thể là số nguyên hoặc số thực, ta dùng <code>float()</code> để ép kiểu.</p>
 
-          <pre><code>x = float(input("Nhập vào số thứ nhất: "))
+          <pre><code class="language-python">x = float(input("Nhập vào số thứ nhất: "))
 y = float(input("Nhập vào số thứ hai: "))
 z = float(input("Nhập vào số thứ ba: "))
 
@@ -418,7 +419,7 @@ average = (x + y + z) / 3
 print("Giá trị trung bình của ba số nhập vào là:", average)</code></pre>
 
           <p>Ví dụ:</p>
-          <pre><code>Nhập vào số thứ nhất: 10
+          <pre><code class="language-text">Nhập vào số thứ nhất: 10
 Nhập vào số thứ hai: 20
 Nhập vào số thứ ba: 30
 Giá trị trung bình của ba số nhập vào là: 20.0</code></pre>
@@ -466,7 +467,7 @@ Giá trị trung bình của ba số nhập vào là: 20.0</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: Thông tin cá nhân</h3>
             <p>Nhập tên, tuổi, chiều cao rồi in ra màn hình.</p>
-            <pre><code>name = input("Nhập tên: ")
+            <pre><code class="language-python">name = input("Nhập tên: ")
 age = int(input("Nhập tuổi: "))
 height = float(input("Nhập chiều cao: "))
 
@@ -478,7 +479,7 @@ print("Chiều cao:", height)</code></pre>
           <div class="exercise">
             <h3>Bài tập 2: Chuyển độ F sang độ C</h3>
             <p>Viết chương trình nhập độ F và chuyển sang độ C.</p>
-            <pre><code>fahrenheit = float(input("Nhập độ F: "))
+            <pre><code class="language-python">fahrenheit = float(input("Nhập độ F: "))
 celsius = (fahrenheit - 32) / 1.8
 
 print("Độ C là:", celsius)</code></pre>
@@ -514,7 +515,10 @@ print("Độ C là:", celsius)</code></pre>
       </article>
     </main>
   </div>
-
-<script src="doc-script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>04. Các phép toán so sánh và logic trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -268,7 +269,7 @@
           <p>Phép so sánh áp dụng được cho cả số nguyên, số thực lẫn chuỗi.</p>
 
           <h3>So sánh số</h3>
-          <pre><code># Kiểm tra bằng nhau
+          <pre><code class="language-python"># Kiểm tra bằng nhau
 print(20 == 20)   # True
 print(20 == 10)   # False
 
@@ -282,7 +283,7 @@ print(15 < 10)    # False
 print(15 <= 15)   # True</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>True
+          <pre><code class="language-text">True
 False
 True
 True
@@ -294,12 +295,12 @@ True</code></pre>
           <p>
             Python so sánh chuỗi theo thứ tự từ điển (lexicographic). Toán tử <code>==</code> kiểm tra hai chuỗi có giống nhau từng ký tự không.
           </p>
-          <pre><code>print('anh' == 'anh')   # True
+          <pre><code class="language-python">print('anh' == 'anh')   # True
 print('anh' == 'em')    # False
 print('anh' != 'em')    # True</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>True
+          <pre><code class="language-text">True
 False
 True</code></pre>
         </section>
@@ -311,21 +312,21 @@ True</code></pre>
             Kiểm tra xem một số có nằm trong đoạn <code>[10, 20]</code> không — tức là phải đồng thời lớn hơn hoặc bằng 10 <strong>và</strong> nhỏ hơn hoặc bằng 20.
           </p>
 
-          <pre><code>number = 15
+          <pre><code class="language-python">number = 15
 in_range = (number >= 10) and (number <= 20)
 print("Số nằm trong khoảng [10, 20]:", in_range)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Số nằm trong khoảng [10, 20]: True</code></pre>
+          <pre><code class="language-text">Số nằm trong khoảng [10, 20]: True</code></pre>
 
           <h3>Cú pháp gọn hơn — chained comparison</h3>
           <p>Python hỗ trợ viết chuỗi so sánh liên tiếp rất tự nhiên, giống ký hiệu toán học:</p>
-          <pre><code>number = 15
+          <pre><code class="language-python">number = 15
 in_range = 10 <= number <= 20
 print("Số nằm trong khoảng [10, 20]:", in_range)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Số nằm trong khoảng [10, 20]: True</code></pre>
+          <pre><code class="language-text">Số nằm trong khoảng [10, 20]: True</code></pre>
 
           <div class="note">
             <strong>Ghi nhớ:</strong> cú pháp <code>10 &lt;= number &lt;= 20</code> hoàn toàn hợp lệ trong Python và tương đương với <code>(10 &lt;= number) and (number &lt;= 20)</code>.
@@ -339,12 +340,12 @@ print("Số nằm trong khoảng [10, 20]:", in_range)</code></pre>
             Kiểm tra xem một số có nằm <em>ngoài</em> đoạn <code>[10, 20]</code> không — tức là nhỏ hơn 10 <strong>hoặc</strong> lớn hơn 20.
           </p>
 
-          <pre><code>number = 30
+          <pre><code class="language-python">number = 30
 out_of_range = (number < 10) or (number > 20)
 print("Số nằm ngoài khoảng [10, 20]:", out_of_range)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Số nằm ngoài khoảng [10, 20]: True</code></pre>
+          <pre><code class="language-text">Số nằm ngoài khoảng [10, 20]: True</code></pre>
 
           <p>Giải thích với <code>number = 30</code>:</p>
           <ul>
@@ -361,13 +362,13 @@ print("Số nằm ngoài khoảng [10, 20]:", out_of_range)</code></pre>
             Toán tử <code>not</code> đặt trước một điều kiện để lấy giá trị ngược lại.
           </p>
 
-          <pre><code>b = False
+          <pre><code class="language-python">b = False
 print(not b)          # True — phủ định False
 
 print(not (6 > 5))    # False — 6 > 5 là True, not True = False</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>True
+          <pre><code class="language-text">True
 False</code></pre>
 
           <div class="note">
@@ -382,7 +383,7 @@ False</code></pre>
             Có thể nối nhiều điều kiện trong một biểu thức bằng cách dùng nhiều <code>and</code> / <code>or</code> liên tiếp:
           </p>
 
-          <pre><code>age = 30
+          <pre><code class="language-python">age = 30
 has_id = True
 gender = 'Nam'
 
@@ -390,7 +391,7 @@ result = (age >= 18) and has_id and (gender == 'Nam')
 print("Thỏa mãn tất cả điều kiện:", result)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Thỏa mãn tất cả điều kiện: True</code></pre>
+          <pre><code class="language-text">Thỏa mãn tất cả điều kiện: True</code></pre>
 
           <p>
             Khi cần nối nhiều điều kiện mà có cả <code>and</code> lẫn <code>or</code>, thứ tự ưu tiên mặc định là: <code>not</code> &gt; <code>and</code> &gt; <code>or</code>. Để rõ ràng hơn, hãy dùng dấu ngoặc.
@@ -427,7 +428,7 @@ print("Thỏa mãn tất cả điều kiện:", result)</code></pre>
             Khi kết hợp nhiều phép toán, luôn nên dùng dấu ngoặc để tránh nhầm lẫn và dễ đọc hơn. Đây cũng là best practice được khuyến nghị.
           </p>
 
-          <pre><code># Không có ngoặc — dễ nhầm thứ tự thực thi
+          <pre><code class="language-python"># Không có ngoặc — dễ nhầm thứ tự thực thi
 result = a or b and c          # b and c được tính trước
 
 # Có ngoặc — rõ ràng hơn
@@ -446,18 +447,18 @@ result = (a or b) and c        # thay đổi kết quả hoàn toàn</code></pre
             Yêu cầu: người dùng có được vào club không? Điều kiện: <strong>tuổi ≥ 18</strong> <em>và</em> <strong>có ID</strong>.
           </p>
 
-          <pre><code>age = 20
+          <pre><code class="language-python">age = 20
 has_id = True
 
 enter_club = (age >= 18) and has_id
 print("User có được vào club:", enter_club)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>User có được vào club: True</code></pre>
+          <pre><code class="language-text">User có được vào club: True</code></pre>
 
           <h3>Thêm điều kiện thứ ba</h3>
           <p>Mở rộng bài toán: club chỉ dành cho nam giới.</p>
-          <pre><code>age = 30
+          <pre><code class="language-python">age = 30
 has_id = True
 gender = 'Nam'
 
@@ -465,7 +466,7 @@ enter_club = (age >= 18) and has_id and (gender == 'Nam')
 print("User có được vào club:", enter_club)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>User có được vào club: True</code></pre>
+          <pre><code class="language-text">User có được vào club: True</code></pre>
 
           <h3>Kiểm tra các trường hợp</h3>
           <table>
@@ -522,7 +523,7 @@ print("User có được vào club:", enter_club)</code></pre>
             <li>Tuổi ≥ 18, <strong>hoặc</strong> nhỏ hơn 18 nhưng có bố mẹ đi kèm.</li>
           </ul>
 
-          <pre><code>age = 15
+          <pre><code class="language-python">age = 15
 has_ticket = True
 has_parent = False
 
@@ -535,7 +536,7 @@ can_enter = has_ticket and age_condition
 print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
 
           <p>Kết quả với <code>age=15</code>, <code>has_ticket=True</code>, <code>has_parent=False</code>:</p>
-          <pre><code>Có thể vào rạp chiếu phim: False</code></pre>
+          <pre><code class="language-text">Có thể vào rạp chiếu phim: False</code></pre>
 
           <p>Giải thích từng bước:</p>
           <ul>
@@ -546,7 +547,7 @@ print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
           </ul>
 
           <h3>Kiểm tra trường hợp có bố mẹ đi kèm</h3>
-          <pre><code>age = 15
+          <pre><code class="language-python">age = 15
 has_ticket = True
 has_parent = True
 
@@ -556,10 +557,10 @@ can_enter = has_ticket and age_condition    # True and True  = True
 print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Có thể vào rạp chiếu phim: True</code></pre>
+          <pre><code class="language-text">Có thể vào rạp chiếu phim: True</code></pre>
 
           <h3>Kiểm tra trường hợp không có vé</h3>
-          <pre><code>age = 40
+          <pre><code class="language-python">age = 40
 has_ticket = False
 has_parent = True
 
@@ -569,7 +570,7 @@ can_enter = has_ticket and age_condition    # False and True = False
 print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Có thể vào rạp chiếu phim: False</code></pre>
+          <pre><code class="language-text">Có thể vào rạp chiếu phim: False</code></pre>
 
           <div class="note">
             <strong>Bài học:</strong> trong biểu thức <code>and</code>, chỉ cần một vế là <code>False</code> thì toàn bộ kết quả là <code>False</code>. Do đó điều kiện tiên quyết như "phải có vé" rất phù hợp đặt vào vế <code>and</code> đầu tiên.
@@ -625,7 +626,7 @@ print("Có thể vào rạp chiếu phim:", can_enter)</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: Kiểm tra số chẵn/lẻ</h3>
             <p>Nhập một số nguyên. Kiểm tra xem số đó có phải số chẵn không và in ra kết quả <code>True</code> / <code>False</code>.</p>
-            <pre><code>n = int(input("Nhập một số nguyên: "))
+            <pre><code class="language-python">n = int(input("Nhập một số nguyên: "))
 is_even = (n % 2 == 0)
 print("Là số chẵn:", is_even)</code></pre>
           </div>
@@ -633,7 +634,7 @@ print("Là số chẵn:", is_even)</code></pre>
           <div class="exercise">
             <h3>Bài tập 2: Kiểm tra tam giác hợp lệ</h3>
             <p>Nhập ba cạnh <code>a</code>, <code>b</code>, <code>c</code>. Kiểm tra xem chúng có thể tạo thành một tam giác không (mỗi cạnh phải nhỏ hơn tổng hai cạnh còn lại).</p>
-            <pre><code>a = float(input("Nhập cạnh a: "))
+            <pre><code class="language-python">a = float(input("Nhập cạnh a: "))
 b = float(input("Nhập cạnh b: "))
 c = float(input("Nhập cạnh c: "))
 
@@ -677,7 +678,10 @@ print("Là tam giác hợp lệ:", is_valid)</code></pre>
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>

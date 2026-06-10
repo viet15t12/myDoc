@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>08. Kiểu dữ liệu Set trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -112,7 +113,7 @@
         <section id="tao-set">
           <h2>1. Tạo set</h2>
           <p>Dùng cặp dấu ngoặc nhọn <code>{}</code> với ít nhất một phần tử, hoặc hàm <code>set()</code>:</p>
-          <pre><code># Cách 1: dùng dấu ngoặc nhọn
+          <pre><code class="language-python"># Cách 1: dùng dấu ngoặc nhọn
 my_set = {"a", "b", "c"}
 print(my_set)        # {'a', 'b', 'c'}  (thứ tự có thể khác)
 print(type(my_set))  # &lt;class 'set'&gt;
@@ -130,7 +131,7 @@ print(my_set2)       # {1, 2, 3, 4}</code></pre>
         <section id="set-rong">
           <h2>2. Set rỗng</h2>
           <p>Để tạo set rỗng, bạn <strong>bắt buộc</strong> phải dùng hàm <code>set()</code>:</p>
-          <pre><code># ĐÚNG: set rỗng
+          <pre><code class="language-python"># ĐÚNG: set rỗng
 empty_set = set()
 print(type(empty_set))   # &lt;class 'set'&gt;
 
@@ -149,7 +150,7 @@ print(type(not_a_set))   # &lt;class 'dict'&gt;</code></pre>
           <p>
             Khi khởi tạo hoặc thêm phần tử đã tồn tại, set tự động bỏ qua — không báo lỗi, không thêm bản sao.
           </p>
-          <pre><code>my_set = {"a", "a", "b"}
+          <pre><code class="language-python">my_set = {"a", "a", "b"}
 print(my_set)   # {'a', 'b'}  — chỉ còn 1 phần tử 'a'
 
 # Ứng dụng: xóa trùng lặp khỏi list
@@ -168,7 +169,7 @@ print(unique)   # [1, 2, 3, 4, 5]  (thứ tự không đảm bảo)</code></pre>
           <p>
             Thứ tự phần tử khi duyệt set <strong>không xác định</strong> và có thể thay đổi giữa các lần chạy (phụ thuộc vào Python interpreter và phiên bản). Không thể truy cập phần tử set bằng index.
           </p>
-          <pre><code>my_set = {"a", "b", "c", "d"}
+          <pre><code class="language-python">my_set = {"a", "b", "c", "d"}
 
 for item in my_set:
     print(item)
@@ -188,7 +189,7 @@ for item in my_set:
           <h2>5. Thêm & xóa phần tử</h2>
 
           <h3>Thêm phần tử – <code>add()</code></h3>
-          <pre><code>my_set = {"a", "b", "c", "d"}
+          <pre><code class="language-python">my_set = {"a", "b", "c", "d"}
 
 my_set.add("e")
 print(my_set)   # {'a', 'b', 'c', 'd', 'e'}
@@ -198,7 +199,7 @@ my_set.add("a")
 print(my_set)   # {'a', 'b', 'c', 'd', 'e'}  — không lỗi, không thêm</code></pre>
 
           <h3>Xóa phần tử – <code>discard()</code> và <code>remove()</code></h3>
-          <pre><code>my_set = {"a", "b", "c", "d"}
+          <pre><code class="language-python">my_set = {"a", "b", "c", "d"}
 
 # discard() – an toàn: không ném lỗi nếu phần tử không tồn tại
 my_set.discard("a")
@@ -236,7 +237,7 @@ print(my_set)          # {'c', 'd'}
         <section id="duyet-set">
           <h2>6. Duyệt qua set</h2>
           <p>Dùng vòng <code>for</code> — cú pháp giống list, nhưng thứ tự không đảm bảo:</p>
-          <pre><code>my_set = {"a", "b", "c", "d"}
+          <pre><code class="language-python">my_set = {"a", "b", "c", "d"}
 
 for item in my_set:
     print(item)</code></pre>
@@ -249,7 +250,7 @@ for item in my_set:
         <section id="kiem-tra-pt">
           <h2>7. Kiểm tra phần tử</h2>
           <p>Dùng <code>in</code> — tốc độ kiểm tra trên set nhanh hơn list (O(1) thay vì O(n)):</p>
-          <pre><code>my_set = {"a", "b", "c"}
+          <pre><code class="language-python">my_set = {"a", "b", "c"}
 
 print("a" in my_set)    # True
 print("z" in my_set)    # False
@@ -271,7 +272,7 @@ print("z" not in my_set)  # True</code></pre>
             <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Giao<br><code>{3, 4}</code></div>
           </div>
 
-          <pre><code>a = {1, 2, 3, 4}
+          <pre><code class="language-python">a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 
 # Dùng phương thức
@@ -298,7 +299,7 @@ print(result)   # {3, 4}</code></pre>
             <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Hợp<br><code>{1, 2, 3, 4, 5, 6}</code></div>
           </div>
 
-          <pre><code>a = {1, 2, 3, 4}
+          <pre><code class="language-python">a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 
 # Dùng phương thức
@@ -329,7 +330,7 @@ print(result)   # {1, 2, 3, 4, 5, 6}</code></pre>
             <div class="box" style="background:#eff6ff; border-color:#3b82f6;">A - B <br><code>{1, 2}</code></div>
           </div>
 
-          <pre><code>a = {1, 2, 3, 4}
+          <pre><code class="language-python">a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 
 # A - B: chỉ lấy phần tử thuộc A
@@ -360,7 +361,7 @@ print(diff2)   # {5, 6}</code></pre>
             <div class="box" style="background:#eff6ff; border-color:#3b82f6;">Sym. Diff<br><code>{1, 2, 5, 6}</code></div>
           </div>
 
-          <pre><code>a = {1, 2, 3, 4}
+          <pre><code class="language-python">a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 
 # Phương thức
@@ -392,7 +393,7 @@ print(result)   # {1, 2, 5, 6}</code></pre>
             </tbody>
           </table>
 
-          <pre><code>a = {1, 2, 3, 4}
+          <pre><code class="language-python">a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 
 print(a | b)   # {1, 2, 3, 4, 5, 6}  — hợp
@@ -477,7 +478,7 @@ print(b)   # {3, 4, 5, 6}</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: Xóa trùng lặp khỏi list</h3>
             <p>Cho list <code>[1, 2, 2, 3, 4, 3, 5, 1]</code>. Dùng set để loại bỏ phần tử trùng, sau đó chuyển về list và in ra.</p>
-            <pre><code>numbers = [1, 2, 2, 3, 4, 3, 5, 1]
+            <pre><code class="language-python">numbers = [1, 2, 2, 3, 4, 3, 5, 1]
 unique = list(set(numbers))
 print(unique)   # thứ tự có thể khác [1, 2, 3, 4, 5]</code></pre>
           </div>
@@ -487,7 +488,7 @@ print(unique)   # thứ tự có thể khác [1, 2, 3, 4, 5]</code></pre>
             <p>
               Cho hai set bạn bè: <code>friends_a = {"an", "binh", "cuong", "dung"}</code> và <code>friends_b = {"cuong", "dung", "em", "phuong"}</code>. Tìm danh sách bạn chung của cả hai.
             </p>
-            <pre><code>friends_a = {"an", "binh", "cuong", "dung"}
+            <pre><code class="language-python">friends_a = {"an", "binh", "cuong", "dung"}
 friends_b = {"cuong", "dung", "em", "phuong"}
 
 common = friends_a & friends_b
@@ -504,7 +505,7 @@ print("Bạn chung:", common)   # {'cuong', 'dung'}</code></pre>
           <div class="exercise">
             <h3>Bài tập 4: Kiểm tra tập hợp con</h3>
             <p>Cho <code>a = {1, 2}</code> và <code>b = {1, 2, 3, 4}</code>. Kiểm tra <code>a</code> có phải tập hợp con của <code>b</code> không bằng <code>issubset()</code>.</p>
-            <pre><code>a = {1, 2}
+            <pre><code class="language-python">a = {1, 2}
 b = {1, 2, 3, 4}
 print(a.issubset(b))    # True
 print(b.issuperset(a))  # True</code></pre>
@@ -533,7 +534,10 @@ print(b.issuperset(a))  # True</code></pre>
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>

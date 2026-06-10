@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>02. Các phép toán số học trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -126,30 +127,30 @@
           <h2>2. Phép cộng <code>+</code></h2>
           <p>Phép cộng dùng để cộng hai giá trị số.</p>
 
-          <pre><code>print(3 + 10)</code></pre>
+          <pre><code class="language-python">print(3 + 10)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>13</code></pre>
+          <pre><code class="language-text">13</code></pre>
         </section>
 
         <section id="tru">
           <h2>3. Phép trừ <code>-</code></h2>
           <p>Phép trừ dùng để lấy số bên trái trừ đi số bên phải.</p>
 
-          <pre><code>print(3 - 10)</code></pre>
+          <pre><code class="language-python">print(3 - 10)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>-7</code></pre>
+          <pre><code class="language-text">-7</code></pre>
         </section>
 
         <section id="nhan">
           <h2>4. Phép nhân <code>*</code></h2>
           <p>Phép nhân dùng dấu sao <code>*</code>, không dùng ký hiệu <code>x</code>.</p>
 
-          <pre><code>print(3 * 10)</code></pre>
+          <pre><code class="language-python">print(3 * 10)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>30</code></pre>
+          <pre><code class="language-text">30</code></pre>
         </section>
 
         <section id="chia">
@@ -158,11 +159,11 @@
             Phép chia bằng dấu <code>/</code> luôn trả về kết quả kiểu số thực <code>float</code>, kể cả khi chia hai số nguyên.
           </p>
 
-          <pre><code>print(10 / 3)
+          <pre><code class="language-python">print(10 / 3)
 print(type(10 / 3))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>3.3333333333333335
+          <pre><code class="language-text">3.3333333333333335
 &lt;class 'float'&gt;</code></pre>
 
           <div class="note">
@@ -176,12 +177,12 @@ print(type(10 / 3))</code></pre>
             Nếu muốn lấy phần nguyên của kết quả chia dương, bạn có thể dùng <code>int()</code> để ép kiểu.
           </p>
 
-          <pre><code>result = 10 / 3
+          <pre><code class="language-python">result = 10 / 3
 print(result)
 print(int(result))</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>3.3333333333333335
+          <pre><code class="language-text">3.3333333333333335
 3</code></pre>
 
           <div class="warning">
@@ -193,16 +194,16 @@ print(int(result))</code></pre>
           <h2>7. Phép chia lấy dư <code>%</code></h2>
           <p>Phép chia lấy dư trả về phần dư của phép chia.</p>
 
-          <pre><code>print(10 % 3)</code></pre>
+          <pre><code class="language-python">print(10 % 3)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>1</code></pre>
+          <pre><code class="language-text">1</code></pre>
 
           <p>Với số âm, kết quả có thể khác cách nghĩ thông thường nếu chỉ quen chia tay:</p>
-          <pre><code>print(-10 % 3)</code></pre>
+          <pre><code class="language-python">print(-10 % 3)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>2</code></pre>
+          <pre><code class="language-text">2</code></pre>
 
           <div class="note">
             <strong>Giải thích nhanh:</strong> Python giữ quan hệ <code>n = d * (n // d) + (n % d)</code>. Vì <code>-10 // 3 = -4</code>, nên <code>-10 = 3 * (-4) + 2</code>.
@@ -213,16 +214,16 @@ print(int(result))</code></pre>
           <h2>8. Phép lũy thừa <code>**</code></h2>
           <p>Phép lũy thừa dùng hai dấu sao <code>**</code>.</p>
 
-          <pre><code>print(2 ** 4)</code></pre>
+          <pre><code class="language-python">print(2 ** 4)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>16</code></pre>
+          <pre><code class="language-text">16</code></pre>
 
           <p>Có thể dùng số thực làm số mũ:</p>
-          <pre><code>print(2 ** 4.5)</code></pre>
+          <pre><code class="language-python">print(2 ** 4.5)</code></pre>
 
           <p>Kết quả xấp xỉ:</p>
-          <pre><code>22.627416997969522</code></pre>
+          <pre><code class="language-text">22.627416997969522</code></pre>
         </section>
 
         <section id="floor-division">
@@ -232,16 +233,16 @@ print(int(result))</code></pre>
             Có thể hiểu đơn giản là phép chia làm tròn xuống.
           </p>
 
-          <pre><code>print(10 // 3)</code></pre>
+          <pre><code class="language-python">print(10 // 3)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>3</code></pre>
+          <pre><code class="language-text">3</code></pre>
 
           <p>Với số âm:</p>
-          <pre><code>print(-10 // 3)</code></pre>
+          <pre><code class="language-python">print(-10 // 3)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>-4</code></pre>
+          <pre><code class="language-text">-4</code></pre>
 
           <div class="warning">
             <strong>Dễ nhầm:</strong> <code>-10 / 3</code> xấp xỉ <code>-3.333</code>. Số nguyên lớn nhất nhỏ hơn hoặc bằng <code>-3.333</code> là <code>-4</code>, không phải <code>-3</code>.
@@ -252,11 +253,11 @@ print(int(result))</code></pre>
           <h2>10. Công thức liên hệ giữa <code>//</code> và <code>%</code></h2>
           <p>Trong Python, phép chia nguyên và phép chia lấy dư có quan hệ:</p>
 
-          <pre><code>n = d * (n // d) + (n % d)</code></pre>
+          <pre><code class="language-python">n = d * (n // d) + (n % d)</code></pre>
 
           <p>Ví dụ với <code>n = 20</code>, <code>d = 3</code>:</p>
 
-          <pre><code>n = 20
+          <pre><code class="language-python">n = 20
 d = 3
 
 floor_division = n // d
@@ -267,7 +268,7 @@ print("Remainder:", remainder)
 print(d * floor_division + remainder)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Floor division: 6
+          <pre><code class="language-text">Floor division: 6
 Remainder: 2
 20</code></pre>
         </section>
@@ -279,17 +280,17 @@ Remainder: 2
           </p>
 
           <h3>Cách viết thông thường</h3>
-          <pre><code>number = 10
+          <pre><code class="language-python">number = 10
 number = number + 5
 print(number)</code></pre>
 
           <h3>Cách viết ngắn gọn</h3>
-          <pre><code>number = 10
+          <pre><code class="language-python">number = 10
 number += 5
 print(number)</code></pre>
 
           <p>Cả hai đoạn đều cho kết quả:</p>
-          <pre><code>15</code></pre>
+          <pre><code class="language-text">15</code></pre>
 
           <table>
             <thead>
@@ -379,7 +380,7 @@ print(number)</code></pre>
             Bài toán: giá rau là 15.000đ/kg, giá thịt là 120.000đ/kg. Mua 2kg rau và 0.5kg thịt. Hỏi tổng số tiền là bao nhiêu?
           </p>
 
-          <pre><code>gia_rau = 15000
+          <pre><code class="language-python">gia_rau = 15000
 gia_thit = 120000
 
 tong_so_tien = 2 * gia_rau + 0.5 * gia_thit
@@ -387,7 +388,7 @@ tong_so_tien = 2 * gia_rau + 0.5 * gia_thit
 print("Tổng số tiền đi chợ:", tong_so_tien)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Tổng số tiền đi chợ: 90000.0</code></pre>
+          <pre><code class="language-text">Tổng số tiền đi chợ: 90000.0</code></pre>
 
           <div class="note">
             <strong>Giải thích:</strong> <code>2 * 15000 = 30000</code> và <code>0.5 * 120000 = 60000</code>, tổng cộng là <code>90000</code>.
@@ -400,7 +401,7 @@ print("Tổng số tiền đi chợ:", tong_so_tien)</code></pre>
             Nếu ban đầu có 91.000đ và đi chợ hết 90.000đ, ta tính số tiền còn lại bằng phép trừ.
           </p>
 
-          <pre><code>so_tien_ban_dau = 91000
+          <pre><code class="language-python">so_tien_ban_dau = 91000
 
 gia_rau = 15000
 gia_thit = 120000
@@ -412,7 +413,7 @@ print("Tổng số tiền đi chợ:", tong_so_tien)
 print("Số tiền thừa sau khi đi chợ:", so_tien_con_lai)</code></pre>
 
           <p>Kết quả:</p>
-          <pre><code>Tổng số tiền đi chợ: 90000.0
+          <pre><code class="language-text">Tổng số tiền đi chợ: 90000.0
 Số tiền thừa sau khi đi chợ: 1000.0</code></pre>
         </section>
 
@@ -463,7 +464,7 @@ Số tiền thừa sau khi đi chợ: 1000.0</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: Tính tổng tiền mua hàng</h3>
             <p>Nhập đơn giá và số lượng, sau đó tính tổng tiền.</p>
-            <pre><code>don_gia = float(input("Nhập đơn giá: "))
+            <pre><code class="language-python">don_gia = float(input("Nhập đơn giá: "))
 so_luong = float(input("Nhập số lượng: "))
 
 tong_tien = don_gia * so_luong
@@ -473,7 +474,7 @@ print("Tổng tiền:", tong_tien)</code></pre>
           <div class="exercise">
             <h3>Bài tập 2: Tính chu vi và diện tích hình chữ nhật</h3>
             <p>Nhập chiều dài và chiều rộng, sau đó tính chu vi và diện tích.</p>
-            <pre><code>chieu_dai = float(input("Nhập chiều dài: "))
+            <pre><code class="language-python">chieu_dai = float(input("Nhập chiều dài: "))
 chieu_rong = float(input("Nhập chiều rộng: "))
 
 chu_vi = (chieu_dai + chieu_rong) * 2
@@ -515,7 +516,10 @@ print("Diện tích:", dien_tich)</code></pre>
       </article>
     </main>
   </div>
-
-<script src="doc-script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

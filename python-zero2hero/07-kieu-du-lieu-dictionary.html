@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>07. Kiểu dữ liệu Dictionary trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -109,13 +110,13 @@
           <p>
             Dùng cặp dấu ngoặc nhọn <code>{}</code>. Mỗi cặp key–value được ngăn cách nhau bằng dấu hai chấm <code>:</code>, các cặp cách nhau bằng dấu phẩy.
           </p>
-          <pre><code># Cú pháp: {key: value, key: value, ...}
+          <pre><code class="language-python"># Cú pháp: {key: value, key: value, ...}
 name_age = {"min": 5, "na": 6, "bong": 10}
 
 print(name_age)
 print(type(name_age))</code></pre>
           <p>Kết quả:</p>
-          <pre><code>{'min': 5, 'na': 6, 'bong': 10}
+          <pre><code class="language-text">{'min': 5, 'na': 6, 'bong': 10}
 &lt;class 'dict'&gt;</code></pre>
 
           <div class="note">
@@ -123,7 +124,7 @@ print(type(name_age))</code></pre>
           </div>
 
           <p>Bạn cũng có thể tạo dictionary bằng hàm <code>dict()</code> với keyword arguments:</p>
-          <pre><code># Dùng hàm dict()
+          <pre><code class="language-python"># Dùng hàm dict()
 name_age = dict(min=5, na=6, bong=10)
 print(name_age)   # {'min': 5, 'na': 6, 'bong': 10}</code></pre>
 
@@ -136,7 +137,7 @@ print(name_age)   # {'min': 5, 'na': 6, 'bong': 10}</code></pre>
         <section id="dict-rong">
           <h2>2. Dictionary rỗng</h2>
           <p>Có hai cách tạo dictionary rỗng:</p>
-          <pre><code># Cách 1: cặp ngoặc nhọn rỗng
+          <pre><code class="language-python"># Cách 1: cặp ngoặc nhọn rỗng
 empty1 = {}
 
 # Cách 2: hàm dict()
@@ -156,19 +157,19 @@ print(type(empty2))   # &lt;class 'dict'&gt;</code></pre>
           <p>
             Dùng cú pháp <code>dict[key]</code> để lấy value tương ứng với key đó.
           </p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 print(name_age["na"])     # 6
 print(name_age["bong"])   # 10</code></pre>
           <p>Kết quả:</p>
-          <pre><code>6
+          <pre><code class="language-text">6
 10</code></pre>
 
           <div class="danger">
             <strong>KeyError:</strong> Truy cập một key không tồn tại sẽ ném ngay <code>KeyError</code>. Dùng <code>get()</code> (xem phần 4) nếu bạn không chắc key có tồn tại không.
           </div>
 
-          <pre><code>name_age = {"min": 5, "na": 6}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6}
 print(name_age["xuan"])   # KeyError: 'xuan'</code></pre>
         </section>
 
@@ -178,7 +179,7 @@ print(name_age["xuan"])   # KeyError: 'xuan'</code></pre>
           <p>
             <code>dict.get(key)</code> trả về value nếu key tồn tại, ngược lại trả về <code>None</code> — thay vì ném <code>KeyError</code>. Bạn có thể cung cấp giá trị mặc định ở tham số thứ hai.
           </p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 age = name_age.get("na")
 print(age)                         # 6
@@ -204,7 +205,7 @@ print(age_default)                 # 0</code></pre>
             <li>Nếu <code>key</code> <strong>chưa có</strong> → thêm cặp key–value mới vào cuối dictionary.</li>
             <li>Nếu <code>key</code> <strong>đã có</strong> → cập nhật (ghi đè) value cũ.</li>
           </ul>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 # Cập nhật: bong tăng lên 12 tuổi sau 2 năm
 name_age["bong"] = 12
@@ -214,10 +215,10 @@ name_age["nam"] = 30
 
 print(name_age)</code></pre>
           <p>Kết quả:</p>
-          <pre><code>{'min': 5, 'na': 6, 'bong': 12, 'nam': 30}</code></pre>
+          <pre><code class="language-text">{'min': 5, 'na': 6, 'bong': 12, 'nam': 30}</code></pre>
 
           <p>Dùng <code>update()</code> để thêm / cập nhật nhiều cặp cùng lúc:</p>
-          <pre><code>name_age.update({"lan": 22, "bong": 13})
+          <pre><code class="language-python">name_age.update({"lan": 22, "bong": 13})
 print(name_age)
 # {'min': 5, 'na': 6, 'bong': 13, 'nam': 30, 'lan': 22}</code></pre>
         </section>
@@ -227,7 +228,7 @@ print(name_age)
           <h2>6. Xóa phần tử</h2>
           <p>Python cung cấp nhiều cách xóa phần tử khỏi dictionary:</p>
 
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10, "nam": 30}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10, "nam": 30}
 
 # del – xóa theo key, ném KeyError nếu không tồn tại
 del name_age["na"]
@@ -266,7 +267,7 @@ print(name_age)    # {}</code></pre>
           <p>
             Dùng vòng <code>for</code> trực tiếp trên dictionary (mặc định duyệt qua các key), hoặc gọi rõ phương thức <code>keys()</code>.
           </p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 # Cách 1: for k in dict
 for k in name_age:
@@ -276,7 +277,7 @@ for k in name_age:
 for k in name_age.keys():
     print(k)</code></pre>
           <p>Kết quả (cả hai cách giống nhau):</p>
-          <pre><code>min
+          <pre><code class="language-text">min
 na
 bong</code></pre>
         </section>
@@ -285,12 +286,12 @@ bong</code></pre>
         <section id="duyet-values">
           <h2>8. Duyệt qua values</h2>
           <p>Dùng <code>dict.values()</code>:</p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 for v in name_age.values():
     print(v)</code></pre>
           <p>Kết quả:</p>
-          <pre><code>5
+          <pre><code class="language-text">5
 6
 10</code></pre>
         </section>
@@ -301,12 +302,12 @@ for v in name_age.values():
           <p>
             Dùng <code>dict.items()</code> để lấy cả key và value trong cùng một lần lặp — cách được dùng <strong>phổ biến nhất</strong> trong thực tế.
           </p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 for k, v in name_age.items():
     print(k, v)</code></pre>
           <p>Kết quả:</p>
-          <pre><code>min 5
+          <pre><code class="language-text">min 5
 na 6
 bong 10</code></pre>
 
@@ -319,7 +320,7 @@ bong 10</code></pre>
         <section id="kiem-tra-key">
           <h2>10. Kiểm tra key tồn tại</h2>
           <p>Dùng toán tử <code>in</code> để kiểm tra xem một key có trong dictionary không:</p>
-          <pre><code>name_age = {"min": 5, "na": 6, "bong": 10}
+          <pre><code class="language-python">name_age = {"min": 5, "na": 6, "bong": 10}
 
 print("na" in name_age)      # True
 print("xuan" in name_age)    # False
@@ -339,7 +340,7 @@ else:
           <p>
             Tương tự list comprehension, bạn có thể tạo dictionary từ một iterable bằng cú pháp ngắn gọn:
           </p>
-          <pre><code># Tạo dictionary: số -> bình phương của số
+          <pre><code class="language-python"># Tạo dictionary: số -> bình phương của số
 squares = {x: x**2 for x in range(1, 6)}
 print(squares)
 # {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
@@ -426,7 +427,7 @@ print(young)
           <div class="exercise">
             <h3>Bài tập 1: Đếm tần suất ký tự</h3>
             <p>Cho chuỗi <code>"hello world"</code>. Đếm số lần xuất hiện của mỗi ký tự (bỏ qua khoảng trắng) và lưu vào dictionary.</p>
-            <pre><code>text = "hello world"
+            <pre><code class="language-python">text = "hello world"
 freq = {}
 for ch in text:
     if ch == " ":
@@ -439,7 +440,7 @@ print(freq)
           <div class="exercise">
             <h3>Bài tập 2: Đảo ngược dictionary</h3>
             <p>Cho <code>{"a": 1, "b": 2, "c": 3}</code>. Tạo dictionary mới với key và value đổi chỗ nhau.</p>
-            <pre><code>original = {"a": 1, "b": 2, "c": 3}
+            <pre><code class="language-python">original = {"a": 1, "b": 2, "c": 3}
 reversed_dict = {v: k for k, v in original.items()}
 print(reversed_dict)   # {1: 'a', 2: 'b', 3: 'c'}</code></pre>
           </div>
@@ -477,7 +478,10 @@ print(reversed_dict)   # {1: 'a', 2: 'b', 3: 'c'}</code></pre>
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>

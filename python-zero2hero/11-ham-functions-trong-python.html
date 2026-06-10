@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>11. Hàm (Functions) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
@@ -86,7 +87,7 @@
           <p>
             Cú pháp định nghĩa hàm trong Python dùng từ khóa <code>def</code>:
           </p>
-          <pre><code>def ten_ham(tham_so_1, tham_so_2):
+          <pre><code class="language-python">def ten_ham(tham_so_1, tham_so_2):
     # thân hàm (thụt vào 4 dấu cách)
     ket_qua = tham_so_1 + tham_so_2
     return ket_qua</code></pre>
@@ -96,18 +97,18 @@
               <tr><th>Thành phần</th><th>Bắt buộc?</th><th>Mô tả</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>def</code></td><td>✅ Có</td><td>Từ khóa khai báo hàm</td></tr>
-              <tr><td>Tên hàm</td><td>✅ Có</td><td>Theo quy tắc <code>snake_case</code> (chữ thường, dấu gạch dưới)</td></tr>
-              <tr><td><code>()</code></td><td>✅ Có</td><td>Dấu ngoặc tròn — có thể để trống nếu không có tham số</td></tr>
-              <tr><td>Tham số</td><td>❌ Không</td><td>Giá trị truyền vào hàm, khai báo trong dấu <code>()</code></td></tr>
-              <tr><td><code>:</code></td><td>✅ Có</td><td>Dấu hai chấm kết thúc dòng <code>def</code></td></tr>
-              <tr><td>Thân hàm</td><td>✅ Có</td><td>Khối lệnh thụt vào 4 dấu cách</td></tr>
-              <tr><td><code>return</code></td><td>❌ Không</td><td>Trả về giá trị; nếu bỏ qua, hàm trả về <code>None</code></td></tr>
+              <tr><td><code>def</code></td><td><span class="status-badge status-yes">Có</span></td><td>Từ khóa khai báo hàm</td></tr>
+              <tr><td>Tên hàm</td><td><span class="status-badge status-yes">Có</span></td><td>Theo quy tắc <code>snake_case</code> (chữ thường, dấu gạch dưới)</td></tr>
+              <tr><td><code>()</code></td><td><span class="status-badge status-yes">Có</span></td><td>Dấu ngoặc tròn — có thể để trống nếu không có tham số</td></tr>
+              <tr><td>Tham số</td><td><span class="status-badge status-no">Không</span></td><td>Giá trị truyền vào hàm, khai báo trong dấu <code>()</code></td></tr>
+              <tr><td><code>:</code></td><td><span class="status-badge status-yes">Có</span></td><td>Dấu hai chấm kết thúc dòng <code>def</code></td></tr>
+              <tr><td>Thân hàm</td><td><span class="status-badge status-yes">Có</span></td><td>Khối lệnh thụt vào 4 dấu cách</td></tr>
+              <tr><td><code>return</code></td><td><span class="status-badge status-no">Không</span></td><td>Trả về giá trị; nếu bỏ qua, hàm trả về <code>None</code></td></tr>
             </tbody>
           </table>
 
           <p>Ví dụ hàm đơn giản nhất — không tham số, không return:</p>
-          <pre><code>def say_hello():
+          <pre><code class="language-python">def say_hello():
     print("Xin chào Python!")
 
 say_hello()   # Xin chào Python!</code></pre>
@@ -119,7 +120,7 @@ say_hello()   # Xin chào Python!</code></pre>
           <p>
             Định nghĩa hàm chưa chạy bất kỳ lệnh nào. Bạn phải <strong>gọi hàm</strong> (hay còn gọi là <em>invoke</em>) bằng cách viết tên hàm kèm dấu ngoặc tròn:
           </p>
-          <pre><code>def greet(name):
+          <pre><code class="language-python">def greet(name):
     print(f"Xin chào, {name}!")
 
 # Gọi hàm
@@ -131,13 +132,13 @@ greet("Python")   # Xin chào, Python!</code></pre>
             <strong>Lưu ý thứ tự:</strong> Bạn phải <em>định nghĩa hàm trước</em> khi gọi nó. Gọi hàm trước khi định nghĩa sẽ gây lỗi <code>NameError</code>.
           </div>
 
-          <pre><code># ❌ Sai — gọi trước khi định nghĩa
+          <pre><code class="language-python"># [SAI] Gọi trước khi định nghĩa
 greet("An")
 
 def greet(name):
     print(f"Xin chào, {name}!")
 
-# ✅ Đúng — định nghĩa trước, gọi sau
+# [DUNG] Định nghĩa trước, gọi sau
 def greet(name):
     print(f"Xin chào, {name}!")
 
@@ -169,7 +170,7 @@ greet("An")</code></pre>
               </tr>
             </tbody>
           </table>
-          <pre><code>#          x, y  ← parameter (tham số)
+          <pre><code class="language-python">#          x, y  ← parameter (tham số)
 def tinh_tong(x, y):
     return x + y
 
@@ -188,7 +189,7 @@ print(ket_qua)   # 11</code></pre>
           </p>
 
           <h3>Hàm có return</h3>
-          <pre><code>def binh_phuong(x):
+          <pre><code class="language-python">def binh_phuong(x):
     return x * x
 
 ket_qua = binh_phuong(5)
@@ -196,7 +197,7 @@ print(ket_qua)   # 25
 print(binh_phuong(3) + binh_phuong(4))   # 25</code></pre>
 
           <h3>Hàm không có return</h3>
-          <pre><code>def in_thong_tin(ten, tuoi):
+          <pre><code class="language-python">def in_thong_tin(ten, tuoi):
     print(f"Tên: {ten}, Tuổi: {tuoi}")
 
 in_thong_tin("An", 22)   # Tên: An, Tuổi: 22
@@ -207,7 +208,7 @@ print(gia_tri)   # None</code></pre>
 
           <h3>Return nhiều giá trị</h3>
           <p>Python cho phép return nhiều giá trị cùng lúc — thực chất là trả về một <strong>tuple</strong>:</p>
-          <pre><code>def chia_lay_du(a, b):
+          <pre><code class="language-python">def chia_lay_du(a, b):
     thuong = a // b
     du = a % b
     return thuong, du
@@ -216,7 +217,7 @@ thuong, du = chia_lay_du(17, 5)
 print(f"17 ÷ 5 = {thuong} dư {du}")   # 17 ÷ 5 = 3 dư 2</code></pre>
 
           <h3>Return sớm để kiểm tra điều kiện</h3>
-          <pre><code>def chia_an_toan(a, b):
+          <pre><code class="language-python">def chia_an_toan(a, b):
     if b == 0:
         return None   # thoát sớm, tránh lỗi ZeroDivisionError
     return a / b
@@ -235,7 +236,7 @@ print(chia_an_toan(10, 0))   # None</code></pre>
           <p>
             Bạn có thể gán giá trị mặc định cho tham số. Nếu người gọi không truyền đối số cho tham số đó, Python dùng giá trị mặc định.
           </p>
-          <pre><code>def chao_hoi(ten, loi_chao="Xin chào"):
+          <pre><code class="language-python">def chao_hoi(ten, loi_chao="Xin chào"):
     print(f"{loi_chao}, {ten}!")
 
 chao_hoi("An")               # Xin chào, An!
@@ -244,11 +245,11 @@ chao_hoi("Bình", "Chào buổi sáng")   # Chào buổi sáng, Bình!</code></p
           <div class="note">
             <strong>Quy tắc quan trọng:</strong> Tham số có giá trị mặc định phải đặt <em>sau</em> tham số không có giá trị mặc định. Đặt ngược lại sẽ bị <code>SyntaxError</code>.
           </div>
-          <pre><code># ❌ Sai
+          <pre><code class="language-python"># [SAI]
 def ham_sai(a=1, b):
     pass
 
-# ✅ Đúng
+# [DUNG]
 def ham_dung(a, b=1):
     pass</code></pre>
         </section>
@@ -259,7 +260,7 @@ def ham_dung(a, b=1):
           <p>
             Khi gọi hàm, bạn có thể truyền đối số theo tên tham số — gọi là <strong>keyword argument</strong>. Cách này giúp code dễ đọc hơn và không cần quan tâm đến thứ tự.
           </p>
-          <pre><code>def mo_ta_nguoi(ten, tuoi, thanh_pho):
+          <pre><code class="language-python">def mo_ta_nguoi(ten, tuoi, thanh_pho):
     print(f"{ten}, {tuoi} tuổi, sống ở {thanh_pho}")
 
 # Positional argument — phải đúng thứ tự
@@ -270,7 +271,7 @@ mo_ta_nguoi(tuoi=25, thanh_pho="TP.HCM", ten="Bình")
 
 # Trộn positional và keyword — positional phải đặt trước
 mo_ta_nguoi("Châu", tuoi=30, thanh_pho="Đà Nẵng")</code></pre>
-          <pre><code>An, 22 tuổi, sống ở Hà Nội
+          <pre><code class="language-text">An, 22 tuổi, sống ở Hà Nội
 Bình, 25 tuổi, sống ở TP.HCM
 Châu, 30 tuổi, sống ở Đà Nẵng</code></pre>
         </section>
@@ -286,7 +287,7 @@ Châu, 30 tuổi, sống ở Đà Nẵng</code></pre>
           <p>
             <code>*args</code> gom tất cả positional argument thừa vào một <strong>tuple</strong>.
           </p>
-          <pre><code>def tinh_tong(*so):
+          <pre><code class="language-python">def tinh_tong(*so):
     print(type(so))   # &lt;class 'tuple'&gt;
     return sum(so)
 
@@ -297,12 +298,12 @@ print(tinh_tong(1, 2, 3, 4, 5)) # 15</code></pre>
           <p>
             <code>**kwargs</code> gom tất cả keyword argument thừa vào một <strong>dict</strong>.
           </p>
-          <pre><code>def in_thong_tin(**thong_tin):
+          <pre><code class="language-python">def in_thong_tin(**thong_tin):
     for key, value in thong_tin.items():
         print(f"  {key}: {value}")
 
 in_thong_tin(ten="An", tuoi=22, nghe_nghiep="Lập trình viên")</code></pre>
-          <pre><code>  ten: An
+          <pre><code class="language-text">  ten: An
   tuoi: 22
   nghe_nghiep: Lập trình viên</code></pre>
 
@@ -345,20 +346,20 @@ in_thong_tin(ten="An", tuoi=22, nghe_nghiep="Lập trình viên")</code></pre>
             </tbody>
           </table>
 
-          <pre><code>x = 10   # biến global
+          <pre><code class="language-python">x = 10   # biến global
 
 def ham_vi_du():
     y = 20   # biến local
-    print(x)  # ✅ đọc được biến global
-    print(y)  # ✅ đọc được biến local
+    print(x)  # đọc được biến global
+    print(y)  # đọc được biến local
 
 ham_vi_du()
-print(x)  # ✅ 10
-print(y)  # ❌ NameError — y không tồn tại ngoài hàm</code></pre>
+print(x)  # 10
+print(y)  # NameError — y không tồn tại ngoài hàm</code></pre>
 
           <h3>Từ khóa <code>global</code></h3>
           <p>Nếu bạn muốn <em>sửa</em> biến global từ bên trong hàm, dùng từ khóa <code>global</code>:</p>
-          <pre><code>dem = 0
+          <pre><code class="language-python">dem = 0
 
 def tang_dem():
     global dem
@@ -379,7 +380,7 @@ print(dem)   # 2</code></pre>
           <p>
             Python cho phép định nghĩa hàm bên trong một hàm khác. Hàm bên trong chỉ có thể dùng trong phạm vi hàm ngoài.
           </p>
-          <pre><code>def ham_ngoai(ten):
+          <pre><code class="language-python">def ham_ngoai(ten):
     def chao():            # hàm bên trong
         return "Xin chào"
     ket_qua = f"{chao()}, {ten}!"
@@ -401,7 +402,7 @@ print(ham_ngoai("An"))   # Xin chào, An!
             <code>lambda</code> là cách viết hàm <strong>ngắn gọn, không tên</strong> trên một dòng. Phù hợp cho các hàm đơn giản, thường dùng như đối số cho các hàm khác.
           </p>
 
-          <pre><code># Cú pháp: lambda tham_so: bieu_thuc_tra_ve
+          <pre><code class="language-python"># Cú pháp: lambda tham_so: bieu_thuc_tra_ve
 nhan_doi = lambda x: x * 2
 print(nhan_doi(5))   # 10
 
@@ -410,11 +411,11 @@ def nhan_doi(x):
     return x * 2</code></pre>
 
           <h3>Lambda với nhiều tham số</h3>
-          <pre><code>tong = lambda a, b: a + b
+          <pre><code class="language-python">tong = lambda a, b: a + b
 print(tong(3, 4))   # 7</code></pre>
 
           <h3>Lambda kết hợp với <code>sorted()</code> và <code>map()</code></h3>
-          <pre><code># Sắp xếp list dict theo một field
+          <pre><code class="language-python"># Sắp xếp list dict theo một field
 hoc_sinh = [
     {"ten": "An",   "diem": 8.5},
     {"ten": "Bình", "diem": 9.0},
@@ -423,10 +424,10 @@ hoc_sinh = [
 sorted_hs = sorted(hoc_sinh, key=lambda hs: hs["diem"], reverse=True)
 for hs in sorted_hs:
     print(hs["ten"], "–", hs["diem"])</code></pre>
-          <pre><code>Bình – 9.0
+          <pre><code class="language-text">Bình – 9.0
 An – 8.5
 Châu – 7.5</code></pre>
-          <pre><code># map() — áp dụng hàm cho từng phần tử
+          <pre><code class="language-python"># map() — áp dụng hàm cho từng phần tử
 so = [1, 2, 3, 4, 5]
 binh_phuong = list(map(lambda x: x**2, so))
 print(binh_phuong)   # [1, 4, 9, 16, 25]</code></pre>
@@ -476,7 +477,7 @@ print(binh_phuong)   # [1, 4, 9, 16, 25]</code></pre>
           </p>
 
           <h3>Bước 1: Không dùng hàm (code thẳng)</h3>
-          <pre><code>import shutil
+          <pre><code class="language-python">import shutil
 import os
 
 source_dir = "source_d"
@@ -491,7 +492,7 @@ for file_name in list_name:
     )</code></pre>
 
           <h3>Bước 2: Đóng gói vào hàm (tái sử dụng được)</h3>
-          <pre><code>import shutil
+          <pre><code class="language-python">import shutil
 import os
 
 def copy_all_files(source_dir, destination_dir):
@@ -513,7 +514,7 @@ copy_all_files("photos", "photos_backup")   # dùng lại với folder khác</co
           </div>
 
           <h3>Bước 3: Thêm xử lý lỗi</h3>
-          <pre><code>import shutil
+          <pre><code class="language-python">import shutil
 import os
 
 def copy_all_files(source_dir, destination_dir):
@@ -530,7 +531,7 @@ def copy_all_files(source_dir, destination_dir):
             os.path.join(source_dir, file_name),
             destination_dir
         )
-    print(f"✅ Đã copy {len(list_name)} file sang '{destination_dir}'")
+    print(f"Đã copy {len(list_name)} file sang '{destination_dir}'")
 
 copy_all_files("source_d", "destination_d")</code></pre>
         </section>
@@ -541,7 +542,7 @@ copy_all_files("source_d", "destination_d")</code></pre>
           <p>
             Bài toán: xây dựng một chương trình máy tính nhỏ cho phép cộng, trừ, nhân, chia — mỗi phép tính là một hàm riêng.
           </p>
-          <pre><code>def cong(a, b):
+          <pre><code class="language-python">def cong(a, b):
     return a + b
 
 def tru(a, b):
@@ -654,7 +655,7 @@ print(tinh_toan(7,  "*", 6))   # 42</code></pre>
           <div class="exercise">
             <h3>Bài tập 1: Hàm tính chu vi và diện tích hình chữ nhật</h3>
             <p>Viết hàm <code>hinh_chu_nhat(dai, rong)</code> trả về tuple <code>(chu_vi, dien_tich)</code>. Gọi hàm với <code>dai=8, rong=5</code> và in kết quả.</p>
-            <pre><code>def hinh_chu_nhat(dai, rong):
+            <pre><code class="language-python">def hinh_chu_nhat(dai, rong):
     chu_vi = 2 * (dai + rong)
     dien_tich = dai * rong
     return chu_vi, dien_tich
@@ -666,7 +667,7 @@ print(f"Chu vi: {cv}, Diện tích: {dt}")   # Chu vi: 26, Diện tích: 40</cod
           <div class="exercise">
             <h3>Bài tập 2: Hàm kiểm tra số nguyên tố</h3>
             <p>Viết hàm <code>la_so_nguyen_to(n)</code> trả về <code>True</code> nếu <code>n</code> là số nguyên tố, <code>False</code> nếu không. Dùng hàm này để in tất cả số nguyên tố từ 2 đến 50.</p>
-            <pre><code>def la_so_nguyen_to(n):
+            <pre><code class="language-python">def la_so_nguyen_to(n):
     if n < 2:
         return False
     for i in range(2, int(n**0.5) + 1):
@@ -681,7 +682,7 @@ print(primes)</code></pre>
           <div class="exercise">
             <h3>Bài tập 3: Hàm đếm từ</h3>
             <p>Viết hàm <code>dem_tu(chuoi)</code> nhận một chuỗi và trả về dict đếm số lần xuất hiện của mỗi từ. Không phân biệt chữ hoa/thường.</p>
-            <pre><code>def dem_tu(chuoi):
+            <pre><code class="language-python">def dem_tu(chuoi):
     tu_dien = {}
     for tu in chuoi.lower().split():
         tu_dien[tu] = tu_dien.get(tu, 0) + 1
@@ -699,7 +700,7 @@ print(dem_tu("Python is great and Python is fun"))
           <div class="exercise">
             <h3>Bài tập 5: Sắp xếp danh sách sinh viên</h3>
             <p>Có danh sách sinh viên sau. Dùng <code>sorted()</code> kết hợp <code>lambda</code> để sắp xếp theo điểm từ cao xuống thấp, nếu bằng điểm thì sắp xếp tên theo bảng chữ cái.</p>
-            <pre><code>sinh_vien = [
+            <pre><code class="language-python">sinh_vien = [
     {"ten": "An",   "diem": 8.5},
     {"ten": "Bình", "diem": 9.0},
     {"ten": "Châu", "diem": 8.5},
@@ -732,7 +733,10 @@ print(dem_tu("Python is great and Python is fun"))
       </article>
     </main>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
   <script src="doc-script.js"></script>
 </body>
 </html>
