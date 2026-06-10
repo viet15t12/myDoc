@@ -154,7 +154,7 @@
       "id": "12",
       "minutes": 20,
       "sections": 8,
-      "status": "coming",
+      "status": "published",
       "tags": ["file", "open", "read", "write", "with"],
       "title": "Xử lý file (File Handling)"
     },
@@ -165,7 +165,7 @@
       "id": "13",
       "minutes": 15,
       "sections": 6,
-      "status": "coming",
+      "status": "published",
       "tags": ["list comprehension", "one-liner", "pythonic"],
       "title": "List Comprehension"
     },

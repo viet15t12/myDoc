@@ -3,78 +3,766 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>12. Xử lý File (File Handling) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 12</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="11-ham-functions-trong-python.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#ham-open">1. Hàm open()</a>
+      <a href="#file-mode">2. Các chế độ mở file (Mode)</a>
+      <a href="#doc-file">3. Đọc file</a>
+      <a href="#context-manager">4. Context Manager – with</a>
+      <a href="#ghi-file">5. Ghi file – w</a>
+      <a href="#append-file">6. Ghi thêm – a</a>
+      <a href="#tao-file">7. Tạo file mới – x</a>
+      <a href="#xoa-file">8. Xóa file – os.remove()</a>
+      <a href="#binary-text">9. Text vs Binary</a>
+      <a href="#vi-du-thuc-chien">10. Ví dụ thực tế</a>
+      <a href="#bang-tong-hop">11. Bảng tổng hợp</a>
+      <a href="#loi-thuong-gap">12. Lỗi thường gặp</a>
+      <a href="#bai-tap">13. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>12. Xử lý File (File Handling) trong Python</h1>
+        <p class="meta">
+          Tài liệu học Python cơ bản về xử lý file: hàm <code>open()</code>, các chế độ mở file (<code>r</code>, <code>w</code>, <code>a</code>, <code>x</code>), đọc và ghi dữ liệu, context manager <code>with</code>, xóa file với <code>os.remove()</code>, phân biệt text và binary. Có ví dụ thực tế và bài tập thực hành.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Trong thực tế, dữ liệu thường được <strong>lưu trữ trong file</strong> — file log, file cấu hình, file CSV chứa dữ liệu… Chương trình cần đọc những file này để lấy dữ liệu đầu vào, và cũng cần ghi kết quả ra file để lưu lại hoặc chia sẻ.
+          </p>
+          <p>
+            Python tích hợp sẵn khả năng làm việc với file thông qua hàm <code>open()</code> — không cần cài thêm thư viện nào. Bài này sẽ đi từ cơ bản (đọc, ghi, thêm) đến cách làm chuẩn nhất trong thực tế (context manager).
+          </p>
+          <div class="note">
+            <strong>Tại sao cần học file handling?</strong> Mọi ứng dụng thực tế đều làm việc với file: đọc file cấu hình, ghi log, xử lý dữ liệu CSV, lưu kết quả… Đây là kỹ năng bắt buộc của mọi lập trình viên Python.
+          </div>
+        </section>
+
+        <!-- ======================== HÀM OPEN ======================== -->
+        <section id="ham-open">
+          <h2>1. Hàm <code>open()</code></h2>
+          <p>
+            Để làm việc với file trong Python, bước đầu tiên là <strong>mở file</strong> bằng hàm <code>open()</code>:
+          </p>
+          <pre><code class="language-python">file_object = open(filename, mode)</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tham số</th><th>Bắt buộc?</th><th>Mô tả</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>filename</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td>Tên file hoặc đường dẫn đến file. Ví dụ: <code>"data.txt"</code>, <code>"C:/users/data.txt"</code></td>
+              </tr>
+              <tr>
+                <td><code>mode</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td>Chế độ mở file. Mặc định là <code>"r"</code> (đọc). Xem bảng mode bên dưới.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Hàm <code>open()</code> trả về một <strong>file object</strong> — đối tượng đại diện cho file đang mở. Qua đó bạn có thể đọc hoặc ghi nội dung.</p>
+
+          <pre><code class="language-python"># Mở file — mặc định là mode "r" (read)
+f = open("myfile.txt")
+
+# Đọc nội dung
+content = f.read()
+print(content)
+
+# Đóng file sau khi dùng xong
+f.close()</code></pre>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> Sau khi làm việc xong với file, bạn phải <strong>đóng file</strong> bằng <code>f.close()</code> để giải phóng tài nguyên. Trong thực tế, người ta dùng <strong>context manager</strong> (<code>with</code>) để Python tự động đóng file — sẽ học ở phần 4.
+          </div>
+        </section>
+
+        <!-- ======================== FILE MODE ======================== -->
+        <section id="file-mode">
+          <h2>2. Các chế độ mở file (Mode)</h2>
+          <p>
+            Tham số <code>mode</code> quyết định bạn muốn làm gì với file: chỉ đọc, ghi đè, ghi thêm hay tạo mới. Có 4 mode chính:
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Mode</th><th>Tên đầy đủ</th><th>File chưa tồn tại</th><th>File đã tồn tại</th><th>Dùng khi nào</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>"r"</code></td>
+                <td>Read</td>
+                <td><span class="status-badge status-no">Báo lỗi</span></td>
+                <td>Mở để đọc, con trỏ ở đầu file</td>
+                <td>Đọc nội dung file</td>
+              </tr>
+              <tr>
+                <td><code>"w"</code></td>
+                <td>Write</td>
+                <td><span class="status-badge status-yes">Tạo mới</span></td>
+                <td><span class="status-badge status-limited">Xóa sạch, ghi đè</span></td>
+                <td>Ghi nội dung mới (thay thế hoàn toàn)</td>
+              </tr>
+              <tr>
+                <td><code>"a"</code></td>
+                <td>Append</td>
+                <td><span class="status-badge status-yes">Tạo mới</span></td>
+                <td>Ghi tiếp vào cuối file</td>
+                <td>Thêm nội dung mà không xóa cũ</td>
+              </tr>
+              <tr>
+                <td><code>"x"</code></td>
+                <td>Create</td>
+                <td><span class="status-badge status-yes">Tạo mới</span></td>
+                <td><span class="status-badge status-no">Báo lỗi</span></td>
+                <td>Tạo file mới, đảm bảo file chưa tồn tại</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Ngoài ra, có thể thêm ký tự chỉ định <strong>loại dữ liệu</strong>:</p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Ký tự</th><th>Ý nghĩa</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>"t"</code></td>
+                <td>Text mode (mặc định)</td>
+                <td><code>open("file.txt", "rt")</code> — giống <code>"r"</code></td>
+              </tr>
+              <tr>
+                <td><code>"b"</code></td>
+                <td>Binary mode</td>
+                <td><code>open("image.png", "rb")</code> — đọc file nhị phân</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Mặc định:</strong> <code>open("file.txt")</code> tương đương <code>open("file.txt", "rt")</code> — mở để đọc (<code>r</code>) ở dạng text (<code>t</code>).
+          </div>
+        </section>
+
+        <!-- ======================== ĐỌC FILE ======================== -->
+        <section id="doc-file">
+          <h2>3. Đọc file</h2>
+          <p>Khi mở file ở mode <code>"r"</code>, có 3 phương thức đọc nội dung:</p>
+
+          <h3>3.1. <code>read()</code> — đọc toàn bộ</h3>
+          <pre><code class="language-python">f = open("myfile.txt", "r")
+content = f.read()   # Trả về toàn bộ nội dung dưới dạng string
+print(content)
+f.close()</code></pre>
+
+          <p>Có thể truyền số ký tự cần đọc vào <code>read(n)</code>:</p>
+          <pre><code class="language-python">f = open("myfile.txt", "r")
+first_10 = f.read(10)   # Chỉ đọc 10 ký tự đầu tiên
+print(first_10)
+f.close()</code></pre>
+
+          <h3>3.2. <code>readline()</code> — đọc từng dòng</h3>
+          <pre><code class="language-python">f = open("myfile.txt", "r")
+line1 = f.readline()   # Đọc dòng đầu tiên
+line2 = f.readline()   # Đọc dòng thứ hai
+print(line1)
+print(line2)
+f.close()</code></pre>
+
+          <p>Kết hợp với vòng lặp để đọc tuần tự từng dòng:</p>
+          <pre><code class="language-python">f = open("myfile.txt", "r")
+while True:
+    line = f.readline()
+    if not line:
+        break
+    print(line.strip())   # .strip() loại bỏ ký tự xuống dòng \n
+f.close()</code></pre>
+
+          <h3>3.3. <code>readlines()</code> — đọc tất cả dòng thành list</h3>
+          <pre><code class="language-python">f = open("myfile.txt", "r")
+lines = f.readlines()   # Trả về list, mỗi phần tử là một dòng
+print(lines)
+# ['Dòng 1\n', 'Dòng 2\n', 'Dòng 3\n']
+
+for line in lines:
+    print(line.strip())
+f.close()</code></pre>
+
+          <table class="pro-table">
+            <caption>So sánh 3 phương thức đọc file</caption>
+            <thead>
+              <tr><th>Phương thức</th><th>Trả về</th><th>Khi nào dùng</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>read()</code></td>
+                <td><code>str</code> — toàn bộ nội dung</td>
+                <td>File nhỏ, cần toàn bộ nội dung cùng lúc</td>
+              </tr>
+              <tr>
+                <td><code>readline()</code></td>
+                <td><code>str</code> — một dòng</td>
+                <td>Xử lý từng dòng, file lớn không load hết vào RAM</td>
+              </tr>
+              <tr>
+                <td><code>readlines()</code></td>
+                <td><code>list</code> — danh sách các dòng</td>
+                <td>Cần truy cập ngẫu nhiên theo chỉ số dòng</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== CONTEXT MANAGER ======================== -->
+        <section id="context-manager">
+          <h2>4. Context Manager – <code>with open()</code></h2>
+          <p>
+            Ở phần trên, sau khi làm việc với file bạn phải gọi <code>f.close()</code> thủ công. Nếu quên hoặc có lỗi xảy ra trước đó, file sẽ không được đóng — gây rò rỉ tài nguyên.
+          </p>
+          <p>
+            Python cung cấp <strong>context manager</strong> với từ khóa <code>with</code>: file sẽ <strong>tự động đóng</strong> khi thoát khỏi khối <code>with</code>, dù có lỗi hay không.
+          </p>
+          <pre><code class="language-python"># Cú pháp chuẩn với context manager
+with open("myfile.txt", "r") as f:
+    content = f.read()
+    print(content)
+# File đã được đóng tự động — không cần f.close()</code></pre>
+
+          <div class="diagram">
+            <div class="box">
+              <strong>Không dùng <code>with</code></strong><br>
+              <code>f = open(...)</code><br>
+              làm gì đó<br>
+              <code>f.close()</code> ← phải nhớ!
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Dùng <code>with</code></strong><br>
+              <code>with open(...) as f:</code><br>
+              làm gì đó<br>
+              <em>tự đóng khi ra khỏi block</em>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Kết quả</strong><br>
+              Code ngắn hơn<br>
+              An toàn hơn<br>
+              Chuẩn Python hơn ✓
+            </div>
+          </div>
+
+          <pre><code class="language-python"># Ví dụ đầy đủ — đọc file với context manager
+with open("myfile.txt", "r") as f:
+    # Đọc từng dòng bằng vòng lặp
+    for line in f:
+        print(line.strip())
+
+# Đây là cách được khuyến nghị trong thực tế!</code></pre>
+
+          <div class="success">
+            <strong>Best practice:</strong> Luôn dùng <code>with open(...) as f:</code> khi làm việc với file. Đây là cách chuẩn, an toàn và được dùng trong mọi dự án Python thực tế.
+          </div>
+        </section>
+
+        <!-- ======================== GHI FILE ======================== -->
+        <section id="ghi-file">
+          <h2>5. Ghi file – mode <code>"w"</code></h2>
+          <p>
+            Mode <code>"w"</code> (write) dùng để <strong>ghi nội dung vào file</strong>. Phương thức dùng để ghi là <code>write()</code>.
+          </p>
+
+          <div class="warning">
+            <strong>Cảnh báo:</strong> Mode <code>"w"</code> sẽ <strong>xóa toàn bộ nội dung cũ</strong> của file trước khi ghi. Nếu file chưa tồn tại, Python sẽ tự tạo file mới.
+          </div>
+
+          <pre><code class="language-python"># Ghi file mới (hoặc ghi đè file cũ)
+with open("newfile.txt", "w") as f:
+    f.write("I work as an AI engineer\n")
+    f.write("Python is awesome!\n")
+
+# File newfile.txt sẽ có nội dung:
+# I work as an AI engineer
+# Python is awesome!</code></pre>
+
+          <p>Ghi nhiều dòng bằng vòng lặp:</p>
+          <pre><code class="language-python">lines = ["Dòng 1", "Dòng 2", "Dòng 3"]
+
+with open("output.txt", "w", encoding="utf-8") as f:
+    for line in lines:
+        f.write(line + "\n")</code></pre>
+
+          <div class="note">
+            <strong>Encoding:</strong> Khi làm việc với tiếng Việt (có dấu), hãy thêm <code>encoding="utf-8"</code> vào hàm <code>open()</code> để tránh lỗi ký tự.
+          </div>
+        </section>
+
+        <!-- ======================== APPEND FILE ======================== -->
+        <section id="append-file">
+          <h2>6. Ghi thêm – mode <code>"a"</code></h2>
+          <p>
+            Mode <code>"a"</code> (append) dùng khi bạn muốn <strong>thêm nội dung vào cuối file mà không xóa nội dung cũ</strong>. Rất hữu ích khi ghi log, nhật ký sự kiện.
+          </p>
+
+          <pre><code class="language-python"># File newfile.txt hiện có: "I work as an AI engineer"
+
+with open("newfile.txt", "a") as f:
+    f.write("\nI love my job!")
+
+# File newfile.txt bây giờ có:
+# I work as an AI engineer
+# I love my job!</code></pre>
+
+          <p>Ví dụ thực tế — ghi log sự kiện:</p>
+          <pre><code class="language-python">from datetime import datetime
+
+def ghi_log(message):
+    with open("app.log", "a", encoding="utf-8") as f:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        f.write(f"[{timestamp}] {message}\n")
+
+ghi_log("Ứng dụng khởi động")
+ghi_log("Người dùng đăng nhập: admin")
+ghi_log("Kết nối database thành công")</code></pre>
+
+          <table class="pro-table">
+            <caption>Phân biệt <code>"w"</code> và <code>"a"</code></caption>
+            <thead>
+              <tr><th>Tình huống</th><th>Dùng <code>"w"</code></th><th>Dùng <code>"a"</code></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>File chưa tồn tại</td>
+                <td>Tạo file mới ✓</td>
+                <td>Tạo file mới ✓</td>
+              </tr>
+              <tr>
+                <td>File đã có nội dung cũ</td>
+                <td><strong>Xóa sạch</strong>, ghi đè</td>
+                <td>Giữ nguyên, ghi thêm vào cuối</td>
+              </tr>
+              <tr>
+                <td>Use case điển hình</td>
+                <td>Tạo/cập nhật file output</td>
+                <td>Ghi log, nhật ký, backup dữ liệu</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TẠO FILE ======================== -->
+        <section id="tao-file">
+          <h2>7. Tạo file mới – mode <code>"x"</code></h2>
+          <p>
+            Mode <code>"x"</code> (create) dành riêng để <strong>tạo file mới</strong>. Điểm đặc biệt: nếu file đã tồn tại, Python sẽ báo lỗi <code>FileExistsError</code> — bảo vệ bạn khỏi việc vô tình ghi đè.
+          </p>
+
+          <pre><code class="language-python"># Tạo file mới
+with open("file1.txt", "x") as f:
+    pass   # Tạo file trống, chưa ghi gì
+
+# Nếu chạy lần 2, file1.txt đã tồn tại → lỗi:
+# FileExistsError: [Errno 17] File exists: 'file1.txt'</code></pre>
+
+          <p>Xử lý trường hợp file đã tồn tại bằng <code>try/except</code>:</p>
+          <pre><code class="language-python">try:
+    with open("file1.txt", "x") as f:
+        f.write("Nội dung file mới\n")
+    print("Tạo file thành công!")
+except FileExistsError:
+    print("File đã tồn tại, không tạo lại.")</code></pre>
+
+          <div class="note">
+            <strong>Thực tế:</strong> Mode <code>"x"</code> ít được dùng. Thông thường người ta dùng <code>"w"</code> hoặc kiểm tra sự tồn tại của file trước bằng <code>os.path.exists()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== XÓA FILE ======================== -->
+        <section id="xoa-file">
+          <h2>8. Xóa file – <code>os.remove()</code></h2>
+          <p>
+            Python không có hàm xóa file trong built-in, nhưng module <code>os</code> cung cấp hàm <code>os.remove()</code> để xóa file.
+          </p>
+
+          <pre><code class="language-python">import os
+
+# Xóa file
+os.remove("file1.txt")</code></pre>
+
+          <p>Nên kiểm tra file tồn tại trước khi xóa để tránh lỗi:</p>
+          <pre><code class="language-python">import os
+
+filename = "file1.txt"
+
+if os.path.exists(filename):
+    os.remove(filename)
+    print(f"Đã xóa file: {filename}")
+else:
+    print(f"File không tồn tại: {filename}")</code></pre>
+
+          <p>Ngoài <code>os.remove()</code>, module <code>os</code> còn có các hàm hữu ích khác:</p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Hàm</th><th>Chức năng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>os.remove("file.txt")</code></td><td>Xóa file</td></tr>
+              <tr><td><code>os.rename("old.txt", "new.txt")</code></td><td>Đổi tên / di chuyển file</td></tr>
+              <tr><td><code>os.path.exists("file.txt")</code></td><td>Kiểm tra file có tồn tại không</td></tr>
+              <tr><td><code>os.path.getsize("file.txt")</code></td><td>Lấy kích thước file (bytes)</td></tr>
+              <tr><td><code>os.mkdir("folder")</code></td><td>Tạo thư mục mới</td></tr>
+              <tr><td><code>os.rmdir("folder")</code></td><td>Xóa thư mục rỗng</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TEXT VS BINARY ======================== -->
+        <section id="binary-text">
+          <h2>9. Text Mode vs Binary Mode</h2>
+          <p>
+            Python xử lý file ở hai dạng: <strong>text</strong> và <strong>binary</strong>.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Text Mode (<code>"t"</code>)</th><th>Binary Mode (<code>"b"</code>)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dữ liệu trả về</td>
+                <td><code>str</code> (chuỗi)</td>
+                <td><code>bytes</code></td>
+              </tr>
+              <tr>
+                <td>Loại file phù hợp</td>
+                <td>.txt, .csv, .json, .py, .html…</td>
+                <td>.png, .jpg, .mp3, .pdf, .exe…</td>
+              </tr>
+              <tr>
+                <td>Mở bằng text editor</td>
+                <td>Được ✓</td>
+                <td>Không đọc được bình thường ✗</td>
+              </tr>
+              <tr>
+                <td>Ví dụ mode</td>
+                <td><code>"r"</code>, <code>"w"</code>, <code>"rt"</code>, <code>"wt"</code></td>
+                <td><code>"rb"</code>, <code>"wb"</code>, <code>"ab"</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-python"># Copy file ảnh (binary mode)
+with open("anh_goc.jpg", "rb") as src:
+    data = src.read()
+
+with open("anh_copy.jpg", "wb") as dst:
+    dst.write(data)
+
+print("Copy ảnh thành công!")</code></pre>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> Hầu hết các bài học cơ bản chỉ làm việc với text mode. Binary mode cần thiết khi xử lý ảnh, âm thanh, video, hoặc các file nhị phân chuyên dụng.
+          </div>
+        </section>
+
+        <!-- ======================== VÍ DỤ THỰC TẾ ======================== -->
+        <section id="vi-du-thuc-chien">
+          <h2>10. Ví dụ thực tế</h2>
+
+          <h3>10.1. Đọc và xử lý danh sách từ file</h3>
+          <pre><code class="language-python"># Giả sử file "sinhvien.txt" có nội dung:
+# Nguyen Van An
+# Tran Thi Bich
+# Le Van Cuong
+
+with open("sinhvien.txt", "r", encoding="utf-8") as f:
+    danh_sach = [line.strip() for line in f if line.strip()]
+
+print(f"Số sinh viên: {len(danh_sach)}")
+for i, ten in enumerate(danh_sach, start=1):
+    print(f"{i}. {ten}")</code></pre>
+
+          <h3>10.2. Ghi kết quả tính toán ra file</h3>
+          <pre><code class="language-python">def tinh_bang_cuu(n):
+    ket_qua = []
+    for i in range(1, 11):
+        ket_qua.append(f"{n} x {i:2d} = {n*i:3d}")
+    return ket_qua
+
+# Ghi bảng cửu chương vào file
+with open("bang_cuu_chuong.txt", "w", encoding="utf-8") as f:
+    for bang in range(2, 10):
+        f.write(f"\n=== Bảng {bang} ===\n")
+        for dong in tinh_bang_cuu(bang):
+            f.write(dong + "\n")
+
+print("Đã ghi bảng cửu chương vào file!")</code></pre>
+
+          <h3>10.3. Đếm số từ trong file</h3>
+          <pre><code class="language-python">def dem_tu_trong_file(filename):
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            content = f.read()
+            words = content.split()
+            return len(words)
+    except FileNotFoundError:
+        print(f"Không tìm thấy file: {filename}")
+        return 0
+
+so_tu = dem_tu_trong_file("myfile.txt")
+print(f"Tổng số từ: {so_tu}")</code></pre>
+
+          <h3>10.4. Sao lưu (backup) file</h3>
+          <pre><code class="language-python">import os
+from datetime import datetime
+
+def backup_file(filename):
+    if not os.path.exists(filename):
+        print("File gốc không tồn tại!")
+        return
+
+    # Tạo tên file backup với timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    name, ext = os.path.splitext(filename)
+    backup_name = f"{name}_backup_{timestamp}{ext}"
+
+    # Đọc file gốc và ghi vào file backup
+    with open(filename, "rb") as src:
+        with open(backup_name, "wb") as dst:
+            dst.write(src.read())
+
+    print(f"Backup thành công: {backup_name}")
+
+backup_file("config.txt")</code></pre>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>11. Bảng tổng hợp</h2>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thao tác</th><th>Mode</th><th>Cú pháp</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Đọc toàn bộ nội dung</td>
+                <td><code>"r"</code></td>
+                <td><code>f.read()</code></td>
+              </tr>
+              <tr>
+                <td>Đọc từng dòng một</td>
+                <td><code>"r"</code></td>
+                <td><code>f.readline()</code></td>
+              </tr>
+              <tr>
+                <td>Đọc tất cả dòng → list</td>
+                <td><code>"r"</code></td>
+                <td><code>f.readlines()</code></td>
+              </tr>
+              <tr>
+                <td>Ghi nội dung (ghi đè)</td>
+                <td><code>"w"</code></td>
+                <td><code>f.write("nội dung")</code></td>
+              </tr>
+              <tr>
+                <td>Ghi thêm vào cuối file</td>
+                <td><code>"a"</code></td>
+                <td><code>f.write("nội dung")</code></td>
+              </tr>
+              <tr>
+                <td>Tạo file mới (lỗi nếu đã tồn tại)</td>
+                <td><code>"x"</code></td>
+                <td><code>f.write(...)</code> hoặc <code>pass</code></td>
+              </tr>
+              <tr>
+                <td>Xóa file</td>
+                <td>—</td>
+                <td><code>os.remove("file.txt")</code></td>
+              </tr>
+              <tr>
+                <td>Kiểm tra file tồn tại</td>
+                <td>—</td>
+                <td><code>os.path.exists("file.txt")</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>12. Lỗi thường gặp</h2>
+
+          <h3 class="error-heading"><span class="error-label">Lỗi</span> FileNotFoundError — đọc file không tồn tại</h3>
+          <pre><code class="language-python"># Lỗi
+f = open("khong_ton_tai.txt", "r")
+# FileNotFoundError: [Errno 2] No such file or directory
+
+# Cách xử lý
+try:
+    with open("khong_ton_tai.txt", "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    print("File không tồn tại!")</code></pre>
+
+          <h3 class="error-heading"><span class="error-label">Lỗi</span> FileExistsError — tạo file đã có</h3>
+          <pre><code class="language-python"># Lỗi khi dùng mode "x" mà file đã tồn tại
+with open("existing.txt", "x") as f:
+    pass
+# FileExistsError: [Errno 17] File exists: 'existing.txt'
+
+# Cách xử lý
+try:
+    with open("existing.txt", "x") as f:
+        pass
+except FileExistsError:
+    print("File đã tồn tại!")</code></pre>
+
+          <h3 class="error-heading"><span class="error-label">Lỗi</span> UnicodeDecodeError — lỗi encoding tiếng Việt</h3>
+          <pre><code class="language-python"># Lỗi khi không chỉ định encoding
+with open("tieng_viet.txt", "r") as f:   # ← thiếu encoding
+    content = f.read()
+# UnicodeDecodeError: 'charmap' codec can't decode...
+
+# Cách xử lý — thêm encoding="utf-8"
+with open("tieng_viet.txt", "r", encoding="utf-8") as f:
+    content = f.read()</code></pre>
+
+          <h3 class="error-heading"><span class="error-label">Lỗi</span> Ghi vào file mở ở mode "r"</h3>
+          <pre><code class="language-python"># Lỗi
+with open("file.txt", "r") as f:
+    f.write("nội dung")   # io.UnsupportedOperation: not writable
+
+# Cách xử lý — dùng đúng mode
+with open("file.txt", "w") as f:
+    f.write("nội dung")</code></pre>
+
+          <div class="danger">
+            <strong>Thường gặp nhất:</strong> Dùng mode <code>"w"</code> khi muốn thêm nội dung → xóa sạch file cũ. Hãy chắc chắn dùng <code>"a"</code> khi muốn ghi thêm!
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>13. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Đọc và đếm dòng</h3>
+            <p>Tạo một file <code>poem.txt</code> với 5 dòng thơ tự viết. Sau đó viết chương trình đọc file và:</p>
+            <ul>
+              <li>In ra tổng số dòng trong file.</li>
+              <li>In ra dòng dài nhất (nhiều ký tự nhất).</li>
+              <li>In ra dòng thứ 3 (chỉ số 2).</li>
+            </ul>
+            <pre><code class="language-python"># Gợi ý
+with open("poem.txt", "r", encoding="utf-8") as f:
+    lines = f.readlines()
+# Dùng len(), max(), và lines[2]</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Ghi bảng điểm</h3>
+            <p>Có danh sách sinh viên và điểm. Ghi vào file <code>bang_diem.txt</code> theo định dạng đẹp, sau đó đọc lại và in ra màn hình.</p>
+            <pre><code class="language-python">sinh_vien = [
+    ("Nguyễn Văn An",   8.5),
+    ("Trần Thị Bích",   9.0),
+    ("Lê Văn Cường",    7.5),
+    ("Phạm Thị Dung",   6.0),
+]
+# Gợi ý: dùng f-string để format: f"{ten:<20} {diem:.1f}"</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Logger đơn giản</h3>
+            <p>Viết hàm <code>log(level, message)</code> ghi log vào file <code>app.log</code> với format:</p>
+            <pre><code class="language-python">[2024-01-15 10:30:00] [INFO] Ứng dụng khởi động
+[2024-01-15 10:30:05] [ERROR] Không kết nối được database</code></pre>
+            <p>Gọi hàm 5 lần với các level khác nhau (<code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>). Đọc và in file log sau khi ghi.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Tìm kiếm trong file</h3>
+            <p>Viết hàm <code>tim_kiem(filename, keyword)</code> nhận vào tên file và từ khóa cần tìm. Hàm in ra tất cả các dòng chứa từ khóa đó kèm số dòng.</p>
+            <pre><code class="language-python">def tim_kiem(filename, keyword):
+    # Gợi ý: enumerate(f, start=1) để lấy cả số dòng lẫn nội dung
+    pass
+
+tim_kiem("bang_diem.txt", "Nguyễn")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Copy file có kiểm tra</h3>
+            <p>Viết hàm <code>copy_file(src, dst)</code> sao chép file từ <code>src</code> sang <code>dst</code>. Yêu cầu:</p>
+            <ul>
+              <li>Báo lỗi nếu file nguồn không tồn tại.</li>
+              <li>Hỏi xác nhận nếu file đích đã tồn tại.</li>
+              <li>In ra kích thước file sau khi copy thành công.</li>
+            </ul>
+            <pre><code class="language-python">import os
+
+def copy_file(src, dst):
+    # Gợi ý: dùng os.path.exists(), os.path.getsize()
+    # Đọc file nguồn mode "rb", ghi file đích mode "wb"
+    pass</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Dùng <code>open(filename, mode)</code> để mở file; luôn đóng file sau khi dùng xong.</li>
+            <li>4 mode chính: <code>"r"</code> (đọc), <code>"w"</code> (ghi đè), <code>"a"</code> (ghi thêm), <code>"x"</code> (tạo mới).</li>
+            <li>3 phương thức đọc: <code>read()</code> (toàn bộ), <code>readline()</code> (từng dòng), <code>readlines()</code> (tất cả thành list).</li>
+            <li><strong>Context manager</strong> <code>with open(...) as f:</code> — cách chuẩn trong thực tế, file tự động đóng.</li>
+            <li>Mode <code>"w"</code> <strong>xóa sạch</strong> nội dung cũ; dùng <code>"a"</code> để ghi thêm mà không mất dữ liệu.</li>
+            <li>Luôn thêm <code>encoding="utf-8"</code> khi làm việc với tiếng Việt.</li>
+            <li>Xóa file bằng <code>os.remove()</code>; kiểm tra tồn tại bằng <code>os.path.exists()</code>.</li>
+            <li>Dùng <code>try/except FileNotFoundError</code> để xử lý file không tồn tại an toàn.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Xử lý ngoại lệ (Exception Handling) — <code>try</code>, <code>except</code>, <code>finally</code>. Bạn đã thấy <code>try/except</code> trong bài này — bài tiếp theo sẽ đi sâu hơn để xử lý lỗi một cách chuyên nghiệp.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 12. Xử lý File (File Handling) trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

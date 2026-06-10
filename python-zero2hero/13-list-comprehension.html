@@ -3,78 +3,568 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>13. List Comprehension trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 13</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="12-xu-ly-file-file-handling.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#cu-phap">1. Cú pháp cơ bản</a>
+      <a href="#so-sanh-for">2. So sánh với vòng for</a>
+      <a href="#loc-phan-tu">3. Lọc phần tử (filter)</a>
+      <a href="#apply-function">4. Áp dụng logic lên tất cả phần tử</a>
+      <a href="#dict-comprehension">5. Dictionary Comprehension</a>
+      <a href="#set-comprehension">6. Set Comprehension</a>
+      <a href="#nested">7. List lồng nhau (nested)</a>
+      <a href="#best-practice">8. Best practice</a>
+      <a href="#bang-tong-hop">9. Bảng tổng hợp</a>
+      <a href="#bai-tap">10. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>13. List Comprehension trong Python</h1>
+        <p class="meta">
+          List comprehension cung cấp cú pháp ngắn gọn để tạo list mới từ một iterable. Bài này bao gồm cú pháp cơ bản, lọc phần tử, áp dụng logic có điều kiện, dictionary comprehension, set comprehension và các best practice.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>List comprehension</strong> cung cấp một cú pháp ngắn gọn hơn để tạo list mới dựa trên giá trị của một list hay iterable đã có. Tổng quát hơn, chúng ta có thể tạo ra một list mới từ bất kỳ iterable nào — list, set, dictionary, string đều được.
+          </p>
+          <p>
+            Đây là một công cụ khá hữu ích trong Python, giúp code ngắn gọn và dễ đọc hơn so với cách dùng vòng <code>for</code> truyền thống — nếu dùng đúng chỗ.
+          </p>
+          <div class="note">
+            <strong>Khi nào nên dùng?</strong> List comprehension phù hợp với các thao tác đơn giản: tạo list mới, lọc phần tử, áp dụng phép biến đổi lên từng phần tử. Với logic phức tạp hoặc nhiều vòng lặp lồng nhau, vòng <code>for</code> thông thường dễ đọc hơn.
+          </div>
+        </section>
+
+        <!-- ======================== CÚ PHÁP ======================== -->
+        <section id="cu-phap">
+          <h2>1. Cú pháp cơ bản</h2>
+          <p>Cú pháp tổng quát của list comprehension:</p>
+
+          <pre><code class="language-python">new_list = [expression for item in iterable]</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thành phần</th><th>Ý nghĩa</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>expression</code></td>
+                <td>Giá trị của từng phần tử trong list mới. Thực hiện tính toán dựa trên <code>item</code>.</td>
+                <td><code>x ** 2</code>, <code>x.upper()</code>, <code>x + 1</code></td>
+              </tr>
+              <tr>
+                <td><code>item</code></td>
+                <td>Biến đại diện cho từng phần tử khi duyệt qua iterable.</td>
+                <td><code>x</code>, <code>num</code>, <code>letter</code></td>
+              </tr>
+              <tr>
+                <td><code>iterable</code></td>
+                <td>Đối tượng có thể duyệt qua: list, range, string, set, dict…</td>
+                <td><code>my_list</code>, <code>range(5)</code>, <code>"hello"</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Ví dụ tạo list bình phương từ <code>range(1, 6)</code>:</p>
+
+          <pre><code class="language-python">squares = [x ** 2 for x in range(1, 6)]
+print(squares)
+# [1, 4, 9, 16, 25]</code></pre>
+
+          <div class="diagram">
+            <div class="box"><strong>Expression</strong><br /><code>x ** 2</code></div>
+            <div class="arrow">→</div>
+            <div class="box"><strong>Vòng lặp</strong><br /><code>for x in range(1, 6)</code></div>
+            <div class="arrow">→</div>
+            <div class="box"><strong>Kết quả</strong><br /><code>[1, 4, 9, 16, 25]</code></div>
+          </div>
+        </section>
+
+        <!-- ======================== SO SÁNH VỚI FOR ======================== -->
+        <section id="so-sanh-for">
+          <h2>2. So sánh với vòng <code>for</code></h2>
+          <p>Cùng một kết quả, hai cách viết:</p>
+
+          <h3>Cách thông thường — dùng vòng <code>for</code></h3>
+          <pre><code class="language-python">my_list = [1, 2, 3, 4, 5]
+new_list = []
+
+for x in my_list:
+    new_list.append(x ** 2)
+
+print(new_list)
+# [1, 4, 9, 16, 25]</code></pre>
+
+          <h3>Dùng List Comprehension</h3>
+          <pre><code class="language-python">my_list = [1, 2, 3, 4, 5]
+
+new_list = [x ** 2 for x in my_list]
+
+print(new_list)
+# [1, 4, 9, 16, 25]</code></pre>
+
+          <div class="success">
+            <strong>Kết quả giống nhau</strong>, nhưng list comprehension chỉ cần <strong>một dòng</strong> thay vì ba dòng. Cú pháp ngắn gọn và dễ đọc hơn cho những thao tác đơn giản.
+          </div>
+        </section>
+
+        <!-- ======================== LỌC PHẦN TỬ ======================== -->
+        <section id="loc-phan-tu">
+          <h2>3. Lọc phần tử (filter)</h2>
+          <p>
+            Bạn có thể thêm điều kiện <code>if</code> ở cuối để <strong>lọc</strong> chỉ giữ lại những phần tử thỏa mãn điều kiện:
+          </p>
+
+          <pre><code class="language-python">new_list = [expression for item in iterable if condition]</code></pre>
+
+          <div class="warning">
+            <strong>Chú ý vị trí:</strong> Khi <strong>lọc phần tử</strong>, phần <code>if condition</code> nằm ở <strong>cuối</strong>, sau vòng lặp. Điều này khác với trường hợp áp dụng logic lên tất cả phần tử (xem phần 4).
+          </div>
+
+          <h3>Ví dụ — lọc các số lẻ</h3>
+          <pre><code class="language-python">my_list = [1, 2, 3, 4, 5]
+
+# Chỉ giữ lại số lẻ (x % 2 == 1)
+odd_list = [x for x in my_list if x % 2 == 1]
+
+print(odd_list)
+# [1, 3, 5]</code></pre>
+
+          <h3>Ví dụ — lọc chuỗi có độ dài lớn hơn 3</h3>
+          <pre><code class="language-python">words = ["hi", "hello", "hey", "yo", "python"]
+
+long_words = [w for w in words if len(w) > 3]
+
+print(long_words)
+# ['hello', 'python']</code></pre>
+
+          <p>Giải thích flow:</p>
+          <ol>
+            <li>Duyệt qua từng phần tử <code>x</code> trong <code>my_list</code>.</li>
+            <li>Kiểm tra điều kiện: nếu <code>x % 2 == 1</code> (số lẻ) thì <strong>giữ lại</strong> <code>x</code>.</li>
+            <li>Những phần tử không thỏa mãn điều kiện sẽ bị <strong>bỏ qua</strong>.</li>
+          </ol>
+        </section>
+
+        <!-- ======================== APPLY FUNCTION ======================== -->
+        <section id="apply-function">
+          <h2>4. Áp dụng logic lên tất cả phần tử</h2>
+          <p>
+            Đây là trường hợp bạn muốn <strong>biến đổi tất cả phần tử</strong> — không bỏ phần tử nào — nhưng áp dụng logic khác nhau tùy theo điều kiện. Cú pháp dùng <strong>ternary expression</strong>:
+          </p>
+
+          <pre><code class="language-python">new_list = [expr1 if condition else expr2 for item in iterable]</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tình huống</th><th>Cú pháp</th><th>Vị trí <code>if</code></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lọc phần tử</strong> — có thể bỏ phần tử</td>
+                <td><code>[x for x in lst if cond]</code></td>
+                <td>Sau <code>for</code>, không có <code>else</code></td>
+              </tr>
+              <tr>
+                <td><strong>Biến đổi tất cả</strong> — không bỏ phần tử nào</td>
+                <td><code>[a if cond else b for x in lst]</code></td>
+                <td>Trước <code>for</code>, có <code>else</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Ví dụ — số chẵn giữ nguyên, số lẻ cộng thêm 2</h3>
+          <pre><code class="language-python">my_list = [1, 2, 3, 4, 5]
+
+# Số chẵn (x % 2 == 0): giữ nguyên x
+# Số lẻ: cộng thêm 2 (x + 2)
+new_list = [x if x % 2 == 0 else x + 2 for x in my_list]
+
+print(new_list)
+# [3, 2, 5, 4, 7]</code></pre>
+
+          <p>Giải thích từng phần tử:</p>
+          <ul>
+            <li><code>1</code> → số lẻ → <code>1 + 2 = 3</code></li>
+            <li><code>2</code> → số chẵn → giữ nguyên <code>2</code></li>
+            <li><code>3</code> → số lẻ → <code>3 + 2 = 5</code></li>
+            <li><code>4</code> → số chẵn → giữ nguyên <code>4</code></li>
+            <li><code>5</code> → số lẻ → <code>5 + 2 = 7</code></li>
+          </ul>
+
+          <h3>Ví dụ — đổi tên theo điều kiện</h3>
+          <pre><code class="language-python">scores = [45, 72, 88, 55, 91]
+
+# Dưới 60: "Trượt", từ 60 trở lên: "Đậu"
+results = ["Đậu" if s >= 60 else "Trượt" for s in scores]
+
+print(results)
+# ['Trượt', 'Đậu', 'Đậu', 'Trượt', 'Đậu']</code></pre>
+        </section>
+
+        <!-- ======================== DICT COMPREHENSION ======================== -->
+        <section id="dict-comprehension">
+          <h2>5. Dictionary Comprehension</h2>
+          <p>
+            Tương tự list comprehension, Python cũng có <strong>dictionary comprehension</strong> để tạo dictionary mới. Thay vì dấu ngoặc vuông <code>[]</code>, ta dùng dấu ngoặc nhọn <code>{}</code> và cặp <code>key: value</code>:
+          </p>
+
+          <pre><code class="language-python">new_dict = {key: value for item in iterable}</code></pre>
+
+          <h3>Ví dụ — tạo dict với key là số, value là bình phương</h3>
+          <pre><code class="language-python">my_list = [1, 2, 3, 4, 5]
+
+# key = phần tử, value = bình phương của phần tử
+new_dict = {k: k ** 2 for k in my_list}
+
+print(new_dict)
+# {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}</code></pre>
+
+          <h3>Ví dụ — đảo ngược key-value của một dict</h3>
+          <pre><code class="language-python">original = {"a": 1, "b": 2, "c": 3}
+
+inverted = {v: k for k, v in original.items()}
+
+print(inverted)
+# {1: 'a', 2: 'b', 3: 'c'}</code></pre>
+
+          <h3>Ví dụ — dict comprehension có điều kiện</h3>
+          <pre><code class="language-python">scores = {"An": 85, "Bích": 45, "Cường": 72, "Dung": 55}
+
+# Chỉ giữ lại những người có điểm >= 60
+passed = {name: score for name, score in scores.items() if score >= 60}
+
+print(passed)
+# {'An': 85, 'Cường': 72}</code></pre>
+
+          <div class="note">
+            <strong>Nhớ:</strong> Dictionary comprehension dùng <code>{key: value for ...}</code> với dấu ngoặc nhọn và dấu hai chấm phân cách key-value.
+          </div>
+        </section>
+
+        <!-- ======================== SET COMPREHENSION ======================== -->
+        <section id="set-comprehension">
+          <h2>6. Set Comprehension</h2>
+          <p>
+            Set comprehension cũng dùng dấu ngoặc nhọn <code>{}</code>, nhưng <strong>không</strong> có dấu hai chấm. Đặc điểm của set là <strong>các phần tử không được lặp lại</strong> — rất hữu ích khi bạn muốn lấy danh sách các giá trị duy nhất.
+          </p>
+
+          <pre><code class="language-python">new_set = {expression for item in iterable}</code></pre>
+
+          <h3>Ví dụ — lấy các ký tự duy nhất từ một chuỗi</h3>
+          <pre><code class="language-python">my_string = "MiNhim"
+
+# Duyệt qua từng ký tự, set tự loại bỏ trùng lặp
+unique_chars = {letter for letter in my_string}
+
+print(unique_chars)
+# {'M', 'N', 'i', 'h', 'm'}  — chỉ còn một chữ 'i'</code></pre>
+
+          <p>
+            Trong chuỗi <code>"MiNhim"</code> có hai chữ <code>i</code> — nhưng set chỉ giữ một, vì các phần tử trong set phải là duy nhất.
+          </p>
+
+          <h3>Ví dụ — lấy tên miền duy nhất từ danh sách email</h3>
+          <pre><code class="language-python">emails = [
+    "an@gmail.com",
+    "bich@yahoo.com",
+    "cuong@gmail.com",
+    "dung@outlook.com",
+    "em@yahoo.com",
+]
+
+domains = {email.split("@")[1] for email in emails}
+
+print(domains)
+# {'gmail.com', 'yahoo.com', 'outlook.com'}</code></pre>
+
+          <table class="pro-table">
+            <caption>So sánh ba loại comprehension</caption>
+            <thead>
+              <tr><th>Loại</th><th>Cú pháp</th><th>Kết quả</th><th>Phần tử trùng</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>List</td>
+                <td><code>[expr for x in it]</code></td>
+                <td><code>[1, 4, 9]</code></td>
+                <td>Cho phép</td>
+              </tr>
+              <tr>
+                <td>Dict</td>
+                <td><code>{k: v for x in it}</code></td>
+                <td><code>{1: 1, 2: 4}</code></td>
+                <td>Key phải duy nhất</td>
+              </tr>
+              <tr>
+                <td>Set</td>
+                <td><code>{expr for x in it}</code></td>
+                <td><code>{1, 4, 9}</code></td>
+                <td>Không cho phép</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== NESTED ======================== -->
+        <section id="nested">
+          <h2>7. List lồng nhau (nested)</h2>
+          <p>
+            List comprehension có thể dùng <strong>nhiều vòng lặp</strong>, tương đương với các vòng <code>for</code> lồng nhau:
+          </p>
+
+          <pre><code class="language-python"># Tạo ma trận 5x5 bằng list comprehension
+nested_list = [[i for i in range(5)] for _ in range(5)]
+
+print(nested_list)
+# [[0, 1, 2, 3, 4],
+#  [0, 1, 2, 3, 4],
+#  [0, 1, 2, 3, 4],
+#  [0, 1, 2, 3, 4],
+#  [0, 1, 2, 3, 4]]</code></pre>
+
+          <p>
+            Ở đây, vòng lặp ngoài chạy 5 lần (tạo 5 hàng), mỗi lần lại chạy vòng lặp trong để tạo một list <code>[0, 1, 2, 3, 4]</code>.
+          </p>
+
+          <div class="warning">
+            <strong>Khi nào nên cẩn thận:</strong> List comprehension nhiều vòng lặp có thể đọc được khi cấu trúc rõ ràng (như tạo ma trận). Nhưng nếu dùng để "duỗi" (flatten) một list lồng nhau phức tạp, cú pháp sẽ trở nên khó hiểu — xem phần 8.
+          </div>
+        </section>
+
+        <!-- ======================== BEST PRACTICE ======================== -->
+        <section id="best-practice">
+          <h2>8. Best practice</h2>
+
+          <h3>Trường hợp nên dùng list comprehension ✅</h3>
+          <p>Một vòng lặp, logic rõ ràng — list comprehension giúp code ngắn gọn hơn:</p>
+          <pre><code class="language-python"># ✅ Tốt — đơn giản, dễ hiểu
+squares = [x ** 2 for x in range(10)]
+evens   = [x for x in range(20) if x % 2 == 0]</code></pre>
+
+          <h3>Trường hợp KHÔNG nên dùng list comprehension ❌</h3>
+          <p>
+            Khi cần <strong>duỗi (flatten) một list lồng nhau</strong>, list comprehension với hai vòng lặp trở nên khó đọc:
+          </p>
+
+          <pre><code class="language-python">array_2d = [[1, 2, 3], [3, 4, 5], [5, 6, 7, 8]]
+
+# ❌ Khó đọc — ai nhìn lần đầu cũng bị nhầm
+flat_list = [num for row in array_2d for num in row]
+print(flat_list)
+# [1, 2, 3, 3, 4, 5, 5, 6, 7, 8]</code></pre>
+
+          <p>
+            Thay vào đó, hãy dùng <strong>hai vòng <code>for</code> tường minh</strong> — dễ đọc và dễ hiểu hơn nhiều:
+          </p>
+
+          <pre><code class="language-python">array_2d = [[1, 2, 3], [3, 4, 5], [5, 6, 7, 8]]
+
+# ✅ Tốt hơn — flow rõ ràng
+new_list = []
+for row in array_2d:
+    for num in row:
+        new_list.append(num)
+
+print(new_list)
+# [1, 2, 3, 3, 4, 5, 5, 6, 7, 8]</code></pre>
+
+          <div class="note">
+            <strong>Nguyên tắc:</strong> List comprehension nên <em>ngắn gọn hơn và dễ đọc hơn</em> vòng <code>for</code> tương đương. Nếu bạn cần giải thích comprehension cho đồng nghiệp nhiều hơn 5 giây, hãy dùng vòng <code>for</code> thay thế.
+          </div>
+
+          <h3>Tóm tắt: Nên hay không nên?</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Trường hợp</th><th>Khuyến nghị</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Một vòng lặp, biến đổi đơn giản (<code>x ** 2</code>, <code>x.upper()</code>…)</td>
+                <td><span class="status-badge status-yes">Nên dùng</span></td>
+              </tr>
+              <tr>
+                <td>Một vòng lặp có lọc phần tử (<code>if condition</code>)</td>
+                <td><span class="status-badge status-yes">Nên dùng</span></td>
+              </tr>
+              <tr>
+                <td>Tạo list lồng nhau (ma trận), cấu trúc rõ ràng</td>
+                <td><span class="status-badge status-limited">Tùy trường hợp</span></td>
+              </tr>
+              <tr>
+                <td>Flatten list lồng nhau (2 vòng for liên tiếp)</td>
+                <td><span class="status-badge status-no">Không nên</span></td>
+              </tr>
+              <tr>
+                <td>Logic quá phức tạp, khó đọc trong một dòng</td>
+                <td><span class="status-badge status-no">Không nên</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>9. Bảng tổng hợp cú pháp</h2>
+
+          <table class="collection-table">
+            <thead>
+              <tr><th>Mục đích</th><th>Cú pháp</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tạo list — biến đổi đơn giản</td>
+                <td><code>[expr for x in it]</code></td>
+                <td><code>[x**2 for x in range(5)]</code></td>
+              </tr>
+              <tr>
+                <td>Lọc phần tử</td>
+                <td><code>[expr for x in it if cond]</code></td>
+                <td><code>[x for x in lst if x > 0]</code></td>
+              </tr>
+              <tr>
+                <td>Biến đổi tất cả (có else)</td>
+                <td><code>[a if cond else b for x in it]</code></td>
+                <td><code>[x if x%2==0 else x+2 for x in lst]</code></td>
+              </tr>
+              <tr>
+                <td>Dictionary comprehension</td>
+                <td><code>{k: v for x in it}</code></td>
+                <td><code>{k: k**2 for k in lst}</code></td>
+              </tr>
+              <tr>
+                <td>Set comprehension</td>
+                <td><code>{expr for x in it}</code></td>
+                <td><code>{c for c in "hello"}</code></td>
+              </tr>
+              <tr>
+                <td>List lồng nhau</td>
+                <td><code>[[expr for x in it] for _ in it2]</code></td>
+                <td><code>[[i for i in range(5)] for _ in range(3)]</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>10. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Chuyển đổi nhiệt độ</h3>
+            <p>Cho danh sách nhiệt độ tính bằng Celsius. Dùng list comprehension để chuyển sang Fahrenheit.</p>
+            <pre><code class="language-python">celsius = [0, 20, 37, 100]
+
+# Công thức: F = C * 9/5 + 32
+# Kết quả mong đợi: [32.0, 68.0, 98.6, 212.0]
+fahrenheit = ...
+print(fahrenheit)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Lọc số dương</h3>
+            <p>Từ danh sách sau, dùng list comprehension lọc ra các số dương và tính bình phương của chúng:</p>
+            <pre><code class="language-python">numbers = [-3, -1, 0, 2, 4, -5, 7, -2, 9]
+
+# Kết quả mong đợi: [4, 16, 49, 81]
+result = ...
+print(result)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Chuẩn hóa tên</h3>
+            <p>Cho danh sách tên có khoảng trắng thừa và viết hoa không đồng nhất. Dùng list comprehension để chuẩn hóa (strip + title case):</p>
+            <pre><code class="language-python">names = ["  nguyen van an  ", "TRAN THI BICH", " le van cuong"]
+
+# Kết quả mong đợi: ['Nguyen Van An', 'Tran Thi Bich', 'Le Van Cuong']
+clean_names = ...
+print(clean_names)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Dictionary từ hai list</h3>
+            <p>Tạo dictionary từ hai list bằng dictionary comprehension kết hợp <code>zip()</code>:</p>
+            <pre><code class="language-python">subjects = ["Toán", "Lý", "Hóa", "Văn", "Anh"]
+scores   = [8.5, 7.0, 9.0, 6.5, 8.0]
+
+# Kết quả mong đợi: {'Toán': 8.5, 'Lý': 7.0, 'Hóa': 9.0, ...}
+grade_book = ...
+print(grade_book)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Đếm ký tự (không dùng Counter)</h3>
+            <p>Dùng set comprehension và dictionary comprehension để đếm số lần xuất hiện của từng ký tự trong chuỗi:</p>
+            <pre><code class="language-python">text = "python"
+
+# Bước 1: dùng set comprehension lấy các ký tự duy nhất
+unique = ...
+
+# Bước 2: dùng dict comprehension đếm tần suất
+char_count = ...
+
+print(char_count)
+# {'p': 1, 'y': 1, 't': 1, 'h': 1, 'o': 1, 'n': 1}
+
+# Thử với chuỗi có ký tự lặp
+text2 = "mississippi"
+char_count2 = {c: text2.count(c) for c in set(text2)}
+print(char_count2)
+# {'m': 1, 'i': 4, 's': 4, 'p': 2}</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Cú pháp cơ bản: <code>[expression for item in iterable]</code>.</li>
+            <li><strong>Lọc phần tử</strong>: <code>if condition</code> nằm ở <em>cuối</em> — <code>[x for x in lst if cond]</code>.</li>
+            <li><strong>Biến đổi tất cả</strong>: dùng ternary, <code>if</code>/<code>else</code> nằm ở <em>đầu</em> — <code>[a if cond else b for x in lst]</code>.</li>
+            <li><strong>Dictionary comprehension</strong>: dùng <code>{k: v for ...}</code> — ngoặc nhọn, có dấu hai chấm.</li>
+            <li><strong>Set comprehension</strong>: dùng <code>{expr for ...}</code> — ngoặc nhọn, không có dấu hai chấm, phần tử duy nhất.</li>
+            <li>Dùng list comprehension khi logic <strong>đơn giản, dễ đọc</strong>; không dùng khi cú pháp trở nên khó hiểu.</li>
+            <li>Flatten list lồng nhau với hai vòng <code>for</code> liên tiếp → <strong>không nên dùng</strong> list comprehension.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Lambda Function và <code>map()</code>, <code>filter()</code> — những công cụ functional programming trong Python, thường kết hợp tốt với list comprehension.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 13. List Comprehension trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>
