@@ -3,78 +3,470 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>14. Môi trường ảo (Virtual Environment) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 14</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="13-list-comprehension.html">← Bài trước</a>
+      <a class="nav-pill" href="15-python-package-manager-pip-conda.html">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tai-sao">1. Tại sao cần môi trường ảo?</a>
+      <a href="#venv">2. Tạo môi trường ảo với venv</a>
+      <a href="#kich-hoat">3. Kích hoạt & hủy kích hoạt</a>
+      <a href="#miniconda">4. Tạo môi trường ảo với Miniconda</a>
+      <a href="#conda-lenh">5. Các lệnh Conda thường dùng</a>
+      <a href="#venv-vs-conda">6. So sánh venv và Conda</a>
+      <a href="#chon-interpreter">7. Chọn interpreter trong VS Code</a>
+      <a href="#bang-tong-hop">8. Bảng tổng hợp lệnh</a>
+      <a href="#bai-tap">9. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>14. Môi trường ảo (Virtual Environment) trong Python</h1>
+        <p class="meta">
+          Hướng dẫn tạo và quản lý môi trường ảo trong Python bằng <code>venv</code> (có sẵn trong Python) và <strong>Miniconda</strong>. Bao gồm lý do cần môi trường ảo, các lệnh kích hoạt/hủy kích hoạt, cài đặt package, và so sánh hai phương pháp.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Khi làm việc với Python, bạn thường xuyên cần cài đặt các thư viện bên ngoài (package) cho từng dự án. Vấn đề là nếu tất cả dự án dùng chung một môi trường Python toàn cục (global), các phiên bản package có thể xung đột nhau.
+          </p>
+          <p>
+            <strong>Môi trường ảo</strong> (Virtual Environment) giải quyết vấn đề này bằng cách tạo ra một không gian Python riêng biệt, cô lập cho từng dự án — với bộ package riêng, phiên bản riêng.
+          </p>
+          <div class="note">
+            <strong>Best practice:</strong> Mỗi dự án Python nên có một môi trường ảo riêng. Đây là thói quen lập trình chuyên nghiệp, được áp dụng ở hầu hết các công ty và dự án thực tế.
+          </div>
+        </section>
+
+        <!-- ======================== TẠI SAO ======================== -->
+        <section id="tai-sao">
+          <h2>1. Tại sao cần môi trường ảo?</h2>
+
+          <h3>Tình huống điển hình</h3>
+          <p>Giả sử bạn có hai dự án:</p>
+          <ul>
+            <li><strong>Dự án A</strong> — dùng TensorFlow <code>1.x</code> (phiên bản cũ, không tương thích ngược)</li>
+            <li><strong>Dự án B</strong> — dùng TensorFlow <code>2.x</code> (API khác hoàn toàn)</li>
+          </ul>
+          <p>
+            Nếu cài cả hai vào môi trường global, chúng sẽ ghi đè lên nhau — một trong hai dự án sẽ bị lỗi. Môi trường ảo giúp hai dự án này tồn tại song song, hoàn toàn độc lập.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Vấn đề khi không dùng môi trường ảo</th><th>Giải pháp với môi trường ảo</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Xung đột phiên bản package giữa các dự án</td>
+                <td>Mỗi dự án có bộ package riêng, độc lập</td>
+              </tr>
+              <tr>
+                <td>Cài package cho dự án A làm hỏng dự án B</td>
+                <td>Cài đặt chỉ ảnh hưởng trong môi trường đó</td>
+              </tr>
+              <tr>
+                <td>Không biết dự án cần những package nào</td>
+                <td>Dễ export danh sách package (<code>requirements.txt</code>)</td>
+              </tr>
+              <tr>
+                <td>Khó chia sẻ dự án cho người khác</td>
+                <td>Người khác chỉ cần recreate môi trường ảo</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Có hai công cụ phổ biến để tạo môi trường ảo trong Python:</p>
+          <ul>
+            <li><strong><code>venv</code></strong> — built-in, có sẵn trong Python 3.3+, đơn giản nhất.</li>
+            <li><strong>Miniconda / Conda</strong> — mạnh hơn, có thể quản lý nhiều phiên bản Python khác nhau.</li>
+          </ul>
+        </section>
+
+        <!-- ======================== VENV ======================== -->
+        <section id="venv">
+          <h2>2. Tạo môi trường ảo với <code>venv</code></h2>
+          <p>
+            <code>venv</code> là module tích hợp sẵn trong Python — không cần cài thêm gì. Đây là cách nhanh nhất để tạo môi trường ảo.
+          </p>
+
+          <h3>Kiểm tra phiên bản Python hiện tại</h3>
+          <pre><code class="language-bash">python --version
+# Python 3.10.8</code></pre>
+
+          <h3>Tạo môi trường ảo</h3>
+          <pre><code class="language-bash"># Cú pháp: python -m venv <tên_môi_trường>
+python -m venv my_env</code></pre>
+
+          <p>Lệnh trên tạo một thư mục <code>my_env/</code> trong thư mục hiện tại — đó chính là môi trường ảo của bạn. Bên trong chứa Python interpreter và thư mục <code>site-packages</code> riêng.</p>
+
+          <div class="note">
+            <strong>Đặt tên môi trường ảo:</strong> Thường đặt là <code>.venv</code>, <code>venv</code>, hoặc <code>env</code>. Nhớ thêm tên này vào <code>.gitignore</code> để không commit thư mục này lên Git.
+          </div>
+
+          <h3>Cấu trúc thư mục sau khi tạo</h3>
+          <pre><code class="language-bash">my_project/
+├── my_env/              ← môi trường ảo
+│   ├── Scripts/         ← (Windows) chứa activate.bat, python.exe
+│   ├── bin/             ← (Mac/Linux) chứa activate, python
+│   ├── Lib/             ← thư viện Python
+│   └── pyvenv.cfg
+├── main.py
+└── requirements.txt</code></pre>
+        </section>
+
+        <!-- ======================== KÍCH HOẠT ======================== -->
+        <section id="kich-hoat">
+          <h2>3. Kích hoạt &amp; hủy kích hoạt môi trường ảo</h2>
+
+          <h3>Kích hoạt (activate)</h3>
+          <pre><code class="language-bash"># Windows (Command Prompt / PowerShell)
+my_env\Scripts\activate
+
+# Mac / Linux
+source my_env/bin/activate</code></pre>
+
+          <p>
+            Sau khi kích hoạt, terminal sẽ hiển thị tên môi trường ảo ở đầu dòng — đây là dấu hiệu xác nhận môi trường đang hoạt động:
+          </p>
+          <pre><code class="language-bash">(my_env) C:\Users\user\my_project>   ← Windows
+(my_env) user@mac:~/my_project$       ← Mac/Linux</code></pre>
+
+          <h3>Kiểm tra Python trong môi trường ảo</h3>
+          <pre><code class="language-bash">python --version
+# Python 3.10.8  ← cùng phiên bản với Python global</code></pre>
+
+          <div class="warning">
+            <strong>Hạn chế của venv:</strong> Môi trường ảo tạo bằng <code>venv</code> luôn dùng phiên bản Python đang cài trên máy. Nếu máy cài Python 3.10, tất cả môi trường ảo sẽ là Python 3.10 — không thể chỉ định phiên bản khác. Để làm điều này, dùng Miniconda (xem phần 4).
+          </div>
+
+          <h3>Cài đặt package trong môi trường ảo</h3>
+          <pre><code class="language-bash"># Đảm bảo đã activate môi trường trước
+pip install numpy
+pip install pandas requests
+
+# Kiểm tra danh sách package đã cài
+pip list
+
+# Xuất danh sách package ra file
+pip freeze > requirements.txt</code></pre>
+
+          <h3>Hủy kích hoạt (deactivate)</h3>
+          <pre><code class="language-bash">deactivate</code></pre>
+
+          <p>Sau lệnh này, terminal trở về môi trường global, tên môi trường ảo biến mất khỏi prompt.</p>
+
+          <h3>Tái tạo môi trường ảo từ requirements.txt</h3>
+          <pre><code class="language-bash"># Người khác clone dự án về, chỉ cần:
+python -m venv my_env
+my_env\Scripts\activate          # (Windows)
+pip install -r requirements.txt  # cài đúng các package và version</code></pre>
+        </section>
+
+        <!-- ======================== MINICONDA ======================== -->
+        <section id="miniconda">
+          <h2>4. Tạo môi trường ảo với Miniconda</h2>
+          <p>
+            <strong>Miniconda</strong> là phiên bản nhỏ gọn của Anaconda — cài đặt Conda và Python cơ bản, không kèm hàng trăm package như Anaconda full. Ưu điểm lớn nhất: có thể tạo môi trường ảo với <strong>bất kỳ phiên bản Python nào</strong>.
+          </p>
+
+          <h3>Cài đặt Miniconda</h3>
+          <p>Tải về từ trang chính thức: <strong>https://docs.conda.io/en/latest/miniconda.html</strong></p>
+          <ul>
+            <li>Chọn đúng hệ điều hành (Windows / Mac / Linux) và kiến trúc máy.</li>
+            <li>Trong quá trình cài, nhớ <strong>tích chọn "Add Miniconda to PATH"</strong> để dùng được lệnh <code>conda</code> từ terminal.</li>
+            <li>Nên chọn Miniconda thay vì Anaconda full để tránh cài quá nhiều package không cần thiết.</li>
+          </ul>
+
+          <h3>Kiểm tra Conda đã cài thành công</h3>
+          <pre><code class="language-bash">conda --version
+# conda 4.12.0</code></pre>
+
+          <h3>Tạo môi trường ảo với phiên bản Python chỉ định</h3>
+          <pre><code class="language-bash"># Cú pháp: conda create --name <tên_môi_trường> python=<version>
+conda create --name p37 python=3.7
+
+# Tạo môi trường với Python 3.11
+conda create --name p311 python=3.11</code></pre>
+
+          <p>Conda sẽ tải và cài Python 3.7 (hoặc version bạn chỉ định) vào môi trường mới — hoàn toàn độc lập với Python đang cài trên máy.</p>
+
+          <h3>Kích hoạt môi trường Conda</h3>
+          <pre><code class="language-bash">conda activate p37</code></pre>
+
+          <p>Kiểm tra phiên bản Python trong môi trường mới:</p>
+          <pre><code class="language-bash">python --version
+# Python 3.7.15  ← đúng phiên bản đã chỉ định!</code></pre>
+
+          <h3>Cài đặt package trong môi trường Conda</h3>
+          <pre><code class="language-bash"># Dùng pip như bình thường (trong môi trường đã activate)
+pip install scipy
+pip install tensorflow==1.15
+
+# Hoặc dùng conda install (với các package phổ biến)
+conda install numpy pandas</code></pre>
+
+          <h3>Hủy kích hoạt môi trường Conda</h3>
+          <pre><code class="language-bash">conda deactivate</code></pre>
+        </section>
+
+        <!-- ======================== LỆNH CONDA ======================== -->
+        <section id="conda-lenh">
+          <h2>5. Các lệnh Conda thường dùng</h2>
+
+          <h3>Xem danh sách môi trường ảo</h3>
+          <pre><code class="language-bash">conda env list
+# hoặc
+conda info --envs
+
+# Kết quả:
+# base                  *  /home/user/miniconda3
+# p37                      /home/user/miniconda3/envs/p37
+# p311                     /home/user/miniconda3/envs/p311</code></pre>
+
+          <p>Dấu <code>*</code> đánh dấu môi trường đang được kích hoạt.</p>
+
+          <h3>Xóa môi trường ảo</h3>
+          <pre><code class="language-bash"># Cú pháp: conda env remove --name <tên_môi_trường>
+conda env remove --name p37
+
+# Kiểm tra lại — p37 đã biến mất
+conda env list</code></pre>
+
+          <h3>Export và recreate môi trường</h3>
+          <pre><code class="language-bash"># Export môi trường ra file YAML
+conda env export > environment.yml
+
+# Tái tạo môi trường từ file YAML
+conda env create -f environment.yml</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Lệnh</th><th>Chức năng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>conda create --name &lt;tên&gt; python=3.x</code></td><td>Tạo môi trường ảo mới</td></tr>
+              <tr><td><code>conda activate &lt;tên&gt;</code></td><td>Kích hoạt môi trường</td></tr>
+              <tr><td><code>conda deactivate</code></td><td>Hủy kích hoạt</td></tr>
+              <tr><td><code>conda env list</code></td><td>Xem danh sách môi trường</td></tr>
+              <tr><td><code>conda env remove --name &lt;tên&gt;</code></td><td>Xóa môi trường</td></tr>
+              <tr><td><code>conda env export > environment.yml</code></td><td>Xuất cấu hình môi trường</td></tr>
+              <tr><td><code>conda env create -f environment.yml</code></td><td>Tái tạo từ file YAML</td></tr>
+              <tr><td><code>conda install &lt;package&gt;</code></td><td>Cài package qua Conda</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== SO SÁNH ======================== -->
+        <section id="venv-vs-conda">
+          <h2>6. So sánh <code>venv</code> và Conda</h2>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>venv</th><th>Miniconda / Conda</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cài đặt</td>
+                <td><span class="status-badge status-yes">Có sẵn</span> trong Python 3.3+</td>
+                <td>Cần cài thêm Miniconda</td>
+              </tr>
+              <tr>
+                <td>Quản lý phiên bản Python</td>
+                <td><span class="status-badge status-no">Không</span> — dùng Python của máy</td>
+                <td><span class="status-badge status-yes">Có</span> — chỉ định bất kỳ version</td>
+              </tr>
+              <tr>
+                <td>Tốc độ tạo môi trường</td>
+                <td>Nhanh</td>
+                <td>Chậm hơn (cần tải Python)</td>
+              </tr>
+              <tr>
+                <td>Cài đặt package</td>
+                <td>pip</td>
+                <td>pip hoặc conda install</td>
+              </tr>
+              <tr>
+                <td>Phù hợp với</td>
+                <td>Dự án nhỏ, cần ít package</td>
+                <td>Data Science, ML, nhiều dự án với Python version khác nhau</td>
+              </tr>
+              <tr>
+                <td>File cấu hình</td>
+                <td><code>requirements.txt</code></td>
+                <td><code>environment.yml</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Khuyến nghị thực tế:</strong> Nếu bạn làm Data Science hoặc Machine Learning, hãy dùng <strong>Miniconda</strong> — nhiều thư viện như TensorFlow, PyTorch có yêu cầu phiên bản Python cụ thể. Cho các web project hoặc script đơn giản, <strong>venv</strong> là đủ và tiện hơn.
+          </div>
+        </section>
+
+        <!-- ======================== VS CODE ======================== -->
+        <section id="chon-interpreter">
+          <h2>7. Chọn interpreter trong VS Code</h2>
+          <p>
+            Sau khi tạo môi trường ảo, bạn cần báo cho VS Code biết sử dụng Python interpreter của môi trường đó (thay vì Python global):
+          </p>
+          <ol>
+            <li>Mở VS Code, nhấn <code>Ctrl+Shift+P</code> (hoặc <code>Cmd+Shift+P</code> trên Mac).</li>
+            <li>Tìm và chọn <strong>"Python: Select Interpreter"</strong>.</li>
+            <li>VS Code sẽ hiển thị danh sách các môi trường ảo — chọn đúng môi trường của dự án.</li>
+          </ol>
+          <p>Hoặc nhấn vào tên Python version ở góc dưới bên phải của VS Code để chuyển interpreter nhanh hơn.</p>
+          <div class="success">
+            Sau khi chọn đúng interpreter, terminal tích hợp trong VS Code (<code>Ctrl+`</code>) sẽ tự động activate môi trường ảo khi mở lên.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG LỆNH ======================== -->
+        <section id="bang-tong-hop">
+          <h2>8. Bảng tổng hợp lệnh</h2>
+
+          <table class="collection-table">
+            <thead>
+              <tr><th>Thao tác</th><th>venv (Windows)</th><th>venv (Mac/Linux)</th><th>Conda</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tạo môi trường</td>
+                <td colspan="2"><code>python -m venv my_env</code></td>
+                <td><code>conda create --name my_env python=3.x</code></td>
+              </tr>
+              <tr>
+                <td>Kích hoạt</td>
+                <td><code>my_env\Scripts\activate</code></td>
+                <td><code>source my_env/bin/activate</code></td>
+                <td><code>conda activate my_env</code></td>
+              </tr>
+              <tr>
+                <td>Hủy kích hoạt</td>
+                <td colspan="2"><code>deactivate</code></td>
+                <td><code>conda deactivate</code></td>
+              </tr>
+              <tr>
+                <td>Cài package</td>
+                <td colspan="2"><code>pip install &lt;pkg&gt;</code></td>
+                <td><code>pip install &lt;pkg&gt;</code> hoặc <code>conda install &lt;pkg&gt;</code></td>
+              </tr>
+              <tr>
+                <td>Xem danh sách môi trường</td>
+                <td colspan="2">—</td>
+                <td><code>conda env list</code></td>
+              </tr>
+              <tr>
+                <td>Xóa môi trường</td>
+                <td colspan="2">Xóa thư mục <code>my_env/</code></td>
+                <td><code>conda env remove --name my_env</code></td>
+              </tr>
+              <tr>
+                <td>Export cấu hình</td>
+                <td colspan="2"><code>pip freeze > requirements.txt</code></td>
+                <td><code>conda env export > environment.yml</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>9. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Tạo và sử dụng môi trường ảo với venv</h3>
+            <p>Thực hiện theo các bước sau trên máy tính của bạn:</p>
+            <ol>
+              <li>Tạo một thư mục mới tên <code>my_project</code>.</li>
+              <li>Vào thư mục đó và tạo môi trường ảo tên <code>.venv</code>.</li>
+              <li>Kích hoạt môi trường ảo.</li>
+              <li>Cài đặt package <code>requests</code>.</li>
+              <li>Chạy <code>pip freeze</code> để xem danh sách package.</li>
+              <li>Export ra file <code>requirements.txt</code>.</li>
+              <li>Hủy kích hoạt môi trường ảo.</li>
+            </ol>
+            <pre><code class="language-bash"># Gợi ý
+mkdir my_project && cd my_project
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Mac/Linux: source .venv/bin/activate
+pip install requests
+pip freeze > requirements.txt
+deactivate</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Tái tạo môi trường từ requirements.txt</h3>
+            <p>
+              Giả lập tình huống một đồng nghiệp clone dự án của bạn về máy mới:
+            </p>
+            <ol>
+              <li>Xóa thư mục <code>.venv</code> vừa tạo (giả lập máy mới không có môi trường).</li>
+              <li>Tạo môi trường ảo mới tên <code>.venv</code>.</li>
+              <li>Kích hoạt và cài đặt lại tất cả package từ <code>requirements.txt</code>.</li>
+              <li>Kiểm tra <code>pip list</code> — kết quả có giống ban đầu không?</li>
+            </ol>
+            <pre><code class="language-bash">python -m venv .venv
+# (activate)
+pip install -r requirements.txt
+pip list</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3 (Nâng cao): Hai dự án, hai phiên bản package khác nhau</h3>
+            <p>
+              Tạo hai thư mục dự án: <code>project_a</code> và <code>project_b</code>. Mỗi dự án có môi trường ảo riêng. Cài <code>requests==2.28.0</code> vào project_a và <code>requests==2.31.0</code> vào project_b. Kiểm tra <code>pip show requests</code> trong từng môi trường — xác nhận hai phiên bản tồn tại độc lập.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li>Môi trường ảo giúp <strong>cô lập package</strong> giữa các dự án, tránh xung đột phiên bản.</li>
+            <li><code>venv</code> — có sẵn trong Python, nhanh, phù hợp dự án nhỏ. Lệnh tạo: <code>python -m venv &lt;tên&gt;</code>.</li>
+            <li><strong>Miniconda</strong> — mạnh hơn, có thể chỉ định phiên bản Python. Lệnh tạo: <code>conda create --name &lt;tên&gt; python=3.x</code>.</li>
+            <li>Luôn <strong>kích hoạt môi trường</strong> trước khi cài package hay chạy script.</li>
+            <li>Dùng <code>pip freeze > requirements.txt</code> (venv) hoặc <code>conda env export > environment.yml</code> (conda) để lưu cấu hình môi trường.</li>
+            <li>Thêm thư mục môi trường ảo (<code>.venv/</code>, <code>env/</code>) vào <code>.gitignore</code>.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Package Manager (pip, conda, uv) — quản lý package chuyên nghiệp, so sánh các công cụ hiện đại và giới thiệu <code>uv</code>, package manager cực nhanh đang được cộng đồng Python ưa chuộng.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 14. Môi trường ảo (Virtual Environment) trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

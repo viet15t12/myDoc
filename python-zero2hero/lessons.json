@@ -176,20 +176,20 @@
       "id": "14",
       "minutes": 15,
       "sections": 6,
-      "status": "coming",
+      "status": "published",
       "tags": ["venv", "virtualenv", "environment", "môi trường ảo"],
       "title": "Môi trường ảo (Virtual Environment)"
     },
     {
       "type": "nangcao",
       "description": "pip install, freeze, requirements.txt, conda — quản lý gói thư viện trong Python",
-      "file": "15-python-package-manager-pip-conda.html",
+      "file": "15-python-package-manager-pip-cond-uv.html",
       "id": "15",
       "minutes": 15,
       "sections": 6,
-      "status": "coming",
-      "tags": ["pip", "conda", "package", "requirements"],
-      "title": "Python Package Manager — pip, conda"
+      "status": "published",
+      "tags": ["pip","UV", "conda", "package", "requirements"],
+      "title": "Python Package Manager — pip, conda, UV"
     },
     {
       "type": "nangcao",
@@ -198,7 +198,7 @@
       "id": "16",
       "minutes": 20,
       "sections": 8,
-      "status": "coming",
+      "status": "published",
       "tags": ["error", "debug", "TypeError", "ValueError", "lỗi"],
       "title": "Python Type Errors — Các lỗi phổ biến"
     },

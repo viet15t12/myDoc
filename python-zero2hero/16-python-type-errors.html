@@ -3,78 +3,724 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>16. Các Lỗi Thường Gặp trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 16</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="15-exception-handling.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#doc-traceback">1. Cách đọc Traceback</a>
+      <a href="#syntax-error">2. SyntaxError</a>
+      <a href="#name-error">3. NameError</a>
+      <a href="#index-error">4. IndexError</a>
+      <a href="#key-error">5. KeyError</a>
+      <a href="#type-error">6. TypeError</a>
+      <a href="#value-error">7. ValueError</a>
+      <a href="#attribute-error">8. AttributeError</a>
+      <a href="#import-error">9. ModuleNotFoundError / ImportError</a>
+      <a href="#zero-division-error">10. ZeroDivisionError</a>
+      <a href="#file-not-found-error">11. FileNotFoundError</a>
+      <a href="#bang-tong-hop">12. Bảng tổng hợp 10 lỗi</a>
+      <a href="#bai-tap">13. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>16. Các Lỗi Thường Gặp trong Python</h1>
+        <p class="meta">
+          Tổng hợp 10 lỗi phổ biến nhất khi lập trình Python: <code>SyntaxError</code>, <code>NameError</code>, <code>IndexError</code>, <code>KeyError</code>, <code>TypeError</code>, <code>ValueError</code>, <code>AttributeError</code>, <code>ImportError</code>, <code>ZeroDivisionError</code>, <code>FileNotFoundError</code>. Mỗi lỗi có ví dụ minh họa, nguyên nhân và cách fix.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Gặp lỗi khi lập trình là chuyện hoàn toàn bình thường — kể cả với lập trình viên nhiều năm kinh nghiệm. Điều quan trọng không phải là <em>tránh</em> lỗi, mà là <strong>biết cách đọc thông báo lỗi và xử lý nhanh</strong>.
+          </p>
+          <p>
+            Python có rất nhiều loại lỗi (exception), nhưng trong thực tế bạn sẽ gặp đi gặp lại một số lỗi quen thuộc. Bài này tổng hợp <strong>10 lỗi thường gặp nhất</strong>, chia thành hai nhóm:
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Nhóm</th><th>Lỗi</th><th>Tóm tắt nguyên nhân</th></tr>
+            </thead>
+            <tbody>
+              <tr><td rowspan="3"><strong>Nhóm 1</strong><br><small>Phần 1</small></td><td><code>SyntaxError</code></td><td>Viết sai cú pháp Python</td></tr>
+              <tr><td><code>NameError</code></td><td>Dùng biến / hàm chưa khai báo</td></tr>
+              <tr><td><code>IndexError</code></td><td>Truy cập index ngoài phạm vi list</td></tr>
+              <tr><td rowspan="2"><strong>Nhóm 1</strong><br><small>Phần 1 (tt)</small></td><td><code>ModuleNotFoundError</code></td><td>Import thư viện chưa được cài</td></tr>
+              <tr><td><code>AttributeError</code></td><td>Dùng method/attribute không tồn tại trên object</td></tr>
+              <tr><td rowspan="5"><strong>Nhóm 2</strong><br><small>Phần 2</small></td><td><code>KeyError</code></td><td>Truy cập key không tồn tại trong dict</td></tr>
+              <tr><td><code>TypeError</code></td><td>Phép toán / hàm dùng sai kiểu dữ liệu</td></tr>
+              <tr><td><code>ImportError</code></td><td>Import module không tồn tại trong thư viện</td></tr>
+              <tr><td><code>ValueError</code></td><td>Đúng kiểu nhưng giá trị không hợp lệ</td></tr>
+              <tr><td><code>ZeroDivisionError</code></td><td>Chia cho số 0</td></tr>
+            </tbody>
+          </table>
+          <div class="note">
+            <strong>Mục tiêu của bài:</strong> Sau khi học xong, khi nhìn vào thông báo lỗi bất kỳ, bạn biết ngay đang lỗi ở đâu, vì sao, và cách fix như thế nào.
+          </div>
+        </section>
+
+        <!-- ======================== ĐỌC TRACEBACK ======================== -->
+        <section id="doc-traceback">
+          <h2>1. Cách đọc Traceback</h2>
+          <p>
+            Khi chương trình Python gặp lỗi, nó in ra một <strong>Traceback</strong> — đây là "bản đồ" chỉ đường đến lỗi. Biết cách đọc Traceback giúp bạn tìm lỗi cực nhanh.
+          </p>
+          <pre><code class="language-python">Traceback (most recent call last):
+  File "main.py", line 5, in &lt;module&gt;
+    result = 10 / 0
+ZeroDivisionError: division by zero</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Phần Traceback</th><th>Ý nghĩa</th><th>Ví dụ trên</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>File "...", line N</code></td>
+                <td>Tên file và <strong>số dòng</strong> xảy ra lỗi</td>
+                <td><code>main.py</code>, dòng 5</td>
+              </tr>
+              <tr>
+                <td>Dòng code được trích dẫn</td>
+                <td>Đoạn code gây ra lỗi</td>
+                <td><code>result = 10 / 0</code></td>
+              </tr>
+              <tr>
+                <td>Tên lỗi (<code>XxxError</code>)</td>
+                <td>Loại lỗi — cho biết <em>tại sao</em> lỗi</td>
+                <td><code>ZeroDivisionError</code></td>
+              </tr>
+              <tr>
+                <td>Mô tả lỗi</td>
+                <td>Chi tiết lỗi bằng tiếng Anh</td>
+                <td><code>division by zero</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="success">
+            <strong>Tip thực tế (VS Code):</strong> Khi thấy Traceback, giữ <kbd>Ctrl</kbd> và click vào dòng <code>File "main.py", line 5</code> — VS Code sẽ nhảy thẳng đến dòng lỗi trong editor.
+          </div>
+        </section>
+
+        <!-- ======================== SYNTAX ERROR ======================== -->
+        <section id="syntax-error">
+          <h2>2. SyntaxError — Lỗi cú pháp</h2>
+          <p>
+            <code>SyntaxError</code> xảy ra khi code <strong>vi phạm quy tắc ngữ pháp</strong> của Python. Đây là lỗi bị phát hiện <em>trước khi chạy</em> — Python thậm chí không thể dịch code của bạn.
+          </p>
+          <p><strong>Nguyên nhân phổ biến:</strong> thiếu dấu ngoặc, thiếu dấu hai chấm <code>:</code> sau <code>if</code>/<code>for</code>/<code>def</code>, thụt lề sai (IndentationError).</p>
+
+          <h3>Ví dụ 1: Thiếu dấu ngoặc trong <code>print()</code></h3>
+          <pre><code class="language-python"># ⚠ Warning — thiếu dấu ngoặc tròn
+print "Xin chào các bạn"
+# SyntaxError: Missing parentheses in call to 'print'
+# Did you mean print(...)?
+
+# ℹ Information — cách sửa
+print("Xin chào các bạn")</code></pre>
+
+          <h3>Ví dụ 2: Thiếu dấu hai chấm sau <code>if</code></h3>
+          <pre><code class="language-python"># ⚠ Warning — thiếu dấu ':'
+x = 10
+if x > 5
+    print("x lớn hơn 5")
+# SyntaxError: expected ':'
+
+# ℹ Information — cách sửa
+if x > 5:
+    print("x lớn hơn 5")</code></pre>
+
+          <h3>Ví dụ 3: Lỗi thụt lề (IndentationError)</h3>
+          <pre><code class="language-python"># ⚠ Warning — thân hàm không được thụt vào
+def say_hello():
+print("Hello!")   # IndentationError: expected an indented block
+
+# ℹ Information — thụt vào 4 dấu cách
+def say_hello():
+    print("Hello!")</code></pre>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> Hầu hết các editor Python (VS Code, PyCharm) sẽ gạch chân màu đỏ ngay tại vị trí SyntaxError trước khi bạn chạy. Hãy để ý các gạch chân đó.
+          </div>
+        </section>
+
+        <!-- ======================== NAME ERROR ======================== -->
+        <section id="name-error">
+          <h2>3. NameError — Dùng biến chưa khai báo</h2>
+          <p>
+            <code>NameError</code> xảy ra khi bạn <strong>sử dụng một tên biến hoặc hàm chưa được định nghĩa</strong> ở thời điểm đó trong chương trình.
+          </p>
+
+          <pre><code class="language-python"># ⚠ Warning — in biến chưa định nghĩa
+print(my_variable)
+# NameError: name 'my_variable' is not defined
+
+# ℹ Information — định nghĩa biến trước khi dùng
+my_variable = "Xin chào các bạn"
+print(my_variable)   # Xin chào các bạn</code></pre>
+
+          <p>Lỗi này cũng xảy ra khi gọi hàm trước khi định nghĩa:</p>
+          <pre><code class="language-python"># ⚠ Warning — gọi hàm trước khi def
+say_hello()
+# NameError: name 'say_hello' is not defined
+
+def say_hello():
+    print("Hello!")
+
+# ℹ Information — định nghĩa hàm trước khi gọi
+def say_hello():
+    print("Hello!")
+
+say_hello()</code></pre>
+
+          <div class="note">
+            <strong>Nguyên nhân hay gặp:</strong> Viết sai tên biến (ví dụ <code>Name</code> thay vì <code>name</code>). Python phân biệt chữ hoa/thường — <code>name</code> và <code>Name</code> là hai biến khác nhau.
+          </div>
+        </section>
+
+        <!-- ======================== INDEX ERROR ======================== -->
+        <section id="index-error">
+          <h2>4. IndexError — Index vượt phạm vi</h2>
+          <p>
+            <code>IndexError</code> xảy ra khi bạn <strong>truy cập vào một phần tử của list bằng index nằm ngoài phạm vi</strong> cho phép.
+          </p>
+
+          <pre><code class="language-python">my_list = [1, 3, 5]
+# Index hợp lệ: 0, 1, 2 (hoặc -1, -2, -3)
+
+# ⚠ Warning — index 5 vượt quá giới hạn
+print(my_list[5])
+# IndexError: list index out of range
+
+# ⚠ Warning — index âm -5 cũng vượt giới hạn
+print(my_list[-5])
+# IndexError: list index out of range
+
+# ℹ Information — dùng index hợp lệ
+print(my_list[1])    # 3  (index dương)
+print(my_list[-1])   # 5  (index âm: phần tử cuối)</code></pre>
+
+          <p>Phạm vi index hợp lệ của list có <code>n</code> phần tử:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Loại index</th><th>Phạm vi hợp lệ</th><th>Ví dụ list 3 phần tử</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Index dương</td><td><code>0</code> đến <code>n-1</code></td><td><code>0, 1, 2</code></td></tr>
+              <tr><td>Index âm</td><td><code>-n</code> đến <code>-1</code></td><td><code>-3, -2, -1</code></td></tr>
+            </tbody>
+          </table>
+
+          <div class="success">
+            <strong>Cách phòng tránh:</strong> Dùng <code>len(my_list)</code> để biết số phần tử, hoặc duyệt bằng vòng <code>for item in my_list</code> thay vì dùng index thủ công.
+          </div>
+        </section>
+
+        <!-- ======================== KEY ERROR ======================== -->
+        <section id="key-error">
+          <h2>5. KeyError — Key không tồn tại trong dict</h2>
+          <p>
+            <code>KeyError</code> xảy ra khi bạn <strong>truy cập vào một key không tồn tại trong dictionary</strong>. Lỗi này hay gặp trong thực tế vì dictionary thường có nhiều key, dễ nhầm hoặc quên.
+          </p>
+
+          <pre><code class="language-python">my_dict = {
+    "name": "Minh",
+    "age": 20
+}
+
+# ⚠ Warning — key "address" không tồn tại
+print(my_dict["address"])
+# KeyError: 'address'
+
+# ℹ Information 1 — thêm key vào dictionary
+my_dict["address"] = "Hà Nội"
+print(my_dict["address"])   # Hà Nội
+
+# ℹ Information 2 — dùng .get() để tránh lỗi (trả về None nếu không có key)
+address = my_dict.get("address")
+print(address)   # None (không báo lỗi)
+
+# ℹ Information 3 — .get() với giá trị mặc định
+address = my_dict.get("address", "Không rõ")
+print(address)   # Không rõ</code></pre>
+
+          <table class="pro-table">
+            <caption>So sánh cách truy cập dictionary</caption>
+            <thead>
+              <tr><th>Cách truy cập</th><th>Key tồn tại</th><th>Key không tồn tại</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>d["key"]</code></td><td>Trả về value</td><td><span class="status-badge status-no">KeyError</span></td></tr>
+              <tr><td><code>d.get("key")</code></td><td>Trả về value</td><td>Trả về <code>None</code></td></tr>
+              <tr><td><code>d.get("key", default)</code></td><td>Trả về value</td><td>Trả về <code>default</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TYPE ERROR ======================== -->
+        <section id="type-error">
+          <h2>6. TypeError — Sai kiểu dữ liệu</h2>
+          <p>
+            <code>TypeError</code> xảy ra khi bạn <strong>thực hiện một phép toán hoặc gọi hàm với kiểu dữ liệu không phù hợp</strong>. Lỗi này rất hay gặp khi cộng chuỗi với số.
+          </p>
+
+          <h3>Ví dụ 1: Cộng số nguyên với chuỗi</h3>
+          <pre><code class="language-python">number = 10
+
+# ⚠ Warning — không thể cộng int với str
+result = number + "anh em"
+# TypeError: unsupported operand type(s) for +: 'int' and 'str'
+
+# ℹ Information 1 — cộng hai số
+result = number + 34
+print(result)   # 44
+
+# ℹ Information 2 — chuyển số thành chuỗi để nối
+result = str(number) + " anh em"
+print(result)   # "10 anh em"</code></pre>
+
+          <h3>Ví dụ 2: Gọi hàm với số lượng đối số sai</h3>
+          <pre><code class="language-python">def chao(ten):
+    print(f"Xin chào {ten}!")
+
+# ⚠ Warning — truyền 2 đối số nhưng hàm chỉ nhận 1
+chao("An", "Bình")
+# TypeError: chao() takes 1 positional argument but 2 were given
+
+# ℹ Information — cách sửa
+chao("An")</code></pre>
+
+          <h3>Ví dụ 3: Gọi hàm trên kiểu dữ liệu không hỗ trợ</h3>
+          <pre><code class="language-python">number = 42
+
+# ⚠ Warning — int không thể lặp
+for digit in number:
+    print(digit)
+# TypeError: 'int' object is not iterable
+
+# ℹ Information — chuyển thành chuỗi rồi lặp
+for digit in str(number):
+    print(digit)   # 4, 2</code></pre>
+        </section>
+
+        <!-- ======================== VALUE ERROR ======================== -->
+        <section id="value-error">
+          <h2>7. ValueError — Giá trị không hợp lệ</h2>
+          <p>
+            <code>ValueError</code> xảy ra khi <strong>kiểu dữ liệu đúng nhưng giá trị truyền vào không phù hợp</strong> với hàm. Lỗi này phân biệt với <code>TypeError</code>: TypeError sai <em>kiểu</em>, ValueError sai <em>nội dung</em>.
+          </p>
+
+          <pre><code class="language-python"># ℹ Information — chuỗi "567" có thể chuyển thành int
+so = int("567")
+print(so)   # 567
+
+# ⚠ Warning — chuỗi "anh em ơi" không thể chuyển thành int
+so = int("anh em ơi")
+# ValueError: invalid literal for int() with base 10: 'anh em ơi'
+
+# ⚠ Warning — sqrt số âm (math.sqrt)
+import math
+ket_qua = math.sqrt(-1)
+# ValueError: math domain error</code></pre>
+
+          <p>Cách xử lý <code>ValueError</code> an toàn:</p>
+          <pre><code class="language-python">def chuyen_sang_so(chuoi):
+    try:
+        return int(chuoi)
+    except ValueError:
+        print(f"'{chuoi}' không phải là số hợp lệ!")
+        return None
+
+print(chuyen_sang_so("123"))        # 123
+print(chuyen_sang_so("anh em ơi")) # 'anh em ơi' không phải là số hợp lệ!</code></pre>
+
+          <p>Ứng dụng thực tế — nhận input từ người dùng:</p>
+          <pre><code class="language-python">while True:
+    user_input = input("Nhập một số nguyên: ")
+    try:
+        number = int(user_input)
+        print(f"Bạn đã nhập: {number}")
+        break
+    except ValueError:
+        print("Nhập sai, vui lòng thử lại!")</code></pre>
+        </section>
+
+        <!-- ======================== ATTRIBUTE ERROR ======================== -->
+        <section id="attribute-error">
+          <h2>8. AttributeError — Method / Attribute không tồn tại</h2>
+          <p>
+            <code>AttributeError</code> xảy ra khi bạn <strong>gọi một method hoặc truy cập một attribute mà object đó không có</strong>. Ví dụ điển hình: gọi <code>.append()</code> trên string (method này chỉ có ở list).
+          </p>
+
+          <pre><code class="language-python">my_string = "Xin chào các bạn"
+
+# ⚠ Warning — string không có method append()
+my_string.append("thêm")
+# AttributeError: 'str' object has no attribute 'append'
+
+# ℹ Information — append() là của list, dùng list thay thế
+my_list = [1, 2, 3]
+my_list.append(4)
+print(my_list)   # [1, 2, 3, 4]</code></pre>
+
+          <p>Ví dụ khác — gọi method sai chính tả:</p>
+          <pre><code class="language-python">name = "python"
+
+# ⚠ Warning — viết sai tên method (upper không có chữ 's')
+print(name.uppers())
+# AttributeError: 'str' object has no attribute 'uppers'
+
+# ℹ Information — cách sửa
+print(name.upper())   # PYTHON</code></pre>
+
+          <div class="note">
+            <strong>Cách kiểm tra:</strong> Dùng hàm <code>dir(object)</code> để xem tất cả attribute và method mà object đó có. Ví dụ: <code>dir("hello")</code> để xem các method của string.
+          </div>
+        </section>
+
+        <!-- ======================== IMPORT ERROR ======================== -->
+        <section id="import-error">
+          <h2>9. ModuleNotFoundError / ImportError</h2>
+          <p>Hai lỗi này liên quan đến việc import thư viện, nhưng nguyên nhân khác nhau:</p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Lỗi</th><th>Nguyên nhân</th><th>Cách fix</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ModuleNotFoundError</code></td>
+                <td>Thư viện chưa được cài đặt vào môi trường Python</td>
+                <td>Chạy <code>pip install &lt;tên-thư-viện&gt;</code></td>
+              </tr>
+              <tr>
+                <td><code>ImportError</code></td>
+                <td>Thư viện đã cài nhưng import sai tên module / function bên trong</td>
+                <td>Kiểm tra lại tên module, dùng gợi ý của IDE</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>ModuleNotFoundError — thư viện chưa cài</h3>
+          <pre><code class="language-python"># ⚠ Warning — numpy chưa được cài
+import numpy as np
+# ModuleNotFoundError: No module named 'numpy'
+
+# ℹ Information — cài đặt trước
+# ➜ Command — chạy trong terminal:
+# pip install numpy
+
+# Sau khi cài xong, import lại
+import numpy as np
+my_array = np.array([1, 2, 3, 4])
+print(my_array)   # [1 2 3 4]</code></pre>
+
+          <h3>ImportError — import sai tên bên trong thư viện</h3>
+          <pre><code class="language-python"># ⚠ Warning — my_module không tồn tại trong numpy
+from numpy import my_module
+# ImportError: cannot import name 'my_module' from 'numpy'
+
+# ℹ Information — import đúng tên module tồn tại
+from numpy import random
+random.seed(42)   # OK</code></pre>
+
+          <div class="success">
+            <strong>Tip:</strong> Khi cài thư viện cho dự án, luôn kích hoạt virtual environment trước: <code>myenv\Scripts\activate</code> (Windows) hoặc <code>source myenv/bin/activate</code> (Linux/Mac). Nếu không, thư viện có thể cài vào môi trường global thay vì dự án của bạn.
+          </div>
+        </section>
+
+        <!-- ======================== ZERO DIVISION ======================== -->
+        <section id="zero-division-error">
+          <h2>10. ZeroDivisionError — Chia cho 0</h2>
+          <p>
+            <code>ZeroDivisionError</code> xảy ra khi bạn <strong>thực hiện phép chia mà số chia bằng 0</strong>. Trong toán học, phép chia cho 0 không xác định — Python cũng vậy.
+          </p>
+
+          <pre><code class="language-python"># ⚠ Warning — chia cho 0
+result = 10 / 0
+# ZeroDivisionError: division by zero
+
+# ⚠ Warning — phép chia lấy dư cũng vậy
+result = 10 % 0
+# ZeroDivisionError: integer division or modulo by zero</code></pre>
+
+          <p>Trong thực tế (đặc biệt khi training ML/AI model), lỗi này xảy ra khi một biến tính toán ra 0 và được dùng làm số chia:</p>
+          <pre><code class="language-python"># Ví dụ tính trung bình — hay gặp khi danh sách rỗng
+def tinh_trung_binh(danh_sach):
+    return sum(danh_sach) / len(danh_sach)
+
+# ⚠ Warning — danh sách rỗng, len() = 0
+print(tinh_trung_binh([]))
+# ZeroDivisionError: division by zero
+
+# ℹ Information — kiểm tra trước khi chia
+def tinh_trung_binh(danh_sach):
+    if len(danh_sach) == 0:
+        return 0
+    return sum(danh_sach) / len(danh_sach)
+
+print(tinh_trung_binh([]))      # 0
+print(tinh_trung_binh([8, 9]))  # 8.5</code></pre>
+
+          <pre><code class="language-python"># ℹ Information — hoặc dùng try/except để bắt lỗi
+def chia_an_toan(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        print("Lỗi: không thể chia cho 0!")
+        return None
+
+print(chia_an_toan(10, 2))   # 5.0
+print(chia_an_toan(10, 0))   # Lỗi: không thể chia cho 0!</code></pre>
+        </section>
+
+        <!-- ======================== FILE NOT FOUND ======================== -->
+        <section id="file-not-found-error">
+          <h2>11. FileNotFoundError — File không tồn tại</h2>
+          <p>
+            <code>FileNotFoundError</code> xảy ra khi bạn <strong>cố đọc một file không tồn tại</strong> ở đường dẫn đã chỉ định. Đây là lỗi rất phổ biến khi làm việc với file handling (bài 12).
+          </p>
+
+          <pre><code class="language-python"># ⚠ Warning — file không tồn tại
+with open("khong_ton_tai.txt", "r") as f:
+    content = f.read()
+# FileNotFoundError: [Errno 2] No such file or directory: 'khong_ton_tai.txt'
+
+# ℹ Information 1 — kiểm tra trước
+import os
+if os.path.exists("data.txt"):
+    with open("data.txt", "r") as f:
+        content = f.read()
+else:
+    print("File không tồn tại!")
+
+# ℹ Information 2 — dùng try/except
+try:
+    with open("data.txt", "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    print("Không tìm thấy file data.txt!")</code></pre>
+        </section>
+
+        <!-- ======================== BẢNG TỔNG HỢP ======================== -->
+        <section id="bang-tong-hop">
+          <h2>12. Bảng tổng hợp 10 lỗi</h2>
+          <table class="pro-table">
+            <thead>
+              <tr><th>#</th><th>Tên lỗi</th><th>Khi nào xảy ra</th><th>Cách fix nhanh</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><code>SyntaxError</code></td>
+                <td>Viết sai cú pháp (thiếu <code>:</code>, <code>()</code>, thụt lề sai)</td>
+                <td>Nhìn vào dòng được báo, thêm ký tự còn thiếu</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><code>NameError</code></td>
+                <td>Dùng biến / hàm chưa khai báo</td>
+                <td>Khai báo biến trước khi dùng; kiểm tra chính tả tên biến</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><code>IndexError</code></td>
+                <td>Truy cập index ngoài phạm vi list</td>
+                <td>Dùng <code>len()</code> kiểm tra; dùng <code>for item in list</code></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><code>KeyError</code></td>
+                <td>Truy cập key không có trong dict</td>
+                <td>Dùng <code>dict.get(key)</code> thay vì <code>dict[key]</code></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><code>TypeError</code></td>
+                <td>Phép toán / hàm dùng sai kiểu dữ liệu</td>
+                <td>Dùng <code>int()</code>, <code>str()</code>, <code>float()</code> để convert</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><code>ValueError</code></td>
+                <td>Đúng kiểu nhưng giá trị không hợp lệ</td>
+                <td>Dùng <code>try/except ValueError</code> để xử lý</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><code>AttributeError</code></td>
+                <td>Gọi method/attribute không tồn tại trên object</td>
+                <td>Dùng <code>dir(obj)</code> xem method có sẵn; kiểm tra chính tả</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><code>ModuleNotFoundError</code></td>
+                <td>Import thư viện chưa cài</td>
+                <td>Chạy <code>pip install &lt;tên-thư-viện&gt;</code></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><code>ImportError</code></td>
+                <td>Import sai tên module trong thư viện</td>
+                <td>Dùng gợi ý của IDE; kiểm tra tên module trong docs</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><code>ZeroDivisionError</code></td>
+                <td>Chia cho 0</td>
+                <td>Kiểm tra <code>if b != 0</code> trước khi chia</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>13. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Nhận dạng lỗi</h3>
+            <p>Đọc từng đoạn code dưới đây và cho biết: lỗi gì xảy ra, tại sao, và cách fix.</p>
+            <pre><code class="language-python"># Đoạn A
+numbers = [10, 20, 30]
+print(numbers[5])
+
+# Đoạn B
+age = "25"
+result = age + 5
+
+# Đoạn C
+student = {"name": "An", "score": 9.0}
+print(student["class"])
+
+# Đoạn D
+print "Hello Python"
+
+# Đoạn E
+value = int("hello world")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Viết code phòng thủ</h3>
+            <p>Viết hàm <code>lay_phan_tu(lst, index)</code> nhận vào một list và một index. Hàm trả về phần tử tại index đó, hoặc thông báo lỗi thân thiện nếu index không hợp lệ (không dùng <code>try/except</code>, dùng điều kiện <code>if</code>).</p>
+            <pre><code class="language-python">def lay_phan_tu(lst, index):
+    # Gợi ý: kiểm tra -len(lst) <= index < len(lst)
+    pass
+
+print(lay_phan_tu([1, 2, 3], 1))   # 2
+print(lay_phan_tu([1, 2, 3], 5))   # "Index 5 không hợp lệ (list có 3 phần tử)"</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Calculator an toàn</h3>
+            <p>Viết hàm <code>tinh_toan(a, phep, b)</code> thực hiện 4 phép tính (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>). Hàm cần xử lý đầy đủ các trường hợp lỗi:</p>
+            <ul>
+              <li><code>TypeError</code>: <code>a</code> hoặc <code>b</code> không phải số</li>
+              <li><code>ZeroDivisionError</code>: chia cho 0</li>
+              <li>Phép tính không hợp lệ (ví dụ <code>"%"</code>)</li>
+            </ul>
+            <pre><code class="language-python">def tinh_toan(a, phep, b):
+    pass
+
+print(tinh_toan(10, "+", 5))    # 15
+print(tinh_toan(10, "/", 0))    # "Lỗi: không thể chia cho 0"
+print(tinh_toan("x", "+", 5))  # "Lỗi: a và b phải là số"</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Tìm lỗi trong hàm xử lý dict</h3>
+            <p>Đoạn code dưới đây có nhiều lỗi tiềm ẩn. Hãy tìm và sửa tất cả:</p>
+            <pre><code class="language-python">def in_thong_tin(sinh_vien):
+    print("Tên:", sinh_vien["name"])
+    print("Tuổi:", sinh_vien["age"])
+    print("GPA:", sinh_vien["gpa"])
+    print("Hạng:", "Xuất sắc" if sinh_vien["gpa"] >= 3.6 else "Khá")
+
+# Test với các dict khác nhau
+sv1 = {"name": "An", "age": 20, "gpa": 3.8}
+sv2 = {"name": "Bình", "age": 21}        # thiếu "gpa"
+sv3 = {"name": "Châu", "gpa": "3.5"}    # gpa là string
+
+in_thong_tin(sv1)
+in_thong_tin(sv2)
+in_thong_tin(sv3)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Debug đoạn code thực tế</h3>
+            <p>Đoạn code sau đọc điểm từ input, tính trung bình và xếp loại. Có nhiều bug — tìm và fix tất cả để chương trình chạy đúng.</p>
+            <pre><code class="language-python">def xep_loai(diem):
+    if diem >= 9.0:
+        return "Xuất sắc"
+    elif diem >= 7.0
+        return "Khá"
+    elif diem >= 5.0:
+        return "Trung bình"
+    else:
+        return "Yếu"
+
+diem_cac_mon = ["8.5", "9.0", "7.5", "6.0"]
+tong = 0
+for d in diem_cac_mon:
+    tong = tong + d
+
+trung_binh = tong / 4
+print("Điểm TB:", trung_binh)
+print("Xếp loại:", xep_loai(trung_binh))</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Traceback</strong> là bản đồ lỗi — đọc từ dưới lên: tên lỗi → số dòng → mô tả lỗi.</li>
+            <li><code>SyntaxError</code>: sai cú pháp → sửa ngay tại dòng được báo.</li>
+            <li><code>NameError</code>: dùng biến chưa khai báo → khai báo trước; kiểm tra chính tả.</li>
+            <li><code>IndexError</code>: index vượt phạm vi list → dùng <code>len()</code> hoặc duyệt <code>for item in list</code>.</li>
+            <li><code>KeyError</code>: key không có trong dict → dùng <code>.get()</code> thay vì <code>[]</code>.</li>
+            <li><code>TypeError</code>: sai kiểu dữ liệu → convert bằng <code>int()</code>, <code>str()</code>…</li>
+            <li><code>ValueError</code>: đúng kiểu nhưng giá trị không hợp lệ → dùng <code>try/except</code>.</li>
+            <li><code>AttributeError</code>: gọi method không tồn tại → kiểm tra <code>dir(obj)</code>.</li>
+            <li><code>ModuleNotFoundError</code>: thư viện chưa cài → <code>pip install</code>.</li>
+            <li><code>ZeroDivisionError</code>: chia cho 0 → kiểm tra <code>if b != 0</code> trước khi chia.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> OOP — Lập trình hướng đối tượng (class, object, kế thừa). Hiểu <code>AttributeError</code> sẽ giúp bạn debug nhanh hơn khi làm việc với class.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 16. Các Lỗi Thường Gặp trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

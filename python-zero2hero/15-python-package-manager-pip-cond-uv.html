@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15. Python Package Manager: pip, conda và uv</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 15</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" href="14-moi-truong-ao-virtual-environment.html">← Bài trước</a>
+      <a class="nav-pill disabled" href="#">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#pip">1. pip — Package manager cơ bản</a>
+      <a href="#pip-lenh">2. Các lệnh pip thường dùng</a>
+      <a href="#conda-pkg">3. conda install</a>
+      <a href="#uv-gioi-thieu">4. uv — Package manager thế hệ mới</a>
+      <a href="#uv-cai-dat">5. Cài đặt uv</a>
+      <a href="#uv-vs-cu">6. uv so với workflow cũ</a>
+      <a href="#uv-project">7. Workflow uv đầy đủ</a>
+      <a href="#uv-killer">8. Những tính năng nổi bật</a>
+      <a href="#uv-migrate">9. Migrate project cũ sang uv</a>
+      <a href="#uv-pip-compat">10. uv pip — Giao diện tương thích pip</a>
+      <a href="#uv-tool">11. uv tool — CLI tools</a>
+      <a href="#uv-lenh">12. Bảng lệnh uv đầy đủ</a>
+      <a href="#so-sanh">13. So sánh pip, conda và uv</a>
+      <a href="#bai-tap">14. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>15. Python Package Manager: pip, conda và uv</h1>
+        <p class="meta">
+          Hướng dẫn đầy đủ về các công cụ quản lý package trong Python: <strong>pip</strong> (công cụ cơ bản), <strong>conda</strong> (quản lý môi trường và package), và <strong>uv</strong> (thế hệ mới, cực nhanh — thay thế pip + venv + pip-tools + pipx trong một lệnh duy nhất). Bao gồm workflow thực tế, tính năng nổi bật và cách migrate project cũ.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Package manager</strong> là công cụ giúp bạn cài đặt, cập nhật và gỡ bỏ các thư viện (package) Python. Thay vì tải thủ công, bạn chỉ cần một lệnh và công cụ tự động tải về, cài đặt, giải quyết các dependencies.
+          </p>
+          <p>
+            Python có nhiều package manager — bài này đi qua ba công cụ quan trọng nhất: <code>pip</code> (cơ bản, có sẵn), <code>conda</code> (mạnh cho Data Science), và <code>uv</code> (thế hệ mới, đang thay thế tất cả).
+          </p>
+          <div class="note">
+            <strong>PyPI — kho package của Python:</strong> Hầu hết package Python được lưu tại <strong>PyPI</strong> (Python Package Index — pypi.org). Khi bạn chạy <code>pip install numpy</code>, pip tải package từ PyPI về máy.
+          </div>
+        </section>
+
+        <!-- ======================== PIP ======================== -->
+        <section id="pip">
+          <h2>1. pip — Package manager cơ bản</h2>
+          <p>
+            <code>pip</code> là package manager mặc định của Python — có sẵn khi cài Python. Đây là công cụ bạn gặp đầu tiên và dùng nhiều nhất trong giai đoạn học.
+          </p>
+
+          <h3>Kiểm tra pip</h3>
+          <pre><code class="language-bash">pip --version
+# pip 23.2.1 from /usr/local/lib/python3.10/site-packages/pip (python 3.10)</code></pre>
+
+          <h3>Cài đặt package</h3>
+          <pre><code class="language-bash"># Phiên bản mới nhất
+pip install requests
+
+# Phiên bản cụ thể
+pip install requests==2.28.0
+
+# Nhiều package cùng lúc
+pip install numpy pandas matplotlib
+
+# Cài từ file requirements.txt
+pip install -r requirements.txt</code></pre>
+
+          <div class="warning">
+            <strong>Luôn dùng pip trong môi trường ảo đã activate!</strong> Nếu cài vào môi trường global, package ảnh hưởng đến toàn bộ máy và có thể gây xung đột. Xem Bài 14 để hiểu môi trường ảo.
+          </div>
+        </section>
+
+        <!-- ======================== LỆNH PIP ======================== -->
+        <section id="pip-lenh">
+          <h2>2. Các lệnh pip thường dùng</h2>
+
+          <pre><code class="language-bash"># Cài đặt
+pip install numpy                    # phiên bản mới nhất
+pip install numpy==1.24.0            # phiên bản cụ thể
+pip install "numpy>=1.20,<2.0"       # trong khoảng phiên bản
+
+# Gỡ cài đặt
+pip uninstall numpy
+
+# Cập nhật
+pip install --upgrade numpy
+
+# Xem thông tin
+pip list                             # tất cả package đã cài
+pip show numpy                       # thông tin chi tiết một package
+pip freeze                           # xuất danh sách kèm version cố định
+
+# Export / Import
+pip freeze > requirements.txt        # lưu ra file
+pip install -r requirements.txt      # cài lại từ file</code></pre>
+
+          <h3>Hạn chế của pip + venv workflow cũ</h3>
+          <p>Để bắt đầu một dự án mới theo cách truyền thống, bạn cần <strong>5–6 bước</strong>:</p>
+          <pre><code class="language-bash"># Bước 1: Tạo thư mục
+mkdir my_project && cd my_project
+
+# Bước 2: Tạo virtual environment
+python -m venv .venv
+
+# Bước 3: Kích hoạt
+source .venv/bin/activate       # Mac/Linux
+# .venv\Scripts\activate        # Windows
+
+# Bước 4: Cài package
+pip install flask requests
+
+# Bước 5: Export requirements
+pip freeze > requirements.txt
+
+# Bước 6: Viết code, rồi chạy
+python main.py</code></pre>
+          <p>Đây là nhiều bước, không trực quan, đặc biệt cho người mới. uv giải quyết tất cả điều này — xem phần 7.</p>
+        </section>
+
+        <!-- ======================== CONDA PKG ======================== -->
+        <section id="conda-pkg">
+          <h2>3. <code>conda install</code> — Package manager của Conda</h2>
+          <p>
+            Khi dùng Miniconda/Anaconda, ngoài <code>pip</code>, bạn còn có <code>conda install</code>. Conda có kho package riêng, đặc biệt tốt cho các thư viện khoa học dữ liệu vì đã được biên dịch và tối ưu sẵn.
+          </p>
+
+          <pre><code class="language-bash"># Cài package bằng conda
+conda install numpy
+conda install pandas scipy matplotlib
+
+# Cài từ channel conda-forge (nhiều package hơn)
+conda install -c conda-forge jupyterlab
+
+# Cập nhật
+conda update numpy
+conda update --all       # cập nhật tất cả
+
+# Gỡ cài đặt
+conda remove numpy
+
+# Xem danh sách
+conda list</code></pre>
+
+          <div class="note">
+            <strong>pip vs conda install:</strong> Trong môi trường Conda, ưu tiên <code>conda install</code> cho thư viện khoa học (numpy, scipy, scikit-learn) vì được tối ưu hơn. Dùng <code>pip install</code> cho package chỉ có trên PyPI.
+          </div>
+        </section>
+
+        <!-- ======================== UV GIỚI THIỆU ======================== -->
+        <section id="uv-gioi-thieu">
+          <h2>4. uv — Package manager thế hệ mới</h2>
+          <p>
+            <strong>uv</strong> là Python package &amp; project manager cực nhanh, viết bằng Rust, do team <strong>Astral</strong> phát triển — cùng team tạo ra Ruff (Python linter nổi tiếng). Mục tiêu của uv rất tham vọng: <strong>thay thế hoàn toàn pip, venv, pip-tools và pipx bằng một công cụ duy nhất</strong>.
+          </p>
+
+          <div class="diagram">
+            <div class="box" style="font-size:13px">
+              <strong>Trước đây</strong><br/>
+              pip + venv<br/>+ pip-tools + pipx<br/>
+              <span style="color:#64748b;font-size:12px">4 công cụ riêng biệt</span>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box" style="font-size:13px;border-color:#3b82f6">
+              <strong style="color:#1d4ed8">uv</strong><br/>
+              Một công cụ duy nhất<br/>
+              <span style="color:#64748b;font-size:12px">nhanh hơn 10–100×</span>
+            </div>
+            <div class="arrow" style="display:none"></div>
+            <div class="box" style="display:none"></div>
+          </div>
+
+          <h3>Tại sao uv nổi bật?</h3>
+          <ul>
+            <li><strong>Tốc độ:</strong> Viết bằng Rust + global cache thông minh — nhanh hơn pip từ 10 đến 100 lần.</li>
+            <li><strong>All-in-one:</strong> Thay thế pip, virtualenv, pip-tools, pyenv, pipx.</li>
+            <li><strong>Không cần activate:</strong> <code>uv run</code> tự dùng đúng môi trường ảo mà không cần activate thủ công.</li>
+            <li><strong>Tự phục hồi:</strong> Nếu venv bị xóa, <code>uv run</code> tự recreate từ lock file.</li>
+            <li><strong>Lock file tự động:</strong> <code>uv.lock</code> đảm bảo reproducible builds — ai clone về cũng cài đúng version.</li>
+            <li><strong>Quản lý Python version:</strong> Tự tải và quản lý nhiều phiên bản Python.</li>
+            <li><strong>Global cache:</strong> 10 project dùng cùng Flask — chỉ lưu 1 lần trên disk.</li>
+          </ul>
+
+          <div class="success">
+            <strong>Xu hướng 2025:</strong> uv đang được cộng đồng Python đón nhận rất mạnh và nhanh chóng trở thành công cụ được khuyến nghị cho dự án Python hiện đại. Tài liệu chính thức: <strong>https://docs.astral.sh/uv</strong>
+          </div>
+        </section>
+
+        <!-- ======================== UV CÀI ĐẶT ======================== -->
+        <section id="uv-cai-dat">
+          <h2>5. Cài đặt uv</h2>
+
+          <h3>Mac / Linux (khuyến nghị)</h3>
+          <pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+
+          <h3>Windows (PowerShell)</h3>
+          <pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+
+          <h3>Homebrew (Mac)</h3>
+          <pre><code class="language-bash">brew install uv</code></pre>
+
+          <h3>Dùng pip (nếu đã có Python)</h3>
+          <pre><code class="language-bash">pip install uv</code></pre>
+
+          <h3>Kiểm tra cài đặt</h3>
+          <pre><code class="language-bash">uv --version
+# uv 0.5.x
+
+# Xem tất cả lệnh có sẵn
+uv --help</code></pre>
+        </section>
+
+        <!-- ======================== UV VS CŨ ======================== -->
+        <section id="uv-vs-cu">
+          <h2>6. uv so với workflow cũ (pip + venv)</h2>
+          <p>Cùng một tác vụ — khởi tạo project mới, cài Flask và requests, rồi chạy script:</p>
+
+          <h3>Cách cũ — pip + venv (5–6 bước)</h3>
+          <pre><code class="language-bash">mkdir my_project && cd my_project   # tạo thư mục
+python -m venv .venv                 # tạo virtual env
+source .venv/bin/activate            # activate (Mac/Linux)
+pip install flask requests           # cài package
+pip freeze > requirements.txt        # export
+python main.py                       # chạy script</code></pre>
+
+          <h3>Cách mới — uv (2–3 bước)</h3>
+          <pre><code class="language-bash">uv init my_project && cd my_project  # tạo project (tự tạo thư mục + cấu hình)
+uv add flask requests                 # cài package (tự tạo venv, cập nhật pyproject.toml + uv.lock)
+uv run main.py                        # chạy (không cần activate!)</code></pre>
+
+          <div class="success">
+            <strong>uv tự động tạo và quản lý virtual environment</strong> — bạn không bao giờ phải gõ <code>activate</code>. Khi chạy <code>uv add</code> lần đầu, uv phát hiện chưa có venv và tự tạo thư mục <code>.venv/</code> trong project.
+          </div>
+        </section>
+
+        <!-- ======================== UV WORKFLOW ======================== -->
+        <section id="uv-project">
+          <h2>7. Workflow uv đầy đủ</h2>
+
+          <h3>Bước 1 — Khởi tạo project</h3>
+          <pre><code class="language-bash"># Tạo project mới (uv tạo thư mục luôn)
+uv init my_project
+cd my_project
+
+# Hoặc nếu đã có thư mục sẵn, cd vào rồi chạy:
+uv init</code></pre>
+
+          <p>Cấu trúc thư mục được tạo tự động:</p>
+          <pre><code class="language-bash">my_project/
+├── .git/               ← git repo (tự khởi tạo!)
+├── .gitignore          ← đã có sẵn các entry Python phổ biến
+├── .python-version     ← phiên bản Python của project
+├── .venv/              ← virtual env (tạo khi chạy uv add lần đầu)
+├── README.md
+├── main.py             ← entry point
+├── pyproject.toml      ← cấu hình project + dependencies
+└── uv.lock             ← lock file (tự cập nhật)</code></pre>
+
+          <h3>Bước 2 — Thêm / xóa dependency</h3>
+          <pre><code class="language-bash"># Thêm package — tự động:
+# 1. Tạo .venv nếu chưa có
+# 2. Cài package vào .venv
+# 3. Cập nhật pyproject.toml
+# 4. Cập nhật uv.lock
+uv add flask requests
+uv add numpy pandas matplotlib
+
+# Thêm package chỉ dùng khi dev (pytest, ruff, black...)
+uv add --dev pytest ruff
+
+# Xóa dependency
+uv remove flask</code></pre>
+
+          <h3>Bước 3 — Chạy script</h3>
+          <pre><code class="language-bash"># Chạy script — KHÔNG cần activate venv trước
+uv run main.py
+
+# Chạy lệnh Python bất kỳ trong môi trường project
+uv run python -c "import flask; print(flask.__version__)"</code></pre>
+
+          <h3>Xem cây dependency</h3>
+          <pre><code class="language-bash">uv tree
+
+# new-app v0.1.0
+# ├── flask v3.1.0
+# │   ├── blinker v1.9.0
+# │   ├── click v8.1.8
+# │   ├── itsdangerous v2.2.0
+# │   ├── jinja2 v3.1.5
+# │   │   └── markupsafe v3.0.2
+# │   └── werkzeug v3.1.3
+# └── requests v2.32.3
+#     ├── certifi v2025.1.31
+#     ├── charset-normalizer v3.4.1
+#     ├── idna v3.10
+#     └── urllib3 v2.3.0</code></pre>
+
+          <h3>Quản lý phiên bản Python</h3>
+          <pre><code class="language-bash"># Xem danh sách Python version có thể dùng
+uv python list
+
+# Cài Python version cụ thể
+uv python install 3.11
+uv python install 3.12
+
+# Chỉ định Python version cho project (ghi vào .python-version)
+uv python pin 3.11
+
+# Gỡ Python version
+uv python uninstall 3.11</code></pre>
+
+          <h3>Đồng bộ môi trường (uv sync)</h3>
+          <pre><code class="language-bash"># Khi clone project về hoặc dependencies thay đổi:
+uv sync
+# → Đọc uv.lock, tạo .venv nếu chưa có, cài đúng package + version, xóa package thừa</code></pre>
+
+          <p>
+            <code>uv sync</code> tương đương <code>npm install</code> trong Node.js — ai clone project về chỉ cần một lệnh này là có ngay môi trường giống hệt.
+          </p>
+
+          <h3>Export ra requirements.txt (để tương thích pip)</h3>
+          <pre><code class="language-bash">uv export --format requirements-txt > requirements.txt</code></pre>
+        </section>
+
+        <!-- ======================== KILLER FEATURES ======================== -->
+        <section id="uv-killer">
+          <h2>8. Những tính năng nổi bật của uv</h2>
+
+          <h3>🔥 Tự recreate venv khi bị xóa</h3>
+          <p>
+            Đây là tính năng ấn tượng nhất. Giả sử thư mục <code>.venv</code> bị xóa tình cờ — với pip/venv truyền thống, bạn phải tạo lại, activate, rồi <code>pip install -r requirements.txt</code>. Với uv, chỉ cần chạy như bình thường:
+          </p>
+          <pre><code class="language-bash"># Xóa venv (giả lập mất môi trường)
+rm -rf .venv
+
+# uv tự phát hiện và recreate từ uv.lock — không cần làm gì thêm
+uv run main.py
+# → Creating virtual environment...
+# → Installing packages from lockfile...
+# → [chạy code bình thường]</code></pre>
+
+          <div class="success">
+            Toàn bộ thông tin cần thiết đã có trong <code>pyproject.toml</code> và <code>uv.lock</code> — uv đọc và tự rebuild. Cực kỳ hữu ích khi làm việc nhóm hoặc triển khai lên server.
+          </div>
+
+          <h3>📦 Global cache — tiết kiệm disk và thời gian</h3>
+          <p>
+            Với pip + venv, nếu bạn có 10 project đều dùng Flask 3.0, mỗi project lưu một bản sao riêng của Flask — <strong>10 bản sao trùng lặp</strong> trên disk.
+          </p>
+          <p>
+            uv dùng <strong>global cache</strong>: Flask 3.0 chỉ tải và lưu <strong>một lần duy nhất</strong> trên toàn hệ thống. Khi project mới cần Flask 3.0, uv link từ cache vào venv — gần như tức thì, không tốn thêm dung lượng.
+          </p>
+          <pre><code class="language-bash"># Project 1: cài flask lần đầu — tải về
+uv add flask   # → Downloaded flask...
+
+# Project 2 (khác): cài cùng flask version — gần như tức thì từ cache
+uv add flask   # → Using cached flask...  (mili-giây!)</code></pre>
+
+          <h3>🔒 uv.lock — Reproducible builds</h3>
+          <p>
+            Khác với <code>requirements.txt</code> chỉ ghi package bạn cài, <code>uv.lock</code> ghi <strong>toàn bộ dependency tree</strong> — bao gồm cả sub-dependencies và version chính xác của chúng.
+          </p>
+          <pre><code class="language-bash"># Cập nhật lock file (không cài package, chỉ resolve)
+uv lock
+
+# Kết quả: uv.lock ghi chính xác version của Flask và TẤT CẢ thư viện mà Flask phụ thuộc vào</code></pre>
+
+          <div class="note">
+            <strong>Commit uv.lock lên Git!</strong> Đây là điểm khác biệt với <code>.venv/</code> (không commit). Commit <code>uv.lock</code> giúp mọi người trong team và CI/CD luôn dùng đúng phiên bản.
+          </div>
+        </section>
+
+        <!-- ======================== MIGRATE ======================== -->
+        <section id="uv-migrate">
+          <h2>9. Migrate project cũ sang uv</h2>
+          <p>
+            Đã có project dùng pip + venv? Chuyển sang uv rất đơn giản — không cần viết lại code, chỉ thay đổi cách quản lý dependencies:
+          </p>
+
+          <pre><code class="language-bash"># Bước 1: cd vào thư mục project cũ
+cd old_project
+
+# Bước 2: khởi tạo uv (tạo pyproject.toml, uv.lock)
+uv init
+
+# Bước 3: import dependencies từ requirements.txt
+uv add -r requirements.txt
+
+# Bước 4: kiểm tra pyproject.toml — tất cả package đã được thêm vào
+cat pyproject.toml
+
+# Bước 5 (tùy chọn): xóa requirements.txt nếu muốn dùng hoàn toàn uv
+# rm requirements.txt</code></pre>
+
+          <div class="note">
+            Sau khi migrate, workflow của bạn chuyển hoàn toàn sang: <code>uv add</code> thay cho <code>pip install</code>, <code>uv run</code> thay cho <code>python</code>, <code>uv sync</code> thay cho <code>pip install -r requirements.txt</code>.
+          </div>
+        </section>
+
+        <!-- ======================== UV PIP COMPAT ======================== -->
+        <section id="uv-pip-compat">
+          <h2>10. <code>uv pip</code> — Giao diện tương thích pip</h2>
+          <p>
+            Nếu bạn quen dùng pip và muốn chuyển sang uv dần dần, uv cung cấp subcommand <code>uv pip</code> hoạt động giống pip nhưng nhanh hơn nhiều:
+          </p>
+
+          <pre><code class="language-bash">uv pip install requests         # tương đương pip install requests
+uv pip install -r requirements.txt
+uv pip uninstall requests
+uv pip list
+uv pip freeze
+uv pip show requests</code></pre>
+
+          <div class="warning">
+            <strong>Hạn chế của <code>uv pip</code>:</strong> Khi dùng <code>uv pip install</code>, uv <em>không</em> tự động cập nhật <code>pyproject.toml</code> hay <code>uv.lock</code>. Bạn mất đi tính năng lock file và reproducible builds — lợi thế lớn nhất của uv. Khuyến nghị: dùng <code>uv pip</code> chỉ để <strong>transition dần</strong>, còn về lâu dài hãy dùng <code>uv add</code>.
+          </div>
+
+          <h3>Compile requirements (thay thế pip-compile)</h3>
+          <pre><code class="language-bash"># Tạo requirements.txt đã được pin version từ requirements.in
+uv pip compile requirements.in --output-file requirements.txt
+
+# Sync môi trường chính xác theo requirements.txt
+uv pip sync requirements.txt</code></pre>
+        </section>
+
+        <!-- ======================== UV TOOL ======================== -->
+        <section id="uv-tool">
+          <h2>11. <code>uv tool</code> — Cài và chạy CLI tools</h2>
+          <p>
+            uv thay thế luôn <strong>pipx</strong> — công cụ dùng để cài Python CLI tools (linter, formatter…) globally, dùng được mọi nơi trên hệ thống mà không ảnh hưởng đến từng project.
+          </p>
+
+          <h3>Cài tool vĩnh viễn (thay thế pipx install)</h3>
+          <pre><code class="language-bash"># Cài tool globally — dùng được ở mọi thư mục
+uv tool install ruff
+uv tool install black
+
+# Xem danh sách tool đã cài
+uv tool list
+
+# Cập nhật tất cả tool
+uv tool upgrade --all
+
+# Gỡ cài đặt
+uv tool uninstall ruff</code></pre>
+
+          <h3>Chạy tool tạm thời — không cài vĩnh viễn (thay thế pipx run)</h3>
+          <pre><code class="language-bash"># uvx = uv tool run (shortcut)
+# Cài vào môi trường tạm, chạy xong tự xóa
+uvx ruff check .
+uvx black my_script.py
+
+# Tương đương đầy đủ
+uv tool run ruff check .</code></pre>
+
+          <div class="note">
+            <strong>uvx</strong> rất hữu ích khi muốn dùng thử tool hoặc chỉ dùng một lần — uv tạo môi trường tạm thời, chạy xong là dọn sạch, không để lại gì. Và nhờ global cache, lần sau gọi lại <code>uvx ruff</code> gần như tức thì vì ruff đã được cache sẵn.
+          </div>
+        </section>
+
+        <!-- ======================== BẢNG LỆNH UV ======================== -->
+        <section id="uv-lenh">
+          <h2>12. Bảng lệnh uv đầy đủ</h2>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Lệnh</th><th>Chức năng</th><th>Tương đương cũ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>uv init &lt;tên&gt;</code></td><td>Khởi tạo project mới</td><td>mkdir + git init + tạo thủ công</td></tr>
+              <tr><td><code>uv add &lt;pkg&gt;</code></td><td>Thêm dependency</td><td>pip install + cập nhật requirements</td></tr>
+              <tr><td><code>uv add --dev &lt;pkg&gt;</code></td><td>Thêm dev dependency</td><td>pip install (không phân biệt)</td></tr>
+              <tr><td><code>uv add -r requirements.txt</code></td><td>Import từ requirements.txt</td><td>pip install -r requirements.txt</td></tr>
+              <tr><td><code>uv remove &lt;pkg&gt;</code></td><td>Xóa dependency</td><td>pip uninstall</td></tr>
+              <tr><td><code>uv run &lt;script.py&gt;</code></td><td>Chạy script (tự dùng venv)</td><td>activate + python script.py</td></tr>
+              <tr><td><code>uv sync</code></td><td>Đồng bộ môi trường theo lock file</td><td>pip install -r requirements.txt</td></tr>
+              <tr><td><code>uv lock</code></td><td>Cập nhật uv.lock</td><td>pip-compile</td></tr>
+              <tr><td><code>uv export</code></td><td>Xuất ra requirements.txt</td><td>pip freeze</td></tr>
+              <tr><td><code>uv tree</code></td><td>Xem cây dependency</td><td>pipdeptree</td></tr>
+              <tr><td><code>uv python install 3.x</code></td><td>Cài Python version</td><td>pyenv install 3.x</td></tr>
+              <tr><td><code>uv python list</code></td><td>Xem Python version có thể dùng</td><td>pyenv versions</td></tr>
+              <tr><td><code>uv python pin 3.x</code></td><td>Gán Python version cho project</td><td>pyenv local 3.x</td></tr>
+              <tr><td><code>uv venv</code></td><td>Tạo virtual environment thủ công</td><td>python -m venv</td></tr>
+              <tr><td><code>uv tool install &lt;tool&gt;</code></td><td>Cài CLI tool globally</td><td>pipx install</td></tr>
+              <tr><td><code>uvx &lt;tool&gt;</code></td><td>Chạy tool tạm thời</td><td>pipx run</td></tr>
+              <tr><td><code>uv tool list</code></td><td>Xem tool đã cài</td><td>pipx list</td></tr>
+              <tr><td><code>uv cache clean</code></td><td>Xóa global cache</td><td>—</td></tr>
+              <tr><td><code>uv self update</code></td><td>Cập nhật uv lên version mới</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== SO SÁNH ======================== -->
+        <section id="so-sanh">
+          <h2>13. So sánh pip, conda và uv</h2>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>pip + venv</th><th>conda</th><th>uv</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tốc độ cài package</td>
+                <td>Trung bình</td>
+                <td>Chậm</td>
+                <td><span class="status-badge status-yes">Rất nhanh (10–100×)</span></td>
+              </tr>
+              <tr>
+                <td>Cài đặt</td>
+                <td>Có sẵn với Python</td>
+                <td>Cần Miniconda</td>
+                <td>1 lệnh cài</td>
+              </tr>
+              <tr>
+                <td>Quản lý Python version</td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+              </tr>
+              <tr>
+                <td>Virtual env tự động</td>
+                <td><span class="status-badge status-no">Phải tạo thủ công</span></td>
+                <td>Tích hợp</td>
+                <td><span class="status-badge status-yes">Tự tạo khi cần</span></td>
+              </tr>
+              <tr>
+                <td>Không cần activate</td>
+                <td><span class="status-badge status-no">Phải activate</span></td>
+                <td><span class="status-badge status-no">Phải activate</span></td>
+                <td><span class="status-badge status-yes">uv run tự xử lý</span></td>
+              </tr>
+              <tr>
+                <td>Lock file</td>
+                <td>Cần pip-tools riêng</td>
+                <td>environment.yml</td>
+                <td><span class="status-badge status-yes">uv.lock tự động</span></td>
+              </tr>
+              <tr>
+                <td>Global cache</td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-limited">Hạn chế</span></td>
+                <td><span class="status-badge status-yes">Có — tiết kiệm disk</span></td>
+              </tr>
+              <tr>
+                <td>Thay thế pipx</td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Có (uv tool / uvx)</span></td>
+              </tr>
+              <tr>
+                <td>Nguồn package</td>
+                <td>PyPI</td>
+                <td>Anaconda repo + PyPI</td>
+                <td>PyPI</td>
+              </tr>
+              <tr>
+                <td>Phù hợp với</td>
+                <td>Học tập, dự án nhỏ</td>
+                <td>Data Science, ML nặng</td>
+                <td><span class="status-badge status-yes">Mọi loại dự án</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Khuyến nghị:</strong> Nếu bắt đầu dự án mới, hãy dùng <strong>uv</strong> — nó đơn giản hơn, nhanh hơn và ít bước hơn nhiều. Với dự án Data Science có nhiều package native (CUDA, MKL…), Conda vẫn là lựa chọn tốt. Với người mới học, <strong>pip + venv</strong> giúp hiểu bản chất trước, sau đó chuyển sang uv.
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>14. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Thực hành pip cơ bản</h3>
+            <p>Trong môi trường ảo đã tạo ở Bài 14:</p>
+            <ol>
+              <li>Cài: <code>requests</code>, <code>beautifulsoup4</code>, <code>lxml</code>.</li>
+              <li>Dùng <code>pip show requests</code> — xem version và dependencies của requests.</li>
+              <li>Dùng <code>pip list</code> — đếm xem có bao nhiêu package (bao gồm cả sub-dependencies).</li>
+              <li>Export ra <code>requirements.txt</code>, mở file xem nội dung.</li>
+              <li>Gỡ <code>lxml</code> và kiểm tra lại.</li>
+            </ol>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Khởi tạo project với uv</h3>
+            <p>Cài uv (nếu chưa có), rồi tạo project mới:</p>
+            <ol>
+              <li><code>uv init web_scraper</code> — quan sát cấu trúc thư mục được tạo.</li>
+              <li><code>uv add requests beautifulsoup4</code> — xem thư mục <code>.venv/</code> xuất hiện.</li>
+              <li>Mở <code>pyproject.toml</code> — thấy requests và beautifulsoup4 đã được thêm vào <code>[project.dependencies]</code>.</li>
+              <li>Mở <code>uv.lock</code> — thấy toàn bộ dependency tree với version chính xác.</li>
+              <li>Chạy <code>uv tree</code> — xem cây dependency.</li>
+            </ol>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Web scraper với uv</h3>
+            <p>Trong project <code>web_scraper</code>, tạo file <code>scraper.py</code>:</p>
+            <pre><code class="language-python">import requests
+from bs4 import BeautifulSoup
+
+url = "https://example.com"
+response = requests.get(url)
+
+soup = BeautifulSoup(response.text, "html.parser")
+h1_tags = soup.find_all("h1")
+
+for tag in h1_tags:
+    print(tag.text)</code></pre>
+            <p>Chạy bằng <code>uv run scraper.py</code> — không cần activate venv.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Test tính năng tự phục hồi</h3>
+            <ol>
+              <li>Trong project <code>web_scraper</code>, xóa thư mục <code>.venv/</code>: <code>rm -rf .venv</code></li>
+              <li>Chạy ngay <code>uv run scraper.py</code> — quan sát uv tự recreate venv và chạy code.</li>
+              <li>Chạy <code>uv sync</code> — xem uv tái tạo môi trường từ lock file.</li>
+            </ol>
+            <p>So sánh với nếu dùng pip + venv, bạn phải làm bao nhiêu bước để làm điều tương tự?</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Migrate project cũ sang uv</h3>
+            <p>Lấy một project cũ đang dùng pip (hoặc project vừa làm ở Bài tập 1):</p>
+            <ol>
+              <li><code>uv init</code> trong thư mục project.</li>
+              <li><code>uv add -r requirements.txt</code> để import toàn bộ dependencies.</li>
+              <li>Kiểm tra <code>pyproject.toml</code> — tất cả package đã được thêm vào chưa?</li>
+              <li>Thử <code>uv run python -c "import requests; print('OK')"</code>.</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>pip</strong> — công cụ cơ bản, dùng tốt khi kết hợp với venv. Lệnh quan trọng: <code>install</code>, <code>uninstall</code>, <code>list</code>, <code>freeze</code>, <code>show</code>.</li>
+            <li><strong>conda install</strong> — ưu tiên cho Data Science, tốt với thư viện native (numpy, scipy).</li>
+            <li><strong>uv</strong> — thay thế pip + venv + pip-tools + pipx; nhanh hơn 10–100 lần, không cần activate thủ công.</li>
+            <li>uv workflow: <code>uv init</code> → <code>uv add pkg</code> → <code>uv run script.py</code> → <code>uv sync</code> (khi clone về).</li>
+            <li><code>uv run</code> tự quản lý venv — không bao giờ phải gõ <code>activate</code>.</li>
+            <li>Nếu venv bị xóa, <code>uv run</code> tự recreate từ <code>uv.lock</code> — cực kỳ tiện khi làm nhóm hoặc CI/CD.</li>
+            <li>Global cache của uv: package giống nhau chỉ lưu một lần trên disk — tiết kiệm không gian và thời gian.</li>
+            <li><strong>Commit <code>uv.lock</code> lên Git, không commit <code>.venv/</code></strong>.</li>
+            <li><code>uvx &lt;tool&gt;</code> — chạy CLI tool tạm thời không cần cài vĩnh viễn.</li>
+          </ul>
+          <div class="note">
+            <strong>Tài liệu thêm:</strong> CLI reference đầy đủ của uv tại <strong>https://docs.astral.sh/uv/reference/cli/</strong> — bao gồm các lệnh nâng cao như <code>uv build</code>, <code>uv publish</code>, <code>uv workspace</code> cho dự án phức tạp.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 15. Python Package Manager: pip, conda và uv</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="doc-script.js"></script>
+</body>
+</html>
