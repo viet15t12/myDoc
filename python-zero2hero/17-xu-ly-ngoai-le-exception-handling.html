@@ -3,78 +3,769 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>17. Xử lý Ngoại lệ (Exception Handling) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 17</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#tai-sao-can">1. Tại sao cần xử lý ngoại lệ?</a>
+      <a href="#cu-truc-co-ban">2. Cấu trúc đầy đủ</a>
+      <a href="#try-except">3. try / except</a>
+      <a href="#nhieu-except">4. Nhiều except</a>
+      <a href="#except-as">5. Bắt thông tin lỗi - as e</a>
+      <a href="#else">6. else – không có lỗi</a>
+      <a href="#finally">7. finally – luôn chạy</a>
+      <a href="#raise">8. raise – tự phát sinh lỗi</a>
+      <a href="#custom-exception">9. Custom Exception</a>
+      <a href="#flow-tong-hop">10. Flow tổng hợp</a>
+      <a href="#best-practice">11. Best practice</a>
+      <a href="#vi-du-thuc-chien">12. Ví dụ thực tế</a>
+      <a href="#bai-tap">13. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>17. Xử lý Ngoại lệ (Exception Handling) trong Python</h1>
+        <p class="meta">
+          Exception handling — cơ chế xử lý lỗi runtime trong Python: <code>try</code>, <code>except</code>, <code>else</code>, <code>finally</code>, <code>raise</code>, và custom exception. Giúp chương trình không bị crash khi gặp lỗi, cung cấp thông báo thân thiện cho người dùng.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở bài trước, chúng ta đã học cách <strong>nhận dạng 10 lỗi phổ biến</strong> trong Python. Bài này đi tiếp: làm thế nào để <strong>xử lý</strong> những lỗi đó một cách có kiểm soát — thay vì để chương trình crash?
+          </p>
+          <p>
+            Trong Python, có hai loại lỗi cần phân biệt:
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Loại lỗi</th><th>Khi nào xảy ra</th><th>Ví dụ</th><th>Có xử lý được không?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Syntax Error</strong></td>
+                <td>Trước khi chạy (lúc parse)</td>
+                <td>Thiếu <code>:</code>, thiếu <code>()</code></td>
+                <td><span class="status-badge status-no">Không</span> — phải sửa code</td>
+              </tr>
+              <tr>
+                <td><strong>Exception</strong> (Runtime Error)</td>
+                <td>Trong khi chạy</td>
+                <td><code>ZeroDivisionError</code>, <code>KeyError</code>…</td>
+                <td><span class="status-badge status-yes">Có</span> — dùng <code>try/except</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <strong>Exception handling</strong> (xử lý ngoại lệ) là cơ chế để <strong>bắt và xử lý các exception xảy ra khi chạy</strong>, giúp chương trình tiếp tục hoạt động thay vì bị crash.
+          </p>
+        </section>
+
+        <!-- ======================== TẠI SAO CẦN ======================== -->
+        <section id="tai-sao-can">
+          <h2>1. Tại sao cần xử lý ngoại lệ?</h2>
+
+          <h3>Không xử lý → chương trình crash</h3>
+          <pre><code class="language-python"># Không có exception handling
+so = int(input("Nhập một số: "))   # Người dùng nhập "abc"
+ket_qua = 100 / so
+print(f"Kết quả: {ket_qua}")
+
+# Khi nhập "abc":
+# Traceback (most recent call last):
+#   ...
+# ValueError: invalid literal for int() with base 10: 'abc'
+# → Chương trình dừng đột ngột!</code></pre>
+
+          <h3>Có xử lý → chương trình phản hồi thân thiện</h3>
+          <pre><code class="language-python"># Có exception handling
+try:
+    so = int(input("Nhập một số: "))
+    ket_qua = 100 / so
+    print(f"Kết quả: {ket_qua}")
+except ValueError:
+    print("Bạn cần nhập một số nguyên!")
+except ZeroDivisionError:
+    print("Không thể chia cho 0!")
+# → Chương trình vẫn chạy bình thường, thông báo thân thiện</code></pre>
+
+          <div class="note">
+            <strong>3 lý do chính cần exception handling:</strong>
+            <ul>
+              <li><strong>Tránh crash</strong> — chương trình không bị dừng đột ngột khi gặp lỗi runtime.</li>
+              <li><strong>UX tốt hơn</strong> — người dùng nhận được thông báo hiểu được, không phải Traceback kỹ thuật.</li>
+              <li><strong>Debug dễ hơn</strong> — bạn kiểm soát được loại lỗi nào xảy ra và ghi log để trace.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== CẤU TRÚC ======================== -->
+        <section id="cu-truc-co-ban">
+          <h2>2. Cấu trúc đầy đủ</h2>
+          <p>Python cung cấp 4 keyword cho exception handling:</p>
+
+          <pre><code class="language-python">try:
+    # Code có thể gây ra lỗi
+    pass
+
+except LoaiLoi:
+    # Chạy khi try gặp lỗi khớp với LoaiLoi
+    pass
+
+else:
+    # Chạy khi try KHÔNG có lỗi
+    pass
+
+finally:
+    # LUÔN chạy, dù có lỗi hay không
+    pass</code></pre>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Keyword</th><th>Bắt buộc?</th><th>Khi nào chạy</th><th>Dùng để</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>try</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td>Luôn chạy đầu tiên</td>
+                <td>Đặt code có thể gây lỗi vào đây</td>
+              </tr>
+              <tr>
+                <td><code>except</code></td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td>Chỉ khi <code>try</code> gặp lỗi</td>
+                <td>Xử lý lỗi, thông báo cho người dùng</td>
+              </tr>
+              <tr>
+                <td><code>else</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td>Chỉ khi <code>try</code> KHÔNG có lỗi</td>
+                <td>Code chạy khi mọi thứ ổn</td>
+              </tr>
+              <tr>
+                <td><code>finally</code></td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td>Luôn luôn — dù có lỗi hay không</td>
+                <td>Dọn dẹp: đóng file, đóng kết nối DB…</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Lưu ý:</strong> <code>try</code> bắt buộc phải đi kèm ít nhất một <code>except</code> hoặc một <code>finally</code>. Chỉ có <code>try</code> một mình sẽ báo <code>SyntaxError</code>.
+          </div>
+        </section>
+
+        <!-- ======================== TRY EXCEPT ======================== -->
+        <section id="try-except">
+          <h2>3. try / except — Cơ bản</h2>
+
+          <h3>Cách 1: except không chỉ định lỗi cụ thể</h3>
+          <pre><code class="language-python">my_dict = {"age": 10, "name": "Minh"}
+
+try:
+    my_value = my_dict["address"]   # Key không tồn tại → KeyError
+except:
+    print("Đi vào đây khi xảy ra bất kỳ lỗi gì")
+
+print("Bye bye")   # Vẫn chạy bình thường</code></pre>
+
+          <p>Khi không chỉ định loại lỗi, <code>except</code> bắt <strong>mọi loại lỗi</strong> xảy ra trong <code>try</code>.</p>
+
+          <h3>Cách 2: except chỉ định lỗi cụ thể (khuyến nghị)</h3>
+          <pre><code class="language-python">my_dict = {"age": 10, "name": "Minh"}
+
+try:
+    my_value = my_dict["address"]   # → KeyError
+except ZeroDivisionError:
+    print("Lỗi chia cho 0")
+    # Không khớp với KeyError → không vào đây!
+
+# → Chương trình vẫn crash vì KeyError không được xử lý</code></pre>
+
+          <div class="warning">
+            <strong>Quan trọng:</strong> Nếu <code>except</code> chỉ định sai loại lỗi, lỗi vẫn sẽ propagate và crash chương trình. Phải chỉ định đúng loại lỗi cần xử lý.
+          </div>
+
+          <pre><code class="language-python"># Nên - chỉ định đúng loại lỗi
+try:
+    my_value = my_dict["address"]
+except KeyError:
+    print("Lỗi KeyError: key không tồn tại trong dictionary")</code></pre>
+
+          <div class="success">
+            <strong>Best practice:</strong> Luôn chỉ định loại lỗi cụ thể trong <code>except</code>. Điều này giúp code rõ ràng hơn, dễ debug hơn, và không vô tình "nuốt" các lỗi ngoài ý muốn.
+          </div>
+        </section>
+
+        <!-- ======================== NHIỀU EXCEPT ======================== -->
+        <section id="nhieu-except">
+          <h2>4. Nhiều except — Xử lý từng loại lỗi khác nhau</h2>
+          <p>
+            Một khối <code>try</code> có thể có <strong>nhiều <code>except</code></strong> để xử lý các loại lỗi khác nhau. Python sẽ khớp từ trên xuống và chỉ chạy <strong>một</strong> except đầu tiên khớp.
+          </p>
+
+          <pre><code class="language-python">try:
+    so = int(input("Nhập vào một số: "))   # Nhập "abc" → ValueError
+    ket_qua = 100 / so                      # Nhập 0    → ZeroDivisionError
+    print(f"Kết quả: {ket_qua}")
+
+except ZeroDivisionError:
+    print("Không thể chia cho 0!")
+
+except ValueError:
+    print("Nhập sai rồi. Hãy nhập một số thôi!")
+
+# Test 1: Nhập 0
+# → Không thể chia cho 0!
+
+# Test 2: Nhập "abc"
+# → Nhập sai rồi. Hãy nhập một số thôi!
+
+# Test 3: Nhập 10
+# → Kết quả: 10.0</code></pre>
+
+          <p>Có thể bắt nhiều loại lỗi trong một <code>except</code> bằng cách dùng tuple:</p>
+          <pre><code class="language-python">try:
+    ket_qua = int(input("Nhập số: ")) / int(input("Nhập số chia: "))
+except (ValueError, ZeroDivisionError) as e:
+    print(f"Lỗi nhập liệu: {e}")</code></pre>
+        </section>
+
+        <!-- ======================== EXCEPT AS ======================== -->
+        <section id="except-as">
+          <h2>5. Bắt thông tin lỗi – <code>except … as e</code></h2>
+          <p>
+            Thêm <code>as e</code> (hoặc <code>as err</code>) sau tên lỗi để <strong>lưu object lỗi vào biến</strong> và lấy thông tin chi tiết:
+          </p>
+
+          <pre><code class="language-python">try:
+    ket_qua = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Loại lỗi: {type(e).__name__}")   # ZeroDivisionError
+    print(f"Mô tả lỗi: {e}")                 # division by zero
+    print(f"Chi tiết: {e.args}")             # ('division by zero',)</code></pre>
+
+          <p>Ứng dụng thực tế — ghi log lỗi:</p>
+          <pre><code class="language-python">import logging
+
+logging.basicConfig(filename="app.log", level=logging.ERROR)
+
+def xu_ly_du_lieu(data):
+    try:
+        ket_qua = int(data) * 2
+        return ket_qua
+    except ValueError as e:
+        logging.error(f"Lỗi chuyển đổi dữ liệu: {e} | Input: {data!r}")
+        return None
+
+print(xu_ly_du_lieu("42"))     # 84
+print(xu_ly_du_lieu("abc"))   # None (và ghi vào app.log)</code></pre>
+        </section>
+
+        <!-- ======================== ELSE ======================== -->
+        <section id="else">
+          <h2>6. else — Chạy khi không có lỗi</h2>
+          <p>
+            Phần <code>else</code> chỉ chạy khi <strong>khối <code>try</code> hoàn thành mà không có lỗi nào xảy ra</strong>. Đây là nơi đặt code phụ thuộc vào thành công của <code>try</code>.
+          </p>
+
+          <pre><code class="language-python">try:
+    so = int(input("Nhập vào một số: "))
+    ket_qua = 100 / so
+
+except ZeroDivisionError:
+    print("Không thể chia cho 0!")
+
+except ValueError:
+    print("Nhập sai rồi. Hãy nhập một số thôi!")
+
+else:
+    # Chỉ chạy khi try thành công (không có lỗi)
+    print(f"Nhập số ok! Phép chia ok! Kết quả: {ket_qua}")
+
+# Test nhập 10:
+# → Nhập số ok! Phép chia ok! Kết quả: 10.0
+
+# Test nhập 0:
+# → Không thể chia cho 0!  (else không chạy)</code></pre>
+
+          <div class="note">
+            <strong>Tại sao có else?</strong> Có thể bạn thắc mắc: tại sao không đặt code đó vào cuối <code>try</code>? Vì nếu code trong <code>else</code> gây ra lỗi, lỗi đó sẽ <em>không</em> bị bắt bởi các <code>except</code> ở trên — giúp phân biệt rõ ràng lỗi nào đến từ đâu.
+          </div>
+        </section>
+
+        <!-- ======================== FINALLY ======================== -->
+        <section id="finally">
+          <h2>7. finally — Luôn luôn chạy</h2>
+          <p>
+            Phần <code>finally</code> <strong>luôn được thực thi</strong> — dù <code>try</code> thành công hay thất bại. Dùng để dọn dẹp tài nguyên: đóng file, đóng kết nối database, giải phóng bộ nhớ…
+          </p>
+
+          <pre><code class="language-python">try:
+    so = int(input("Nhập vào một số: "))
+    ket_qua = 100 / so
+
+except ZeroDivisionError:
+    print("Không thể chia cho 0!")
+
+except ValueError:
+    print("Nhập sai rồi. Hãy nhập một số thôi!")
+
+else:
+    print(f"Nhập số ok! Phép chia ok! Kết quả: {ket_qua}")
+
+finally:
+    print("Đi vào đây bất kể có lỗi hay không")
+
+# Test nhập 10:
+# → Nhập số ok! Phép chia ok! Kết quả: 10.0
+# → Đi vào đây bất kể có lỗi hay không
+
+# Test nhập 0:
+# → Không thể chia cho 0!
+# → Đi vào đây bất kể có lỗi hay không
+
+# Test nhập "abc":
+# → Nhập sai rồi. Hãy nhập một số thôi!
+# → Đi vào đây bất kể có lỗi hay không</code></pre>
+
+          <p>Ví dụ thực tế nhất của <code>finally</code> — đóng kết nối database:</p>
+          <pre><code class="language-python">import sqlite3
+
+connection = None
+try:
+    connection = sqlite3.connect("data.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+
+except sqlite3.Error as e:
+    print(f"Lỗi database: {e}")
+
+else:
+    for row in rows:
+        print(row)
+
+finally:
+    # Luôn đóng kết nối dù có lỗi hay không
+    if connection:
+        connection.close()
+        print("Đã đóng kết nối database.")</code></pre>
+
+          <div class="success">
+            <strong>finally vs context manager:</strong> Với file, dùng <code>with open(...) as f</code> thay vì <code>try/finally</code> vì ngắn gọn hơn. Với database hoặc kết nối mạng, <code>finally</code> vẫn thường được dùng.
+          </div>
+        </section>
+
+        <!-- ======================== RAISE ======================== -->
+        <section id="raise">
+          <h2>8. raise — Tự phát sinh lỗi</h2>
+          <p>
+            Đôi khi bạn muốn <strong>chủ động báo lỗi</strong> khi dữ liệu không hợp lệ, thay vì để lỗi âm thầm. Dùng từ khóa <code>raise</code>:
+          </p>
+
+          <pre><code class="language-python"># raise một lỗi có sẵn
+raise ValueError("Giá trị không hợp lệ!")</code></pre>
+
+          <p>Ví dụ thực tế — kiểm tra đầu vào hàm:</p>
+          <pre><code class="language-python">def tinh_can_bac_hai(n):
+    if n < 0:
+        raise ValueError(f"Không thể tính căn bậc hai của số âm: {n}")
+    return n ** 0.5
+
+# OK
+print(tinh_can_bac_hai(9))    # 3.0
+
+# Tự raise lỗi
+try:
+    print(tinh_can_bac_hai(-4))
+except ValueError as e:
+    print(f"Lỗi: {e}")
+# → Lỗi: Không thể tính căn bậc hai của số âm: -4</code></pre>
+
+          <p>Dùng <code>raise</code> để re-raise lỗi sau khi log:</p>
+          <pre><code class="language-python">def doc_file(filename):
+    try:
+        with open(filename, "r") as f:
+            return f.read()
+    except FileNotFoundError as e:
+        print(f"[LOG] File không tìm thấy: {filename}")
+        raise   # Re-raise lỗi gốc để caller xử lý tiếp</code></pre>
+        </section>
+
+        <!-- ======================== CUSTOM EXCEPTION ======================== -->
+        <section id="custom-exception">
+          <h2>9. Custom Exception — Tự định nghĩa lỗi</h2>
+          <p>
+            Khi xây dựng ứng dụng lớn, bạn có thể tạo <strong>exception riêng</strong> để mô tả lỗi nghiệp vụ (business logic) một cách rõ ràng hơn. Custom exception chỉ cần kế thừa từ <code>Exception</code>.
+          </p>
+
+          <pre><code class="language-python"># Định nghĩa custom exception
+class TuoiKhongHopLeError(Exception):
+    pass
+
+class DiemKhongHopLeError(Exception):
+    def __init__(self, diem, message="Điểm phải từ 0 đến 10"):
+        self.diem = diem
+        self.message = message
+        super().__init__(f"{message}. Điểm nhận được: {diem}")
+
+
+# Dùng custom exception
+def kiem_tra_sinh_vien(ten, tuoi, diem):
+    if tuoi < 16 or tuoi > 60:
+        raise TuoiKhongHopLeError(f"Tuổi {tuoi} không hợp lệ (16–60)")
+    if diem < 0 or diem > 10:
+        raise DiemKhongHopLeError(diem)
+    return f"{ten} | Tuổi: {tuoi} | Điểm: {diem}"
+
+
+# Gọi hàm với try/except
+try:
+    print(kiem_tra_sinh_vien("An", 20, 9.5))    # OK
+    print(kiem_tra_sinh_vien("Bình", 15, 8.0))  # → TuoiKhongHopLeError
+except TuoiKhongHopLeError as e:
+    print(f"Lỗi tuổi: {e}")
+except DiemKhongHopLeError as e:
+    print(f"Lỗi điểm: {e}")</code></pre>
+        </section>
+
+        <!-- ======================== FLOW TỔNG HỢP ======================== -->
+        <section id="flow-tong-hop">
+          <h2>10. Flow tổng hợp</h2>
+          <p>Sơ đồ luồng thực thi của toàn bộ cấu trúc <code>try / except / else / finally</code>:</p>
+
+          <div class="diagram">
+            <div class="box" style="grid-column: 1 / -1; background: #eff6ff; border-color: #bfdbfe;">
+              <strong>Bắt đầu khối try</strong><br>
+              Thực thi code trong <code>try</code>
+            </div>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tình huống</th><th>except</th><th>else</th><th>finally</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>try thành công (không lỗi)</td>
+                <td>Không chạy</td>
+                <td><span class="status-badge status-yes">Chạy</span></td>
+                <td><span class="status-badge status-yes">Chạy</span></td>
+              </tr>
+              <tr>
+                <td>try gặp lỗi khớp except</td>
+                <td><span class="status-badge status-yes">Chạy</span></td>
+                <td>Không chạy</td>
+                <td><span class="status-badge status-yes">Chạy</span></td>
+              </tr>
+              <tr>
+                <td>try gặp lỗi KHÔNG khớp except</td>
+                <td>Không chạy</td>
+                <td>Không chạy</td>
+                <td><span class="status-badge status-yes">Chạy</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-python"># Ví dụ minh họa đầy đủ flow
+def chia_so(a, b):
+    try:
+        print("→ Đang thực thi try...")
+        ket_qua = a / b
+    except ZeroDivisionError:
+        print("→ Vào except: không thể chia cho 0")
+    except TypeError:
+        print("→ Vào except: a và b phải là số")
+    else:
+        print(f"→ Vào else: phép chia thành công, kết quả = {ket_qua}")
+    finally:
+        print("→ Vào finally: luôn chạy\n")
+
+chia_so(10, 2)    # try OK → else → finally
+chia_so(10, 0)    # try lỗi → except ZeroDivision → finally
+chia_so(10, "x")  # try lỗi → except TypeError → finally</code></pre>
+        </section>
+
+        <!-- ======================== BEST PRACTICE ======================== -->
+        <section id="best-practice">
+          <h2>11. Best Practice</h2>
+
+          <h3>Luôn chỉ định loại lỗi cụ thể</h3>
+          <pre><code class="language-python"># Không nên - "nuốt" mọi lỗi, khó debug
+try:
+    do_something()
+except:
+    pass
+
+# Nên - chỉ định rõ ràng
+try:
+    do_something()
+except ValueError as e:
+    print(f"Lỗi giá trị: {e}")
+except (KeyError, IndexError) as e:
+    print(f"Lỗi truy cập: {e}")</code></pre>
+
+          <h3>Không đặt quá nhiều code vào try</h3>
+          <pre><code class="language-python"># Không nên - khó biết dòng nào gây lỗi
+try:
+    a = int(input("Nhập a: "))
+    b = int(input("Nhập b: "))
+    c = a + b
+    d = c * 2
+    print(f"Kết quả: {d}")
+    save_to_file(d)
+    send_email(d)
+except Exception:
+    print("Có lỗi xảy ra")
+
+# Nên - try nhỏ, chỉ bao quanh code có thể lỗi
+try:
+    a = int(input("Nhập a: "))
+    b = int(input("Nhập b: "))
+except ValueError:
+    print("Vui lòng nhập số nguyên!")
+else:
+    c = (a + b) * 2
+    print(f"Kết quả: {c}")</code></pre>
+
+          <h3>Dùng finally để dọn dẹp tài nguyên</h3>
+          <pre><code class="language-python"># Luôn đóng file/kết nối trong finally
+connection = None
+try:
+    connection = mo_ket_noi_db()
+    du_lieu = lay_du_lieu(connection)
+except DatabaseError as e:
+    print(f"Lỗi DB: {e}")
+finally:
+    if connection:
+        connection.close()   # Luôn đóng</code></pre>
+
+          <h3>Raise sớm, fail fast</h3>
+          <pre><code class="language-python"># Kiểm tra đầu vào ngay từ đầu hàm
+def tinh_toan(a, b):
+    if not isinstance(a, (int, float)):
+        raise TypeError(f"a phải là số, nhận được: {type(a).__name__}")
+    if b == 0:
+        raise ValueError("b không được bằng 0")
+    return a / b</code></pre>
+        </section>
+
+        <!-- ======================== VÍ DỤ THỰC TẾ ======================== -->
+        <section id="vi-du-thuc-chien">
+          <h2>12. Ví dụ thực tế</h2>
+
+          <h3>12.1. Nhập số từ người dùng — lặp cho đến khi hợp lệ</h3>
+          <pre><code class="language-python">def nhap_so_nguyen(loi_nhac="Nhập một số nguyên: "):
+    while True:
+        try:
+            return int(input(loi_nhac))
+        except ValueError:
+            print("Nhập sai! Hãy nhập một số nguyên.")
+
+so = nhap_so_nguyen("Nhập số chia: ")
+print(f"Bạn đã nhập: {so}")</code></pre>
+
+          <h3>12.2. Đọc file an toàn</h3>
+          <pre><code class="language-python">def doc_file_an_toan(duong_dan):
+    try:
+        with open(duong_dan, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"File không tồn tại: {duong_dan}")
+        return None
+    except PermissionError:
+        print(f"Không có quyền đọc file: {duong_dan}")
+        return None
+    except UnicodeDecodeError:
+        print(f"Lỗi encoding — thử lại với encoding khác")
+        return None
+
+noi_dung = doc_file_an_toan("data.txt")
+if noi_dung:
+    print(noi_dung)</code></pre>
+
+          <h3>12.3. Gọi API với retry</h3>
+          <pre><code class="language-python">import time
+
+def goi_api(url, so_lan_thu_lai=3):
+    for lan_thu in range(1, so_lan_thu_lai + 1):
+        try:
+            # Giả lập gọi API
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            return response.json()
+
+        except requests.exceptions.Timeout:
+            print(f"Lần {lan_thu}: Timeout. Thử lại...")
+            time.sleep(2)
+
+        except requests.exceptions.ConnectionError:
+            print(f"Lần {lan_thu}: Mất kết nối. Thử lại...")
+            time.sleep(2)
+
+        except requests.exceptions.HTTPError as e:
+            print(f"Lỗi HTTP {e.response.status_code}: {e}")
+            break   # Không retry khi lỗi HTTP
+
+        finally:
+            print(f"  → Kết thúc lần thử {lan_thu}")
+
+    return None</code></pre>
+
+          <h3>12.4. Context manager tự tạo với exception</h3>
+          <pre><code class="language-python">class QuanLyFile:
+    def __init__(self, ten_file, mode):
+        self.ten_file = ten_file
+        self.mode = mode
+        self.file = None
+
+    def __enter__(self):
+        try:
+            self.file = open(self.ten_file, self.mode, encoding="utf-8")
+            return self.file
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Không tìm thấy: {self.ten_file}")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+        return False   # Không suppress exception
+
+# Sử dụng
+with QuanLyFile("data.txt", "r") as f:
+    print(f.read())</code></pre>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>13. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Đoán flow</h3>
+            <p>Không chạy code, hãy dự đoán output của từng lần gọi:</p>
+            <pre><code class="language-python">def kiem_tra(x):
+    try:
+        ket_qua = 10 / x
+        print(f"try: ket_qua = {ket_qua}")
+    except ZeroDivisionError:
+        print("except: chia cho 0")
+    except TypeError:
+        print("except: sai kiểu")
+    else:
+        print("else: không có lỗi")
+    finally:
+        print("finally: xong")
+
+kiem_tra(2)       # Output?
+kiem_tra(0)       # Output?
+kiem_tra("abc")   # Output?</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Calculator an toàn</h3>
+            <p>Viết hàm <code>tinh_toan(a, phep, b)</code> thực hiện 4 phép tính với đầy đủ xử lý lỗi. Yêu cầu:</p>
+            <ul>
+              <li>Bắt <code>ZeroDivisionError</code> khi chia cho 0</li>
+              <li>Bắt <code>TypeError</code> khi <code>a</code> hoặc <code>b</code> không phải số</li>
+              <li>Dùng <code>else</code> để in kết quả khi thành công</li>
+              <li>Dùng <code>finally</code> để in <code>"---"</code> sau mỗi phép tính</li>
+            </ul>
+            <pre><code class="language-python">def tinh_toan(a, phep, b):
+    pass
+
+tinh_toan(10, "+", 5)     # 15
+tinh_toan(10, "/", 0)     # Không thể chia cho 0!
+tinh_toan("x", "+", 5)   # Sai kiểu dữ liệu!</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Đọc và xử lý CSV an toàn</h3>
+            <p>Viết hàm <code>doc_csv(filename)</code> đọc một file CSV điểm sinh viên (mỗi dòng: <code>tên,điểm</code>). Hàm trả về list các tuple <code>(tên, điểm)</code>. Xử lý đầy đủ: file không tồn tại, dòng bị lỗi format, điểm không phải số.</p>
+            <pre><code class="language-python">def doc_csv(filename):
+    ket_qua = []
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            for so_dong, dong in enumerate(f, start=1):
+                try:
+                    ten, diem = dong.strip().split(",")
+                    diem = float(diem)
+                    ket_qua.append((ten.strip(), diem))
+                except ValueError:
+                    print(f"Bỏ qua dòng {so_dong}: format sai → '{dong.strip()}'")
+    except FileNotFoundError:
+        print(f"File không tồn tại: {filename}")
+    return ket_qua</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Custom Exception cho hệ thống điểm</h3>
+            <p>Tạo custom exceptions <code>DiemAmError</code> và <code>DiemQua10Error</code>. Viết hàm <code>them_diem(ten, diem)</code> sử dụng hai exception đó, sau đó viết code gọi hàm với <code>try/except</code> để bắt từng loại.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Nhập số nguyên dương</h3>
+            <p>Viết hàm <code>nhap_so_nguyen_duong(loi_nhac)</code> lặp cho đến khi người dùng nhập đúng một số nguyên dương (> 0). Hàm phải xử lý cả <code>ValueError</code> (nhập chuỗi) và trường hợp nhập số âm hoặc bằng 0.</p>
+            <pre><code class="language-python">def nhap_so_nguyen_duong(loi_nhac="Nhập số nguyên dương: "):
+    while True:
+        try:
+            so = int(input(loi_nhac))
+            if so <= 0:
+                raise ValueError("Số phải lớn hơn 0")
+            return so
+        except ValueError as e:
+            print(f"Không hợp lệ: {e}. Thử lại!")</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Exception handling</strong> giúp chương trình không crash khi gặp runtime error, cung cấp UX tốt hơn cho người dùng.</li>
+            <li><code>try</code>: đặt code có thể gây lỗi. <code>except</code>: bắt buộc đi kèm <code>try</code>, xử lý khi có lỗi.</li>
+            <li>Có thể có <strong>nhiều <code>except</code></strong> — Python khớp từ trên xuống, chỉ chạy cái đầu tiên khớp.</li>
+            <li><code>except LỗiCụThể as e</code>: lưu object lỗi để in chi tiết hoặc ghi log.</li>
+            <li><code>else</code>: chỉ chạy khi <code>try</code> thành công (không có lỗi).</li>
+            <li><code>finally</code>: <strong>luôn luôn chạy</strong> — dùng để đóng file, kết nối DB, giải phóng tài nguyên.</li>
+            <li><code>raise</code>: chủ động phát sinh lỗi khi dữ liệu không hợp lệ.</li>
+            <li><strong>Custom exception</strong>: kế thừa từ <code>Exception</code> để tạo lỗi riêng cho ứng dụng.</li>
+            <li><strong>Best practice:</strong> luôn chỉ định loại lỗi cụ thể, không để <code>except:</code> trống bắt hết.</li>
+          </ul>
+          <div class="note">
+            <strong>Bài tiếp theo:</strong> Biểu thức chính quy (Regular Expressions) — <code>re</code> module. Kỹ năng quan trọng để tìm kiếm, validate, và xử lý chuỗi theo pattern.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 17. Xử lý Ngoại lệ (Exception Handling) trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

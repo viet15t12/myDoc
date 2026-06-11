@@ -31,8 +31,7 @@
       "description": "int, float, str, bool, None — nền tảng đầu tiên của mọi chương trình Python",
       "file": "01-bien-va-kieu-du-lieu.html",
       "id": "01",
-      "minutes": 20,
-      "sections": 8,
+      "sections": 15,
       "status": "published",
       "tags": ["biến", "kiểu dữ liệu", "int", "str", "float", "bool"],
       "title": "Biến và Kiểu dữ liệu"
@@ -42,8 +41,7 @@
       "description": "+, -, *, /, //, %, ** — các phép toán số học và cách dùng trong thực tế",
       "file": "02-cac-phep-toan-so-hoc.html",
       "id": "02",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 16,
       "status": "published",
       "tags": ["phép toán", "arithmetic", "operators"],
       "title": "Các phép toán số học"
@@ -53,8 +51,7 @@
       "description": "Tạo, cắt, nối, định dạng chuỗi — f-string, format(), slice, các method phổ biến",
       "file": "03-chuoi-string-trong-python.html",
       "id": "03",
-      "minutes": 25,
-      "sections": 10,
+      "sections": 18,
       "status": "published",
       "tags": ["string", "chuỗi", "f-string", "format"],
       "title": "Chuỗi (String) trong Python"
@@ -64,8 +61,7 @@
       "description": "==, !=, >, <, and, or, not — so sánh và logic để kiểm soát luồng chương trình",
       "file": "04-cac-phep-toan-so-sanh-va-logic.html",
       "id": "04",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 15,
       "status": "published",
       "tags": ["so sánh", "logic", "comparison", "boolean"],
       "title": "Các phép toán so sánh và logic"
@@ -75,8 +71,7 @@
       "description": "Tạo, truy cập, slice, append, sort, pop — List là kiểu dữ liệu linh hoạt nhất Python",
       "file": "05-kieu-du-lieu-list.html",
       "id": "05",
-      "minutes": 20,
-      "sections": 9,
+      "sections": 19,
       "status": "published",
       "tags": ["list", "danh sách", "append", "sort", "slice"],
       "title": "Kiểu dữ liệu List — Danh sách"
@@ -86,8 +81,7 @@
       "description": "Tuple là bộ dữ liệu bất biến — khi nào dùng Tuple thay cho List?",
       "file": "06-kieu-du-lieu-tuple.html",
       "id": "06",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 15,
       "status": "published",
       "tags": ["tuple", "immutable", "unpacking"],
       "title": "Kiểu dữ liệu Tuple"
@@ -97,8 +91,7 @@
       "description": "key-value pairs, truy cập, thêm, xóa, lặp qua Dictionary — cấu trúc dữ liệu quan trọng",
       "file": "07-kieu-du-lieu-dictionary.html",
       "id": "07",
-      "minutes": 20,
-      "sections": 8,
+      "sections": 14,
       "status": "published",
       "tags": ["dictionary", "dict", "key", "value"],
       "title": "Kiểu dữ liệu Dictionary — Từ điển"
@@ -108,8 +101,7 @@
       "description": "Set — tập hợp không trùng lặp, hợp, giao, hiệu — khi nào nên dùng Set?",
       "file": "08-kieu-du-lieu-set.html",
       "id": "08",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 15,
       "status": "published",
       "tags": ["set", "tập hợp", "union", "intersection"],
       "title": "Kiểu dữ liệu Set — Tập hợp"
@@ -119,8 +111,7 @@
       "description": "if, elif, else — kiểm soát luồng thực thi dựa trên điều kiện",
       "file": "09-cau-truc-dieu-khien-if-else.html",
       "id": "09",
-      "minutes": 15,
-      "sections": 7,
+      "sections": 16,
       "status": "published",
       "tags": ["if", "else", "elif", "điều kiện", "flow control"],
       "title": "Cấu trúc điều khiển (if / else)"
@@ -130,8 +121,7 @@
       "description": "for, while, break, continue, range() — lặp đi lặp lại thông minh hơn",
       "file": "10-vong-lap-for-while.html",
       "id": "10",
-      "minutes": 20,
-      "sections": 8,
+      "sections": 19,
       "status": "published",
       "tags": ["for", "while", "loop", "vòng lặp", "range"],
       "title": "Vòng lặp For và While"
@@ -141,8 +131,7 @@
       "description": "def, return, tham số, *args, **kwargs — tổ chức code thành khối tái sử dụng",
       "file": "11-ham-functions-trong-python.html",
       "id": "11",
-      "minutes": 25,
-      "sections": 10,
+      "sections": 16,
       "status": "published",
       "tags": ["function", "hàm", "def", "return", "args", "kwargs"],
       "title": "Hàm (Functions) trong Python"
@@ -152,8 +141,7 @@
       "description": "open(), read(), write(), with statement — đọc ghi file text và binary",
       "file": "12-xu-ly-file-file-handling.html",
       "id": "12",
-      "minutes": 20,
-      "sections": 8,
+      "sections": 13,
       "status": "published",
       "tags": ["file", "open", "read", "write", "with"],
       "title": "Xử lý file (File Handling)"
@@ -163,8 +151,7 @@
       "description": "[x for x in list if condition] — cách viết gọn thay cho vòng lặp for truyền thống",
       "file": "13-list-comprehension.html",
       "id": "13",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 10,
       "status": "published",
       "tags": ["list comprehension", "one-liner", "pythonic"],
       "title": "List Comprehension"
@@ -174,8 +161,7 @@
       "description": "venv, activate, deactivate — cách ly môi trường dự án để tránh xung đột thư viện",
       "file": "14-moi-truong-ao-virtual-environment.html",
       "id": "14",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 9,
       "status": "published",
       "tags": ["venv", "virtualenv", "environment", "môi trường ảo"],
       "title": "Môi trường ảo (Virtual Environment)"
@@ -185,8 +171,7 @@
       "description": "pip install, freeze, requirements.txt, conda — quản lý gói thư viện trong Python",
       "file": "15-python-package-manager-pip-cond-uv.html",
       "id": "15",
-      "minutes": 15,
-      "sections": 6,
+      "sections": 14,
       "status": "published",
       "tags": ["pip","UV", "conda", "package", "requirements"],
       "title": "Python Package Manager — pip, conda, UV"
@@ -196,8 +181,7 @@
       "description": "TypeError, ValueError, IndexError — nhận diện và debug các lỗi phổ biến nhất",
       "file": "16-python-type-errors.html",
       "id": "16",
-      "minutes": 20,
-      "sections": 8,
+      "sections": 13,
       "status": "published",
       "tags": ["error", "debug", "TypeError", "ValueError", "lỗi"],
       "title": "Python Type Errors — Các lỗi phổ biến"
@@ -207,9 +191,8 @@
       "description": "try, except, finally, raise — bắt và xử lý ngoại lệ để code bền vững hơn",
       "file": "17-xu-ly-ngoai-le-exception-handling.html",
       "id": "17",
-      "minutes": 20,
-      "sections": 8,
-      "status": "coming",
+      "sections": 13,
+      "status": "published",
       "tags": ["exception", "try", "except", "finally", "raise"],
       "title": "Xử lý ngoại lệ — Exception Handling"
     },
@@ -218,9 +201,8 @@
       "description": "re module, pattern matching, search, findall, sub — xử lý văn bản nâng cao",
       "file": "18-bieu-thuc-chinh-quy-regular-expressions.html",
       "id": "18",
-      "minutes": 25,
-      "sections": 9,
-      "status": "coming",
+      "sections": 15,
+      "status": "published",
       "tags": ["regex", "regular expression", "re", "pattern"],
       "title": "Biểu thức chính quy — Regular Expressions"
     },
@@ -229,8 +211,7 @@
       "description": "class, __init__, self, kế thừa, encapsulation — lập trình hướng đối tượng trong Python",
       "file": "19-lop-va-doi-tuong-classes-and-objects.html",
       "id": "19",
-      "minutes": 30,
-      "sections": 11,
+      "sections": 15,
       "status": "coming",
       "tags": ["class", "object", "OOP", "kế thừa", "inheritance"],
       "title": "Lớp và đối tượng — Classes & Objects"

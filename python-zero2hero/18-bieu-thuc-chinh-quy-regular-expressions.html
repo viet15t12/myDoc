@@ -3,78 +3,800 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>18. Biểu thức chính quy (Regular Expressions) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 18</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#regex-la-gi">1. Regular Expression là gì?</a>
+      <a href="#raw-string">2. Raw string và module re</a>
+      <a href="#ky-tu-dac-biet">3. Ký tự đặc biệt</a>
+      <a href="#quantifier">4. Quantifier (Bộ đếm)</a>
+      <a href="#character-class">5. Character class [ ]</a>
+      <a href="#nhom-groups">6. Groups ( )</a>
+      <a href="#re-match">7. re.match()</a>
+      <a href="#re-search">8. re.search()</a>
+      <a href="#re-findall">9. re.findall()</a>
+      <a href="#re-split">10. re.split()</a>
+      <a href="#re-sub">11. re.sub()</a>
+      <a href="#compile">12. re.compile()</a>
+      <a href="#flags">13. Flags</a>
+      <a href="#vi-du-thuc-chien">14. Ví dụ thực tế</a>
+      <a href="#bai-tap">15. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>18. Biểu thức chính quy (Regular Expressions) trong Python</h1>
+        <p class="meta">
+          Regular Expressions (regex) — công cụ mạnh để tìm kiếm, validate và xử lý chuỗi theo pattern trong Python.
+          Module <code>re</code> tích hợp sẵn với 5 method chính: <code>match</code>, <code>search</code>,
+          <code>findall</code>, <code>split</code>, <code>sub</code>.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở bài trước, chúng ta đã học cách xử lý ngoại lệ để chương trình không bị crash. Bài này tiến thêm một bước: làm thế nào để <strong>tìm kiếm, kiểm tra và biến đổi chuỗi</strong> theo những pattern phức tạp — điều mà các phương thức string thông thường (<code>find()</code>, <code>replace()</code>…) không đủ sức làm?
+          </p>
+          <p>
+            Câu trả lời chính là <strong>Regular Expressions</strong> (biểu thức chính quy), thường viết tắt là <strong>regex</strong> hoặc <strong>re</strong>.
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Bài toán</th><th>Dùng string thông thường</th><th>Dùng regex</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kiểm tra email hợp lệ</td>
+                <td><span class="status-badge status-limited">Khó</span> Nhiều điều kiện lồng nhau</td>
+                <td><span class="status-badge status-yes">Dễ</span> 1 dòng pattern</td>
+              </tr>
+              <tr>
+                <td>Tìm tất cả số điện thoại trong văn bản</td>
+                <td><span class="status-badge status-no">Không thể</span></td>
+                <td><span class="status-badge status-yes">Dễ</span> <code>findall()</code></td>
+              </tr>
+              <tr>
+                <td>Tách chuỗi theo nhiều ký tự phân cách</td>
+                <td><span class="status-badge status-limited">Hạn chế</span> Chỉ 1 delimiter</td>
+                <td><span class="status-badge status-yes">Linh hoạt</span> Pattern tùy ý</td>
+              </tr>
+              <tr>
+                <td>Thay thế theo pattern</td>
+                <td><span class="status-badge status-limited">Hạn chế</span> <code>replace()</code> cố định</td>
+                <td><span class="status-badge status-yes">Mạnh</span> Pattern + back-reference</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== REGEX LÀ GÌ ======================== -->
+        <section id="regex-la-gi">
+          <h2>1. Regular Expression là gì?</h2>
+          <p>
+            Regular Expression là một <strong>chuỗi ký tự đặc biệt dùng để mô tả một pattern (khuôn mẫu)</strong> trong văn bản. Thay vì tìm kiếm một chuỗi cố định, bạn mô tả <em>hình dạng</em> của chuỗi bạn muốn tìm.
+          </p>
+
+          <h3>Ví dụ trực quan</h3>
+          <pre><code class="language-python">import re
+
+van_ban = "Liên hệ: support@example.com hoặc admin@python.org"
+
+# Tìm tất cả địa chỉ email — pattern mô tả hình dạng email
+emails = re.findall(r"[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}", van_ban)
+print(emails)
+# ['support@example.com', 'admin@python.org']</code></pre>
+
+          <h3>3 công dụng chính</h3>
+          <ul>
+            <li><strong>Tìm kiếm &amp; trích xuất</strong> — Lấy tất cả số điện thoại, email, URL từ một đoạn văn bản dài.</li>
+            <li><strong>Validate format</strong> — Kiểm tra email, số điện thoại, mã bưu điện, ngày tháng có đúng định dạng không.</li>
+            <li><strong>Thay thế &amp; biến đổi</strong> — Chuẩn hóa dữ liệu, xóa ký tự thừa, định dạng lại chuỗi.</li>
+          </ul>
+
+          <div class="note">
+            <strong>Regex không phải chỉ riêng Python.</strong> Cú pháp regex gần như giống nhau ở mọi ngôn ngữ: JavaScript, Java, Go, PHP… Học một lần, dùng ở mọi nơi.
+          </div>
+        </section>
+
+        <!-- ======================== RAW STRING ======================== -->
+        <section id="raw-string">
+          <h2>2. Raw string và module <code>re</code></h2>
+
+          <h3>Import module re</h3>
+          <p>
+            Python tích hợp sẵn module <code>re</code> — không cần cài thêm. Chỉ cần import:
+          </p>
+          <pre><code class="language-python">import re</code></pre>
+
+          <h3>Tại sao phải dùng raw string <code>r"..."</code>?</h3>
+          <p>
+            Regex sử dụng dấu <code>\</code> rất nhiều (ví dụ <code>\d</code> là chữ số, <code>\w</code> là ký tự từ ngữ). Trong Python string thông thường, <code>\d</code> không có nghĩa đặc biệt nhưng <code>\n</code>, <code>\t</code> lại là newline và tab. Để tránh nhầm lẫn, <strong>luôn dùng raw string</strong> khi viết pattern:
+          </p>
+          <pre><code class="language-python"># Không dùng raw string — dễ nhầm
+pattern = "\\d+"        # phải viết \\ để có \d
+
+# Dùng raw string — rõ ràng hơn (khuyên dùng)
+pattern = r"\d+"        # \d+ nghĩa là "một hoặc nhiều chữ số"</code></pre>
+
+          <div class="warning">
+            <strong>Thói quen tốt:</strong> Luôn dùng <code>r"..."</code> cho regex pattern. Không có hại gì khi pattern không cần escape, nhưng sẽ tránh được nhiều bug khó phát hiện.
+          </div>
+        </section>
+
+        <!-- ======================== KÝ TỰ ĐẶC BIỆT ======================== -->
+        <section id="ky-tu-dac-biet">
+          <h2>3. Ký tự đặc biệt (Special Characters)</h2>
+          <p>Regex có hai loại ký tự: ký tự thông thường (khớp chính xác với bản thân nó) và ký tự đặc biệt (có ý nghĩa riêng).</p>
+
+          <h3>3.1. Ký tự đại diện (Metacharacters)</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Ký tự</th><th>Ý nghĩa</th><th>Ví dụ pattern</th><th>Khớp với</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>.</code></td><td>Bất kỳ ký tự nào (trừ newline)</td><td><code>c.t</code></td><td><code>cat</code>, <code>cut</code>, <code>c3t</code></td></tr>
+              <tr><td><code>^</code></td><td>Bắt đầu chuỗi</td><td><code>^Hello</code></td><td>Chuỗi bắt đầu bằng <code>Hello</code></td></tr>
+              <tr><td><code>$</code></td><td>Kết thúc chuỗi</td><td><code>end$</code></td><td>Chuỗi kết thúc bằng <code>end</code></td></tr>
+              <tr><td><code>|</code></td><td>Hoặc (OR)</td><td><code>cat|dog</code></td><td><code>cat</code> hoặc <code>dog</code></td></tr>
+              <tr><td><code>\</code></td><td>Escape ký tự tiếp theo</td><td><code>\.</code></td><td>Dấu chấm <code>.</code> literal</td></tr>
+            </tbody>
+          </table>
+
+          <h3>3.2. Chuỗi escape đặc biệt</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Ký tự</th><th>Ý nghĩa</th><th>Tương đương</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>\d</code></td><td>Chữ số (digit)</td><td><code>[0-9]</code></td></tr>
+              <tr><td><code>\D</code></td><td>Không phải chữ số</td><td><code>[^0-9]</code></td></tr>
+              <tr><td><code>\w</code></td><td>Ký tự từ ngữ (word char)</td><td><code>[a-zA-Z0-9_]</code></td></tr>
+              <tr><td><code>\W</code></td><td>Không phải ký tự từ ngữ</td><td><code>[^a-zA-Z0-9_]</code></td></tr>
+              <tr><td><code>\s</code></td><td>Khoảng trắng (whitespace)</td><td><code>[ \t\n\r\f\v]</code></td></tr>
+              <tr><td><code>\S</code></td><td>Không phải khoảng trắng</td><td><code>[^ \t\n\r\f\v]</code></td></tr>
+              <tr><td><code>\b</code></td><td>Ranh giới từ (word boundary)</td><td>—</td></tr>
+              <tr><td><code>\B</code></td><td>Không phải ranh giới từ</td><td>—</td></tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-python">import re
+
+text = "Tôi có 3 con mèo và 12 con chó"
+
+# \d+ tìm 1 hoặc nhiều chữ số liên tiếp
+so = re.findall(r"\d+", text)
+print(so)   # ['3', '12']
+
+# \w+ tìm 1 hoặc nhiều word character
+tu = re.findall(r"\w+", "hello, world!")
+print(tu)   # ['hello', 'world']</code></pre>
+        </section>
+
+        <!-- ======================== QUANTIFIER ======================== -->
+        <section id="quantifier">
+          <h2>4. Quantifier (Bộ đếm)</h2>
+          <p>Quantifier xác định số lần một ký tự hoặc nhóm được lặp lại.</p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Quantifier</th><th>Ý nghĩa</th><th>Ví dụ</th><th>Khớp với</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>*</code></td><td>0 hoặc nhiều lần</td><td><code>ab*</code></td><td><code>a</code>, <code>ab</code>, <code>abbb</code></td></tr>
+              <tr><td><code>+</code></td><td>1 hoặc nhiều lần</td><td><code>ab+</code></td><td><code>ab</code>, <code>abbb</code> (không khớp <code>a</code>)</td></tr>
+              <tr><td><code>?</code></td><td>0 hoặc 1 lần (tùy chọn)</td><td><code>colou?r</code></td><td><code>color</code> hoặc <code>colour</code></td></tr>
+              <tr><td><code>{n}</code></td><td>Đúng n lần</td><td><code>\d{4}</code></td><td>Đúng 4 chữ số</td></tr>
+              <tr><td><code>{m,n}</code></td><td>Từ m đến n lần</td><td><code>\d{2,4}</code></td><td>2, 3 hoặc 4 chữ số</td></tr>
+              <tr><td><code>{m,}</code></td><td>Ít nhất m lần</td><td><code>\d{2,}</code></td><td>2 chữ số trở lên</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Greedy vs Non-greedy</h3>
+          <p>
+            Mặc định, quantifier là <strong>greedy</strong> (tham lam) — cố gắng khớp nhiều nhất có thể. Thêm <code>?</code> vào sau để chuyển sang <strong>non-greedy</strong> (khớp ít nhất có thể):
+          </p>
+          <pre><code class="language-python">import re
+
+html = "&lt;b&gt;đậm&lt;/b&gt; và &lt;i&gt;nghiêng&lt;/i&gt;"
+
+# Greedy: khớp từ <b> đầu đến </i> cuối
+greedy = re.findall(r"&lt;.*&gt;", html)
+print(greedy)   # ['&lt;b&gt;đậm&lt;/b&gt; và &lt;i&gt;nghiêng&lt;/i&gt;']
+
+# Non-greedy: khớp từng tag riêng lẻ
+non_greedy = re.findall(r"&lt;.*?&gt;", html)
+print(non_greedy)   # ['&lt;b&gt;', '&lt;/b&gt;', '&lt;i&gt;', '&lt;/i&gt;']</code></pre>
+        </section>
+
+        <!-- ======================== CHARACTER CLASS ======================== -->
+        <section id="character-class">
+          <h2>5. Character Class <code>[ ]</code></h2>
+          <p>
+            Dấu ngoặc vuông <code>[...]</code> định nghĩa một <strong>tập hợp ký tự</strong>. Pattern sẽ khớp với bất kỳ ký tự nào trong tập đó.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Pattern</th><th>Ý nghĩa</th><th>Khớp với ký tự nào</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>[abc]</code></td><td>a, b hoặc c</td><td><code>a</code>, <code>b</code>, <code>c</code></td></tr>
+              <tr><td><code>[a-z]</code></td><td>Chữ thường a đến z</td><td><code>a</code>, <code>b</code>, …, <code>z</code></td></tr>
+              <tr><td><code>[A-Z]</code></td><td>Chữ hoa A đến Z</td><td><code>A</code>, <code>B</code>, …, <code>Z</code></td></tr>
+              <tr><td><code>[0-9]</code></td><td>Chữ số 0 đến 9</td><td><code>0</code>, <code>1</code>, …, <code>9</code></td></tr>
+              <tr><td><code>[a-zA-Z0-9]</code></td><td>Chữ hoặc số (alphanumeric)</td><td>bất kỳ chữ/số nào</td></tr>
+              <tr><td><code>[^abc]</code></td><td>Không phải a, b, c (<code>^</code> phủ định)</td><td>mọi ký tự trừ <code>a</code>, <code>b</code>, <code>c</code></td></tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-python">import re
+
+# Tìm tất cả nguyên âm
+text = "Python is awesome"
+nguyen_am = re.findall(r"[aeiouAEIOU]", text)
+print(nguyen_am)   # ['o', 'i', 'a', 'e', 'o', 'e']
+
+# Tìm tất cả ký tự KHÔNG phải chữ cái hoặc số
+ky_tu_dac_biet = re.findall(r"[^a-zA-Z0-9\s]", "hello, world! 123")
+print(ky_tu_dac_biet)   # [',', '!']
+
+# Kiểm tra biển số xe Việt Nam dạng đơn giản: 51A-12345
+bien_so = r"^\d{2}[A-Z]-\d{4,5}$"
+print(bool(re.match(bien_so, "51A-12345")))   # True
+print(bool(re.match(bien_so, "51A-1234")))    # True
+print(bool(re.match(bien_so, "51a-12345")))   # False (chữ thường)</code></pre>
+        </section>
+
+        <!-- ======================== GROUPS ======================== -->
+        <section id="nhom-groups">
+          <h2>6. Groups <code>( )</code></h2>
+          <p>
+            Dấu ngoặc tròn <code>(...)</code> tạo ra một <strong>group</strong>. Group có hai tác dụng chính: nhóm một phần pattern lại để áp dụng quantifier, và <strong>trích xuất phần con</strong> của kết quả khớp.
+          </p>
+
+          <pre><code class="language-python">import re
+
+# Trích xuất từng phần của ngày tháng
+ngay_thang = "Ngày sinh: 15/08/1990"
+ket_qua = re.search(r"(\d{1,2})/(\d{1,2})/(\d{4})", ngay_thang)
+
+if ket_qua:
+    print(ket_qua.group(0))   # '15/08/1990'  — toàn bộ match
+    print(ket_qua.group(1))   # '15'          — ngày
+    print(ket_qua.group(2))   # '08'          — tháng
+    print(ket_qua.group(3))   # '1990'        — năm
+
+# Named groups — dễ đọc hơn
+pattern = r"(?P&lt;ngay&gt;\d{1,2})/(?P&lt;thang&gt;\d{1,2})/(?P&lt;nam&gt;\d{4})"
+m = re.search(pattern, ngay_thang)
+if m:
+    print(m.group("ngay"))    # '15'
+    print(m.group("thang"))   # '08'
+    print(m.group("nam"))     # '1990'</code></pre>
+
+          <div class="note">
+            <strong>Non-capturing group <code>(?:...)</code>:</strong> Dùng khi bạn muốn nhóm để áp dụng quantifier nhưng <em>không cần</em> lưu kết quả vào group. Ví dụ: <code>(?:abc)+</code> khớp với <code>abc</code>, <code>abcabc</code>,… nhưng không tạo group.
+          </div>
+        </section>
+
+        <!-- ======================== re.match ======================== -->
+        <section id="re-match">
+          <h2>7. <code>re.match()</code> — Khớp từ đầu chuỗi</h2>
+          <p>
+            <code>re.match(pattern, string)</code> chỉ tìm kiếm khớp <strong>tại vị trí đầu tiên của chuỗi</strong>. Nếu đầu chuỗi không khớp với pattern, trả về <code>None</code>.
+          </p>
+
+          <pre><code class="language-python">import re
+
+my_string = "Hello nice to meet you"
+
+# Khớp — "Hello" nằm ở đầu chuỗi
+match = re.match(r"Hello", my_string)
+print(match)            # &lt;re.Match object; span=(0, 5), match='Hello'&gt;
+print(match.span())     # (0, 5)
+print(match.group())    # 'Hello'
+
+# Không khớp — "nice" không nằm ở đầu chuỗi
+match2 = re.match(r"nice", my_string)
+print(match2)           # None</code></pre>
+
+          <h3>Kiểm tra kết quả trước khi dùng</h3>
+          <pre><code class="language-python">import re
+
+def kiem_tra_so_dien_thoai(so):
+    """Kiểm tra số ĐT Việt Nam: bắt đầu bằng 0, 9 hoặc 10 chữ số."""
+    pattern = r"^0[35789]\d{8}$"
+    match = re.match(pattern, so)
+    if match:
+        print(f"'{so}' là số điện thoại hợp lệ")
+    else:
+        print(f"'{so}' không hợp lệ")
+
+kiem_tra_so_dien_thoai("0912345678")   # hợp lệ
+kiem_tra_so_dien_thoai("0112345678")   # không hợp lệ (đầu số 011 cũ)
+kiem_tra_so_dien_thoai("091234567")    # không hợp lệ (thiếu 1 số)</code></pre>
+
+          <div class="note">
+            <strong>Match object có những gì?</strong>
+            <ul>
+              <li><code>.group()</code> hoặc <code>.group(0)</code> — toàn bộ chuỗi khớp</li>
+              <li><code>.group(n)</code> — chuỗi của group thứ n</li>
+              <li><code>.span()</code> — tuple <code>(start, end)</code> vị trí trong chuỗi gốc</li>
+              <li><code>.start()</code>, <code>.end()</code> — vị trí bắt đầu và kết thúc</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== re.search ======================== -->
+        <section id="re-search">
+          <h2>8. <code>re.search()</code> — Tìm ở bất kỳ vị trí nào</h2>
+          <p>
+            <code>re.search(pattern, string)</code> quét toàn bộ chuỗi và trả về <strong>match đầu tiên</strong> tìm được ở bất kỳ vị trí nào. Nếu không tìm thấy, trả về <code>None</code>.
+          </p>
+
+          <pre><code class="language-python">import re
+
+my_string = "Hello nice to meet you, nice day!"
+
+# "nice" không ở đầu — match() sẽ trả về None
+print(re.match(r"nice", my_string))    # None
+
+# search() tìm được ở vị trí bất kỳ
+result = re.search(r"nice", my_string)
+print(result)           # &lt;re.Match object; span=(6, 10), match='nice'&gt;
+print(result.span())    # (6, 10)
+print(result.group())   # 'nice'</code></pre>
+
+          <h3>search() chỉ trả về match đầu tiên</h3>
+          <pre><code class="language-python">import re
+
+# Có 2 từ "nice" trong chuỗi — search() chỉ trả về cái đầu tiên
+text = "nice morning, have a nice day"
+result = re.search(r"nice", text)
+print(result.span())    # (0, 4) — chỉ cái đầu tiên
+
+# Để lấy tất cả → dùng findall()</code></pre>
+
+          <h3>So sánh match() và search()</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th><code>re.match()</code></th><th><code>re.search()</code></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tìm kiếm ở đâu?</td><td>Chỉ ở <strong>đầu chuỗi</strong></td><td>Ở <strong>bất kỳ vị trí</strong> nào</td></tr>
+              <tr><td>Trả về</td><td>Match object hoặc <code>None</code></td><td>Match object hoặc <code>None</code></td></tr>
+              <tr><td>Số kết quả</td><td>Tối đa 1</td><td>Tối đa 1 (cái đầu tiên)</td></tr>
+              <tr><td>Dùng khi nào?</td><td>Validate chuỗi có đúng định dạng từ đầu (email, số ĐT)</td><td>Tìm kiếm một pattern trong văn bản dài</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== re.findall ======================== -->
+        <section id="re-findall">
+          <h2>9. <code>re.findall()</code> — Tìm tất cả kết quả</h2>
+          <p>
+            <code>re.findall(pattern, string)</code> trả về <strong>list tất cả các chuỗi khớp</strong> trong string. Nếu không tìm thấy, trả về list rỗng <code>[]</code>.
+          </p>
+          <p>
+            Khác với <code>match()</code> và <code>search()</code>, <code>findall()</code> <strong>không trả về match object</strong> mà trả về trực tiếp các chuỗi văn bản.
+          </p>
+
+          <pre><code class="language-python">import re
+
+my_string = """Xin chào các bạn.
+Chúc các bạn buổi tối vui vẻ."""
+
+# Tìm tất cả từ "bạn"
+ket_qua = re.findall(r"bạn", my_string)
+print(ket_qua)   # ['bạn', 'bạn'] — list các chuỗi, không phải match object
+
+# Tìm tất cả chữ số trong văn bản
+van_ban = "Năm 2024 có 365 ngày, mỗi tháng trung bình 30 ngày"
+cac_so = re.findall(r"\d+", van_ban)
+print(cac_so)   # ['2024', '365', '30']</code></pre>
+
+          <h3>findall() với groups</h3>
+          <pre><code class="language-python">import re
+
+# Khi có 1 group → trả về list các chuỗi của group
+emails_text = "admin@gmail.com, user@yahoo.com, test@python.org"
+domains = re.findall(r"@([\w.]+)", emails_text)
+print(domains)   # ['gmail.com', 'yahoo.com', 'python.org']
+
+# Khi có nhiều group → trả về list các tuple
+ngay_thang = "Sinh 01/05/1990, nhập viện 15/08/2023"
+cac_ngay = re.findall(r"(\d{1,2})/(\d{1,2})/(\d{4})", ngay_thang)
+print(cac_ngay)   # [('01', '05', '1990'), ('15', '08', '2023')]</code></pre>
+        </section>
+
+        <!-- ======================== re.split ======================== -->
+        <section id="re-split">
+          <h2>10. <code>re.split()</code> — Tách chuỗi theo pattern</h2>
+          <p>
+            <code>re.split(pattern, string, maxsplit=0)</code> tách chuỗi tại những vị trí khớp với pattern, trả về list. Tương tự <code>str.split()</code> nhưng mạnh hơn vì delimiter có thể là một pattern phức tạp.
+          </p>
+
+          <pre><code class="language-python">import re
+
+# Tách dựa trên từ "các"
+my_string = "Xin chào các bạn, chào các bạn mình về đây"
+ket_qua = re.split(r"các", my_string)
+print(ket_qua)
+# ['Xin chào ', ' bạn, chào ', ' bạn mình về đây']
+
+# maxsplit=1 — chỉ tách 1 lần
+ket_qua_1 = re.split(r"các", my_string, maxsplit=1)
+print(ket_qua_1)
+# ['Xin chào ', ' bạn, chào các bạn mình về đây']</code></pre>
+
+          <h3>Ưu điểm của re.split() so với str.split()</h3>
+          <pre><code class="language-python">import re
+
+# str.split() chỉ nhận 1 delimiter cố định
+csv = "tên, tuổi; địa chỉ| email"
+print(csv.split(","))   # Chỉ tách theo dấu phẩy
+
+# re.split() tách theo nhiều delimiter cùng lúc
+ket_qua = re.split(r"[,;|]\s*", csv)
+print(ket_qua)   # ['tên', 'tuổi', 'địa chỉ', 'email']
+
+# Tách theo một hoặc nhiều khoảng trắng
+text = "Python   is    awesome"
+words = re.split(r"\s+", text)
+print(words)   # ['Python', 'is', 'awesome']</code></pre>
+        </section>
+
+        <!-- ======================== re.sub ======================== -->
+        <section id="re-sub">
+          <h2>11. <code>re.sub()</code> — Thay thế theo pattern</h2>
+          <p>
+            <code>re.sub(pattern, repl, string, count=0)</code> tìm tất cả các match và thay bằng <code>repl</code>. Trả về chuỗi mới. Tham số <code>count</code> giới hạn số lần thay thế (mặc định 0 = thay tất cả).
+          </p>
+
+          <pre><code class="language-python">import re
+
+# Thay thế cơ bản
+my_string = "I love you. You love me. You love Python."
+new_string = re.sub(r"love", "hate", my_string)
+print(new_string)   # 'I hate you. You hate me. You hate Python.'
+
+# Giới hạn số lần thay thế
+new_string_once = re.sub(r"love", "hate", my_string, count=1)
+print(new_string_once)   # 'I hate you. You love me. You love Python.'</code></pre>
+
+          <h3>sub() với back-reference</h3>
+          <p>
+            Dùng <code>\1</code>, <code>\2</code>,… (hoặc <code>\g&lt;tên&gt;</code> với named groups) để tham chiếu lại nội dung của group trong phần thay thế:
+          </p>
+          <pre><code class="language-python">import re
+
+# Đổi định dạng ngày từ DD/MM/YYYY sang YYYY-MM-DD
+ngay = "Ngày: 15/08/2024"
+moi = re.sub(r"(\d{2})/(\d{2})/(\d{4})", r"\3-\2-\1", ngay)
+print(moi)   # 'Ngày: 2024-08-15'
+
+# Xóa khoảng trắng thừa
+text = "Python   is    very    powerful"
+clean = re.sub(r"\s+", " ", text)
+print(clean)   # 'Python is very powerful'
+
+# Ẩn thông tin nhạy cảm — giữ 4 số cuối
+so_the = "Số thẻ: 4111-1111-1111-1234"
+an_so = re.sub(r"\d{4}-\d{4}-\d{4}-(\d{4})", r"****-****-****-\1", so_the)
+print(an_so)   # 'Số thẻ: ****-****-****-1234'</code></pre>
+
+          <h3>sub() với hàm thay thế</h3>
+          <pre><code class="language-python">import re
+
+# Dùng hàm làm tham số repl — linh hoạt hơn
+def viet_hoa(match):
+    """Viết hoa ký tự đầu của mỗi từ tìm thấy."""
+    return match.group().upper()
+
+text = "python is awesome"
+ket_qua = re.sub(r"\b\w+\b", viet_hoa, text)
+print(ket_qua)   # 'PYTHON IS AWESOME'</code></pre>
+        </section>
+
+        <!-- ======================== re.compile ======================== -->
+        <section id="compile">
+          <h2>12. <code>re.compile()</code> — Biên dịch pattern trước</h2>
+          <p>
+            Khi cùng một pattern được dùng nhiều lần, nên dùng <code>re.compile()</code> để biên dịch pattern một lần rồi tái sử dụng. Điều này cải thiện hiệu năng vì Python không phải parse lại pattern mỗi lần.
+          </p>
+
+          <pre><code class="language-python">import re
+
+# Cách thông thường — parse pattern mỗi lần gọi
+emails = ["user@gmail.com", "invalid-email", "admin@python.org"]
+for email in emails:
+    if re.match(r"[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}", email):
+        print(f"Hợp lệ: {email}")
+
+# Cách dùng compile — parse pattern 1 lần, tái sử dụng nhiều lần
+email_pattern = re.compile(r"[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}")
+
+for email in emails:
+    if email_pattern.match(email):
+        print(f"Hợp lệ: {email}")</code></pre>
+
+          <p>
+            Compiled pattern object có đầy đủ các method giống module-level: <code>.match()</code>, <code>.search()</code>, <code>.findall()</code>, <code>.split()</code>, <code>.sub()</code>.
+          </p>
+        </section>
+
+        <!-- ======================== FLAGS ======================== -->
+        <section id="flags">
+          <h2>13. Flags (Cờ tùy chọn)</h2>
+          <p>
+            Flags điều chỉnh cách regex hoạt động. Truyền vào tham số thứ ba (hoặc dùng inline <code>(?flag)</code>):
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Flag</th><th>Viết tắt</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>re.IGNORECASE</code></td><td><code>re.I</code></td><td>Không phân biệt hoa thường</td></tr>
+              <tr><td><code>re.MULTILINE</code></td><td><code>re.M</code></td><td><code>^</code> và <code>$</code> áp dụng cho từng dòng (không chỉ đầu/cuối chuỗi)</td></tr>
+              <tr><td><code>re.DOTALL</code></td><td><code>re.S</code></td><td><code>.</code> khớp cả newline <code>\n</code></td></tr>
+              <tr><td><code>re.VERBOSE</code></td><td><code>re.X</code></td><td>Cho phép viết pattern nhiều dòng với comment</td></tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-python">import re
+
+text = "Python is AWESOME"
+
+# re.IGNORECASE — không phân biệt hoa thường
+ket_qua = re.findall(r"python", text, re.IGNORECASE)
+print(ket_qua)   # ['Python']
+
+# re.MULTILINE — ^ và $ áp dụng từng dòng
+tho = """Trăng lên
+Sao sáng
+Trăng tàn"""
+dong_bat_dau_trang = re.findall(r"^Trăng.*", tho, re.MULTILINE)
+print(dong_bat_dau_trang)   # ['Trăng lên', 'Trăng tàn']
+
+# re.VERBOSE — viết pattern dễ đọc với comment
+email_pattern = re.compile(r"""
+    [\w.+-]+        # phần local (trước @)
+    @               # ký tự @
+    [\w-]+          # tên domain
+    \.              # dấu chấm
+    [a-zA-Z]{2,}    # TLD (com, org, vn, ...)
+""", re.VERBOSE)
+
+print(bool(email_pattern.match("user@example.com")))   # True</code></pre>
+        </section>
+
+        <!-- ======================== VÍ DỤ THỰC TẾ ======================== -->
+        <section id="vi-du-thuc-chien">
+          <h2>14. Ví dụ thực tế</h2>
+
+          <h3>14.1. Validate email</h3>
+          <pre><code class="language-python">import re
+
+def validate_email(email):
+    pattern = r"^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$"
+    return bool(re.match(pattern, email))
+
+tests = ["user@gmail.com", "invalid@", "no-at-sign", "a@b.co", "user.name+tag@example.org"]
+for email in tests:
+    trang_thai = "✓ Hợp lệ" if validate_email(email) else "✗ Không hợp lệ"
+    print(f"{trang_thai}: {email}")</code></pre>
+
+          <h3>14.2. Trích xuất thông tin từ log</h3>
+          <pre><code class="language-python">import re
+
+log = """
+2024-08-15 10:23:45 ERROR Database connection failed: timeout
+2024-08-15 10:24:01 INFO  User 'admin' logged in from 192.168.1.100
+2024-08-15 10:25:30 WARNING Disk usage 85% on /dev/sda1
+2024-08-15 10:26:00 ERROR API call failed: 503 Service Unavailable
+"""
+
+# Trích xuất tất cả dòng lỗi
+loi = re.findall(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} ERROR (.+)", log)
+print("Các lỗi:")
+for dong in loi:
+    print(f"  - {dong}")
+
+# Trích xuất địa chỉ IP
+ip_pattern = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+ips = ip_pattern.findall(log)
+print(f"\nIP tìm thấy: {ips}")   # ['192.168.1.100']</code></pre>
+
+          <h3>14.3. Chuẩn hóa số điện thoại</h3>
+          <pre><code class="language-python">import re
+
+def chuan_hoa_sdt(sdt):
+    """Chuẩn hóa về dạng 0xxxxxxxxx."""
+    # Xóa mọi ký tự không phải số
+    chi_so = re.sub(r"\D", "", sdt)
+
+    # Đổi +84 hoặc 84 đầu sang 0
+    chi_so = re.sub(r"^(?:84|\+84)", "0", chi_so)
+
+    # Kiểm tra hợp lệ
+    if re.match(r"^0[35789]\d{8}$", chi_so):
+        return chi_so
+    return None
+
+sdts = ["0912 345 678", "+84 912-345-678", "84912345678", "0112345678"]
+for s in sdts:
+    ket_qua = chuan_hoa_sdt(s)
+    print(f"{s:25} → {ket_qua or 'Không hợp lệ'}")</code></pre>
+
+          <h3>14.4. Tìm và thống kê từ khóa</h3>
+          <pre><code class="language-python">import re
+from collections import Counter
+
+van_ban = """
+Python là ngôn ngữ lập trình rất phổ biến.
+Python được dùng trong AI, web, data science.
+Nhiều người yêu thích Python vì cú pháp đơn giản.
+"""
+
+# Tách từng từ (chỉ lấy chữ cái và dấu câu tiếng Việt cơ bản)
+cac_tu = re.findall(r"\b\w+\b", van_ban.lower())
+tan_so = Counter(cac_tu)
+print("Top 5 từ xuất hiện nhiều nhất:")
+for tu, so_lan in tan_so.most_common(5):
+    print(f"  '{tu}': {so_lan} lần")</code></pre>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>15. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài tập 1: Nhận diện pattern</h3>
+            <p>Viết pattern regex cho từng yêu cầu, kiểm tra bằng <code>re.match()</code> hoặc <code>re.search()</code>:</p>
+            <ul>
+              <li>Khớp với chuỗi chỉ gồm chữ số (ví dụ: <code>"12345"</code>)</li>
+              <li>Khớp với chuỗi bắt đầu bằng chữ hoa (ví dụ: <code>"Hello"</code>)</li>
+              <li>Khớp với màu hex HTML (ví dụ: <code>"#FF5733"</code>, <code>"#abc"</code>)</li>
+              <li>Khớp với địa chỉ IP đơn giản (ví dụ: <code>"192.168.1.1"</code>)</li>
+            </ul>
+            <pre><code class="language-python">import re
+
+# Gợi ý cấu trúc
+def kiem_tra(pattern, test_cases):
+    for chuoi, ket_qua_mong_doi in test_cases:
+        khop = bool(re.fullmatch(pattern, chuoi))
+        dung_sai = "✓" if khop == ket_qua_mong_doi else "✗"
+        print(f"{dung_sai} '{chuoi}': khớp={khop} (mong đợi={ket_qua_mong_doi})")</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 2: Trích xuất thông tin</h3>
+            <p>Cho đoạn văn bản sau, dùng <code>re.findall()</code> để trích xuất:</p>
+            <pre><code class="language-python">import re
+
+van_ban = """
+Liên hệ phòng kinh doanh: sales@company.vn hoặc 0901234567
+Kỹ thuật: tech@support.com — hotline 0312345678
+Website: https://www.company.vn
+Ra mắt phiên bản 2.5.1 ngày 15/10/2024
+"""
+
+# 1. Tất cả địa chỉ email
+# 2. Tất cả số điện thoại (dạng 10 chữ số bắt đầu bằng 0)
+# 3. Tất cả URL
+# 4. Ngày tháng dạng DD/MM/YYYY</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 3: Chuẩn hóa dữ liệu</h3>
+            <p>Dùng <code>re.sub()</code> để chuẩn hóa chuỗi sau:</p>
+            <pre><code class="language-python">import re
+
+du_lieu = "  Nguyễn   Văn    An  ,   25  tuổi,   Hà   Nội  "
+
+# 1. Xóa khoảng trắng ở đầu và cuối
+# 2. Chuẩn hóa khoảng trắng thừa giữa các từ (chỉ còn 1 khoảng trắng)
+# 3. Xóa khoảng trắng xung quanh dấu phẩy
+# Kết quả mong đợi: "Nguyễn Văn An, 25 tuổi, Hà Nội"</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 4: Parser log đơn giản</h3>
+            <p>Viết hàm <code>parse_log(log_text)</code> đọc chuỗi log (định dạng <code>YYYY-MM-DD HH:MM:SS LEVEL message</code>) và trả về list các dict <code>{"ngay", "gio", "level", "noi_dung"}</code>.</p>
+            <pre><code class="language-python">import re
+
+log_text = """
+2024-01-15 08:30:00 INFO  Server started on port 8080
+2024-01-15 08:31:05 ERROR Failed to connect to database
+2024-01-15 08:35:22 WARNING Memory usage high: 78%
+"""
+
+def parse_log(log_text):
+    pattern = r"(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) (\w+)\s+(.+)"
+    # Hoàn thành hàm này...
+    pass
+
+ket_qua = parse_log(log_text)
+for dong in ket_qua:
+    print(dong)</code></pre>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài tập 5: Validate form đăng ký</h3>
+            <p>Tạo hàm <code>validate_form(data)</code> nhận dict có các key <code>ho_ten</code>, <code>email</code>, <code>so_dien_thoai</code>, <code>mat_khau</code> và kiểm tra:</p>
+            <ul>
+              <li><strong>Họ tên:</strong> 2–50 ký tự, chỉ chữ cái và khoảng trắng</li>
+              <li><strong>Email:</strong> định dạng hợp lệ</li>
+              <li><strong>Số điện thoại:</strong> 10 chữ số, bắt đầu bằng 0</li>
+              <li><strong>Mật khẩu:</strong> ít nhất 8 ký tự, có ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số</li>
+            </ul>
+            <pre><code class="language-python">import re
+
+def validate_form(data):
+    loi = {}
+
+    # Kiểm tra họ tên
+    if not re.match(r"^[\w\s]{2,50}$", data.get("ho_ten", ""), re.UNICODE):
+        loi["ho_ten"] = "Họ tên không hợp lệ"
+
+    # Hoàn thành kiểm tra email, số điện thoại, mật khẩu...
+
+    return loi   # Dict rỗng nếu hợp lệ, có lỗi nếu không hợp lệ</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Regular Expression</strong> là công cụ mô tả pattern chuỗi, mạnh hơn nhiều so với các phương thức string thông thường.</li>
+            <li><strong>Luôn dùng raw string <code>r"..."</code></strong> khi viết pattern để tránh xung đột với escape sequence của Python.</li>
+            <li><strong>Ký tự đặc biệt:</strong> <code>.</code> <code>^</code> <code>$</code> <code>*</code> <code>+</code> <code>?</code> <code>{}</code> <code>[]</code> <code>()</code> <code>\</code> <code>|</code> — mỗi cái có vai trò riêng.</li>
+            <li><strong>Escape shortcuts:</strong> <code>\d</code> (chữ số), <code>\w</code> (ký tự từ ngữ), <code>\s</code> (khoảng trắng) — và phủ định <code>\D</code>, <code>\W</code>, <code>\S</code>.</li>
+            <li><code>re.match()</code> — khớp từ đầu chuỗi, trả về match object hoặc <code>None</code>.</li>
+            <li><code>re.search()</code> — tìm match đầu tiên ở bất kỳ vị trí, trả về match object hoặc <code>None</code>.</li>
+            <li><code>re.findall()</code> — trả về <strong>list</strong> tất cả chuỗi khớp (không phải match object).</li>
+            <li><code>re.split()</code> — tách chuỗi theo pattern, có tùy chọn <code>maxsplit</code>.</li>
+            <li><code>re.sub()</code> — thay thế theo pattern, hỗ trợ back-reference và hàm thay thế.</li>
+            <li><code>re.compile()</code> — biên dịch pattern trước khi dùng nhiều lần, tăng hiệu năng.</li>
+            <li><strong>Flags:</strong> <code>re.I</code> (ignore case), <code>re.M</code> (multiline), <code>re.S</code> (dotall), <code>re.X</code> (verbose).</li>
+          </ul>
+          <div class="note">
+            <strong>Muốn tìm hiểu thêm?</strong> Python docs chính thức cực kỳ đầy đủ tại
+            <a href="https://docs.python.org/3/library/re.html" target="_blank">docs.python.org/3/library/re.html</a>.
+            Để luyện tập tương tác, thử <a href="https://regex101.com" target="_blank">regex101.com</a> — công cụ test regex online hỗ trợ Python với giải thích chi tiết từng ký tự.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 18. Biểu thức chính quy (Regular Expressions) trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

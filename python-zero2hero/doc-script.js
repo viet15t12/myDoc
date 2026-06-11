@@ -74,22 +74,68 @@ if (sections.length > 0) {
   sections.forEach(section => observer.observe(section));
 }
 
-// Map danh sách bài học từ lessons.json dựa vào thuộc tính `data-lesson-id`
+// Tự động tạo breadcrumb và nút Bài trước / Bài sau từ lessons.json
+const currentFile = location.pathname.split('/').pop();
+const topnavRight = document.querySelector('[data-lesson-nav]') || document.querySelector('.topnav-right');
+const breadcrumb = document.querySelector('.topnav-breadcrumb');
 const lessonAnchors = document.querySelectorAll('[data-lesson-id]');
-if (lessonAnchors.length > 0) {
+
+if ((topnavRight || breadcrumb || lessonAnchors.length > 0) && currentFile) {
   fetch('lessons.json')
     .then(response => response.ok ? response.json() : Promise.reject(response))
     .then(data => {
+      const publishedLessons = (data.lessons || [])
+        .filter(lesson => lesson.id && lesson.file && lesson.status === 'published');
+      const currentIndex = publishedLessons.findIndex(lesson => lesson.file === currentFile);
+      const currentLesson = publishedLessons[currentIndex];
+
       const lessonLinkMap = Object.fromEntries(
-        (data.lessons || [])
-          .filter(lesson => lesson.id && lesson.file && lesson.status === 'published')
-          .map(lesson => [lesson.id, lesson.file])
+        publishedLessons.map(lesson => [lesson.id, lesson.file])
       );
 
       lessonAnchors.forEach(anchor => {
         const id = anchor.dataset.lessonId;
         if (id && lessonLinkMap[id]) anchor.href = lessonLinkMap[id];
       });
+
+      if (!currentLesson) return;
+
+      if (breadcrumb) {
+        breadcrumb.innerHTML = `<span>/</span> Bài ${currentLesson.id}`;
+      }
+
+      if (topnavRight) {
+        const previousLesson = publishedLessons[currentIndex - 1];
+        const nextLesson = publishedLessons[currentIndex + 1];
+
+        topnavRight.innerHTML = '';
+
+        if (previousLesson) {
+          const previousLink = document.createElement('a');
+          previousLink.className = 'nav-pill';
+          previousLink.href = previousLesson.file;
+          previousLink.textContent = '← Bài trước';
+          topnavRight.appendChild(previousLink);
+        } else {
+          const previousDisabled = document.createElement('span');
+          previousDisabled.className = 'nav-pill disabled';
+          previousDisabled.textContent = '← Bài trước';
+          topnavRight.appendChild(previousDisabled);
+        }
+
+        if (nextLesson) {
+          const nextLink = document.createElement('a');
+          nextLink.className = 'nav-pill';
+          nextLink.href = nextLesson.file;
+          nextLink.textContent = 'Bài sau →';
+          topnavRight.appendChild(nextLink);
+        } else {
+          const nextDisabled = document.createElement('span');
+          nextDisabled.className = 'nav-pill disabled';
+          nextDisabled.textContent = 'Bài sau →';
+          topnavRight.appendChild(nextDisabled);
+        }
+      }
     })
     .catch(error => {
       console.warn('Không thể tải lessons.json để tạo liên kết bài học:', error);
@@ -117,7 +163,6 @@ if (bar) {
 // Lưu trạng thái bài học đã đọc vào LocalStorage
 try {
   const visited = JSON.parse(localStorage.getItem('hoc_python_visited') || '[]');
-  const currentFile = location.pathname.split('/').pop();
   if (currentFile && !visited.includes(currentFile)) {
     visited.push(currentFile);
     localStorage.setItem('hoc_python_visited', JSON.stringify(visited));
