@@ -4,46 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Học Python từ cơ bản</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     const savedTheme = localStorage.getItem('py_dashboard_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
-  <link rel="stylesheet" href="style.css?v=quicknav-modal-2" />
+  <link rel="stylesheet" href="style.css?v=premium-v1" />
 </head>
 <body>
 
 <header>
   <div class="header-top">
-    <div class="logo"><img src="python.svg" alt="Python" /></div>
+    <div class="logo">
+      <img src="python.svg" alt="Python Logo" />
+    </div>
     <div class="header-text">
       <h1 id="seriesTitle">Học <em>Python</em> từ cơ bản</h1>
       <p id="seriesDesc">Đang tải cấu trúc bài học...</p>
     </div>
-    <div class="header-search">
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/>
-      </svg>
-      <input type="text" id="searchInput" placeholder="Tìm kiếm bài học..." oninput="doSearch(this.value)" />
+    <div class="header-actions">
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm bài học (Ấn '/' để tìm)..." oninput="doSearch(this.value)" />
+      </div>
+      <a class="quick-nav-btn" href="../index.html" title="Về trang tổng">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Trang tổng</span>
+      </a>
+      <button class="quick-nav-btn accent-btn" type="button" onclick="openQuickNav()" title="Mở dashboard lộ trình">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span>Lộ trình</span>
+      </button>
+      <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Đổi giao diện"></button>
     </div>
-    <a class="quick-nav-btn" href="../index.html" title="Về trang tổng">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m3 11 9-8 9 8"/>
-        <path d="M5 10v10h14V10"/>
-        <path d="M9 20v-6h6v6"/>
-      </svg>
-      <span>Trang tổng</span>
-    </a>
-    <button class="quick-nav-btn" type="button" onclick="openQuickNav()" title="Mở dashboard lộ trình">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>
-      <span>Lộ trình</span>
-    </button>
-    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Đổi giao diện"></button>
   </div>
-  <div class="tabs-row" id="tabNav">
-    <button class="tab-btn active" onclick="filterCat('all',this)">Tất cả</button>
+  <div class="tabs-container">
+    <div class="tabs-row" id="tabNav">
+      <button class="tab-btn active" onclick="filterCat('all',this)">Tất cả bài viết</button>
+    </div>
   </div>
 </header>
 
@@ -51,11 +57,13 @@
   <section class="quick-nav-panel" role="dialog" aria-modal="true" aria-labelledby="quickNavTitle" onclick="event.stopPropagation()">
     <div class="quick-nav-head">
       <div>
-        <div class="quick-nav-kicker">Dashboard</div>
+        <div class="quick-nav-kicker">Hệ thống Dashboard</div>
         <h2 id="quickNavTitle">Lộ trình học tập</h2>
         <p id="quickNavDesc">Đang tải danh sách lộ trình...</p>
       </div>
-      <button class="quick-nav-close" type="button" onclick="closeQuickNav()" aria-label="Đóng dashboard">×</button>
+      <button class="quick-nav-close" type="button" onclick="closeQuickNav()" aria-label="Đóng dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
     <div class="quick-nav-grid" id="quickNavGrid"></div>
   </section>
@@ -64,33 +72,51 @@
 <div class="page">
   <main class="content">
     <div class="sort-bar">
-      <div class="sort-bar-label">Danh sách hiển thị: <strong id="visibleCount">–</strong> bài học</div>
+      <div class="sort-bar-label">Hiển thị <strong id="visibleCount">–</strong> bài học đang khả dụng</div>
       <div class="sort-pills">
-        <button class="sort-pill active" onclick="setSortMode('order',this)" title="Theo thứ tự số">Theo thứ tự</button>
-        <button class="sort-pill" onclick="setSortMode('type',this)" title="Nhóm theo loại">Theo danh mục</button>
+        <button class="sort-pill active" onclick="setSortMode('order',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="10" y1="6" x2="21" y2="6"></line><line x1="10" y1="12" x2="21" y2="12"></line><line x1="10" y1="18" x2="21" y2="18"></line><polyline points="3 6 4 7 6 5"></polyline><polyline points="3 12 4 13 6 11"></polyline><polyline points="3 18 4 19 6 17"></polyline></svg>
+          Theo thứ tự
+        </button>
+        <button class="sort-pill" onclick="setSortMode('type',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Theo danh mục
+        </button>
       </div>
     </div>
 
-    <div id="loading">⏳ Đang đồng bộ dữ liệu bài học...</div>
+    <div id="loading">
+      <div class="spinner"></div>
+      <span>Đang đồng bộ hóa dữ liệu thời gian thực...</span>
+    </div>
     <div class="lessons-list" id="lessonGrid" style="display:none"></div>
-    <div id="emptyMsg" style="display:none">🔍 Không tìm thấy kết quả phù hợp với bộ lọc.</div>
+    <div id="emptyMsg" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:48px;height:48px;color:var(--muted2);margin-bottom:12px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+      <p>Không tìm thấy bài học nào phù hợp với bộ lọc hiện tại.</p>
+    </div>
   </main>
 
   <aside class="sidebar">
     <div class="widget">
-      <div class="widget-title">Phân loại bài viết</div>
+      <div class="widget-title">Danh mục chuyên đề</div>
       <div class="filter-list" id="sidebarCats"></div>
     </div>
-
+    
+    <div class="widget card-tip-premium">
+      <div class="tip-box">
+        <strong>💡 MẸO HỌC TẬP</strong>
+        Sử dụng phím <code>/</code> để tập trung nhanh vào ô tìm kiếm bài học nâng cao.
+      </div>
+    </div>
   </aside>
 </div>
 
 <script>
+// Giữ nguyên toàn bộ logic JS gốc của bạn, chỉ tối ưu hiệu ứng hiển thị Header khi gộp nhóm
 const VISITED_KEY = 'hoc_python_visited';
 let allLessons = [], allTypes = [], currentCat = 'all', sortMode = 'order';
 const collapsedTypes = new Set();
 
-// ── THEME ──
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('py_dashboard_theme', theme);
@@ -138,12 +164,12 @@ function buildCard(lesson, types, visited) {
 
   const metaHtml = isAvailable
     ? `<div class="card-meta">
-        <span>📄 <strong>${lesson.sections}</strong> mục</span>
-        ${isDone ? '<span class="badge-done">✓ Đã học</span>' : ''}
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections}</strong> mục</span>
+        ${isDone ? '<span class="badge-done">✓ Đã hoàn thành</span>' : ''}
        </div>`
     : `<div class="card-meta">
-        <span>📄 <strong>${lesson.sections}</strong> mục</span>
-        <span class="badge-coming">Sắp có</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections}</strong> mục</span>
+        <span class="badge-coming">Sắp ra mắt</span>
        </div>`;
 
   el.innerHTML = `
@@ -156,7 +182,7 @@ function buildCard(lesson, types, visited) {
       <div class="card-desc">${lesson.description}</div>
       ${metaHtml}
     </div>
-    <div class="card-right">${isAvailable ? '›' : ''}</div>`;
+    <div class="card-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>`;
   return el;
 }
 
@@ -164,13 +190,14 @@ function buildTypeHeader(t, count) {
   const hdr = document.createElement('div');
   hdr.className = 'type-header';
   hdr.setAttribute('data-cat', t.id);
-  hdr.style.color = t.color;
   hdr.innerHTML = `
     <span class="type-icon">${t.icon}</span>
     <span class="type-name" style="color:${t.color}">${t.title}</span>
-    <span class="type-count">${count}</span>
-    <button class="toggle-btn" onclick="toggleType('${t.id}',event)">Ẩn</button>
-    <span class="type-chevron">›</span>`;
+    <div class="type-actions">
+      <span class="type-count">${count} bài học</span>
+      <button class="toggle-btn" onclick="toggleType('${t.id}',event)">Ẩn</button>
+    </div>
+    <span class="type-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></span>`;
   return hdr;
 }
 
@@ -179,7 +206,7 @@ function renderAll(lessons, types) {
   const visited = getVisited();
 
   const tabNav = document.getElementById('tabNav');
-  tabNav.innerHTML = `<button class="tab-btn active" onclick="filterCat('all',this)">Tất cả</button>`;
+  tabNav.innerHTML = `<button class="tab-btn active" onclick="filterCat('all',this)">Tất cả bài viết</button>`;
   types.forEach(t => {
     const btn = document.createElement('button');
     btn.className = 'tab-btn';
@@ -219,12 +246,13 @@ function rebuildGrid(lessons, types, visited) {
   visited = visited || getVisited();
   const grid = document.getElementById('lessonGrid');
   grid.innerHTML = '';
-  grid.style.flexDirection = 'column';
-
+  
   if (sortMode === 'order') {
+    grid.className = "lessons-list mode-order";
     const sorted = [...lessons].sort((a, b) => a.id.localeCompare(b.id));
     sorted.forEach(l => grid.appendChild(buildCard(l, types, visited)));
   } else {
+    grid.className = "lessons-list mode-type";
     const grouped = {};
     lessons.forEach(l => {
       if (!grouped[l.type]) grouped[l.type] = [];
@@ -238,10 +266,6 @@ function rebuildGrid(lessons, types, visited) {
       const grp = document.createElement('div');
       grp.className = 'type-group';
       grp.setAttribute('data-cat', t.id);
-      grp.style.display = 'flex';
-      grp.style.flexDirection = 'column';
-      grp.style.gap = '12px';
-      grp.style.marginBottom = '20px';
       grouped[t.id].forEach(l => grp.appendChild(buildCard(l, types, visited)));
       grid.appendChild(grp);
     });
@@ -276,12 +300,15 @@ function doSearch(q) { applyFilters(q); }
 function toggleType(typeId, e) {
   e.stopPropagation();
   const btn = e.target;
+  const hdr = btn.closest('.type-header');
   if (collapsedTypes.has(typeId)) {
     collapsedTypes.delete(typeId);
     btn.textContent = 'Ẩn';
+    if(hdr) hdr.classList.remove('collapsed');
   } else {
     collapsedTypes.add(typeId);
     btn.textContent = 'Hiện';
+    if(hdr) hdr.classList.add('collapsed');
   }
   applyFilters();
 }
@@ -310,13 +337,24 @@ function applyFilters(q = document.getElementById('searchInput').value) {
   typeGroups.forEach(g => {
     const cat = g.getAttribute('data-cat');
     const catMatch = currentCat === 'all' || cat === currentCat;
-    g.style.display = catMatch && !collapsedTypes.has(cat) ? 'flex' : 'none';
+    g.style.display = catMatch && !collapsedTypes.has(cat) ? 'grid' : 'none';
   });
 
   document.getElementById('visibleCount').textContent = matched;
   document.getElementById('emptyMsg').style.display =
-    (matched === 0 && (q || currentCat !== 'all')) ? 'block' : 'none';
+    (matched === 0 && (q || currentCat !== 'all')) ? 'flex' : 'none';
 }
+
+// Phím tắt nhanh '/' Focus ô tìm kiếm công nghệ cao
+document.addEventListener('keydown', e => {
+  if (e.key === '/') {
+    if (document.activeElement.tagName !== 'INPUT') {
+      e.preventDefault();
+      document.getElementById('searchInput').focus();
+    }
+  }
+  if (e.key === 'Escape') closeQuickNav();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   updateThemeIcon(savedTheme);
@@ -328,6 +366,7 @@ function openQuickNav() {
   overlay.removeAttribute('hidden');
   overlay.classList.add('is-open');
   overlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden'; // Chặn cuộn trang nền
 }
 
 function closeQuickNav(event) {
@@ -336,6 +375,7 @@ function closeQuickNav(event) {
   overlay.classList.remove('is-open');
   overlay.setAttribute('aria-hidden', 'true');
   overlay.setAttribute('hidden', '');
+  document.body.style.overflow = '';
 }
 
 function loadQuickLinks() {
@@ -347,7 +387,7 @@ function loadQuickLinks() {
       renderQuickLinks(data.links || []);
     })
     .catch(() => {
-      document.getElementById('quickNavDesc').textContent = 'Không tải được quick-links.json.';
+      document.getElementById('quickNavDesc').textContent = 'Không tải được cấu trúc dữ liệu.';
     });
 }
 
@@ -366,14 +406,10 @@ function renderQuickLinks(links) {
         <strong>${item.title}</strong>
         <small>${item.description || ''}</small>
       </span>
-      <span class="quick-link-status">${isReady ? 'Mở' : 'Sắp có'}</span>`;
+      <span class="quick-link-status">${isReady ? 'Khám phá' : 'Sắp có'}</span>`;
     grid.appendChild(card);
   });
 }
-
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') closeQuickNav();
-});
 
 fetch('lessons.json')
   .then(r => r.json())
@@ -387,7 +423,7 @@ fetch('lessons.json')
     applyFilters();
   })
   .catch(() => {
-    document.getElementById('loading').textContent = '❌ Không tải được lessons.json. Kiểm tra file có cùng thư mục không.';
+    document.getElementById('loading').innerHTML = '❌ Lỗi kết nối dữ liệu cấu trúc <code>lessons.json</code>.';
   });
 </script>
 </body>
