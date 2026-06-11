@@ -24,7 +24,7 @@
 
 :root[data-theme="light"] {
   /* --- COUTURE LIGHT THEME (Clean Minimalist White + Yellow Accent) --- */
-  --bg:           #f8fafc;
+  --bg:           #F0FFF0;
   --surface:      #ffffff;
   --surface2:     #f1f5f9;
   --surface3:     #e2e8f0;
@@ -39,7 +39,7 @@
   --green:        #10b981;
   --orange:       #ea580c;
   --glow:         rgba(234, 179, 8, 0.08);
-  --header-bg:    rgba(248, 250, 252, 0.88);
+  --header-bg:    rgba(240, 255, 240, 0.88);
   --grid-color:   rgba(0, 0, 0, 0.008);
   --card-num-bg:  rgba(15, 23, 42, 0.02);
   --widget-bg-sub: rgba(15, 23, 42, 0.01);

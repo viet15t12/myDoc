@@ -3,78 +3,1265 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>20. Higher-Order Functions &amp; Decorators trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
+
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 20</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+<div class="layout">
+  <aside>
+    <h2>Mục lục</h2>
+    <a href="#intro">Giới thiệu</a>
+    <a href="#s1">1. First-Class Citizen</a>
+    <a href="#s2">2. Higher-Order Function</a>
+    <a href="#s3">3. HOF nhận hàm làm tham số</a>
+    <a href="#s4">4. HOF trả về hàm số</a>
+    <a href="#s5">5. Closure và nonlocal</a>
+    <a href="#s6">6. Lambda Function</a>
+    <a href="#s7">7. Decorator là gì?</a>
+    <a href="#s8">8. Decorator không có đối số</a>
+    <a href="#s9">9. Decorator có đối số</a>
+    <a href="#s10">10. functools.wraps</a>
+    <a href="#s11">11. Decorator có tham số riêng</a>
+    <a href="#s12">12. Nhiều decorator</a>
+    <a href="#s13">13. map(), filter(), reduce()</a>
+    <a href="#s14">14. Built-in decorators</a>
+    <a href="#s15">15. lru_cache</a>
+    <a href="#s16">16. Ứng dụng thực tế</a>
+    <a href="#s17">17. Bài tập thực hành</a>
+    <a href="#tong-ket">Tổng kết</a>
+  </aside>
+
   <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
+    <article class="container">
+
+      <h1>20. Higher-Order Functions &amp; Decorators trong Python</h1>
+      <p class="meta">
+        Python function là <strong>first-class citizen</strong> — có thể gán vào biến, truyền như đối số và trả về như giá trị.
+        Từ nền tảng này, Python hỗ trợ <strong>higher-order function</strong>, <strong>closure</strong>, <strong>lambda</strong> và <strong>decorator</strong> — những kỹ thuật rất phổ biến trong thư viện, framework và dự án thực tế.
+      </p>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="intro">Giới thiệu</h2>
+
+      <p>Ở bài trước chúng ta đã học OOP — tổ chức code bằng class và object. Bài này chuyển sang một hướng khác: <strong>lập trình hàm (functional programming)</strong> trong Python.</p>
+
+      <p>Nếu bạn từng thấy <code>map()</code>, <code>filter()</code>, <code>lambda</code>, <code>@staticmethod</code>, <code>@property</code>, <code>@app.route(...)</code>, <code>@pytest.mark.parametrize</code> hoặc <code>@lru_cache</code>, thì bạn đã gặp higher-order function và decorator.</p>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>Khái niệm</th><th>Ý nghĩa đơn giản</th><th>Ví dụ trong Python</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>First-class citizen</td><td>Hàm được xem như một giá trị bình thường</td><td>Gán hàm vào biến, truyền hàm vào hàm khác</td></tr>
+          <tr><td>Higher-order function</td><td>Hàm nhận hoặc trả về hàm khác</td><td><code>map()</code>, <code>filter()</code>, <code>sorted(key=...)</code></td></tr>
+          <tr><td>Closure</td><td>Hàm bên trong ghi nhớ biến của hàm bên ngoài</td><td><code>make_counter()</code>, <code>make_multiplier()</code></td></tr>
+          <tr><td>Decorator</td><td>Cú pháp <code>@</code> để bọc và mở rộng hàm</td><td><code>@staticmethod</code>, <code>@property</code>, <code>@lru_cache</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Mục tiêu bài học:</strong> Sau bài này, bạn cần hiểu được tại sao decorator thực chất là HOF, tại sao cần <code>*args</code>, <code>**kwargs</code>, vì sao nên dùng <code>functools.wraps</code>, và decorator xuất hiện như thế nào trong Flask, FastAPI, pytest hoặc code Python thực tế.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s1">1. First-Class Citizen</h2>
+
+      <p>Trong Python, <strong>function là first-class citizen</strong>, nghĩa là hàm số được đối xử như các giá trị bình thường như số, chuỗi, list hay object.</p>
+
+      <ul>
+        <li>Có thể <strong>gán hàm vào biến</strong></li>
+        <li>Có thể <strong>truyền hàm làm đối số</strong></li>
+        <li>Có thể <strong>trả về hàm từ một hàm khác</strong></li>
+        <li>Có thể <strong>lưu hàm trong list, dict</strong></li>
+      </ul>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python"># 1. Định nghĩa một hàm bình thường
+
+def say_hello():
+    print("Hello!")
+
+# 2. Gán hàm vào biến
+# Không có dấu () vì ta đang gán chính đối tượng hàm, không gọi hàm
+greet = say_hello
+
+# 3. Gọi qua tên biến mới
+greet()  # Hello!
+
+# 4. Hai tên cùng trỏ đến một đối tượng hàm
+print(greet is say_hello)  # True
+
+# 5. Hàm cũng là object
+print(type(say_hello))     # &lt;class 'function'&gt;</code></pre>
+      </div>
+
+      <div class="warning">
+        <strong>Phân biệt rất quan trọng:</strong><br/>
+        <code>greet = say_hello</code> nghĩa là gán hàm vào biến.<br/>
+        <code>greet = say_hello()</code> nghĩa là gọi hàm trước, rồi gán kết quả trả về vào biến.
+      </div>
+
+      <h3>Lưu hàm trong list và dict</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+operations = {
+    "add": add,
+    "sub": subtract,
+    "mul": multiply,
+}
+
+choice = "mul"
+result = operations[choice](4, 5)
+print(result)  # 20</code></pre>
+      </div>
+
+      <p>Kiểu viết này rất hay gặp trong command handler, menu CLI, router đơn giản hoặc thay thế nhiều câu <code>if/elif</code>.</p>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s2">2. Higher-Order Function là gì?</h2>
+
+      <p><strong>Higher-order function (HOF)</strong> — hàm bậc cao — là hàm thỏa mãn ít nhất một trong hai điều kiện:</p>
+
+      <ul>
+        <li>Nhận <strong>một hoặc nhiều hàm</strong> làm đối số</li>
+        <li>Trả về <strong>một hàm</strong> như giá trị trả về</li>
+      </ul>
+
+      <div class="diagram" style="grid-template-columns: 1fr 48px 1fr 48px 1fr;">
+        <div class="box">
+          <strong>Hàm thường</strong><br/>
+          <code style="font-size:12px;">def square(x):<br/>&nbsp;&nbsp;return x*x</code>
+        </div>
+        <div class="arrow">→</div>
+        <div class="box" style="border-color:#3b82f6; background:#eff6ff;">
+          <strong style="color:#1d4ed8;">Higher-order function</strong><br/>
+          <code style="font-size:12px;">process(func, data)</code><br/>
+          <span style="font-size:12px; color:#64748b;">nhận/trả về hàm</span>
+        </div>
+        <div class="arrow">→</div>
+        <div class="box">
+          <strong>Kết quả</strong><br/>
+          <span style="font-size:13px; color:#64748b;">Giá trị hoặc<br/>một hàm mới</span>
+        </div>
+      </div>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>Dạng</th><th>Mô tả</th><th>Ví dụ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nhận hàm</td><td>Hàm khác được truyền vào như tham số</td><td><code>map(square, numbers)</code></td></tr>
+          <tr><td>Trả về hàm</td><td>Hàm tạo ra và trả về một hàm mới</td><td><code>make_multiplier(2)</code></td></tr>
+          <tr><td>Vừa nhận vừa trả về hàm</td><td>Decorator điển hình</td><td><code>@timer</code></td></tr>
+        </tbody>
+      </table>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s3">3. HOF — Nhận hàm làm tham số</h2>
+
+      <p>Đây là dạng phổ biến nhất. Ta truyền một hàm vào HOF như tham số bình thường, sau đó HOF gọi hàm đó bên trong.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def calculate(lst):
+    return sum(lst)
+
+def higher_order_function(my_function, my_list):
+    my_result = my_function(my_list)
+    return my_result
+
+result = higher_order_function(calculate, [3, 4, 5])
+print(result)  # 12</code></pre>
+      </div>
+
+      <div class="note">
+        Khi gọi <code>higher_order_function(calculate, [3, 4, 5])</code>, ta truyền <code>calculate</code> không có dấu ngoặc. Nếu viết <code>calculate()</code>, Python sẽ gọi hàm ngay lập tức.
+      </div>
+
+      <h3>Thay đổi hành vi bằng cách truyền hàm khác</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def get_sum(lst):
+    return sum(lst)
+
+def get_max(lst):
+    return max(lst)
+
+def get_min(lst):
+    return min(lst)
+
+def process(func, data):
+    """HOF: áp dụng bất kỳ hàm nào lên data"""
+    return func(data)
+
+numbers = [3, 7, 1, 9, 4]
+
+print(process(get_sum, numbers))  # 24
+print(process(get_max, numbers))  # 9
+print(process(get_min, numbers))  # 1
+
+# Có thể truyền built-in function trực tiếp
+print(process(sum, numbers))      # 24
+print(process(sorted, numbers))   # [1, 3, 4, 7, 9]</code></pre>
+      </div>
+
+      <h3>Ví dụ thực tế — validate dữ liệu</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def is_positive(x):
+    return x > 0
+
+def is_even(x):
+    return x % 2 == 0
+
+def check_number(rule, value):
+    if rule(value):
+        print("Hợp lệ")
+    else:
+        print("Không hợp lệ")
+
+check_number(is_positive, 10)  # Hợp lệ
+check_number(is_even, 7)       # Không hợp lệ</code></pre>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s4">4. HOF — Trả về hàm số</h2>
+
+      <p>HOF cũng có thể <strong>trả về một hàm</strong>. Đây là nền tảng của closure và decorator.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def can_min(a, b):
+    if a &lt; b:
+        return a
+    return b
+
+def can_max(a, b):
+    if a &gt; b:
+        return a
+    return b
+
+def choose_function(calc_name):
+    if calc_name == "min":
+        return can_min   # trả về hàm, không gọi hàm
+    elif calc_name == "max":
+        return can_max
+
+my_result = choose_function("min")
+print(my_result(3, 5))  # 3
+
+my_result = choose_function("max")
+print(my_result(3, 5))  # 5</code></pre>
+      </div>
+
+      <div class="warning">
+        <strong>Lỗi thường gặp:</strong> viết <code>return can_min()</code> thay vì <code>return can_min</code>. Có ngoặc là gọi hàm; không có ngoặc là trả về đối tượng hàm.
+      </div>
+
+      <h3>HOF tạo hàm mới</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def make_multiplier(n):
+    def multiplier(x):
+        return x * n
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(5))  # 10
+print(triple(5))  # 15</code></pre>
+      </div>
+
+      <p>Ví dụ trên dẫn đến khái niệm tiếp theo: <strong>closure</strong>. Hàm <code>multiplier</code> vẫn nhớ biến <code>n</code> dù <code>make_multiplier</code> đã chạy xong.</p>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s5">5. Closure và <code>nonlocal</code></h2>
+
+      <p><strong>Closure</strong> xảy ra khi một hàm bên trong ghi nhớ và sử dụng biến thuộc phạm vi của hàm bên ngoài, ngay cả khi hàm bên ngoài đã kết thúc.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def make_multiplier(n):
+    def multiplier(x):
+        return x * n   # multiplier ghi nhớ biến n
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(10))  # 20
+print(triple(10))  # 30</code></pre>
+      </div>
+
+      <div class="note">
+        <strong>Điểm quan trọng:</strong> <code>double</code> nhớ <code>n = 2</code>, còn <code>triple</code> nhớ <code>n = 3</code>. Mỗi lần gọi <code>make_multiplier</code>, Python tạo ra một closure riêng.
+      </div>
+
+      <h3>Closure dùng để tạo counter</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def make_counter():
+    count = 0
+
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+
+    return counter
+
+c = make_counter()
+
+print(c())  # 1
+print(c())  # 2
+print(c())  # 3</code></pre>
+      </div>
+
+      <h3>Tại sao cần <code>nonlocal</code>?</h3>
+
+      <p>Nếu muốn gán lại giá trị cho biến ở scope bên ngoài, ta cần dùng <code>nonlocal</code>. Nếu không, Python sẽ hiểu biến đó là biến local mới trong hàm bên trong.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def outer():
+    x = 10
+
+    def inner():
+        nonlocal x
+        x += 1
+        return x
+
+    return inner
+
+f = outer()
+print(f())  # 11
+print(f())  # 12</code></pre>
+      </div>
+
+      <div class="success">
+        Closure là nền tảng tự nhiên của decorator: decorator thường tạo ra một hàm <code>wrapper</code> bên trong, và <code>wrapper</code> ghi nhớ hàm gốc <code>func</code>.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s6">6. Lambda Function</h2>
+
+      <p><strong>Lambda</strong> là hàm ẩn danh, thường dùng cho các logic ngắn, đặc biệt khi truyền hàm vào HOF như <code>map()</code>, <code>filter()</code>, <code>sorted()</code>.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python"># Hàm thường
+
+def square(x):
+    return x * x
+
+# Lambda tương đương
+square_lambda = lambda x: x * x
+
+print(square(5))         # 25
+print(square_lambda(5))  # 25</code></pre>
+      </div>
+
+      <h3>Dùng lambda với <code>sorted()</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">students = [
+    ("An", 8),
+    ("Bình", 10),
+    ("Minh", 7),
+]
+
+# Sắp xếp theo điểm
+students_sorted = sorted(students, key=lambda student: student[1])
+
+print(students_sorted)
+# [('Minh', 7), ('An', 8), ('Bình', 10)]</code></pre>
+      </div>
+
+      <h3>Dùng lambda với list object/dict</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">users = [
+    {"name": "An", "age": 20},
+    {"name": "Bình", "age": 18},
+    {"name": "Minh", "age": 22},
+]
+
+users_sorted = sorted(users, key=lambda user: user["age"])
+print(users_sorted)</code></pre>
+      </div>
+
+      <div class="warning">
+        Không nên lạm dụng lambda cho logic dài. Nếu logic phức tạp, hãy viết hàm <code>def</code> có tên rõ ràng để code dễ đọc hơn.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s7">7. Decorator là gì?</h2>
+
+      <p><strong>Decorator</strong> là cú pháp <code>@</code> trong Python, cho phép ta mở rộng hoặc thay đổi hành vi của một hàm mà không sửa trực tiếp code gốc của hàm đó.</p>
+
+      <p>Về bản chất, decorator là một higher-order function:</p>
+
+      <ul>
+        <li>Nhận một hàm gốc <code>func</code></li>
+        <li>Tạo một hàm mới <code>wrapper</code></li>
+        <li>Gọi hàm gốc bên trong <code>wrapper</code></li>
+        <li>Trả về <code>wrapper</code></li>
+      </ul>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>Tên</th><th>Vai trò</th><th>Ý nghĩa</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>func</code></td><td>Hàm được bao</td><td>Hàm gốc cần mở rộng</td></tr>
+          <tr><td><code>wrapper</code></td><td>Hàm bao</td><td>Hàm mới thêm logic trước/sau hàm gốc</td></tr>
+          <tr><td><code>@decorator</code></td><td>Cú pháp rút gọn</td><td>Tương đương gán lại hàm sau khi bọc</td></tr>
+        </tbody>
+      </table>
+
+      <div class="diagram" style="grid-template-columns: 1fr 48px 1fr 48px 1fr;">
+        <div class="box">
+          <strong>Hàm gốc</strong><br/>
+          <code style="font-size:12px;">say_hello()</code>
+        </div>
+        <div class="arrow">→</div>
+        <div class="box" style="border-color:#3b82f6; background:#eff6ff;">
+          <strong style="color:#1d4ed8;">Decorator</strong><br/>
+          <code style="font-size:12px;">decorator(func)</code>
+        </div>
+        <div class="arrow">→</div>
+        <div class="box" style="border-color:#34d399; background:#ecfdf5;">
+          <strong style="color:#065f46;">Hàm mới</strong><br/>
+          <code style="font-size:12px;">wrapper()</code>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s8">8. Decorator — Không có đối số</h2>
+
+      <p>Trước tiên, xem decorator đơn giản nhất: hàm được bao không nhận đối số.</p>
+
+      <h3>Bước 1 — Viết thủ công bằng HOF</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def say_hello():
+    print("Hello!")
+
+def decorator_example(func):
+    def wrapper():
+        print("Before the function is called")
+        func()
+        print("After the function is called")
+
+    return wrapper
+
+my_function = decorator_example(say_hello)
+my_function()
+
+# Output:
+# Before the function is called
+# Hello!
+# After the function is called</code></pre>
+      </div>
+
+      <h3>Bước 2 — Dùng cú pháp <code>@</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def decorator_example(func):
+    def wrapper():
+        print("Before the function is called")
+        func()
+        print("After the function is called")
+    return wrapper
+
+@decorator_example
+
+def say_hello():
+    print("Hello!")
+
+say_hello()</code></pre>
+      </div>
+
+      <div class="note">
+        Cú pháp <code>@decorator_example</code> tương đương với dòng: <code>say_hello = decorator_example(say_hello)</code>.
+      </div>
+
+      <h3>Viết tường minh bản chất của <code>@</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python"># Cách 1: dùng @
+@decorator_example
+
+def say_hello():
+    print("Hello!")
+
+# Cách 2: viết tường minh
+
+def say_hello():
+    print("Hello!")
+
+say_hello = decorator_example(say_hello)</code></pre>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s9">9. Decorator — Có đối số</h2>
+
+      <p>Khi hàm gốc có tham số, <code>wrapper</code> cũng phải nhận tham số và truyền xuống hàm gốc.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def decorator_function(func):
+    def wrapper(name, age):
+        print("Before the function is called")
+        func(name, age)
+        print("After the function is called")
+    return wrapper
+
+@decorator_function
+
+def say_hello(name, age):
+    print(f"Hello {name}, {age} years old")
+
+say_hello("Minh", 15)</code></pre>
+      </div>
+
+      <h3>Dùng <code>*args</code> và <code>**kwargs</code> để tổng quát</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def decorator_function(func):
+    def wrapper(*args, **kwargs):
+        print("Before the function is called")
+        result = func(*args, **kwargs)
+        print("After the function is called")
+        return result
+    return wrapper
+
+@decorator_function
+
+def say_hello(name, age):
+    print(f"Hello {name}, {age} years old")
+
+@decorator_function
+
+def add(a, b):
+    return a + b
+
+say_hello("Minh", 15)
+
+total = add(3, 5)
+print(total)  # 8</code></pre>
+      </div>
+
+      <div class="success">
+        Mẫu decorator tổng quát thường dùng là: <code>def wrapper(*args, **kwargs): result = func(*args, **kwargs); return result</code>.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s10">10. <code>functools.wraps</code> — Decorator chuyên nghiệp</h2>
+
+      <p>Khi dùng decorator, hàm gốc bị thay thế bởi <code>wrapper</code>. Điều này có thể làm mất thông tin metadata như <code>__name__</code>, <code>__doc__</code>.</p>
+
+      <h3>Vấn đề khi không dùng <code>wraps</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def simple_decorator(func):
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@simple_decorator
+
+def hello():
+    """Hàm in lời chào."""
+    print("Hello")
+
+print(hello.__name__)  # wrapper
+print(hello.__doc__)   # None</code></pre>
+      </div>
+
+      <h3>Cách đúng — dùng <code>@wraps(func)</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import wraps
+
+
+def simple_decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@simple_decorator
+
+def hello():
+    """Hàm in lời chào."""
+    print("Hello")
+
+print(hello.__name__)  # hello
+print(hello.__doc__)   # Hàm in lời chào.</code></pre>
+      </div>
+
+      <div class="note">
+        Trong dự án thực tế, nếu tự viết decorator, gần như luôn nên dùng <code>from functools import wraps</code> và đặt <code>@wraps(func)</code> trên <code>wrapper</code>.
+      </div>
+
+      <h3>Decorator timer bản tốt hơn</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import wraps
+from time import perf_counter
+
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = perf_counter()
+        result = func(*args, **kwargs)
+        end = perf_counter()
+        print(f"[timer] {func.__name__} chạy trong {(end - start) * 1000:.2f} ms")
+        return result
+    return wrapper
+
+@timer
+
+def slow_sum(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+print(slow_sum(1_000_000))</code></pre>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s11">11. Decorator có tham số riêng</h2>
+
+      <p>Đôi khi decorator cũng cần tham số riêng, ví dụ <code>@repeat(3)</code>, <code>@role_required("admin")</code>, <code>@retry(5)</code>.</p>
+
+      <p>Decorator có tham số thường có 3 lớp hàm:</p>
+
+      <ul>
+        <li>Hàm ngoài cùng nhận tham số của decorator</li>
+        <li>Hàm giữa nhận hàm gốc <code>func</code></li>
+        <li>Hàm trong cùng là <code>wrapper</code></li>
+      </ul>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import wraps
+
+
+def repeat(n):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            result = None
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+
+def hello():
+    print("Hello")
+
+hello()
+# Hello
+# Hello
+# Hello</code></pre>
+      </div>
+
+      <h3>Ví dụ kiểm tra quyền truy cập</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import wraps
+
+current_user = {
+    "name": "Viet",
+    "role": "student",
+}
+
+
+def role_required(required_role):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if current_user["role"] != required_role:
+                print("Không có quyền truy cập")
+                return None
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@role_required("admin")
+
+def delete_user():
+    print("Đã xóa user")
+
+delete_user()  # Không có quyền truy cập</code></pre>
+      </div>
+
+      <div class="warning">
+        Đừng nhầm decorator có tham số riêng với decorator dùng cho hàm có tham số. <code>@repeat(3)</code> là decorator nhận tham số riêng; còn <code>wrapper(*args, **kwargs)</code> là để nhận tham số của hàm gốc.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s12">12. Áp dụng nhiều decorator</h2>
+
+      <p>Python cho phép xếp chồng nhiều decorator. Decorator gần hàm nhất được áp dụng trước, decorator ngoài cùng được áp dụng sau.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import wraps
+
+
+def bold(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print("&lt;b&gt;")
+        result = func(*args, **kwargs)
+        print("&lt;/b&gt;")
+        return result
+    return wrapper
+
+
+def italic(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print("&lt;i&gt;")
+        result = func(*args, **kwargs)
+        print("&lt;/i&gt;")
+        return result
+    return wrapper
+
+@bold
+@italic
+
+def say_hello():
+    print("Hello!")
+
+say_hello()
+# &lt;b&gt;
+# &lt;i&gt;
+# Hello!
+# &lt;/i&gt;
+# &lt;/b&gt;</code></pre>
+      </div>
+
+      <div class="note">
+        <code>@bold @italic def say_hello()</code> tương đương với <code>say_hello = bold(italic(say_hello))</code>.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s13">13. <code>map()</code>, <code>filter()</code>, <code>reduce()</code></h2>
+
+      <p>Python cung cấp nhiều HOF có sẵn. Ba cái thường gặp là <code>map()</code>, <code>filter()</code> và <code>functools.reduce()</code>.</p>
+
+      <h3><code>map(function, iterable)</code></h3>
+
+      <p>Áp dụng hàm lên từng phần tử của iterable.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def square(x):
+    return x ** 2
+
+numbers = [1, 2, 3, 4, 5]
+
+result = list(map(square, numbers))
+print(result)  # [1, 4, 9, 16, 25]
+
+result = list(map(lambda x: x ** 2, numbers))
+print(result)  # [1, 4, 9, 16, 25]</code></pre>
+      </div>
+
+      <h3><code>filter(function, iterable)</code></h3>
+
+      <p>Giữ lại phần tử mà hàm kiểm tra trả về <code>True</code>.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def is_even(x):
+    return x % 2 == 0
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+
+even_numbers = list(filter(is_even, numbers))
+print(even_numbers)  # [2, 4, 6, 8]
+
+odd_numbers = list(filter(lambda x: x % 2 != 0, numbers))
+print(odd_numbers)   # [1, 3, 5, 7]</code></pre>
+      </div>
+
+      <h3><code>reduce(function, iterable)</code></h3>
+
+      <p><code>reduce()</code> gom nhiều phần tử thành một kết quả duy nhất. Từ Python 3, <code>reduce</code> nằm trong module <code>functools</code>.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import reduce
+
+numbers = [1, 2, 3, 4]
+
+result = reduce(lambda x, y: x + y, numbers)
+print(result)  # 10
+
+product = reduce(lambda x, y: x * y, numbers)
+print(product)  # 24</code></pre>
+      </div>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>HOF</th><th>Chức năng</th><th>Giá trị trả về</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>map(f, iterable)</code></td><td>Biến đổi từng phần tử</td><td>Iterator chứa kết quả mới</td></tr>
+          <tr><td><code>filter(f, iterable)</code></td><td>Lọc phần tử thỏa điều kiện</td><td>Iterator chứa phần tử được giữ lại</td></tr>
+          <tr><td><code>reduce(f, iterable)</code></td><td>Gộp nhiều phần tử thành một giá trị</td><td>Một giá trị duy nhất</td></tr>
+          <tr><td><code>sorted(iterable, key=f)</code></td><td>Sắp xếp theo tiêu chí</td><td>List mới đã sắp xếp</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        Trong Python hiện đại, nhiều trường hợp dùng list comprehension sẽ dễ đọc hơn <code>map()</code> và <code>filter()</code>. Tuy nhiên, hiểu HOF vẫn rất quan trọng để đọc code thư viện và decorator.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s14">14. Built-in Decorators trong Python</h2>
+
+      <p>Python có nhiều decorator dùng sẵn. Một số decorator quan trọng thường gặp khi học OOP và framework:</p>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>Decorator</th><th>Dùng để làm gì?</th><th>Thường gặp ở đâu?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>@staticmethod</code></td><td>Method không cần <code>self</code> hoặc <code>cls</code></td><td>OOP</td></tr>
+          <tr><td><code>@classmethod</code></td><td>Method nhận class qua <code>cls</code></td><td>Factory method</td></tr>
+          <tr><td><code>@property</code></td><td>Truy cập method như attribute</td><td>Encapsulation</td></tr>
+          <tr><td><code>@abstractmethod</code></td><td>Bắt buộc class con implement method</td><td>Abstract class</td></tr>
+        </tbody>
+      </table>
+
+      <h3><code>@staticmethod</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">class MathUtils:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+print(MathUtils.add(3, 5))  # 8</code></pre>
+      </div>
+
+      <h3><code>@classmethod</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">class Student:
+    school = "PTIT"
+
+    def __init__(self, name):
+        self.name = name
+
+    @classmethod
+    def from_full_name(cls, full_name):
+        name = full_name.strip().title()
+        return cls(name)
+
+s = Student.from_full_name(" nguyen van an ")
+print(s.name)  # Nguyen Van An</code></pre>
+      </div>
+
+      <h3><code>@property</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self._balance = balance
+
+    @property
+    def balance(self):
+        return self._balance
+
+account = BankAccount(500_000)
+print(account.balance)  # gọi như attribute, không cần account.balance()</code></pre>
+      </div>
+
+      <h3><code>@abstractmethod</code></h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+r = Rectangle(4, 5)
+print(r.area())  # 20</code></pre>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s15">15. <code>functools.lru_cache</code> — Decorator tăng hiệu năng</h2>
+
+      <p><code>@lru_cache</code> là decorator có sẵn trong <code>functools</code>, dùng để cache kết quả hàm. Nó rất hữu ích khi hàm bị gọi lặp lại với cùng tham số.</p>
+
+      <h3>Ví dụ Fibonacci không cache</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">def fib(n):
+    if n &lt; 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+print(fib(10))  # 55</code></pre>
+      </div>
+
+      <p>Hàm trên bị tính lặp lại rất nhiều lần. Với <code>@lru_cache</code>, Python lưu kết quả cũ và tái sử dụng.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from functools import lru_cache
+
+@lru_cache(maxsize=None)
+
+def fib(n):
+    if n &lt; 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+print(fib(100))
+print(fib.cache_info())</code></pre>
+      </div>
+
+      <div class="warning">
+        Chỉ nên cache hàm có tính chất ổn định: cùng input thì cho cùng output. Không nên cache hàm phụ thuộc thời gian hiện tại, random, database thay đổi liên tục hoặc dữ liệu external không ổn định.
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s16">16. Ứng dụng thực tế của decorator</h2>
+
+      <h3>Flask route</h3>
+
+      <p>Trong Flask, <code>@app.route("/")</code> là decorator dùng để đăng ký URL cho một hàm xử lý request.</p>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+
+def home():
+    return "Hello Flask"</code></pre>
+      </div>
+
+      <h3>FastAPI route</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+
+def home():
+    return {"message": "Hello FastAPI"}</code></pre>
+      </div>
+
+      <h3>pytest marker</h3>
+
+      <div class="pre-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="language-python">import pytest
+
+@pytest.mark.parametrize("a, b, expected", [
+    (1, 2, 3),
+    (3, 4, 7),
+    (10, 20, 30),
+])
+
+def test_add(a, b, expected):
+    assert a + b == expected</code></pre>
+      </div>
+
+      <h3>Use case tự viết trong dự án</h3>
+
+      <table class="pro-table">
+        <thead>
+          <tr><th>Use case</th><th>Decorator ví dụ</th><th>Mục đích</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Đo thời gian chạy</td><td><code>@timer</code></td><td>Debug performance</td></tr>
+          <tr><td>Kiểm tra đăng nhập</td><td><code>@login_required</code></td><td>Bảo vệ route</td></tr>
+          <tr><td>Kiểm tra quyền</td><td><code>@role_required("admin")</code></td><td>Authorization</td></tr>
+          <tr><td>Retry khi lỗi</td><td><code>@retry(3)</code></td><td>Gọi API ổn định hơn</td></tr>
+          <tr><td>Cache kết quả</td><td><code>@lru_cache</code></td><td>Tăng hiệu năng</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="s17">17. Bài tập thực hành</h2>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 1 — Viết HOF đơn giản</h3>
+        <p>Viết HOF tên <code>apply_twice</code>: nhận một hàm <code>f</code> và một giá trị <code>x</code>, rồi trả về kết quả của việc áp dụng <code>f</code> hai lần liên tiếp.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">def apply_twice(f, x):
+    return f(f(x))
+
+
+def double(n):
+    return n * 2
+
+print(apply_twice(double, 3))             # 12
+print(apply_twice(lambda x: x + 10, 5))   # 25</code></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 2 — Closure counter</h3>
+        <p>Viết hàm <code>make_counter()</code> trả về một hàm <code>counter()</code>. Mỗi lần gọi <code>counter()</code>, giá trị đếm tăng thêm 1.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">def make_counter():
+    count = 0
+
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+
+    return counter
+
+c = make_counter()
+print(c())  # 1
+print(c())  # 2
+print(c())  # 3</code></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 3 — Decorator đo thời gian chạy</h3>
+        <p>Viết decorator <code>timer</code> tự động đo và in ra thời gian thực thi của hàm bất kỳ. Dùng <code>functools.wraps</code>.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">from functools import wraps
+from time import perf_counter
+
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = perf_counter()
+        result = func(*args, **kwargs)
+        end = perf_counter()
+        print(f"{func.__name__}: {(end - start) * 1000:.2f} ms")
+        return result
+    return wrapper
+
+@timer
+
+def slow_sum(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+print(slow_sum(1_000_000))</code></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 4 — Decorator kiểm tra đầu vào</h3>
+        <p>Viết decorator <code>validate_positive</code>: trước khi gọi hàm tính căn bậc hai, kiểm tra đối số có phải số không âm không.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">from functools import wraps
+import math
+
+
+def validate_positive(func):
+    @wraps(func)
+    def wrapper(x):
+        if x &lt; 0:
+            print(f"Lỗi: {x} không phải số không âm")
+            return None
+        return func(x)
+    return wrapper
+
+@validate_positive
+
+def sqrt(x):
+    return math.sqrt(x)
+
+print(sqrt(16))
+print(sqrt(-5))</code></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 5 — Decorator có tham số</h3>
+        <p>Viết decorator <code>repeat(n)</code> để chạy hàm gốc <code>n</code> lần.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">from functools import wraps
+
+
+def repeat(n):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            result = None
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+
+def say_hi():
+    print("Hi")
+
+say_hi()</code></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <h3 style="margin-top:0;">Bài 6 — Mini challenge: retry decorator</h3>
+        <p>Viết decorator <code>retry(times)</code>: nếu hàm bị lỗi, thử chạy lại tối đa <code>times</code> lần.</p>
+
+        <div class="pre-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="language-python">from functools import wraps
+
+
+def retry(times):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_error = None
+            for attempt in range(1, times + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_error = e
+                    print(f"Lỗi lần {attempt}: {e}")
+            raise last_error
+        return wrapper
+    return decorator
+
+@retry(3)
+
+def unstable_task():
+    print("Đang chạy task...")
+    raise ValueError("Lỗi giả lập")
+
+# unstable_task()</code></pre>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════ -->
+      <h2 id="tong-ket">Tổng kết</h2>
+
+      <ul>
+        <li><strong>Function là first-class citizen:</strong> có thể gán vào biến, truyền làm đối số, trả về từ hàm và lưu trong cấu trúc dữ liệu.</li>
+        <li><strong>Higher-order function:</strong> hàm nhận hàm khác làm tham số hoặc trả về hàm khác.</li>
+        <li><strong>Closure:</strong> hàm bên trong ghi nhớ biến của hàm bên ngoài. Đây là nền tảng quan trọng của decorator.</li>
+        <li><strong>Lambda:</strong> hàm ẩn danh, phù hợp với logic ngắn khi dùng cùng <code>map()</code>, <code>filter()</code>, <code>sorted()</code>.</li>
+        <li><strong>Decorator:</strong> HOF đặc biệt dùng cú pháp <code>@</code> để bọc hàm và mở rộng hành vi mà không sửa code gốc.</li>
+        <li><strong>Decorator tổng quát:</strong> dùng <code>*args</code>, <code>**kwargs</code> và nhớ <code>return result</code>.</li>
+        <li><strong><code>functools.wraps</code>:</strong> giúp giữ metadata của hàm gốc như <code>__name__</code>, <code>__doc__</code>.</li>
+        <li><strong>Decorator có tham số:</strong> thường có 3 lớp hàm: nhận tham số decorator → nhận <code>func</code> → <code>wrapper</code>.</li>
+        <li><strong>HOF có sẵn:</strong> <code>map()</code>, <code>filter()</code>, <code>reduce()</code>, <code>sorted(key=...)</code>.</li>
+        <li><strong>Decorator thực tế:</strong> <code>@staticmethod</code>, <code>@classmethod</code>, <code>@property</code>, <code>@abstractmethod</code>, <code>@lru_cache</code>, <code>@app.route(...)</code>.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Tìm hiểu thêm?</strong> Python Docs về
+        <a href="https://docs.python.org/3/glossary.html#term-decorator" target="_blank" rel="noopener">Decorator</a>,
+        <a href="https://docs.python.org/3/howto/functional.html" target="_blank" rel="noopener">Functional Programming HOWTO</a>,
+        và module <a href="https://docs.python.org/3/library/functools.html" target="_blank" rel="noopener"><code>functools</code></a>
+        giải thích chi tiết các công cụ như <code>wraps</code>, <code>reduce</code>, <code>lru_cache</code>.
+      </div>
+      <div class="note">
+        <strong>Ghi chú học tiếp:</strong> Decorator xuất hiện rất nhiều trong các framework Python hiện đại. Khi sang FastAPI hoặc pytest, hãy đọc cú pháp <code>@...</code> như một lời nhắc rằng hàm bên dưới đang được một hàm khác bọc lại.
+      </div>
+
+      <div class="footer">
+        Tài liệu: 20. Higher-Order Functions &amp; Decorators trong Python
+      </div>
+
+    </article>
   </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

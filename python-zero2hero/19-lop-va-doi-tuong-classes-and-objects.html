@@ -3,78 +3,1256 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>19. Lớp và Đối Tượng (Classes &amp; Objects) trong Python</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 19</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#class-la-gi">1. Class và Object là gì?</a>
+      <a href="#xay-dung-class">2. Xây dựng Class đầu tiên</a>
+      <a href="#class-attribute">3. Class Attribute vs Instance Attribute</a>
+      <a href="#encapsulation">4. Tính đóng gói (Encapsulation)</a>
+      <a href="#inheritance">5. Tính kế thừa (Inheritance)</a>
+      <a href="#polymorphism">6. Tính đa hình (Polymorphism)</a>
+      <a href="#abstraction">7. Tính trừu tượng (Abstraction)</a>
+      <a href="#python-docs">8. Ghi chú từ Python Docs</a>
+      <a href="#dunder-methods">9. Magic Methods / Dunder Methods</a>
+      <a href="#staticmethod-classmethod">10. Static Method và Class Method</a>
+      <a href="#property">11. Property Decorator</a>
+      <a href="#composition">12. Composition vs Inheritance</a>
+      <a href="#dataclass">13. Dataclass</a>
+      <a href="#uml">14. UML Class Diagram</a>
+      <a href="#loi-thuong-gap">15. Lỗi OOP thường gặp</a>
+      <a href="#project-thuc-te">16. Project OOP thực tế</a>
+      <a href="#bai-tap">17. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>19. Lớp và Đối Tượng (Classes &amp; Objects) trong Python</h1>
+        <p class="meta">
+          Lập trình hướng đối tượng (OOP) — mô hình tổ chức code theo <strong>lớp</strong> và <strong>đối tượng</strong>, giúp code dễ tái sử dụng, dễ mở rộng và dễ bảo trì.
+          Bốn tính chất cốt lõi: <strong>Encapsulation · Inheritance · Polymorphism · Abstraction</strong>.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở các bài trước, chúng ta đã viết các hàm (<code>def</code>) riêng lẻ để giải quyết từng bài toán cụ thể. Cách này ổn cho các chương trình nhỏ, nhưng khi code lớn lên, ta cần một cách tổ chức tốt hơn — đó chính là <strong>lập trình hướng đối tượng (OOP)</strong>.
+          </p>
+          <p>
+            Python hỗ trợ OOP đầy đủ: từ định nghĩa class, constructor, attribute, method cho đến bốn tính chất đặc trưng. Bài này đi từ khái niệm đến thực hành coding từng phần.
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Khái niệm</th><th>Ý nghĩa đơn giản</th><th>Ví dụ thực tế</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Class</strong></td>
+                <td>Bản thiết kế / khuôn mẫu</td>
+                <td>Bản vẽ ngôi nhà</td>
+              </tr>
+              <tr>
+                <td><strong>Object</strong></td>
+                <td>Thực thể được tạo ra từ class</td>
+                <td>Ngôi nhà hoàn chỉnh được xây theo bản vẽ</td>
+              </tr>
+              <tr>
+                <td><strong>Attribute</strong></td>
+                <td>Dữ liệu gắn với object</td>
+                <td>Màu sơn, diện tích, số phòng</td>
+              </tr>
+              <tr>
+                <td><strong>Method</strong></td>
+                <td>Hành vi / hàm bên trong class</td>
+                <td>Mở cửa, bật đèn, vệ sinh</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>OOP khác gì so với lập trình thủ tục?</h3>
+          <p>
+            Trước khi học class, cần hiểu tại sao OOP ra đời. Với chương trình nhỏ, ta có thể viết nhiều hàm riêng lẻ. Nhưng khi dữ liệu và hành vi bắt đầu liên quan chặt chẽ với nhau, việc gom chúng vào một object sẽ giúp chương trình rõ ràng hơn.
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Lập trình thủ tục</th><th>Lập trình hướng đối tượng</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cách tổ chức</td>
+                <td>Tập trung vào hàm và các bước xử lý</td>
+                <td>Tập trung vào object có dữ liệu và hành vi</td>
+              </tr>
+              <tr>
+                <td>Dữ liệu</td>
+                <td>Thường truyền qua lại giữa nhiều hàm</td>
+                <td>Được giữ bên trong object thông qua attribute</td>
+              </tr>
+              <tr>
+                <td>Mở rộng</td>
+                <td>Dễ rối khi số lượng hàm tăng nhiều</td>
+                <td>Dễ mở rộng bằng class mới, kế thừa hoặc composition</td>
+              </tr>
+              <tr>
+                <td>Phù hợp</td>
+                <td>Script nhỏ, xử lý tuần tự, bài toán đơn giản</td>
+                <td>Ứng dụng lớn, GUI, backend, game, mô phỏng, quản lý dữ liệu</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Không phải lúc nào cũng cần OOP.</strong> Nếu bài toán chỉ là đọc file, xử lý vài dòng dữ liệu rồi in kết quả, dùng hàm bình thường có thể đủ. OOP hữu ích nhất khi chương trình có nhiều thực thể như <code>Student</code>, <code>Teacher</code>, <code>BankAccount</code>, <code>Device</code>, <code>Router</code> hoặc <code>Packet</code>.
+          </div>
+        </section>
+
+        <!-- ======================== CLASS LÀ GÌ ======================== -->
+        <section id="class-la-gi">
+          <h2>1. Class và Object là gì?</h2>
+
+          <h3>Class</h3>
+          <p>
+            <strong>Class</strong> là kiểu dữ liệu do người dùng tự định nghĩa — tập hợp của nhiều <em>thuộc tính</em> (attribute) và <em>phương thức</em> (method) đặc trưng cho mọi đối tượng được tạo ra từ lớp đó.
+          </p>
+
+          <h3>Object (Đối tượng)</h3>
+          <p>
+            <strong>Object</strong> là một <em>thực thể cụ thể</em> được tạo ra từ class. Mỗi object có:
+          </p>
+          <ul>
+            <li><strong>Trạng thái (state)</strong> — chính là các <em>attribute</em> (thuộc tính)</li>
+            <li><strong>Hành vi (behavior)</strong> — chính là các <em>method</em> (phương thức)</li>
+          </ul>
+
+          <div class="diagram">
+            <div class="box">
+              <strong>Class</strong><br/>
+              <small style="color:#64748b">Bản thiết kế<br/>Template</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Object 1</strong><br/>
+              <small style="color:#64748b">person1<br/>name="Mini"</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Object 2</strong><br/>
+              <small style="color:#64748b">person2<br/>name="An"</small>
+            </div>
+          </div>
+
+          <h3>Các khái niệm quan trọng</h3>
+          <ul>
+            <li>
+              <strong>Constructor (<code>__init__</code>)</strong> — Hàm khởi tạo, được gọi tự động khi tạo object. Dùng để khởi tạo các <em>instance attribute</em>.
+            </li>
+            <li>
+              <strong>Class attribute</strong> — Thuộc tính chung, chia sẻ giữa mọi object của class. Định nghĩa ngay bên trong class, ngoài các method.
+            </li>
+            <li>
+              <strong>Instance attribute</strong> — Thuộc tính riêng của từng object. Thường được tạo trong <code>__init__</code> thông qua <code>self</code>.
+            </li>
+            <li>
+              <strong>Method</strong> — Hàm được định nghĩa bên trong class. Khác với function bên ngoài ở chỗ luôn nhận <code>self</code> làm tham số đầu tiên.
+            </li>
+          </ul>
+
+          <div class="note">
+            <strong>Tại sao cần <code>self</code>?</strong> Khi bạn viết <code>person1.print_info()</code>, Python tự động truyền <code>person1</code> vào tham số <code>self</code>. Nhờ đó method biết mình đang thao tác trên object nào. <code>self</code> chỉ là quy ước đặt tên — bạn có thể đặt tên khác, nhưng <strong>đừng làm vậy</strong> vì sẽ gây khó đọc.
+          </div>
+
+          <h3>Vòng đời cơ bản của object</h3>
+          <p>
+            Một object thường đi qua các bước: được tạo ra, khởi tạo dữ liệu, được sử dụng, sau đó bị Python thu hồi khi không còn tham chiếu nào trỏ tới nó. Trong Python, bộ thu gom rác (Garbage Collector) xử lý phần lớn công việc này tự động.
+          </p>
+          <div class="diagram">
+            <div class="box"><strong>Tạo object</strong><br/><small style="color:#64748b"><code>obj = Class()</code></small></div>
+            <div class="arrow">→</div>
+            <div class="box"><strong>Khởi tạo</strong><br/><small style="color:#64748b"><code>__init__()</code></small></div>
+            <div class="arrow">→</div>
+            <div class="box"><strong>Sử dụng</strong><br/><small style="color:#64748b">method / attribute</small></div>
+          </div>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class User:
+    def __init__(self, name):
+        print("Object được khởi tạo")
+        self.name = name
+
+    def __del__(self):
+        print("Object bị hủy")
+
+user = User("Viet")
+print(user.name)
+
+# Khi không còn tham chiếu tới object, Python có thể thu hồi bộ nhớ.</code></pre>
+          </div>
+          <div class="warning">
+            <strong>Lưu ý:</strong> Không nên phụ thuộc quá nhiều vào <code>__del__()</code> để xử lý logic quan trọng, vì thời điểm Python gọi destructor không phải lúc nào cũng dễ dự đoán. Với file, socket, database connection, nên dùng <code>with</code> hoặc đóng tài nguyên rõ ràng.
+          </div>
+        </section>
+
+        <!-- ======================== XÂY DỰNG CLASS ======================== -->
+        <section id="xay-dung-class">
+          <h2>2. Xây dựng Class đầu tiên</h2>
+          <p>
+            Dùng từ khóa <code>class</code> để khai báo. Tên class theo quy tắc <strong>PascalCase</strong> (viết hoa chữ đầu mỗi từ).
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Person:
+    # ── Class attribute: chung cho mọi object ──
+    count = 0
+
+    # ── Constructor (hàm khởi tạo) ──
+    def __init__(self, name, age):
+        # Instance attribute: riêng từng object
+        self.name = name   # gắn liền với đối tượng
+        self.age  = age
+
+        Person.count += 1  # mỗi lần tạo thì tăng biến đếm
+
+    # ── Method (phương thức) ──
+    def print_info(self):
+        print(f"Tên: {self.name}, Tuổi: {self.age}")
+
+
+# Tạo object
+person1 = Person("Mini", 20)
+person2 = Person("An",   30)
+
+# Gọi method
+person1.print_info()   # Tên: Mini, Tuổi: 20
+person2.print_info()   # Tên: An,   Tuổi: 30
+
+# Truy cập class attribute qua tên class
+print(Person.count)    # 2
+
+# Truy cập instance attribute trực tiếp
+print(person1.name)    # Mini</code></pre>
+          </div>
+
+          <p>
+            Chú ý cách truy cập:
+          </p>
+          <ul>
+            <li><strong>Instance attribute / method</strong> — qua tên object: <code>person1.name</code>, <code>person1.print_info()</code></li>
+            <li><strong>Class attribute</strong> — qua tên class: <code>Person.count</code></li>
+          </ul>
+
+          <div class="warning">
+            <strong>Thứ tự ưu tiên lookup:</strong> Khi Python tìm một attribute, nó tìm trong <em>object trước</em>, rồi mới lên <em>class</em>. Nếu bạn vô tình tạo một instance attribute trùng tên class attribute, instance attribute sẽ <em>che khuất</em> class attribute.
+          </div>
+        </section>
+
+        <!-- ======================== CLASS vs INSTANCE ATTRIBUTE ======================== -->
+        <section id="class-attribute">
+          <h2>3. Class Attribute vs Instance Attribute</h2>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Class Attribute</th><th>Instance Attribute</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Định nghĩa ở đâu</td>
+                <td>Bên trong class, ngoài method</td>
+                <td>Bên trong <code>__init__</code> (hoặc bất kỳ method nào)</td>
+              </tr>
+              <tr>
+                <td>Chia sẻ</td>
+                <td>Chung cho mọi object</td>
+                <td>Riêng từng object</td>
+              </tr>
+              <tr>
+                <td>Truy cập qua</td>
+                <td><code>ClassName.attr</code> hoặc <code>self.attr</code></td>
+                <td><code>self.attr</code> hoặc <code>obj.attr</code></td>
+              </tr>
+              <tr>
+                <td>Use case phổ biến</td>
+                <td>Đếm số object, hằng số dùng chung</td>
+                <td>Dữ liệu riêng biệt của từng thực thể</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Bẫy với mutable class attribute</h3>
+          <p>
+            Python Docs cảnh báo: <strong>đừng dùng list/dict làm class attribute</strong> nếu bạn định thêm phần tử vào đó — tất cả object sẽ cùng chia sẻ và ảnh hưởng lẫn nhau.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># ❌ Sai — tricks là class attribute (mutable list dùng chung)
+class Dog:
+    tricks = []
+
+    def __init__(self, name):
+        self.name = name
+
+    def add_trick(self, trick):
+        self.tricks.append(trick)
+
+d = Dog("Fido")
+e = Dog("Buddy")
+d.add_trick("lăn")
+e.add_trick("ngồi")
+print(d.tricks)   # ['lăn', 'ngồi'] — bị chia sẻ!
+
+# ✅ Đúng — khởi tạo list riêng trong __init__
+class Dog:
+    def __init__(self, name):
+        self.name   = name
+        self.tricks = []   # mỗi object có list riêng
+
+    def add_trick(self, trick):
+        self.tricks.append(trick)
+
+d = Dog("Fido")
+e = Dog("Buddy")
+d.add_trick("lăn")
+e.add_trick("ngồi")
+print(d.tricks)   # ['lăn']   ✓
+print(e.tricks)   # ['ngồi']  ✓</code></pre>
+          </div>
+          <div class="note">
+            <strong>Ghi chú thực hành:</strong> Nếu dữ liệu có thể thay đổi theo từng object, hãy khởi tạo trong <code>__init__</code>. Chỉ dùng class attribute cho hằng số, cấu hình chung hoặc bộ đếm thật sự dùng chung cho cả class.
+          </div>
+        </section>
+
+        <!-- ======================== ENCAPSULATION ======================== -->
+        <section id="encapsulation">
+          <h2>4. Tính đóng gói (Encapsulation)</h2>
+          <p>
+            Đóng gói <strong>hạn chế quyền truy cập</strong> vào trạng thái bên trong object, giúp ngăn chặn dữ liệu bị sửa đổi ngoài ý muốn. C++/Java có <code>public</code>, <code>protected</code>, <code>private</code> rõ ràng. Python thì dùng quy ước đặt tên gọi là <strong>name mangling</strong>.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Cú pháp</th><th>Tương đương</th><th>Name Mangling?</th><th>Có thể truy cập ngoài class?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>name</code></td>
+                <td>Public</td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-yes">Tự do</span></td>
+              </tr>
+              <tr>
+                <td><code>_name</code></td>
+                <td>Protected (quy ước)</td>
+                <td><span class="status-badge status-no">Không</span></td>
+                <td><span class="status-badge status-limited">Được, nhưng không nên</span></td>
+              </tr>
+              <tr>
+                <td><code>__name</code></td>
+                <td>Private (name mangling)</td>
+                <td><span class="status-badge status-yes">Có</span></td>
+                <td><span class="status-badge status-limited">Cần dùng <code>_ClassName__name</code></span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Thực hành — ba trường hợp</h3>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.age    = age       # public
+        self._name  = name      # "protected" — quy ước, không ép buộc
+        self.__score = 10.0     # private — name mangling
+
+    def print_name(self):
+        print(self._name)       # Bên trong class: dùng bình thường
+
+    def get_score(self):
+        print(self.__score)     # Bên trong class: dùng bình thường
+
+
+s = Student("Mini", 20)
+
+# ── Public ──
+print(s.age)        # 20 — truy cập trực tiếp, ok
+s.age = 21          # thay đổi được
+
+# ── _name (protected) ──
+print(s._name)      # "Mini" — Python không chặn, nhưng quy ước là đừng dùng
+s._name = "An"      # vẫn thay đổi được
+
+# ── __score (private / name mangling) ──
+# print(s.__score)  # ❌ AttributeError: 'Student' object has no attribute '__score'
+
+# Cách truy cập "đúng" nếu thực sự cần:
+print(s._Student__score)   # 10.0 — Python đổi tên thành _ClassName__attr
+
+# Gọi method nội bộ vẫn hoạt động bình thường
+s.get_score()       # 10.0</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Thực tế trong dự án:</strong> Hầu hết lập trình viên Python ít dùng dấu gạch dưới kép (<code>__</code>) trong dự án thực. Quy ước một gạch (<code>_</code>) phổ biến hơn như một tín hiệu "đây là internal, đừng dùng bên ngoài". Python đặt niềm tin vào lập trình viên thay vì ép buộc bằng compiler như C++/Java.
+          </div>
+        </section>
+
+        <!-- ======================== INHERITANCE ======================== -->
+        <section id="inheritance">
+          <h2>5. Tính kế thừa (Inheritance)</h2>
+          <p>
+            Kế thừa cho phép một class <strong>nhận lại toàn bộ attribute và method</strong> của class khác, đồng thời có thể mở rộng hoặc ghi đè thêm. Class gốc gọi là <strong>base class / parent class</strong>; class kế thừa gọi là <strong>derived class / child class</strong>.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># ── Class cha (base class) ──
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def print_name(self):
+        print(self.name)
+
+
+# ── Class con kế thừa toàn bộ ──
+class Student(Person):
+    pass   # không thêm gì, kế thừa nguyên si
+
+s = Student("Mini")
+s.print_name()   # "Mini" — method kế thừa từ Person
+
+
+# ── Ghi đè constructor và mở rộng ──
+class Teacher(Person):
+    def __init__(self, name, subject):
+        # Cách 1: dùng super() — được khuyến nghị
+        super().__init__(name)
+
+        # Cách 2 (tương đương): gọi trực tiếp tên class cha
+        # Person.__init__(self, name)
+
+        self.subject = subject   # attribute riêng của Teacher
+
+    def introduce(self):
+        print(f"Tôi là {self.name}, dạy {self.subject}")
+
+
+t = Teacher("Thầy Hùng", "Mạng máy tính")
+t.print_name()   # "Thầy Hùng" — kế thừa từ Person
+t.introduce()    # "Tôi là Thầy Hùng, dạy Mạng máy tính"</code></pre>
+          </div>
+
+          <h3>Kiểm tra quan hệ kế thừa</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">print(isinstance(t, Teacher))   # True
+print(isinstance(t, Person))    # True — Teacher kế thừa Person
+print(issubclass(Teacher, Person))  # True</code></pre>
+          </div>
+
+          <div class="note">
+            <strong><code>super()</code> vs tên class cha trực tiếp:</strong> Dùng <code>super()</code> được khuyến nghị hơn vì nó tự động theo MRO (Method Resolution Order) — đặc biệt quan trọng khi có đa kế thừa. Gọi trực tiếp <code>Person.__init__(self, name)</code> cũng hoạt động nhưng cứng hơn.
+          </div>
+        </section>
+
+        <!-- ======================== POLYMORPHISM ======================== -->
+        <section id="polymorphism">
+          <h2>6. Tính đa hình (Polymorphism)</h2>
+          <p>
+            Đa hình nghĩa là <strong>nhiều class có thể cùng một tên method</strong>, nhưng mỗi class <em>thể hiện nó khác nhau</em>. Khi gọi method qua cùng một interface, Python sẽ tự chọn đúng phiên bản.
+          </p>
+
+          <h3>Ví dụ 1 — Các class độc lập cùng tên method</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Cow:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} nói: Moo!"
+
+class Cat:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} nói: Meo meo!"
+
+
+my_cow = Cow("Bò")
+my_cat = Cat("Mèo")
+
+print(my_cow.speak())   # Bò nói: Moo!
+print(my_cat.speak())   # Mèo nói: Meo meo!
+
+# Gọi qua vòng lặp — đây là sức mạnh của polymorphism
+for animal in [my_cow, my_cat]:
+    print(animal.speak())  # Python tự biết gọi phiên bản nào</code></pre>
+          </div>
+
+          <h3>Ví dụ 2 — Kết hợp Inheritance + Method Overriding</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Animal:
+    def speak(self):
+        return "Some sound..."
+
+class Dog(Animal):
+    def speak(self):          # override (ghi đè) method của cha
+        return "Woof!"
+
+class Duck(Animal):
+    def speak(self):          # override khác
+        return "Quack!"
+
+
+my_animal = Animal()
+my_dog    = Dog()
+my_duck   = Duck()
+
+for creature in [my_animal, my_dog, my_duck]:
+    print(creature.speak())
+# Some sound...
+# Woof!
+# Quack!</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Duck Typing trong Python:</strong> Python không bắt buộc các class phải có quan hệ kế thừa để dùng chung interface. Chỉ cần object có đúng method là đủ — "If it quacks like a duck, it is a duck."
+          </div>
+        </section>
+
+        <!-- ======================== ABSTRACTION ======================== -->
+        <section id="abstraction">
+          <h2>7. Tính trừu tượng (Abstraction)</h2>
+          <p>
+            Tính trừu tượng được thể hiện qua <strong>lớp trừu tượng (abstract class)</strong>. Lớp trừu tượng định nghĩa <em>khung giao diện</em> (interface), buộc các class con phải triển khai (implement) các method được chỉ định. <strong>Không thể tạo object trực tiếp từ lớp trừu tượng.</strong>
+          </p>
+          <p>
+            Python cung cấp module <code>abc</code> (Abstract Base Classes) để làm điều này.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+# ── Lớp trừu tượng ──
+class Animal(ABC):
+
+    @abstractmethod
+    def speak(self):
+        """Phương thức trừu tượng: BẮT BUỘC ghi đè ở class con."""
+        pass
+
+    def breathe(self):
+        """Phương thức thông thường: KHÔNG bắt buộc ghi đè."""
+        print("Hít thở bình thường")
+
+
+# Thử tạo object từ lớp trừu tượng → sẽ báo lỗi
+# a = Animal()   # ❌ TypeError: Can't instantiate abstract class Animal
+
+
+# ── Class con phải implement speak() ──
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Bird(Animal):
+    def speak(self):
+        return "Tweet!"
+
+
+dog  = Dog()
+bird = Bird()
+
+print(dog.speak())    # Woof!
+print(bird.speak())   # Tweet!
+
+dog.breathe()         # Hít thở bình thường — kế thừa từ Animal</code></pre>
+          </div>
+
+          <h3>Điều gì xảy ra nếu class con quên implement?</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Fish(Animal):
+    pass   # ❌ Quên implement speak()
+
+# f = Fish()
+# TypeError: Can't instantiate abstract class Fish
+# without an implementation for abstract method 'speak'</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Khi nào dùng Abstract Class?</strong> Khi bạn muốn thiết kế một <em>giao diện chung</em> cho nhiều class liên quan và <em>bắt buộc</em> chúng phải triển khai các method nhất định. Ví dụ thực tế: <code>Shape</code> với abstract method <code>area()</code> buộc <code>Circle</code>, <code>Rectangle</code>… đều phải tính diện tích.
+          </div>
+        </section>
+
+        <!-- ======================== PYTHON DOCS ======================== -->
+        <section id="python-docs">
+          <h2>8. Ghi chú từ Python Docs</h2>
+          <p>
+            Một số điểm thú vị mà tài liệu chính thức nhấn mạnh, bổ sung thêm cho những gì đã học:
+          </p>
+
+          <h3>Scope và Namespace trong Class</h3>
+          <p>
+            Khi Python tạo một class, nó mở ra một <strong>namespace mới</strong>. Mọi tên được gán bên trong class definition đều nằm trong namespace đó. Đây là lý do tại sao các method có thể truy cập nhau qua <code>self</code>.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Bag:
+    def __init__(self):
+        self.data = []
+
+    def add(self, x):
+        self.data.append(x)
+
+    def add_twice(self, x):
+        self.add(x)   # method gọi method khác qua self
+        self.add(x)</code></pre>
+          </div>
+
+          <h3>Method là Function được "bind" vào object</h3>
+          <p>
+            Theo Python Docs, <code>x.f()</code> và <code>MyClass.f(x)</code> hoàn toàn tương đương. Khi bạn gọi một method qua object, Python tự động chèn object đó vào làm đối số đầu tiên.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class MyClass:
+    def f(self):
+        return "hello"
+
+x = MyClass()
+
+# Hai cách gọi tương đương:
+print(x.f())           # "hello"
+print(MyClass.f(x))    # "hello"
+
+# Method object có thể lưu vào biến và gọi sau
+xf = x.f
+print(xf())            # "hello"</code></pre>
+          </div>
+
+          <h3>Đa kế thừa (Multiple Inheritance)</h3>
+          <p>
+            Python hỗ trợ đa kế thừa. Thứ tự tìm kiếm method tuân theo <strong>MRO — Method Resolution Order</strong> (thuật toán C3 linearization). Dùng <code>ClassName.__mro__</code> để xem.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class A:
+    def hello(self):
+        return "Hello từ A"
+
+class B(A):
+    pass
+
+class C(A):
+    def hello(self):
+        return "Hello từ C"
+
+class D(B, C):   # đa kế thừa
+    pass
+
+print(D().hello())   # "Hello từ C" — do MRO: D → B → C → A
+print(D.__mro__)     # (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)</code></pre>
+          </div>
+        </section>
+
+
+        <!-- ======================== DUNDER METHODS ======================== -->
+        <section id="dunder-methods">
+          <h2>9. Magic Methods / Dunder Methods</h2>
+          <p>
+            <strong>Magic methods</strong> là các method đặc biệt có hai dấu gạch dưới ở đầu và cuối tên, ví dụ <code>__init__</code>, <code>__str__</code>, <code>__len__</code>. Chúng giúp object của bạn hoạt động tự nhiên với cú pháp có sẵn của Python như <code>print(obj)</code>, <code>len(obj)</code>, <code>obj1 + obj2</code>, <code>obj1 == obj2</code>.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Magic method</th><th>Được gọi khi</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>__init__</code></td><td><code>Class(...)</code></td><td>Khởi tạo object</td></tr>
+              <tr><td><code>__str__</code></td><td><code>print(obj)</code>, <code>str(obj)</code></td><td>Chuỗi dễ đọc cho người dùng</td></tr>
+              <tr><td><code>__repr__</code></td><td><code>repr(obj)</code>, debug trong console</td><td>Chuỗi rõ ràng cho lập trình viên</td></tr>
+              <tr><td><code>__len__</code></td><td><code>len(obj)</code></td><td>Trả về độ dài</td></tr>
+              <tr><td><code>__eq__</code></td><td><code>obj1 == obj2</code></td><td>So sánh bằng</td></tr>
+              <tr><td><code>__lt__</code></td><td><code>obj1 &lt; obj2</code></td><td>So sánh nhỏ hơn</td></tr>
+              <tr><td><code>__add__</code></td><td><code>obj1 + obj2</code></td><td>Cộng hai object</td></tr>
+            </tbody>
+          </table>
+
+          <h3><code>__str__</code> và <code>__repr__</code></h3>
+          <p>
+            Nếu không định nghĩa <code>__str__</code> hoặc <code>__repr__</code>, khi in object, Python thường hiển thị dạng khó đọc như <code>&lt;__main__.Student object at 0x...&gt;</code>. Vì vậy, trong class thực tế nên định nghĩa ít nhất <code>__repr__</code> hoặc <code>__str__</code>.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"Sinh viên {self.name}, {self.age} tuổi"
+
+    def __repr__(self):
+        return f"Student(name={self.name!r}, age={self.age!r})"
+
+s = Student("Mini", 20)
+
+print(s)        # Sinh viên Mini, 20 tuổi
+print(repr(s))  # Student(name='Mini', age=20)</code></pre>
+          </div>
+
+          <h3>Ví dụ: cộng hai object bằng <code>__add__</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __repr__(self):
+        return f"Vector(x={self.x}, y={self.y})"
+
+v1 = Vector(2, 3)
+v2 = Vector(4, 5)
+
+print(v1 + v2)  # Vector(x=6, y=8)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== STATICMETHOD CLASSMETHOD ======================== -->
+        <section id="staticmethod-classmethod">
+          <h2>10. Static Method và Class Method</h2>
+          <p>
+            Trong class Python có ba loại method thường gặp: <strong>instance method</strong>, <strong>class method</strong> và <strong>static method</strong>. Điểm khác nhau quan trọng nằm ở tham số đầu tiên mà method nhận vào.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Loại method</th><th>Tham số đầu tiên</th><th>Làm việc với</th><th>Dùng khi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Instance method</td><td><code>self</code></td><td>Object cụ thể</td><td>Cần đọc/sửa dữ liệu riêng của object</td></tr>
+              <tr><td>Class method</td><td><code>cls</code></td><td>Class</td><td>Cần đọc/sửa class attribute hoặc tạo object theo cách khác</td></tr>
+              <tr><td>Static method</td><td>Không có <code>self</code> / <code>cls</code></td><td>Không phụ thuộc object/class</td><td>Hàm tiện ích đặt trong class cho gọn nhóm logic</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    school_name = "PTIT"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    # Instance method: dùng self
+    def introduce(self):
+        return f"Tôi là {self.name}, {self.age} tuổi"
+
+    # Class method: dùng cls
+    @classmethod
+    def change_school(cls, new_name):
+        cls.school_name = new_name
+
+    # Alternative constructor: tạo object từ chuỗi
+    @classmethod
+    def from_string(cls, text):
+        name, age = text.split("-")
+        return cls(name, int(age))
+
+    # Static method: không cần self hoặc cls
+    @staticmethod
+    def is_adult(age):
+        return age >= 18
+
+s1 = Student("Viet", 20)
+print(s1.introduce())
+
+Student.change_school("PTIT HCM")
+print(Student.school_name)
+
+s2 = Student.from_string("An-19")
+print(s2.name, s2.age)
+
+print(Student.is_adult(17))  # False</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Kinh nghiệm dùng:</strong> Nếu method cần dữ liệu của object, dùng instance method. Nếu method cần class hoặc tạo object theo cách đặc biệt, dùng <code>@classmethod</code>. Nếu chỉ là hàm tiện ích liên quan đến class về mặt ý nghĩa, dùng <code>@staticmethod</code>.
+          </div>
+        </section>
+
+        <!-- ======================== PROPERTY ======================== -->
+        <section id="property">
+          <h2>11. Property Decorator</h2>
+          <p>
+            <code>@property</code> giúp bạn truy cập method giống như attribute. Nó thường được dùng để kiểm soát dữ liệu đầu vào, bảo vệ trạng thái bên trong object, nhưng vẫn giữ cú pháp gọn gàng.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score  # gọi setter
+
+    @property
+    def score(self):
+        return self._score
+
+    @score.setter
+    def score(self, value):
+        if not 0 <= value <= 10:
+            raise ValueError("Điểm phải nằm trong khoảng 0 đến 10")
+        self._score = value
+
+s = Student("Mini", 8.5)
+print(s.score)   # 8.5
+
+s.score = 9.0    # hợp lệ
+# s.score = 12   # ValueError</code></pre>
+          </div>
+
+          <p>
+            Nếu không dùng <code>@property</code>, bạn thường phải viết kiểu Java/C++ như <code>get_score()</code> và <code>set_score()</code>. Trong Python, property giúp code tự nhiên hơn nhưng vẫn kiểm soát được dữ liệu.
+          </p>
+        </section>
+
+        <!-- ======================== COMPOSITION ======================== -->
+        <section id="composition">
+          <h2>12. Composition vs Inheritance</h2>
+          <p>
+            Người mới thường lạm dụng kế thừa. Trong thiết kế OOP thực tế, cần phân biệt rõ <strong>IS-A</strong> và <strong>HAS-A</strong>.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Quan hệ</th><th>Ý nghĩa</th><th>Ví dụ</th><th>Nên dùng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Inheritance</td><td>IS-A</td><td><code>Dog</code> là một <code>Animal</code></td><td>Khi class con thực sự là một phiên bản đặc biệt của class cha</td></tr>
+              <tr><td>Composition</td><td>HAS-A</td><td><code>Car</code> có một <code>Engine</code></td><td>Khi object này chứa hoặc sử dụng object khác</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Inheritance: Dog IS-A Animal</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Animal:
+    def breathe(self):
+        print("Đang thở")
+
+class Dog(Animal):
+    def bark(self):
+        print("Gâu gâu")
+
+my_dog = Dog()
+my_dog.breathe()
+my_dog.bark()</code></pre>
+          </div>
+
+          <h3>Composition: Car HAS-A Engine</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Engine:
+    def start(self):
+        print("Động cơ khởi động")
+
+class Car:
+    def __init__(self):
+        self.engine = Engine()
+
+    def start(self):
+        self.engine.start()
+        print("Xe sẵn sàng chạy")
+
+car = Car()
+car.start()</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Quy tắc thực tế:</strong> Ưu tiên composition nếu không chắc chắn cần inheritance. Kế thừa quá sâu dễ làm code phụ thuộc chặt, khó sửa và khó test.
+          </div>
+        </section>
+
+        <!-- ======================== DATACLASS ======================== -->
+        <section id="dataclass">
+          <h2>13. Dataclass</h2>
+          <p>
+            <code>dataclass</code> giúp viết class chứa dữ liệu ngắn gọn hơn. Python tự sinh các method phổ biến như <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>. Rất phù hợp cho class chủ yếu dùng để lưu dữ liệu.
+          </p>
+
+          <h3>Class thường</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    def __init__(self, name, age, gpa):
+        self.name = name
+        self.age = age
+        self.gpa = gpa
+
+    def __repr__(self):
+        return f"Student(name={self.name!r}, age={self.age!r}, gpa={self.gpa!r})"</code></pre>
+          </div>
+
+          <h3>Dùng dataclass</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass
+class Student:
+    name: str
+    age: int
+    gpa: float
+
+s1 = Student("Mini", 20, 3.5)
+s2 = Student("Mini", 20, 3.5)
+
+print(s1)        # Student(name='Mini', age=20, gpa=3.5)
+print(s1 == s2)  # True</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Khi nào dùng dataclass?</strong> Dùng khi class chủ yếu lưu dữ liệu: cấu hình, tọa độ, thông tin sinh viên, thông tin thiết bị, bản ghi log. Không nên dùng dataclass nếu class có nhiều logic phức tạp hoặc cần kiểm soát chặt quá trình khởi tạo.
+          </div>
+        </section>
+
+        <!-- ======================== UML ======================== -->
+        <section id="uml">
+          <h2>14. UML Class Diagram</h2>
+          <p>
+            UML Class Diagram là cách vẽ class bằng sơ đồ. Khi học OOP hoặc thiết kế hệ thống, UML giúp nhìn nhanh class có attribute nào, method nào và quan hệ giữa các class ra sao.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-text">+----------------------+
+|       Student        |
++----------------------+
+| - name : str         |
+| - age  : int         |
+| - gpa  : float       |
++----------------------+
+| + introduce() : str  |
+| + study() : None     |
++----------------------+</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Ký hiệu</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>+</code></td><td>Public</td></tr>
+              <tr><td><code>-</code></td><td>Private</td></tr>
+              <tr><td><code>#</code></td><td>Protected</td></tr>
+              <tr><td>Mũi tên kế thừa</td><td>Class con kế thừa class cha</td></tr>
+              <tr><td>Đường nối composition</td><td>Một class chứa object của class khác</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== LOI THUONG GAP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>15. Các lỗi OOP thường gặp</h2>
+
+          <div class="exercise">
+            <h3 class="error-heading"><span class="error-label">Lỗi</span> Quên <code>self</code></h3>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class A:
+    def hello():  # sai vì thiếu self
+        print("Hello")
+
+# A().hello()
+# TypeError: hello() takes 0 positional arguments but 1 was given</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3 class="error-heading"><span class="error-label">Lỗi</span> Quên gọi <code>super()</code></h3>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Student(Person):
+    def __init__(self, name, student_id):
+        super().__init__(name)       # nên gọi constructor cha
+        self.student_id = student_id</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3 class="error-heading"><span class="error-label">Lỗi</span> Lạm dụng private</h3>
+            <p>
+              Trong Python, không nên biến mọi attribute thành <code>__private</code>. Hãy dùng <code>_internal</code> để báo hiệu dữ liệu dùng nội bộ, và chỉ dùng <code>__name</code> khi thật sự cần tránh trùng tên ở class con.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3 class="error-heading"><span class="error-label">Lỗi</span> Kế thừa quá sâu</h3>
+            <p>
+              Nếu bạn có chuỗi kế thừa như <code>A → B → C → D → E</code>, code rất dễ khó hiểu. Hãy xem có thể dùng composition thay thế không.
+            </p>
+          </div>
+        </section>
+
+        <!-- ======================== PROJECT THUC TE ======================== -->
+        <section id="project-thuc-te">
+          <h2>16. Mini Project: Quản lý sinh viên bằng OOP</h2>
+          <p>
+            Ví dụ sau gom nhiều kiến thức đã học: class, object, encapsulation, class attribute, method, <code>__repr__</code>, property và quản lý danh sách object.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class Student:
+    school_name = "PTIT"
+
+    def __init__(self, student_id, name, gpa):
+        self.student_id = student_id
+        self.name = name
+        self.gpa = gpa
+
+    @property
+    def gpa(self):
+        return self._gpa
+
+    @gpa.setter
+    def gpa(self, value):
+        if not 0 <= value <= 4:
+            raise ValueError("GPA phải nằm trong khoảng 0 đến 4")
+        self._gpa = value
+
+    def is_excellent(self):
+        return self.gpa >= 3.6
+
+    def __repr__(self):
+        return f"Student(id={self.student_id!r}, name={self.name!r}, gpa={self.gpa!r})"
+
+
+class StudentManager:
+    def __init__(self):
+        self.students = []
+
+    def add_student(self, student):
+        self.students.append(student)
+
+    def find_by_id(self, student_id):
+        for student in self.students:
+            if student.student_id == student_id:
+                return student
+        return None
+
+    def show_all(self):
+        for student in self.students:
+            print(student)
+
+    def show_excellent_students(self):
+        for student in self.students:
+            if student.is_excellent():
+                print(student)
+
+
+manager = StudentManager()
+manager.add_student(Student("SV001", "Viet", 3.7))
+manager.add_student(Student("SV002", "An", 3.2))
+manager.add_student(Student("SV003", "Mini", 3.9))
+
+manager.show_all()
+
+print("Sinh viên giỏi:")
+manager.show_excellent_students()
+
+found = manager.find_by_id("SV002")
+print("Tìm thấy:", found)</code></pre>
+          </div>
+
+          <div class="success">
+            <strong>Sau khi hiểu project này,</strong> bạn đã nắm được cách dùng OOP để mô hình hóa một bài toán thực tế: mỗi sinh viên là một object, còn <code>StudentManager</code> chịu trách nhiệm quản lý danh sách sinh viên.
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>17. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Xây dựng class BankAccount</h3>
+            <p>Tạo class <code>BankAccount</code> với:</p>
+            <ul>
+              <li>Instance attribute: <code>owner</code> (tên chủ tài khoản), <code>__balance</code> (số dư — private)</li>
+              <li>Method <code>deposit(amount)</code>: nạp tiền</li>
+              <li>Method <code>withdraw(amount)</code>: rút tiền (báo lỗi nếu không đủ)</li>
+              <li>Method <code>get_balance()</code>: trả về số dư</li>
+            </ul>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">class BankAccount:
+    def __init__(self, owner, initial_balance=0):
+        self.owner    = owner
+        self.__balance = initial_balance   # private
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+            print(f"Nạp {amount:,} đ. Số dư mới: {self.__balance:,} đ")
+
+    def withdraw(self, amount):
+        if amount > self.__balance:
+            print("Số dư không đủ!")
+        else:
+            self.__balance -= amount
+            print(f"Rút {amount:,} đ. Số dư còn: {self.__balance:,} đ")
+
+    def get_balance(self):
+        return self.__balance
+
+
+acc = BankAccount("Viet", 500_000)
+acc.deposit(200_000)    # Nạp 200,000 đ. Số dư mới: 700,000 đ
+acc.withdraw(900_000)   # Số dư không đủ!
+acc.withdraw(300_000)   # Rút 300,000 đ. Số dư còn: 400,000 đ
+print(acc.get_balance()) # 400000</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Kế thừa Shape</h3>
+            <p>
+              Tạo abstract class <code>Shape</code> với abstract method <code>area()</code> và <code>perimeter()</code>. Sau đó implement <code>Rectangle</code> và <code>Circle</code>.
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+import math
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+    def describe(self):
+        print(f"Diện tích: {self.area():.2f}, Chu vi: {self.perimeter():.2f}")
+
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width  = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+    def perimeter(self):
+        return 2 * math.pi * self.radius
+
+
+r = Rectangle(4, 6)
+c = Circle(5)
+
+r.describe()   # Diện tích: 24.00, Chu vi: 20.00
+c.describe()   # Diện tích: 78.54, Chu vi: 31.42
+
+# Polymorphism qua vòng lặp
+for shape in [r, c]:
+    shape.describe()</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Mini challenge</h3>
+            <p>Tạo hệ thống quản lý nhân viên đơn giản:</p>
+            <ul>
+              <li>Class <code>Employee</code> với <code>name</code>, <code>salary</code>; method <code>get_info()</code></li>
+              <li>Class <code>Manager(Employee)</code> thêm <code>department</code>, override <code>get_info()</code> để in thêm tên phòng ban</li>
+              <li>Class attribute <code>company_name</code> chia sẻ cho tất cả nhân viên</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Class</strong> là bản thiết kế; <strong>Object</strong> là thực thể cụ thể tạo ra từ class.</li>
+            <li><strong><code>__init__(self, ...)</code></strong> là constructor — chạy tự động khi tạo object, dùng để khởi tạo instance attribute.</li>
+            <li><strong>Class attribute</strong> dùng chung cho mọi object; <strong>Instance attribute</strong> riêng từng object. Cẩn thận với mutable class attribute (list, dict).</li>
+            <li><strong>Encapsulation</strong>: <code>_attr</code> = quy ước protected; <code>__attr</code> = name mangling (private-like). Python không ép buộc chặt như C++/Java.</li>
+            <li><strong>Inheritance</strong>: <code>class Child(Parent)</code>. Dùng <code>super().__init__()</code> để tái sử dụng constructor cha. <code>isinstance()</code> và <code>issubclass()</code> để kiểm tra quan hệ.</li>
+            <li><strong>Polymorphism</strong>: cùng tên method, thể hiện khác nhau ở từng class. Kết hợp với inheritance qua method overriding.</li>
+            <li><strong>Abstraction</strong>: <code>from abc import ABC, abstractmethod</code>. Abstract class định nghĩa interface, buộc class con phải implement. Không thể tạo object từ abstract class.</li>
+            <li><strong>Magic methods</strong> giúp object hoạt động tự nhiên với <code>print()</code>, <code>len()</code>, toán tử <code>+</code>, so sánh <code>==</code>.</li>
+            <li><strong>Static method</strong>, <strong>class method</strong> và <strong>instance method</strong> khác nhau ở cách nhận <code>self</code> hoặc <code>cls</code>.</li>
+            <li><strong>Property</strong> giúp kiểm soát dữ liệu nhưng vẫn giữ cú pháp truy cập attribute tự nhiên.</li>
+            <li><strong>Composition</strong> phù hợp với quan hệ HAS-A; <strong>Inheritance</strong> phù hợp với quan hệ IS-A.</li>
+            <li><strong>Dataclass</strong> giúp viết class lưu dữ liệu ngắn gọn, tự sinh <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>.</li>
+          </ul>
+          <div class="note">
+            <strong>Tìm hiểu thêm?</strong> Python Docs chính thức về Classes cực kỳ đầy đủ tại
+            <a href="https://docs.python.org/3/tutorial/classes.html" target="_blank">docs.python.org/3/tutorial/classes.html</a> — đặc biệt các phần về Scopes &amp; Namespaces, Multiple Inheritance, Iterators và Generators.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 19. Lớp và Đối Tượng (Classes &amp; Objects) trong Python</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>
