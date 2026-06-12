@@ -1,6 +1,11 @@
 const LESSONS_FILE = 'lessons.json';
 const QUICK_LINKS_FILE = '../quick-links.json';
-const pageKey = location.pathname.replace(/[^\w-]+/g, '_').replace(/^_+|_+$/g, '') || 'docs';
+const pageKey = location.pathname
+  .split('/')
+  .filter(Boolean)
+  .slice(0, -1)
+  .join('_')
+  .replace(/[^\w-]+/g, '_') || 'docs';
 const VISITED_KEY = `${pageKey}_visited`;
 const THEME_KEY = `${pageKey}_theme`;
 

@@ -5,4 +5,4 @@ Lộ trình học Terminal, Git và GitHub theo giao diện tài liệu dùng ch
 - Trang danh sách bài: `index.html`
 - Dữ liệu bài học: `lessons.json`
 - Trang bài học: các file HTML đánh số theo thứ tự
-- CSS/JS trang bài: `doc-styles.css`, `doc-script.js`
+- CSS/JS trang bài: `../shared/css/doc-styles.css`, `../shared/js/doc-script.js`

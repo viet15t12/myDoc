@@ -1,12 +1,83 @@
-// Tính năng thêm nút Copy vào các khối mã code
 const storagePrefix = location.pathname
   .split('/')
   .filter(Boolean)
   .slice(0, -1)
   .join('_')
   .replace(/[^\w-]+/g, '_') || 'docs';
-const tocStorageKey = `${storagePrefix}_toc_collapsed`;
-const visitedStorageKey = `${storagePrefix}_visited`;
+const legacyDocKeys = {
+  'python-zero2hero': {
+    toc: 'hoc_python_toc_collapsed',
+    visited: 'hoc_python_visited'
+  }
+};
+const legacyDocKey = legacyDocKeys[storagePrefix] || {};
+const tocStorageKey = legacyDocKey.toc || `${storagePrefix}_toc_collapsed`;
+const visitedStorageKey = legacyDocKey.visited || `${storagePrefix}_visited`;
+const currentFile = location.pathname.split('/').pop();
+
+function ensureDocShell() {
+  if (!document.getElementById('readProgress')) {
+    const progress = document.createElement('div');
+    progress.id = 'readProgress';
+    document.body.prepend(progress);
+  }
+
+  if (!document.querySelector('.topnav')) {
+    const lessonId = (currentFile || '').match(/^(\d+)/)?.[1] || '';
+    const topnav = document.createElement('div');
+    topnav.className = 'topnav';
+    topnav.innerHTML = `
+      <div class="topnav-left">
+        <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+        <span class="topnav-breadcrumb"><span>/</span>${lessonId ? ` Bài ${lessonId}` : ''}</span>
+      </div>
+      <div class="topnav-right" data-lesson-nav></div>`;
+
+    const layout = document.querySelector('.layout');
+    if (layout) {
+      document.body.insertBefore(topnav, layout);
+    } else {
+      document.body.appendChild(topnav);
+    }
+  }
+}
+
+function highlightCode() {
+  if (window.hljs) {
+    window.hljs.highlightAll();
+    return;
+  }
+
+  if (document.querySelector('script[data-shared-highlight]')) return;
+
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js';
+  script.dataset.sharedHighlight = 'true';
+  script.onload = () => window.hljs?.highlightAll();
+  document.head.appendChild(script);
+}
+
+function copyCode(button) {
+  const pre = button.closest('.pre-wrap')?.querySelector('pre');
+  if (!pre) return;
+
+  navigator.clipboard.writeText(pre.innerText.trim()).then(() => {
+    button.textContent = '✓ Đã copy';
+    button.classList.add('copied');
+    setTimeout(() => {
+      button.textContent = 'Copy';
+      button.classList.remove('copied');
+    }, 2000);
+  }).catch(err => {
+    console.error('Không thể sao chép văn bản: ', err);
+  });
+}
+
+ensureDocShell();
+highlightCode();
+
 const topnavLeft = document.querySelector('.topnav-left');
 const aside = document.querySelector('aside');
 
@@ -37,29 +108,22 @@ if (topnavLeft && aside) {
 }
 
 document.querySelectorAll('pre').forEach(pre => {
-  const wrap = document.createElement('div');
-  wrap.className = 'pre-wrap';
-  pre.parentNode.insertBefore(wrap, pre);
-  wrap.appendChild(pre);
+  let wrap = pre.closest('.pre-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'pre-wrap';
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+  }
 
-  const btn = document.createElement('button');
-  btn.className = 'copy-btn';
-  btn.textContent = 'Copy';
-  btn.setAttribute('aria-label', 'Copy code snippet');
-  
-  btn.onclick = () => {
-    navigator.clipboard.writeText(pre.innerText.trim()).then(() => {
-      btn.textContent = '✓ Đã copy';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = 'Copy';
-        btn.classList.remove('copied');
-      }, 2000);
-    }).catch(err => {
-      console.error('Không thể sao chép văn bản: ', err);
-    });
-  };
-  wrap.appendChild(btn);
+  if (!wrap.querySelector('.copy-btn')) {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('aria-label', 'Copy code snippet');
+    btn.addEventListener('click', () => copyCode(btn));
+    wrap.appendChild(btn);
+  }
 });
 
 // Scroll Spy: Tự động kích hoạt trạng thái danh mục bên Sidebar khi cuộn đến vùng tương ứng
@@ -83,7 +147,6 @@ if (sections.length > 0) {
 }
 
 // Tự động tạo breadcrumb và nút Bài trước / Bài sau từ lessons.json
-const currentFile = location.pathname.split('/').pop();
 const topnavRight = document.querySelector('[data-lesson-nav]') || document.querySelector('.topnav-right');
 const breadcrumb = document.querySelector('.topnav-breadcrumb');
 const lessonAnchors = document.querySelectorAll('[data-lesson-id]');
