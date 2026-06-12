@@ -23,7 +23,7 @@
       "href": "git-basics/index.html",
       "folder": "git-basics",
       "badge": "git",
-      "accent": "#38bdf8",
+      "accent": "#F05032",
       "status": "ready",
       "lessons": 20,
       "tags": ["git", "repository", "commit", "version control"]
@@ -39,6 +39,43 @@
       "status": "ready",
       "lessons": 42,
       "tags": ["linux", "lpic", "sysadmin", "terminal"]
+    },
+    {
+      "id": "ccna",
+      "title": "CCNA",
+      "description": "Lộ trình nền tảng mạng máy tính, OSI/TCP-IP, subnetting, routing và switching.",
+      "href": "ccna/index.html",
+      "folder": "ccna",
+      "badge": "NET",
+      "accent": "#1BA0D7",
+      "status": "ready",
+      "lessons": 2,
+      "tags": ["ccna", "networking", "subnetting", "routing", "switching"]
+    },
+    {
+      "id": "docker",
+      "title": "Docker",
+      "description": "Container, image, Dockerfile và Compose cho workflow phát triển ứng dụng.",
+      "href": "docker/index.html",
+      "folder": "docker",
+      "badge": "DKR",
+      "accent": "#2496ED",
+      "status": "ready",
+      "lessons": 2,
+      "tags": ["docker", "container", "image", "compose"]
+    },
+    {
+      "id": "golang",
+      "title": "Golang",
+      "description": "Học Go từ chương trình đầu tiên đến module, tooling và concurrency.",
+      "href": "golang/index.html",
+      "folder": "golang",
+      "badge": "GO",
+      "accent": "#00ADD8",
+      "status": "ready",
+      "lessons": 2,
+      "tags": ["golang", "go", "backend", "concurrency"]
     }
   ]
 }
+

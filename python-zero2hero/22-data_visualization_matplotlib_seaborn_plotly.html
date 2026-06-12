@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>22. Data Visualization — Matplotlib, Seaborn &amp; Plotly</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 22</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#so-sanh">1. So sánh 3 thư viện</a>
+      <a href="#cai-dat">2. Cài đặt &amp; Import</a>
+      <a href="#dataset">3. Dataset mẫu</a>
+      <a href="#matplotlib-co-ban">4. Matplotlib cơ bản</a>
+      <a href="#matplotlib-bieu-do">5. Các loại biểu đồ Matplotlib</a>
+      <a href="#matplotlib-tuy-chinh">6. Tùy chỉnh &amp; Lưu file</a>
+      <a href="#seaborn">7. Seaborn</a>
+      <a href="#plotly">8. Plotly</a>
+      <a href="#chon-bieu-do">9. Chọn biểu đồ phù hợp</a>
+      <a href="#loi-thuong-gap">10. Lỗi thường gặp</a>
+      <a href="#bai-tap">11. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>22. Data Visualization — Matplotlib, Seaborn &amp; Plotly</h1>
+        <p class="meta">
+          Trực quan hóa dữ liệu là cách biến những con số khô khan thành hình ảnh dễ hiểu — giúp phát hiện xu hướng,
+          phân bố, tương quan và bất thường. Bài này đi từ <strong>Matplotlib</strong> (nền tảng, tùy chỉnh sâu),
+          qua <strong>Seaborn</strong> (thống kê nhanh, đẹp) đến <strong>Plotly</strong> (tương tác, dashboard).
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            <strong>Data Visualization</strong> là quá trình biểu diễn dữ liệu dưới dạng hình ảnh — biểu đồ, đồ thị, heatmap, dashboard —
+            để con người dễ hiểu hơn so với việc đọc bảng số liệu dài.
+          </p>
+          <p>Ví dụ thực tế:</p>
+          <ul>
+            <li>Doanh thu theo tháng, theo khu vực</li>
+            <li>Mối quan hệ giữa chi phí quảng cáo và doanh thu</li>
+            <li>Phân bố điểm thi của sinh viên</li>
+            <li>Bandwidth, latency, top IP trong network monitoring</li>
+            <li>Heatmap lỗi theo thiết bị và thời gian</li>
+          </ul>
+          <div class="note">
+            <strong>Vì sao quan trọng?</strong> Biểu đồ giúp hiểu dữ liệu trước khi xử lý, phát hiện outlier/dữ liệu thiếu,
+            trình bày kết quả, theo dõi hệ thống realtime và hỗ trợ ra quyết định.
+          </div>
+        </section>
+
+        <!-- ======================== SO SÁNH ======================== -->
+        <section id="so-sanh">
+          <h2>1. So sánh Matplotlib, Seaborn và Plotly</h2>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Matplotlib</th><th>Seaborn</th><th>Plotly</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Mục đích</td><td>Vẽ tĩnh, tùy chỉnh sâu</td><td>Thống kê đẹp, nhanh</td><td>Tương tác</td></tr>
+              <tr><td>Mức kiểm soát</td><td>Rất cao</td><td>Trung bình–cao</td><td>Cao</td></tr>
+              <tr><td>Độ dễ dùng</td><td>Trung bình</td><td>Dễ hơn Matplotlib</td><td>Dễ với Plotly Express</td></tr>
+              <tr><td>Tương tác</td><td>Hạn chế</td><td>Hạn chế</td><td>Rất mạnh (hover, zoom, pan)</td></tr>
+              <tr><td>Phù hợp với</td><td>Báo cáo, paper, script</td><td>EDA, notebook</td><td>Dashboard, web</td></tr>
+              <tr><td>Quan hệ</td><td>Nền tảng gốc</td><td>Xây trên Matplotlib</td><td>Hệ sinh thái riêng</td></tr>
+              <tr><td>Xuất file</td><td>PNG, JPG, SVG, PDF</td><td>Qua Matplotlib</td><td>HTML, PNG, SVG, PDF</td></tr>
+              <tr><td>Input tốt nhất</td><td>List, NumPy, Pandas</td><td>Pandas DataFrame</td><td>Pandas DataFrame</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Khi nào dùng cái nào?</h3>
+          <div class="diagram">
+            <div class="box">
+              <strong>Matplotlib</strong><br/>
+              <small style="color:#64748b">Kiểm soát chi tiết<br/>Xuất PDF/LaTeX/báo cáo<br/>Biểu đồ tĩnh nhẹ</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Seaborn</strong><br/>
+              <small style="color:#64748b">EDA nhanh<br/>DataFrame + hue<br/>boxplot, heatmap, pairplot</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>Plotly</strong><br/>
+              <small style="color:#64748b">Hover/zoom/pan<br/>Xuất HTML<br/>Dashboard, web</small>
+            </div>
+          </div>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Matplotlib — vẽ line chart đơn giản
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [2, 4, 6])
+ax.set_title("Line Chart")
+plt.show()
+
+# Seaborn — phân bố dữ liệu kèm KDE
+import seaborn as sns
+
+sns.histplot(data=df, x="revenue", kde=True)
+
+# Plotly — line chart tương tác, phân màu theo region
+import plotly.express as px
+
+fig = px.line(df, x="date", y="revenue", color="region")
+fig.show()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== CÀI ĐẶT ======================== -->
+        <section id="cai-dat">
+          <h2>2. Cài đặt &amp; Import</h2>
+
+          <h3>Cài đặt thư viện</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-bash">pip install matplotlib seaborn plotly pandas numpy
+
+# Xuất ảnh tĩnh từ Plotly (cần kaleido)
+pip install kaleido
+
+# Jupyter Notebook
+pip install notebook ipykernel</code></pre>
+          </div>
+
+          <h3>Import chuẩn &amp; quy ước alias</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thư viện</th><th>Alias chuẩn</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>NumPy</td><td><code>np</code></td></tr>
+              <tr><td>Pandas</td><td><code>pd</code></td></tr>
+              <tr><td>Matplotlib Pyplot</td><td><code>plt</code></td></tr>
+              <tr><td>Seaborn</td><td><code>sns</code></td></tr>
+              <tr><td>Plotly Express</td><td><code>px</code></td></tr>
+              <tr><td>Plotly Graph Objects</td><td><code>go</code></td></tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>Quy ước toàn ngành.</strong> Mọi tài liệu, course, codebase đều dùng các alias này — gõ
+            <code>np.array()</code> thay vì <code>numpy.array()</code> ngắn hơn rất nhiều.
+          </div>
+        </section>
+
+        <!-- ======================== DATASET MẪU ======================== -->
+        <section id="dataset">
+          <h2>3. Dataset mẫu dùng xuyên suốt bài</h2>
+          <p>
+            Tạo một dataset giả lập về doanh thu bán hàng — sẽ dùng lại trong toàn bộ Matplotlib, Seaborn và Plotly để dễ so sánh.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+np.random.seed(42)
+
+dates = pd.date_range("2026-01-01", periods=120, freq="D")
+regions = ["North", "South", "East", "West"]
+products = ["Laptop", "Mouse", "Keyboard", "Monitor"]
+
+df = pd.DataFrame({
+    "date": np.random.choice(dates, 500),
+    "region": np.random.choice(regions, 500),
+    "product": np.random.choice(products, 500),
+    "orders": np.random.randint(1, 20, 500),
+    "unit_price": np.random.randint(10, 1200, 500),
+})
+
+df["revenue"] = df["orders"] * df["unit_price"]
+df["profit"] = df["revenue"] * np.random.uniform(0.08, 0.35, 500)
+df["month"] = df["date"].dt.to_period("M").astype(str)
+
+print(df.head())</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Cột</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>date</code></td><td>Ngày bán hàng</td></tr>
+              <tr><td><code>region</code></td><td>Khu vực (North/South/East/West)</td></tr>
+              <tr><td><code>product</code></td><td>Sản phẩm</td></tr>
+              <tr><td><code>orders</code></td><td>Số lượng đơn</td></tr>
+              <tr><td><code>unit_price</code></td><td>Đơn giá</td></tr>
+              <tr><td><code>revenue</code></td><td>Doanh thu = orders × unit_price</td></tr>
+              <tr><td><code>profit</code></td><td>Lợi nhuận (8–35% revenue)</td></tr>
+              <tr><td><code>month</code></td><td>Tháng (dạng chuỗi YYYY-MM)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== MATPLOTLIB CƠ BẢN ======================== -->
+        <section id="matplotlib-co-ban">
+          <h2>4. Matplotlib cơ bản</h2>
+
+          <h3>Figure, Axes, Axis, Artist</h3>
+          <p>Bốn khái niệm nền tảng cần phân biệt rõ:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Khái niệm</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Figure</code></td><td>Toàn bộ khung hình chứa biểu đồ</td></tr>
+              <tr><td><code>Axes</code></td><td>Vùng vẽ dữ liệu — một "biểu đồ con"</td></tr>
+              <tr><td><code>Axis</code></td><td>Trục X hoặc trục Y</td></tr>
+              <tr><td><code>Artist</code></td><td>Mọi thứ được vẽ: line, text, legend, label, tick</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+# Một Figure chứa 2 Axes
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+
+axes[0].plot([1, 2, 3], [2, 4, 6])
+axes[0].set_title("Biểu đồ 1")
+
+axes[1].bar(["A", "B", "C"], [10, 20, 15])
+axes[1].set_title("Biểu đồ 2")
+
+plt.tight_layout()
+plt.show()</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Nhầm Axes và Axis.</strong> <code>Axes</code> là vùng vẽ biểu đồ (một <code>ax</code>), còn <code>Axis</code> là
+            trục X hoặc Y. <code>fig, ax = plt.subplots()</code> → <code>ax</code> là một <code>Axes</code>, không phải một trục đơn.
+          </div>
+
+          <h3>Pyplot API vs Object-Oriented API</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Cách 1: Pyplot API — nhanh, đơn giản
+import matplotlib.pyplot as plt
+
+plt.plot([1, 2, 3], [2, 4, 6])
+plt.title("Line Chart")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.show()
+
+# Cách 2: Object-Oriented API — khuyến nghị
+fig, ax = plt.subplots()
+
+ax.plot([1, 2, 3], [2, 4, 6])
+ax.set_title("Line Chart")
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+
+plt.show()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Nên ưu tiên Object-Oriented API</strong> vì code rõ ràng hơn, dễ quản lý nhiều biểu đồ, dễ tùy chỉnh chi tiết
+            và phù hợp khi viết project lớn.
+          </div>
+        </section>
+
+        <!-- ======================== CÁC LOẠI BIỂU ĐỒ MATPLOTLIB ======================== -->
+        <section id="matplotlib-bieu-do">
+          <h2>5. Các loại biểu đồ Matplotlib</h2>
+
+          <h3>Line Plot — biểu diễn xu hướng</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0, 10, 1)
+y = 2 * x
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.plot(
+    x, y,
+    color="green",
+    linestyle="--",
+    marker="o",
+    linewidth=2,
+    markersize=6,
+    label="y = 2x"
+)
+
+ax.set_title("Line Plot có tùy chỉnh")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.grid(True)
+ax.legend()
+
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Linestyle</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>"-"</code></td><td>Đường liền</td></tr>
+              <tr><td><code>"--"</code></td><td>Đường đứt</td></tr>
+              <tr><td><code>"-."</code></td><td>Gạch chấm</td></tr>
+              <tr><td><code>":"</code></td><td>Chấm</td></tr>
+            </tbody>
+          </table>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Marker</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>"o"</code></td><td>Hình tròn</td></tr>
+              <tr><td><code>"s"</code></td><td>Hình vuông</td></tr>
+              <tr><td><code>"^"</code></td><td>Tam giác</td></tr>
+              <tr><td><code>"D"</code></td><td>Hình thoi</td></tr>
+              <tr><td><code>"x"</code></td><td>Dấu x</td></tr>
+              <tr><td><code>"*"</code></td><td>Ngôi sao</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Vẽ nhiều đường trên cùng biểu đồ</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">x = np.arange(0, 10, 1)
+y1 = 2 * x
+y2 = x ** 2
+y3 = 10 * np.sin(x)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.plot(x, y1, marker="o", label="y = 2x")
+ax.plot(x, y2, marker="s", label="y = x^2")
+ax.plot(x, y3, marker="^", label="y = 10sin(x)")
+
+ax.set_title("Nhiều đường trên cùng biểu đồ")
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.grid(True)
+ax.legend()
+
+plt.show()</code></pre>
+          </div>
+
+          <h3>Scatter Plot — quan hệ giữa hai biến</h3>
+          <p>
+            Dùng để xem mối quan hệ giữa hai biến số, ví dụ: chi phí quảng cáo &amp; doanh thu, latency &amp; packet size,
+            số giờ học &amp; điểm thi.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">np.random.seed(42)
+
+x = np.random.rand(100) * 100
+y = 2.5 * x + np.random.randn(100) * 20
+sizes = np.random.rand(100) * 300
+colors = np.random.rand(100)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+scatter = ax.scatter(
+    x, y,
+    s=sizes,
+    c=colors,
+    alpha=0.7,
+    cmap="viridis",
+    marker="o",
+    edgecolors="black"
+)
+
+ax.set_title("Scatter Plot có size, color, alpha")
+ax.set_xlabel("Advertising Cost")
+ax.set_ylabel("Revenue")
+
+fig.colorbar(scatter, ax=ax, label="Color Scale")
+
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tham số</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>s</code></td><td>Kích thước điểm</td></tr>
+              <tr><td><code>c</code></td><td>Màu điểm</td></tr>
+              <tr><td><code>alpha</code></td><td>Độ trong suốt</td></tr>
+              <tr><td><code>cmap</code></td><td>Bảng màu</td></tr>
+              <tr><td><code>marker</code></td><td>Kiểu điểm</td></tr>
+              <tr><td><code>edgecolors</code></td><td>Màu viền điểm</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Bar Chart &amp; Horizontal Bar Chart</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Bar chart đứng — so sánh giá trị giữa các nhóm
+products = ["Laptop", "Mouse", "Keyboard", "Monitor"]
+revenue = [5000, 1200, 1800, 4200]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.bar(products, revenue)
+ax.set_title("Doanh thu theo sản phẩm")
+ax.set_xlabel("Sản phẩm")
+ax.set_ylabel("Doanh thu")
+plt.show()
+
+# Bar chart ngang — phù hợp khi tên category dài
+products_long = ["Gaming Laptop", "Wireless Mouse", "Mechanical Keyboard", "Ultra-wide Monitor"]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.barh(products_long, revenue)
+ax.set_title("Doanh thu theo sản phẩm")
+ax.set_xlabel("Doanh thu")
+plt.show()</code></pre>
+          </div>
+
+          <h3>Grouped Bar Chart</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">products = ["Laptop", "Mouse", "Keyboard", "Monitor"]
+north = [5000, 1200, 1800, 4200]
+south = [4500, 1500, 1600, 3900]
+
+x = np.arange(len(products))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.bar(x - width / 2, north, width, label="North")
+ax.bar(x + width / 2, south, width, label="South")
+
+ax.set_title("So sánh doanh thu theo khu vực")
+ax.set_xticks(x)
+ax.set_xticklabels(products)
+ax.legend()
+
+plt.show()</code></pre>
+          </div>
+
+          <h3>Histogram — phân bố dữ liệu</h3>
+          <p>
+            Dùng để xem phân bố của một biến số: phân bố điểm thi, doanh thu, latency, packet size, response time...
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">np.random.seed(42)
+scores = np.random.normal(loc=70, scale=10, size=500)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.hist(scores, bins=20, edgecolor="black")
+
+ax.set_title("Phân bố điểm thi")
+ax.set_xlabel("Điểm")
+ax.set_ylabel("Tần suất")
+
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tham số</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>bins</code></td><td>Số cột chia dữ liệu</td></tr>
+              <tr><td><code>edgecolor</code></td><td>Màu viền cột</td></tr>
+              <tr><td><code>density=True</code></td><td>Chuẩn hóa thành mật độ xác suất</td></tr>
+              <tr><td><code>alpha</code></td><td>Độ trong suốt</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Box Plot — median, quartile, outlier</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">np.random.seed(42)
+
+data = [
+    np.random.normal(70, 10, 100),
+    np.random.normal(75, 12, 100),
+    np.random.normal(65, 8, 100)
+]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.boxplot(data, labels=["Class A", "Class B", "Class C"])
+
+ax.set_title("Box Plot điểm theo lớp")
+ax.set_ylabel("Điểm")
+
+plt.show()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Box plot trả lời:</strong> Nhóm nào có median cao hơn? Nhóm nào phân tán mạnh hơn? Có nhiều outlier không?
+            Dữ liệu có lệch không?
+          </div>
+
+          <h3>Pie Chart — tỷ lệ thành phần</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">labels = ["Laptop", "Mouse", "Keyboard", "Monitor"]
+sizes = [45, 15, 20, 20]
+
+fig, ax = plt.subplots(figsize=(6, 6))
+
+ax.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=90)
+ax.set_title("Tỷ lệ doanh thu theo sản phẩm")
+
+plt.show()</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Hạn chế dùng Pie chart.</strong> Chỉ dùng khi số nhóm ít. Nếu có nhiều nhóm hoặc giá trị gần nhau,
+            bar chart sẽ dễ đọc hơn nhiều.
+          </div>
+
+          <h3>Subplots — nhiều biểu đồ trong một Figure</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">x = np.arange(0, 10, 1)
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+
+axes[0, 0].plot(x, x)
+axes[0, 0].set_title("y = x")
+
+axes[0, 1].plot(x, x ** 2)
+axes[0, 1].set_title("y = x^2")
+
+axes[1, 0].scatter(x, np.random.rand(10))
+axes[1, 0].set_title("Scatter")
+
+axes[1, 1].bar(["A", "B", "C"], [10, 20, 15])
+axes[1, 1].set_title("Bar")
+
+plt.tight_layout()
+plt.show()</code></pre>
+          </div>
+
+          <h3>Time Series</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+
+data = pd.DataFrame({
+    "date": pd.date_range("2026-01-01", periods=30),
+    "traffic": [100 + i * 5 for i in range(30)]
+})
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+ax.plot(data["date"], data["traffic"], marker="o")
+
+ax.set_title("Network Traffic theo thời gian")
+ax.set_xlabel("Ngày")
+ax.set_ylabel("Traffic")
+ax.grid(True)
+
+fig.autofmt_xdate()
+plt.show()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TÙY CHỈNH & LƯU FILE ======================== -->
+        <section id="matplotlib-tuy-chinh">
+          <h2>6. Tùy chỉnh &amp; Lưu file</h2>
+
+          <h3>Title, Label, Legend, Grid</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">x = [1, 2, 3, 4]
+y = [10, 20, 25, 30]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.plot(x, y, label="Revenue", marker="o")
+
+ax.set_title("Revenue by Quarter", fontsize=16)
+ax.set_xlabel("Quarter")
+ax.set_ylabel("Revenue")
+ax.legend()
+ax.grid(True)
+
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Hàm</th><th>Chức năng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>ax.set_title()</code></td><td>Đặt tiêu đề</td></tr>
+              <tr><td><code>ax.set_xlabel() / set_ylabel()</code></td><td>Đặt nhãn trục</td></tr>
+              <tr><td><code>ax.legend()</code></td><td>Hiển thị chú thích</td></tr>
+              <tr><td><code>ax.grid(True)</code></td><td>Hiển thị lưới</td></tr>
+              <tr><td><code>ax.set_xlim() / set_ylim()</code></td><td>Giới hạn trục</td></tr>
+              <tr><td><code>fig.suptitle()</code></td><td>Tiêu đề toàn bộ Figure (khi nhiều Axes)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Style dựng sẵn</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">print(plt.style.available)
+
+plt.style.use("ggplot")
+
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [2, 4, 6])
+ax.set_title("Biểu đồ dùng style ggplot")
+plt.show()</code></pre>
+          </div>
+          <p>Một số style phổ biến: <code>ggplot</code>, <code>seaborn-v0_8</code>, <code>bmh</code>, <code>classic</code>, <code>dark_background</code>, <code>fivethirtyeight</code>.</p>
+
+          <h3>Lưu biểu đồ ra file</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [2, 4, 6])
+ax.set_title("Biểu đồ cần lưu")
+
+# Lưu TRƯỚC khi gọi show()
+fig.savefig("line_chart.png", dpi=300, bbox_inches="tight")
+
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Định dạng</th><th>Khi nào dùng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>PNG</td><td>Ảnh phổ biến, web/tài liệu</td></tr>
+              <tr><td>JPG</td><td>Ảnh nhẹ, có nén mất dữ liệu</td></tr>
+              <tr><td>SVG</td><td>Vector, phóng to không vỡ</td></tr>
+              <tr><td>PDF</td><td>Báo cáo, LaTeX, in ấn</td></tr>
+              <tr><td>EPS</td><td>Một số bài báo học thuật</td></tr>
+            </tbody>
+          </table>
+
+          <div class="danger">
+            <strong>Quên thứ tự!</strong> Nếu gọi <code>fig.savefig()</code> sau <code>plt.show()</code>, file lưu ra có thể bị
+            trống vì sau <code>show()</code>, Matplotlib có thể đã xóa Figure khỏi bộ nhớ. Luôn <code>savefig</code> trước <code>show</code>.
+          </div>
+
+          <h3>Annotate — thêm ghi chú</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">months = ["Jan", "Feb", "Mar", "Apr"]
+revenue = [100, 150, 130, 200]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+
+ax.plot(months, revenue, marker="o")
+
+ax.annotate(
+    "Cao nhất",
+    xy=("Apr", 200),
+    xytext=("Mar", 210),
+    arrowprops=dict(arrowstyle="->")
+)
+
+ax.set_title("Doanh thu theo tháng")
+plt.show()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== SEABORN ======================== -->
+        <section id="seaborn">
+          <h2>7. Seaborn — trực quan hóa thống kê nhanh và đẹp</h2>
+          <p>
+            Seaborn là thư viện cấp cao, xây dựng trên Matplotlib — mạnh khi làm việc với Pandas DataFrame và phân tích thống kê.
+            So với Matplotlib: code ngắn hơn, đẹp mặc định hơn, dễ phân nhóm bằng <code>hue</code>, rất phù hợp cho EDA.
+          </p>
+
+          <h3>Thiết lập theme</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import seaborn as sns
+
+sns.set_theme(style="whitegrid", context="notebook")</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Style</th><th>Đặc điểm</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>darkgrid</code></td><td>Nền tối nhẹ và grid</td></tr>
+              <tr><td><code>whitegrid</code></td><td>Nền trắng có grid</td></tr>
+              <tr><td><code>dark</code></td><td>Nền tối</td></tr>
+              <tr><td><code>white</code></td><td>Nền trắng</td></tr>
+              <tr><td><code>ticks</code></td><td>Nền trắng có tick rõ</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Scatter, Line, Histplot, KDE</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set_theme(style="whitegrid")
+
+# Scatter — hue tự tô màu theo nhóm, size tự đổi kích thước điểm
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.scatterplot(
+    data=df, x="orders", y="revenue",
+    hue="region", size="profit", ax=ax
+)
+ax.set_title("Mối quan hệ giữa số đơn và doanh thu")
+plt.show()
+
+# Line — theo nhóm
+monthly = (
+    df.groupby(["month", "region"], as_index=False)
+      .agg(revenue=("revenue", "sum"))
+)
+
+fig, ax = plt.subplots(figsize=(10, 4))
+sns.lineplot(data=monthly, x="month", y="revenue", hue="region", marker="o", ax=ax)
+ax.set_title("Doanh thu theo tháng và khu vực")
+plt.xticks(rotation=45)
+plt.show()
+
+# Histplot + KDE — phân bố dữ liệu
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.histplot(data=df, x="revenue", bins=30, kde=True, ax=ax)
+ax.set_title("Phân bố doanh thu")
+plt.show()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Điểm mạnh của Seaborn:</strong> <code>hue="region"</code> tự tô màu theo nhóm, <code>size="profit"</code> tự
+            đổi kích thước điểm, và Seaborn tự tạo legend — không cần code thêm.
+          </div>
+
+          <h3>Count, Bar, Box, Violin, Strip</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Count plot — đếm số bản ghi theo category
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.countplot(data=df, x="product", ax=ax)
+ax.set_title("Số lượng bản ghi theo sản phẩm")
+plt.show()
+
+# Bar plot — mặc định tính TRUNG BÌNH theo nhóm
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.barplot(
+    data=df, x="product", y="revenue",
+    hue="region", estimator="mean", errorbar=None, ax=ax
+)
+ax.set_title("Doanh thu trung bình theo sản phẩm và khu vực")
+plt.show()
+
+# Box plot — so sánh phân bố giữa các nhóm
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.boxplot(data=df, x="region", y="revenue", ax=ax)
+ax.set_title("Phân bố doanh thu theo khu vực")
+plt.show()
+
+# Violin plot — giống box plot nhưng thể hiện hình dạng phân bố
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.violinplot(data=df, x="region", y="revenue", inner="quartile", ax=ax)
+ax.set_title("Violin Plot doanh thu theo khu vực")
+plt.show()
+
+# Strip plot — hiển thị từng điểm dữ liệu theo category
+sample_df = df.sample(100, random_state=42)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.stripplot(data=sample_df, x="region", y="revenue", jitter=True, alpha=0.7, ax=ax)
+ax.set_title("Strip Plot doanh thu theo khu vực")
+plt.show()</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>barplot không ra tổng!</strong> <code>sns.barplot</code> mặc định tính giá trị trung bình
+            (<code>estimator="mean"</code>). Nếu cần tổng doanh thu, phải <code>groupby</code> trước rồi vẽ:
+          </div>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">summary = (
+    df.groupby(["product", "region"], as_index=False)
+      .agg(total_revenue=("revenue", "sum"))
+)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.barplot(data=summary, x="product", y="total_revenue", hue="region", ax=ax)
+ax.set_title("Tổng doanh thu theo sản phẩm và khu vực")
+plt.show()</code></pre>
+          </div>
+
+          <h3>Heatmap — ma trận tương quan</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">corr = df[["orders", "unit_price", "revenue", "profit"]].corr()
+
+fig, ax = plt.subplots(figsize=(6, 5))
+
+sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
+
+ax.set_title("Correlation Heatmap")
+plt.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tham số</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>annot=True</code></td><td>Hiển thị số trong ô</td></tr>
+              <tr><td><code>cmap="coolwarm"</code></td><td>Bảng màu</td></tr>
+              <tr><td><code>fmt=".2f"</code></td><td>Định dạng 2 chữ số thập phân</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Pair Plot &amp; Regression Plot</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Pair plot — quan hệ giữa nhiều biến (sample trước nếu data lớn)
+sns.pairplot(
+    df.sample(200, random_state=42)[["orders", "unit_price", "revenue", "profit", "region"]],
+    hue="region"
+)
+
+# Regression plot — xu hướng tuyến tính giữa hai biến
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.regplot(
+    data=df, x="orders", y="revenue",
+    scatter_kws={"alpha": 0.5}, line_kws={"linewidth": 2}, ax=ax
+)
+ax.set_title("Quan hệ giữa orders và revenue")
+plt.show()</code></pre>
+          </div>
+
+          <h3>Axes-level vs Figure-level functions</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Axes-level — vẽ vào một ax cụ thể (cần ax=ax)
+fig, ax = plt.subplots()
+sns.scatterplot(data=df, x="orders", y="revenue", ax=ax)
+
+# Figure-level — tự tạo Figure riêng, hỗ trợ col/row để chia nhỏ
+sns.relplot(
+    data=df, x="orders", y="revenue",
+    hue="product", col="region", kind="scatter", col_wrap=2, height=4
+)</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Axes-level</th><th>Figure-level</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>scatterplot, lineplot, histplot, boxplot, barplot, heatmap</code></td><td><code>relplot, displot, catplot, lmplot, pairplot</code></td></tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>relplot/catplot tự tạo nhiều biểu đồ con</strong> theo nhóm (<code>col</code>/<code>row</code>) — code ngắn hơn
+            rất nhiều so với tự viết loop Matplotlib.
+          </div>
+        </section>
+
+        <!-- ======================== PLOTLY ======================== -->
+        <section id="plotly">
+          <h2>8. Plotly — biểu đồ tương tác và dashboard</h2>
+          <p>
+            Plotly tạo biểu đồ cho phép người xem hover xem giá trị, zoom, pan, bật/tắt nhóm trong legend và xuất ra HTML để mở
+            trong trình duyệt hoặc nhúng vào web.
+          </p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Cách dùng</th><th>Đặc điểm</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Plotly Express (<code>px</code>)</td><td>Nhanh, ít code, phù hợp đa số trường hợp</td></tr>
+              <tr><td>Graph Objects (<code>go</code>)</td><td>Tùy chỉnh sâu, biểu đồ phức tạp, secondary axis</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Line, Scatter, Bar, Histogram, Box</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import plotly.express as px
+
+# Line chart
+monthly = (
+    df.groupby(["month", "region"], as_index=False)
+      .agg(revenue=("revenue", "sum"))
+)
+
+fig = px.line(
+    monthly, x="month", y="revenue", color="region",
+    markers=True, title="Doanh thu theo tháng và khu vực"
+)
+fig.show()
+
+# Scatter — size, hover_data
+fig = px.scatter(
+    df, x="orders", y="revenue", color="region", size="profit",
+    hover_data=["product", "unit_price"], title="Orders vs Revenue"
+)
+fig.show()
+
+# Bar — barmode group/stack/relative
+summary = (
+    df.groupby(["product", "region"], as_index=False)
+      .agg(total_revenue=("revenue", "sum"))
+)
+
+fig = px.bar(
+    summary, x="product", y="total_revenue", color="region",
+    barmode="group", title="Tổng doanh thu theo sản phẩm và khu vực"
+)
+fig.show()
+
+# Histogram với marginal box plot
+fig = px.histogram(
+    df, x="revenue", color="region", nbins=30,
+    marginal="box", title="Phân bố doanh thu theo khu vực"
+)
+fig.show()
+
+# Box plot
+fig = px.box(
+    df, x="region", y="revenue", color="region",
+    points="outliers", title="Box Plot doanh thu theo khu vực"
+)
+fig.show()</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tham số</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>color</code></td><td>Phân màu theo nhóm</td></tr>
+              <tr><td><code>size</code></td><td>Kích thước điểm</td></tr>
+              <tr><td><code>hover_data</code></td><td>Dữ liệu hiển thị khi hover</td></tr>
+              <tr><td><code>facet_col / facet_row</code></td><td>Chia biểu đồ theo cột/hàng</td></tr>
+              <tr><td><code>animation_frame</code></td><td>Tạo animation theo cột (ví dụ tháng)</td></tr>
+            </tbody>
+          </table>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Barmode</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>group</code></td><td>Cột đặt cạnh nhau</td></tr>
+              <tr><td><code>stack</code></td><td>Cột xếp chồng</td></tr>
+              <tr><td><code>relative</code></td><td>Xếp chồng có giá trị âm/dương</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Facet &amp; Animation</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Facet — chia nhỏ biểu đồ theo region
+fig = px.scatter(
+    df, x="orders", y="revenue", color="product",
+    facet_col="region", facet_col_wrap=2,
+    title="Orders vs Revenue theo từng khu vực"
+)
+fig.show()
+
+# Animation — doanh thu theo tháng
+monthly_product = (
+    df.groupby(["month", "product", "region"], as_index=False)
+      .agg(revenue=("revenue", "sum"))
+)
+
+fig = px.bar(
+    monthly_product, x="product", y="revenue", color="region",
+    animation_frame="month", barmode="group",
+    title="Animation doanh thu theo tháng"
+)
+fig.show()</code></pre>
+          </div>
+
+          <h3>Tùy chỉnh layout &amp; Graph Objects</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Tùy chỉnh layout
+fig.update_layout(
+    title="Báo cáo doanh thu",
+    xaxis_title="Sản phẩm",
+    yaxis_title="Doanh thu",
+    template="plotly_white",
+    legend_title="Khu vực",
+    hovermode="x unified"
+)
+fig.show()
+
+# Graph Objects — kiểm soát sâu, nhiều trace
+import plotly.graph_objects as go
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatter(
+    x=monthly["month"], y=monthly["revenue"],
+    mode="lines+markers", name="Revenue"
+))
+
+fig.update_layout(
+    title="Revenue Line Chart",
+    xaxis_title="Month", yaxis_title="Revenue",
+    template="plotly_white"
+)
+fig.show()</code></pre>
+          </div>
+
+          <p>Một số template: <code>plotly</code>, <code>plotly_white</code>, <code>plotly_dark</code>, <code>ggplot2</code>, <code>seaborn</code>, <code>simple_white</code>.</p>
+
+          <div class="note">
+            <strong>Dùng Graph Objects khi:</strong> cần nhiều trace phức tạp, custom hover template, secondary y-axis, bố cục
+            dashboard thủ công hoặc biểu đồ không có sẵn trong Plotly Express.
+          </div>
+
+          <h3>Xuất file HTML / ảnh</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Xuất HTML — mở bằng trình duyệt, giữ tương tác, dễ chia sẻ
+fig.write_html("revenue_dashboard.html")
+
+# Xuất ảnh tĩnh (cần pip install kaleido)
+fig.write_image("chart.png")
+fig.write_image("chart.svg")
+fig.write_image("chart.pdf")</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== CHỌN BIỂU ĐỒ ======================== -->
+        <section id="chon-bieu-do">
+          <h2>9. Quy trình chọn biểu đồ phù hợp</h2>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Câu hỏi</th><th>Loại biểu đồ</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dữ liệu thay đổi theo thời gian?</td>
+                <td>Line chart, Area chart, Time series</td>
+                <td>Doanh thu theo tháng, CPU usage, network traffic</td>
+              </tr>
+              <tr>
+                <td>Muốn so sánh các nhóm?</td>
+                <td>Bar chart, Horizontal bar, Grouped bar</td>
+                <td>Doanh thu theo sản phẩm, top IP nhiều packet nhất</td>
+              </tr>
+              <tr>
+                <td>Muốn xem phân bố?</td>
+                <td>Histogram, KDE, Box plot, Violin plot</td>
+                <td>Phân bố điểm thi, latency, response time</td>
+              </tr>
+              <tr>
+                <td>Muốn xem quan hệ giữa 2 biến?</td>
+                <td>Scatter plot, Regression plot, Bubble chart</td>
+                <td>Giờ học &amp; điểm thi, packet size &amp; latency</td>
+              </tr>
+              <tr>
+                <td>Muốn xem tương quan nhiều biến?</td>
+                <td>Heatmap, Pair plot, Correlation matrix</td>
+                <td>Tương quan revenue/profit/orders/unit_price</td>
+              </tr>
+              <tr>
+                <td>Cần tương tác (hover/zoom)?</td>
+                <td>Plotly</td>
+                <td>Dashboard doanh thu, network monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Checklist biểu đồ chuyên nghiệp</h3>
+          <ul>
+            <li>Có tiêu đề rõ ràng chưa?</li>
+            <li>Trục X, trục Y có nhãn và đơn vị rõ chưa?</li>
+            <li>Legend có cần thiết không, có dễ đọc không?</li>
+            <li>Màu sắc có dễ phân biệt, không quá nhiều màu/category?</li>
+            <li>Có cần sắp xếp dữ liệu hoặc format số lớn trước khi vẽ?</li>
+            <li>Có cần xoay nhãn trục X cho khỏi chồng?</li>
+            <li>Đã chọn đúng định dạng xuất (PNG/SVG/PDF/HTML)?</li>
+            <li>Biểu đồ có truyền tải đúng insight chính không?</li>
+          </ul>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>10. Lỗi thường gặp</h2>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 1</span>
+              <h3 style="margin:0">Nhãn trục X bị chồng lên nhau</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Pyplot API
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Object-Oriented API
+ax.tick_params(axis="x", rotation=45)</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 2</span>
+              <h3 style="margin:0">Lưu ảnh sau <code>plt.show()</code> ra file trống</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sai thứ tự — file có thể trống
+plt.show()
+fig.savefig("chart.png")
+
+# Đúng — luôn savefig TRƯỚC show
+fig.savefig("chart.png", dpi=300, bbox_inches="tight")
+plt.show()</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 3</span>
+              <h3 style="margin:0">Seaborn barplot không ra tổng</h3>
+            </div>
+            <p><code>barplot</code> mặc định tính trung bình. Muốn tổng → groupby trước.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">summary = df.groupby("product", as_index=False)["revenue"].sum()
+sns.barplot(data=summary, x="product", y="revenue")</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 4</span>
+              <h3 style="margin:0">Plotly không hiện trong môi trường script</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Xuất HTML rồi mở trong trình duyệt
+fig.write_html("chart.html")
+
+# Hoặc chỉ định renderer là browser
+fig.show(renderer="browser")</code></pre>
+            </div>
+            <div class="danger">
+              <strong>Dữ liệu quá lớn làm biểu đồ chậm.</strong> Nên: lấy sample, groupby trước khi vẽ, giảm số điểm, dùng
+              histogram thay scatter quá nhiều điểm, và với Plotly hạn chế vẽ hàng trăm nghìn điểm nếu không cần.
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>11. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Line Plot cơ bản</h3>
+            <p>
+              Tạo mảng <code>x = 0..10</code>, vẽ 3 đường: <code>y = x</code>, <code>y = x^2</code>, <code>y = 2x + 1</code>.
+              Yêu cầu: có title, label trục X/Y, legend và grid.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Scatter Plot</h3>
+            <p>
+              Tạo 100 điểm ngẫu nhiên <code>x</code>, <code>y</code>. Vẽ scatter, thay đổi marker, thay đổi <code>alpha</code>,
+              thêm colorbar.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Bar Chart</h3>
+            <p>
+              Tạo dữ liệu doanh thu 5 sản phẩm. Vẽ bar chart, sắp xếp theo doanh thu giảm dần, thêm giá trị trên đầu mỗi cột
+              (dùng <code>ax.text()</code> hoặc <code>ax.bar_label()</code>).
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 4 — Histogram + KDE</h3>
+            <p>
+              Tạo 1000 điểm theo phân phối normal. Vẽ histogram với 20 bins bằng Matplotlib, vẽ thêm KDE bằng Seaborn
+              (<code>sns.histplot(..., kde=True)</code>). Nhận xét phân bố.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 5 — Box Plot so sánh nhóm</h3>
+            <p>
+              Dùng dataset giả lập điểm 3 lớp. Vẽ box plot, so sánh median, tìm lớp có độ phân tán lớn nhất.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 6 — Heatmap tương quan</h3>
+            <p>
+              Tạo DataFrame gồm 4 cột số (ví dụ <code>orders, unit_price, revenue, profit</code>). Tính correlation, vẽ heatmap,
+              hiển thị số trong từng ô với <code>annot=True</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 7 — Seaborn hue + size</h3>
+            <p>
+              Dùng dataset bán hàng. Vẽ scatter <code>orders</code> vs <code>revenue</code>, phân màu theo <code>region</code>,
+              kích thước theo <code>profit</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 8 — Seaborn Facet</h3>
+            <p>
+              Vẽ <code>orders</code> vs <code>revenue</code> bằng <code>sns.relplot</code>, chia biểu đồ theo từng
+              <code>region</code> (<code>col="region"</code>), mỗi biểu đồ con tô màu theo <code>product</code> (<code>hue="product"</code>).
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 9 — Plotly Interactive Chart</h3>
+            <p>
+              Vẽ line chart doanh thu theo tháng bằng <code>px.line</code>, phân màu theo <code>region</code>, có
+              <code>hover_data</code>, xuất ra file <code>chart.html</code> bằng <code>fig.write_html()</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 10 — Mini Dashboard</h3>
+            <p>
+              Tạo 3 biểu đồ: tổng doanh thu theo tháng, doanh thu theo sản phẩm, phân bố doanh thu theo khu vực.
+              Làm một bản bằng Matplotlib/Seaborn (subplot 2×2 hoặc nhiều) và một bản tương tác bằng Plotly (xuất HTML).
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_theme(style="whitegrid")
+
+monthly = df.groupby("month", as_index=False).agg(total_revenue=("revenue", "sum"))
+product_summary = (
+    df.groupby("product", as_index=False)
+      .agg(total_revenue=("revenue", "sum"))
+      .sort_values("total_revenue", ascending=False)
+)
+corr = df[["orders", "unit_price", "revenue", "profit"]].corr()
+
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+sns.lineplot(data=monthly, x="month", y="total_revenue", marker="o", ax=axes[0, 0])
+axes[0, 0].set_title("Tổng doanh thu theo tháng")
+axes[0, 0].tick_params(axis="x", rotation=45)
+
+sns.barplot(data=product_summary, x="product", y="total_revenue", ax=axes[0, 1])
+axes[0, 1].set_title("Tổng doanh thu theo sản phẩm")
+
+sns.histplot(data=df, x="revenue", bins=30, kde=True, ax=axes[1, 0])
+axes[1, 0].set_title("Phân bố doanh thu")
+
+sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", ax=axes[1, 1])
+axes[1, 1].set_title("Correlation Heatmap")
+
+fig.suptitle("Báo cáo bán hàng", fontsize=18)
+plt.tight_layout()
+fig.savefig("sales_report.png", dpi=300, bbox_inches="tight")
+plt.show()</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Matplotlib</strong> là nền tảng — hiểu <code>Figure</code>, <code>Axes</code>, <code>Axis</code>; ưu tiên Object-Oriented API (<code>fig, ax = plt.subplots()</code>).</li>
+            <li><strong>Các loại biểu đồ cốt lõi</strong>: line, scatter, bar/barh, grouped bar, histogram, box plot, pie chart, subplots, time series.</li>
+            <li><strong>Tùy chỉnh</strong>: title, label, legend, grid, style; luôn <code>fig.savefig()</code> trước <code>plt.show()</code>.</li>
+            <li><strong>Seaborn</strong> nhanh và đẹp cho DataFrame — <code>hue</code> tự phân nhóm; nhớ <code>barplot</code> mặc định lấy trung bình, cần groupby nếu muốn tổng.</li>
+            <li><strong>Heatmap, pairplot, regplot</strong> giúp khám phá tương quan và xu hướng giữa nhiều biến.</li>
+            <li><strong>Plotly</strong> cho biểu đồ tương tác — <code>px</code> nhanh, <code>go</code> tùy chỉnh sâu; xuất HTML bằng <code>fig.write_html()</code>.</li>
+            <li><strong>Chọn biểu đồ theo câu hỏi phân tích</strong>: thời gian → line; so sánh nhóm → bar; phân bố → histogram/box; quan hệ 2 biến → scatter; tương quan nhiều biến → heatmap/pairplot; cần tương tác → Plotly.</li>
+            <li><strong>Luôn kiểm tra checklist</strong>: title, label, legend, màu sắc, định dạng xuất, và insight chính trước khi coi biểu đồ là hoàn thành.</li>
+          </ul>
+          <div class="note">
+            <strong>Lộ trình tiếp theo:</strong> Matplotlib để hiểu cấu trúc → Seaborn để phân tích nhanh → Plotly để làm dashboard
+            tương tác. Bài 23 (Pandas) và bài 24 (SQL/SQLite) sẽ cung cấp dữ liệu thực tế để áp dụng các kỹ thuật trực quan hóa này.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 22. Data Visualization — Matplotlib, Seaborn &amp; Plotly</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

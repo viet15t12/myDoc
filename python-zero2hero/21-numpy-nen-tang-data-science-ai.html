@@ -3,80 +3,1059 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=ComingSoon.html" />
-  <link rel="canonical" href="ComingSoon.html" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>21. NumPy — Nền Tảng Data Science & AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 21</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#numpy-la-gi">1. NumPy là gì?</a>
+      <a href="#cai-dat">2. Cài đặt & Import</a>
+      <a href="#ndarray">3. ndarray — Cấu trúc cốt lõi</a>
+      <a href="#tao-array">4. Tạo Array</a>
+      <a href="#indexing-slicing">5. Indexing & Slicing</a>
+      <a href="#thuoc-tinh">6. Thuộc tính Array</a>
+      <a href="#tao-theo-mau">7. Tạo Array theo mẫu</a>
+      <a href="#phep-tinh">8. Phép tính trên Array</a>
+      <a href="#aggregate">9. Hàm thống kê (sum, max, min...)</a>
+      <a href="#broadcasting">10. Broadcasting</a>
+      <a href="#reshape-flatten">11. Reshape & Flatten</a>
+      <a href="#ung-dung">12. Ứng dụng thực tế</a>
+      <a href="#loi-thuong-gap">13. Lỗi thường gặp</a>
+      <a href="#bai-tap">14. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>21. NumPy — Nền Tảng Data Science &amp; AI</h1>
+        <p class="meta">
+          NumPy (<strong>Num</strong>erical <strong>Py</strong>thon) là thư viện tính toán khoa học nền tảng của Python —
+          cung cấp cấu trúc dữ liệu <strong>ndarray</strong> nhiều chiều, tập hợp hàm toán học và đại số tuyến tính hiệu suất cao.
+          Pandas, TensorFlow, PyTorch, scikit-learn đều xây dựng trên NumPy.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Khi làm việc với data hoặc AI, chúng ta thường phải xử lý hàng nghìn đến hàng triệu con số — ma trận ảnh, bộ dữ liệu huấn luyện, weight của neural network... Python list bình thường không đủ nhanh và linh hoạt cho những tác vụ đó. NumPy ra đời để giải quyết đúng vấn đề này.
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tại sao cần NumPy?</th><th>Python List</th><th>NumPy ndarray</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kiểu dữ liệu phần tử</td>
+                <td>Hỗn hợp (int, str, float...)</td>
+                <td>Đồng nhất (homogeneous)</td>
+              </tr>
+              <tr>
+                <td>Tốc độ xử lý số</td>
+                <td>Chậm (loop Python)</td>
+                <td>Nhanh (vectorized C)</td>
+              </tr>
+              <tr>
+                <td>Kích thước</td>
+                <td>Thay đổi được (append/pop)</td>
+                <td>Cố định sau khi tạo</td>
+              </tr>
+              <tr>
+                <td>Shape (hình dạng)</td>
+                <td>Không có khái niệm</td>
+                <td>Rectangular — hình chữ nhật</td>
+              </tr>
+              <tr>
+                <td>Phép tính ma trận</td>
+                <td>Phải tự code vòng lặp</td>
+                <td>Hàm built-in sẵn</td>
+              </tr>
+              <tr>
+                <td>Dùng cho</td>
+                <td>Dữ liệu đa kiểu, linh hoạt</td>
+                <td>Tính toán số, AI, Data Science</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note">
+            <strong>NumPy là nền tảng.</strong> Các thư viện lớn như <code>pandas</code>, <code>matplotlib</code>, <code>scikit-learn</code>, <code>TensorFlow</code>, <code>PyTorch</code> đều phụ thuộc vào NumPy. Nắm NumPy vững = học những thư viện kia dễ hơn rất nhiều.
+          </div>
+        </section>
+
+        <!-- ======================== NUMPY LÀ GÌ ======================== -->
+        <section id="numpy-la-gi">
+          <h2>1. NumPy là gì?</h2>
+          <p>
+            NumPy (Numerical Python) là thư viện mã nguồn mở cho phép xử lý <strong>mảng nhiều chiều (N-dimensional array)</strong> với hiệu năng cao. Core của NumPy được viết bằng C và Fortran nên tốc độ vượt trội so với vòng lặp Python thuần.
+          </p>
+          <h3>Những tính năng chính</h3>
+          <ul>
+            <li><strong>ndarray</strong> — Mảng N chiều đồng nhất kiểu dữ liệu, là trung tâm của NumPy</li>
+            <li><strong>Vectorized operations</strong> — Áp dụng phép tính lên toàn bộ array không cần vòng lặp</li>
+            <li><strong>Broadcasting</strong> — Tính toán giữa các array có shape khác nhau theo quy tắc</li>
+            <li><strong>Linear algebra</strong> — Nhân ma trận, tính định thức, phân rã ma trận...</li>
+            <li><strong>Random</strong> — Sinh số ngẫu nhiên theo nhiều phân phối xác suất</li>
+            <li><strong>FFT</strong> — Biến đổi Fourier nhanh cho xử lý tín hiệu</li>
+          </ul>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thư viện</th><th>Quan hệ với NumPy</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Pandas</strong></td><td>Xây dựng trên NumPy, thêm DataFrame/Series</td></tr>
+              <tr><td><strong>Matplotlib</strong></td><td>Nhận NumPy array để vẽ đồ thị</td></tr>
+              <tr><td><strong>scikit-learn</strong></td><td>Dữ liệu đầu vào/ra là NumPy array</td></tr>
+              <tr><td><strong>TensorFlow / PyTorch</strong></td><td>Tensor tương thích NumPy array</td></tr>
+              <tr><td><strong>OpenCV</strong></td><td>Ảnh = NumPy 3D array (H × W × C)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== CÀI ĐẶT ======================== -->
+        <section id="cai-dat">
+          <h2>2. Cài đặt &amp; Import</h2>
+
+          <h3>Cài đặt</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-bash"># Dùng pip (môi trường global hoặc venv)
+pip install numpy
+
+# Dùng uv (khuyến nghị cho dự án)
+uv add numpy
+
+# Dùng conda
+conda install numpy</code></pre>
+          </div>
+
+          <h3>Import vào chương trình</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np   # alias 'np' là quy ước chuẩn toàn ngành
+
+# Kiểm tra phiên bản
+print(np.__version__)  # ví dụ: 1.26.4</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Tại sao dùng <code>as np</code>?</strong> Để gõ <code>np.array()</code> thay vì <code>numpy.array()</code> — ngắn hơn và đây là quy ước toàn ngành. Mọi tài liệu, course, codebase đều dùng <code>np</code>.
+          </div>
+        </section>
+
+        <!-- ======================== NDARRAY ======================== -->
+        <section id="ndarray">
+          <h2>3. ndarray — Cấu trúc cốt lõi</h2>
+          <p>
+            <code>ndarray</code> (N-dimensional array) là kiểu dữ liệu trung tâm của NumPy. Hãy hiểu nó như một bảng/ma trận N chiều, nơi mọi phần tử đều cùng kiểu dữ liệu.
+          </p>
+
+          <h3>Khái niệm Axis (Trục)</h3>
+          <p>
+            Khái niệm <strong>axis</strong> (trục/chiều) cực kỳ quan trọng khi làm việc với NumPy, Pandas, TensorFlow, PyTorch.
+          </p>
+
+          <div class="diagram">
+            <div class="box">
+              <strong>1D Array</strong><br/>
+              <small style="color:#64748b"><code>[1, 2, 3]</code><br/>axis=0 → ngang</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>2D Array</strong><br/>
+              <small style="color:#64748b"><code>[[1,2,3],[4,5,6]]</code><br/>axis=0 → dọc<br/>axis=1 → ngang</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>3D Array</strong><br/>
+              <small style="color:#64748b">Ảnh RGB:<br/>axis=0 → depth<br/>axis=1 → row<br/>axis=2 → col</small>
+            </div>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Chiều (ndim)</th><th>Tên gọi</th><th>Ví dụ thực tế</th><th>Shape ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>1D array / Vector</td>
+                <td>Dãy nhiệt độ theo giờ</td>
+                <td><code>(24,)</code></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2D array / Ma trận</td>
+                <td>Bảng dữ liệu, ảnh grayscale</td>
+                <td><code>(100, 28)</code></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>3D array / Tensor</td>
+                <td>Ảnh màu RGB (H×W×3)</td>
+                <td><code>(224, 224, 3)</code></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>4D array</td>
+                <td>Batch ảnh (N×H×W×C)</td>
+                <td><code>(32, 224, 224, 3)</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning">
+            <strong>Quy tắc hình dạng:</strong> Array NumPy phải có hình chữ nhật (rectangular). Không thể có hàng đầu 3 phần tử, hàng hai 2 phần tử — đó là "jagged array" và NumPy không hỗ trợ.
+          </div>
+        </section>
+
+        <!-- ======================== TẠO ARRAY ======================== -->
+        <section id="tao-array">
+          <h2>4. Tạo Array</h2>
+
+          <h3>Từ Python list</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+# 1D array
+arr1d = np.array([1, 2, 3])
+print(arr1d)       # [1 2 3]
+print(type(arr1d)) # <class 'numpy.ndarray'>
+
+# 2D array (ma trận 3×3)
+arr2d = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+print(arr2d)
+# [[1 2 3]
+#  [4 5 6]
+#  [7 8 9]]</code></pre>
+          </div>
+
+          <h3>Chỉ định kiểu dữ liệu khi tạo</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Mặc định NumPy sẽ tự suy kiểu
+arr_int = np.array([1, 2, 3])          # int64
+arr_float = np.array([1.0, 2.0, 3.0]) # float64
+
+# Chỉ định kiểu dữ liệu tường minh
+arr_f32 = np.array([1, 2, 3], dtype=np.float32)
+arr_bool = np.array([1, 0, 1], dtype=bool)
+
+print(arr_int.dtype)   # int64
+print(arr_f32.dtype)   # float32
+
+# Khi trộn int và float → NumPy tự convert sang float
+mixed = np.array([1, 2, 3.5])
+print(mixed)       # [1.  2.  3.5]
+print(mixed.dtype) # float64</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Type coercion:</strong> Khi tạo array từ list hỗn hợp int+float, tất cả int sẽ tự động được chuyển sang float — vì array phải đồng nhất kiểu. Đây là điểm khác biệt quan trọng so với Python list.
+          </div>
+        </section>
+
+        <!-- ======================== INDEXING & SLICING ======================== -->
+        <section id="indexing-slicing">
+          <h2>5. Indexing &amp; Slicing</h2>
+
+          <h3>1D Array — Indexing</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50])
+#               0    1    2    3    4   (index dương)
+#              -5   -4   -3   -2   -1   (index âm)
+
+print(arr[0])   # 10 — phần tử đầu
+print(arr[-1])  # 50 — phần tử cuối
+print(arr[2])   # 30</code></pre>
+          </div>
+
+          <h3>1D Array — Slicing</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([10, 20, 30, 40, 50])
+
+print(arr[1:4])   # [20 30 40]  — index 1 đến 3
+print(arr[:3])    # [10 20 30]  — từ đầu đến index 2
+print(arr[2:])    # [30 40 50]  — từ index 2 đến cuối
+print(arr[::2])   # [10 30 50]  — bước 2</code></pre>
+          </div>
+
+          <h3>2D Array — Indexing</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr2d = np.array([
+    [1, 2, 3],   # hàng 0
+    [4, 5, 6],   # hàng 1
+    [7, 8, 9]    # hàng 2
+])
+
+# Cú pháp: arr[row_index, col_index]
+print(arr2d[0, 0])  # 1 — hàng 0, cột 0
+print(arr2d[1, 1])  # 5 — hàng 1, cột 1
+print(arr2d[2, -1]) # 9 — hàng 2, cột cuối</code></pre>
+          </div>
+
+          <h3>2D Array — Slicing theo hàng và cột</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr2d = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+
+# Lấy nguyên hàng đầu tiên
+print(arr2d[0, :])  # [1 2 3]
+
+# Lấy nguyên cột đầu tiên
+print(arr2d[:, 0])  # [1 4 7]
+
+# Lấy sub-matrix 2×2 góc trên trái
+print(arr2d[:2, :2])
+# [[1 2]
+#  [4 5]]
+
+# Lấy hàng 1 đến 2, cột 1 đến 2
+print(arr2d[1:3, 1:3])
+# [[5 6]
+#  [8 9]]</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>2D indexing:</strong> Cú pháp <code>arr[row, col]</code> (dùng dấu phẩy) là cách NumPy. Cú pháp <code>arr[row][col]</code> (ngoặc lồng nhau) cũng hoạt động nhưng kém hiệu quả hơn — tránh dùng trong code production.
+          </div>
+        </section>
+
+        <!-- ======================== THUỘC TÍNH ======================== -->
+        <section id="thuoc-tinh">
+          <h2>6. Thuộc tính Array</h2>
+          <p>Mỗi <code>ndarray</code> có một số thuộc tính quan trọng để ta hiểu cấu trúc của nó:</p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr1d = np.array([1, 2, 3])
+arr2d = np.array([[1, 2], [3, 4]])
+
+# ndim — số chiều
+print(arr1d.ndim)  # 1
+print(arr2d.ndim)  # 2
+
+# shape — tuple số phần tử theo mỗi chiều
+print(arr1d.shape)  # (3,)    — 1 chiều, 3 phần tử
+print(arr2d.shape)  # (2, 2)  — 2 hàng, 2 cột
+
+# size — tổng số phần tử
+print(arr1d.size)  # 3
+print(arr2d.size)  # 4  (= 2 × 2)
+
+# dtype — kiểu dữ liệu của phần tử
+print(arr1d.dtype)  # int64
+print(arr2d.dtype)  # int64</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thuộc tính</th><th>Kiểu trả về</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>.ndim</code></td><td><code>int</code></td><td>Số chiều của array</td></tr>
+              <tr><td><code>.shape</code></td><td><code>tuple</code></td><td>Số phần tử theo mỗi chiều, <code>size = shape[0] × shape[1] × ...</code></td></tr>
+              <tr><td><code>.size</code></td><td><code>int</code></td><td>Tổng số phần tử = tích tất cả giá trị trong <code>shape</code></td></tr>
+              <tr><td><code>.dtype</code></td><td><code>dtype</code></td><td>Kiểu dữ liệu: <code>int32</code>, <code>float64</code>, <code>bool</code>...</td></tr>
+              <tr><td><code>.itemsize</code></td><td><code>int</code></td><td>Số byte mỗi phần tử chiếm</td></tr>
+              <tr><td><code>.nbytes</code></td><td><code>int</code></td><td>Tổng byte của toàn array</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Chuyển đổi kiểu dữ liệu (astype)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([[1, 2], [3, 4]])
+
+print(arr.dtype)   # int64
+
+# Tạo array mới với dtype float64
+arr_float = arr.astype(np.float64)
+print(arr_float)
+# [[1. 2.]
+#  [3. 4.]]
+print(arr_float.dtype)  # float64
+
+# Thực tế: khi feed data vào AI model
+# model thường yêu cầu float32
+arr_f32 = arr.astype(np.float32)
+print(arr_f32.dtype)   # float32</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>astype() tạo array mới</strong> — array gốc không bị thay đổi. Đây là đặc điểm quan trọng: NumPy operations hầu hết đều trả về array mới thay vì sửa in-place.
+          </div>
+        </section>
+
+        <!-- ======================== TẠO THEO MẪU ======================== -->
+        <section id="tao-theo-mau">
+          <h2>7. Tạo Array theo mẫu</h2>
+          <p>Trong thực tế, ta thường cần tạo array với pattern cụ thể thay vì nhập thủ công từng giá trị.</p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+# --- Toàn giá trị 0 ---
+zeros = np.zeros((3, 4))       # ma trận 3×4 toàn 0
+zeros_1d = np.zeros(5)         # vector 5 phần tử = 0
+
+# --- Toàn giá trị 1 ---
+ones = np.ones((2, 3))         # ma trận 2×3 toàn 1
+ones_f32 = np.ones((2, 3), dtype=np.float32)
+
+# --- Một giá trị tùy chọn ---
+full = np.full((3, 3), 7)      # ma trận 3×3 toàn số 7
+
+# --- Ma trận đơn vị (identity matrix) ---
+eye = np.eye(4)                # ma trận đơn vị 4×4
+
+# --- Dãy số tương tự range() ---
+arange = np.arange(0, 10, 2)   # [0 2 4 6 8]  (start, stop, step)
+arange2 = np.arange(5)         # [0 1 2 3 4]
+
+# --- Dãy đều nhau linspace ---
+linspace = np.linspace(0, 1, 5)  # [0.   0.25 0.5  0.75 1. ]
+# linspace(start, stop, num) — num phần tử cách đều
+
+# --- Random ---
+rand = np.random.rand(3, 3)    # float [0.0, 1.0) phân phối đều
+randn = np.random.randn(3, 3)  # phân phối chuẩn N(0,1)
+randint = np.random.randint(0, 10, size=(3, 3))  # int ngẫu nhiên
+
+print(zeros)
+print(ones)
+print(eye)
+print(arange)</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Hàm</th><th>Ý nghĩa</th><th>Dùng khi nào</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>np.zeros(shape)</code></td><td>Toàn 0</td><td>Khởi tạo ma trận trước khi điền dần</td></tr>
+              <tr><td><code>np.ones(shape)</code></td><td>Toàn 1</td><td>Mask, weight ban đầu</td></tr>
+              <tr><td><code>np.full(shape, val)</code></td><td>Toàn một giá trị</td><td>Điền giá trị mặc định</td></tr>
+              <tr><td><code>np.eye(n)</code></td><td>Ma trận đơn vị n×n</td><td>Đại số tuyến tính</td></tr>
+              <tr><td><code>np.arange(start, stop, step)</code></td><td>Dãy số</td><td>Tương tự <code>range()</code> cho array</td></tr>
+              <tr><td><code>np.linspace(start, stop, num)</code></td><td>Dãy đều</td><td>Vẽ đồ thị, chia khoảng</td></tr>
+              <tr><td><code>np.random.rand(shape)</code></td><td>Random [0,1)</td><td>Khởi tạo trọng số mạng neural</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== PHÉP TÍNH ======================== -->
+        <section id="phep-tinh">
+          <h2>8. Phép tính trên Array</h2>
+          <p>
+            NumPy hỗ trợ <strong>vectorized operations</strong> — áp dụng phép tính lên từng phần tử mà không cần vòng lặp. Điều này giúp code ngắn gọn và nhanh hơn nhiều lần so với loop thủ công.
+          </p>
+
+          <h3>Phép tính element-wise (cùng shape)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+# Cộng, trừ, nhân, chia — theo từng vị trí
+print(a + b)   # [5 7 9]
+print(b - a)   # [3 3 3]
+print(a * b)   # [ 4 10 18]
+print(b / a)   # [4.  2.5  2. ]
+print(a ** 2)  # [1 4 9]  — lũy thừa
+
+# Phép tính với scalar — áp dụng cho mọi phần tử
+arr = np.array([10, 20, 30])
+print(arr + 5)    # [15 25 35]
+print(arr * 2)    # [20 40 60]
+print(arr / 10)   # [1. 2. 3.]</code></pre>
+          </div>
+
+          <h3>So sánh — trả về array boolean</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([1, 5, 3, 8, 2, 7])
+
+print(arr > 4)         # [False  True False  True False  True]
+print(arr[arr > 4])    # [5 8 7]  — Boolean indexing
+print(arr[arr % 2 == 0]) # [8 2]  — lọc số chẵn</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Boolean indexing</strong> là kỹ thuật cực kỳ hữu ích khi lọc data: <code>arr[condition]</code> trả về các phần tử thỏa mãn điều kiện. Pandas cũng dùng cú pháp tương tự.
+          </div>
+        </section>
+
+        <!-- ======================== AGGREGATE ======================== -->
+        <section id="aggregate">
+          <h2>9. Hàm thống kê (sum, max, min...)</h2>
+
+          <h3>Hàm trên 1D array</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+print(np.sum(arr))    # 15  — hoặc arr.sum()
+print(np.max(arr))    # 5   — hoặc arr.max()
+print(np.min(arr))    # 1   — hoặc arr.min()
+print(np.mean(arr))   # 3.0 — trung bình
+print(np.std(arr))    # 1.4142... — độ lệch chuẩn
+print(np.argmax(arr)) # 4   — index của phần tử lớn nhất
+print(np.argmin(arr)) # 0   — index của phần tử nhỏ nhất</code></pre>
+          </div>
+
+          <h3>Hàm theo axis trên 2D array</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr2d = np.array([
+    [1, 2, 3],   # hàng 0
+    [4, 5, 6]    # hàng 1
+])
+#     col0 col1 col2
+
+# Không chỉ định axis — tính trên toàn bộ array
+print(arr2d.sum())    # 21
+
+# axis=0 → cộng theo chiều dọc (cộng từng cột)
+print(arr2d.sum(axis=0))  # [5 7 9]  — (1+4), (2+5), (3+6)
+
+# axis=1 → cộng theo chiều ngang (cộng từng hàng)
+print(arr2d.sum(axis=1))  # [6 15]   — (1+2+3), (4+5+6)
+
+# Tương tự với max, min, mean
+print(arr2d.max(axis=0))  # [4 5 6]
+print(arr2d.mean(axis=1)) # [2. 5.]</code></pre>
+          </div>
+
+          <div class="diagram">
+            <div class="box">
+              <strong>axis=0</strong><br/>
+              <small style="color:#64748b">Chạy dọc ↓<br/>Cộng theo cột</small>
+            </div>
+            <div class="arrow">vs</div>
+            <div class="box">
+              <strong>axis=1</strong><br/>
+              <small style="color:#64748b">Chạy ngang →<br/>Cộng theo hàng</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <strong>keepdims=True</strong><br/>
+              <small style="color:#64748b">Giữ số chiều<br/>sau khi reduce</small>
+            </div>
+          </div>
+
+          <h3>Giữ nguyên số chiều với keepdims</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr2d = np.array([[1, 2, 3], [4, 5, 6]])  # shape (2, 3)
+
+# Mặc định — kết quả giảm 1 chiều
+row_sum = arr2d.sum(axis=1)
+print(row_sum)        # [6 15]
+print(row_sum.shape)  # (2,)  — chỉ còn 1 chiều
+
+# keepdims=True — giữ nguyên số chiều
+row_sum_2d = arr2d.sum(axis=1, keepdims=True)
+print(row_sum_2d)        # [[6], [15]]
+print(row_sum_2d.shape)  # (2, 1)  — vẫn 2 chiều
+
+# keepdims quan trọng trong AI khi cần broadcasting sau đó</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== BROADCASTING ======================== -->
+        <section id="broadcasting">
+          <h2>10. Broadcasting</h2>
+          <p>
+            <strong>Broadcasting</strong> là cơ chế NumPy tự động "mở rộng" array nhỏ hơn để thực hiện phép tính với array lớn hơn — mà không cần thực sự copy dữ liệu.
+          </p>
+
+          <h3>Trường hợp 1: Array + Scalar</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr = np.array([[4, 5, 6],
+                [7, 8, 9]])  # shape (2, 3)
+
+# Cộng với scalar 1 → broadcast sang toàn bộ array
+result = arr + 1
+print(result)
+# [[ 5  6  7]
+#  [ 8  9 10]]
+
+# Scalar được "nhân bản" thành ma trận (2,3) toàn số 1 trước khi cộng</code></pre>
+          </div>
+
+          <h3>Trường hợp 2: 2D + 1D (shape khớp cột)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr2d = np.array([[4, 5, 6],
+                  [7, 8, 9]])  # shape (2, 3)
+
+arr1d = np.array([1, 2, 3])    # shape (3,)
+
+# NumPy broadcast arr1d thành [[1,2,3],[1,2,3]] rồi cộng
+result = arr2d + arr1d
+print(result)
+# [[ 5  7  9]
+#  [ 8 10 12]]</code></pre>
+          </div>
+
+          <h3>Trường hợp 3: 2D (2,3) + 2D (2,1)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr_a = np.array([[4, 5, 6],
+                  [7, 8, 9]])  # shape (2, 3)
+
+arr_b = np.array([[1],
+                  [2]])        # shape (2, 1)
+
+# arr_b broadcast thành [[1,1,1],[2,2,2]] rồi cộng
+result = arr_a + arr_b
+print(result)
+# [[ 5  6  7]
+#  [ 9 10 11]]</code></pre>
+          </div>
+
+          <h3>Trường hợp thất bại — ValueError</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr_a = np.array([[4, 5, 6],
+                  [7, 8, 9]])  # shape (2, 3)
+
+arr_b = np.array([[1],
+                  [2],
+                  [3]])        # shape (3, 1)
+
+# Lỗi: shape (2,3) vs (3,1) — không thể broadcast
+try:
+    result = arr_a + arr_b
+except ValueError as e:
+    print(e)
+# operands could not be broadcast together with shapes (2,3) (3,1)</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Array A</th><th>Array B</th><th>Kết quả</th><th>Lý do</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>(2, 3)</code></td>
+                <td><code>scalar</code></td>
+                <td><code>(2, 3)</code> hợp lệ</td>
+                <td>Scalar broadcast sang mọi vị trí</td>
+              </tr>
+              <tr>
+                <td><code>(2, 3)</code></td>
+                <td><code>(3,)</code></td>
+                <td><code>(2, 3)</code> hợp lệ</td>
+                <td>1D broadcast thành (1,3) rồi thành (2,3)</td>
+              </tr>
+              <tr>
+                <td><code>(2, 3)</code></td>
+                <td><code>(2, 1)</code></td>
+                <td><code>(2, 3)</code> hợp lệ</td>
+                <td>Cột đơn nhân bản 3 lần</td>
+              </tr>
+              <tr>
+                <td><code>(2, 3)</code></td>
+                <td><code>(3, 1)</code></td>
+                <td>ValueError</td>
+                <td>2 hàng vs 3 hàng — không khớp, không thể broadcast</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning">
+            <strong>Quy tắc broadcast:</strong> So sánh shape từ phải sang trái. Mỗi chiều phải bằng nhau, hoặc một trong hai bằng 1. Nếu A có ít chiều hơn B, thêm chiều 1 vào bên trái của A.
+          </div>
+        </section>
+
+        <!-- ======================== RESHAPE & FLATTEN ======================== -->
+        <section id="reshape-flatten">
+          <h2>11. Reshape &amp; Flatten</h2>
+
+          <h3>reshape() — Thay đổi shape</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])   # shape (2, 3) — 6 phần tử
+
+# Cách 1: dùng np.reshape()
+new_arr = np.reshape(arr, (6,))   # về 1D — shape (6,)
+print(new_arr)   # [1 2 3 4 5 6]
+
+# Cách 2: dùng method .reshape()
+new_arr2 = arr.reshape((3, 2))   # shape (3, 2)
+print(new_arr2)
+# [[1 2]
+#  [3 4]
+#  [5 6]]
+
+# Dùng -1 để NumPy tự tính chiều còn lại
+new_arr3 = arr.reshape(-1)       # flatten về 1D
+new_arr4 = arr.reshape(-1, 2)    # NumPy tự tính số hàng = 3
+print(new_arr4.shape)  # (3, 2)</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Quy tắc reshape:</strong> Tổng số phần tử <strong>phải không đổi</strong>. <code>(2,3) → (6,)</code> hợp lệ vì 2×3 = 6. <code>(2,3) → (4,2)</code> lỗi vì 6 ≠ 8.
+          </div>
+
+          <h3>flatten() — Duỗi thành 1D</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+flat = arr.flatten()
+print(flat)          # [1 2 3 4 5 6]
+print(flat.shape)    # (6,)
+
+# flatten() đi theo hàng (row-major / C order) mặc định
+# Tương đương reshape(-1) nhưng luôn trả về copy
+
+# ravel() — tương tự flatten nhưng trả về view nếu có thể
+ravel = arr.ravel()
+print(ravel)  # [1 2 3 4 5 6]</code></pre>
+          </div>
+
+          <h3>Ứng dụng reshape trong AI</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Ảnh MNIST 28×28 pixel → flatten để đưa vào MLP
+img = np.random.rand(28, 28)         # shape (28, 28)
+flat_img = img.reshape(-1)           # shape (784,)
+# hoặc img.flatten()
+
+# Batch 32 ảnh → flatten mỗi ảnh
+batch = np.random.rand(32, 28, 28)   # shape (32, 28, 28)
+flat_batch = batch.reshape(32, -1)   # shape (32, 784)
+print(flat_batch.shape)  # (32, 784)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== ỨNG DỤNG ======================== -->
+        <section id="ung-dung">
+          <h2>12. Ứng dụng thực tế</h2>
+
+          <h3>Ảnh màu là 3D array</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+# Ảnh RGB 224×224 pixel
+img = np.random.randint(0, 256, size=(224, 224, 3), dtype=np.uint8)
+print(img.shape)   # (224, 224, 3)
+# axis=0: height (224 hàng)
+# axis=1: width  (224 cột)
+# axis=2: channel (3 kênh màu R, G, B)
+
+# Lấy kênh màu đỏ (Red channel)
+red_channel = img[:, :, 0]   # shape (224, 224)
+
+# Chuyển sang grayscale đơn giản (trung bình 3 kênh)
+gray = img.mean(axis=2)       # shape (224, 224)</code></pre>
+          </div>
+
+          <h3>Chuẩn hóa data (Normalization)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Dữ liệu đầu vào (ví dụ: điểm số sinh viên)
+scores = np.array([45, 78, 92, 61, 33, 87, 55])
+
+# Min-Max normalization về [0, 1]
+scores_norm = (scores - scores.min()) / (scores.max() - scores.min())
+print(scores_norm.round(2))
+# [0.2  0.76 1.   0.47 0.   0.92 0.37]
+
+# Z-score normalization (mean=0, std=1)
+scores_z = (scores - scores.mean()) / scores.std()
+print(scores_z.round(2))
+
+# Pixel normalization (ảnh AI)
+img_float = img.astype(np.float32) / 255.0  # về [0.0, 1.0]</code></pre>
+          </div>
+
+          <h3>Dot product — Nhân ma trận</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Nhân ma trận (dot product) — cốt lõi của neural network
+W = np.random.randn(4, 3)   # weight matrix (4×3)
+x = np.array([1.0, 2.0, 3.0])  # input vector (3,)
+
+# Linear layer: y = W · x
+y = np.dot(W, x)
+print(y.shape)  # (4,)
+
+# Hoặc dùng toán tử @
+y2 = W @ x
+print(y2.shape)  # (4,)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>13. Lỗi thường gặp</h2>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 1</span>
+              <h3 style="margin:0">ValueError: operands could not be broadcast</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Shape không tương thích
+a = np.array([[1, 2, 3], [4, 5, 6]])  # (2, 3)
+b = np.array([[1], [2], [3]])          # (3, 1)
+# result = a + b  → ValueError
+
+# Cách sửa: kiểm tra shape trước
+print(a.shape, b.shape)  # Xem ngay vấn đề</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 2</span>
+              <h3 style="margin:0">ValueError: cannot reshape array of size X into shape Y</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Tổng số phần tử không khớp
+arr = np.array([1, 2, 3, 4, 5, 6])  # 6 phần tử
+# arr.reshape(4, 2)  → Error vì 4×2 = 8 ≠ 6
+
+# Cách sửa: đảm bảo tổng phần tử bằng nhau
+arr.reshape(2, 3)   # hợp lệ vì 2×3 = 6
+arr.reshape(3, 2)   # hợp lệ vì 3×2 = 6</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 3</span>
+              <h3 style="margin:0">Nhầm axis khi dùng sum/mean</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+# Muốn tổng từng hàng → dùng axis=1 (chạy ngang)
+print(arr.sum(axis=1))  # [6, 15] đúng ý muốn
+
+# Nhầm dùng axis=0 → ra tổng từng cột
+print(arr.sum(axis=0))  # [5, 7, 9] không phải ý muốn
+
+# Ghi nhớ: axis=0 → dọc (theo cột), axis=1 → ngang (theo hàng)</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 4</span>
+              <h3 style="margin:0">View vs Copy — thay đổi ngoài ý muốn</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">arr = np.array([1, 2, 3, 4, 5])
+
+# Slicing trả về VIEW — thay đổi sẽ ảnh hưởng array gốc!
+view = arr[1:4]
+view[0] = 99
+print(arr)  # [1 99 3 4 5]  ← bị thay đổi theo!
+
+# Dùng .copy() để tách biệt hoàn toàn
+copy = arr[1:4].copy()
+copy[0] = 0
+print(arr)  # [1 99 3 4 5]  ← không bị ảnh hưởng</code></pre>
+            </div>
+            <div class="danger">
+              <strong>Cẩn thận với view!</strong> Slicing NumPy trả về <em>view</em> (cùng vùng nhớ), không phải copy. Đây là thiết kế để tiết kiệm bộ nhớ nhưng dễ gây bug. Nếu muốn array độc lập, phải gọi <code>.copy()</code> tường minh.
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>14. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Tạo và khám phá array</h3>
+            <p>Tạo array 2D shape <code>(4, 5)</code> với giá trị ngẫu nhiên nguyên trong <code>[1, 100]</code>. In ra: shape, ndim, size, dtype. Lấy hàng cuối và cột đầu tiên.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+arr = np.random.randint(1, 101, size=(4, 5))
+print("Array:\n", arr)
+print("Shape:", arr.shape)   # (4, 5)
+print("ndim:", arr.ndim)     # 2
+print("size:", arr.size)     # 20
+print("dtype:", arr.dtype)   # int64
+
+print("Hàng cuối:", arr[-1, :])
+print("Cột đầu:", arr[:, 0])</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Tính thống kê theo axis</h3>
+            <p>Cho ma trận điểm thi 5 sinh viên × 3 môn. Tính điểm trung bình từng sinh viên, điểm cao nhất từng môn.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+scores = np.array([
+    [7.5, 8.0, 6.5],   # SV1
+    [6.0, 7.0, 8.5],   # SV2
+    [9.0, 8.5, 9.5],   # SV3
+    [5.5, 6.0, 7.0],   # SV4
+    [8.0, 7.5, 8.0],   # SV5
+])
+
+# Điểm TB từng sinh viên (trung bình theo hàng → axis=1)
+gpa = scores.mean(axis=1)
+print("GPA từng SV:", gpa.round(2))
+
+# Điểm cao nhất từng môn (max theo cột → axis=0)
+top = scores.max(axis=0)
+print("Điểm cao nhất từng môn:", top)
+
+# Sinh viên giỏi nhất (GPA cao nhất)
+best_idx = np.argmax(gpa)
+print(f"Sinh viên giỏi nhất: SV{best_idx + 1} — GPA {gpa[best_idx]:.2f}")</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Broadcasting &amp; Reshape</h3>
+            <p>Cho array điểm <code>[60, 75, 85, 90]</code>, cộng thêm điểm thưởng <code>[5, 3]</code> cho hai nhóm khác nhau (broadcast shape <code>(4,)</code> với <code>(2,1)</code>). Sau đó reshape kết quả thành <code>(2, 4)</code>.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+base_scores = np.array([60, 75, 85, 90])      # shape (4,)
+bonuses = np.array([[5], [3]])                  # shape (2, 1)
+
+# Broadcasting: (4,) → (1,4) → (2,4) ; (2,1) → (2,1)
+result = base_scores + bonuses
+print("Kết quả broadcast:\n", result)
+# [[65 80 90 95]
+#  [63 78 88 93]]
+
+print("Shape:", result.shape)   # (2, 4)
+
+# Flatten về 1D
+flat = result.flatten()
+print("Flatten:", flat)</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 4 — Mini challenge: Chuẩn hóa ảnh</h3>
+            <p>
+              Tạo "ảnh" giả RGB shape <code>(100, 100, 3)</code> với pixel ngẫu nhiên <code>[0, 255]</code>.
+              Chuẩn hóa về <code>[0.0, 1.0]</code>. Tính mean và std của từng kênh màu.
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import numpy as np
+
+# Tạo ảnh RGB ngẫu nhiên
+img = np.random.randint(0, 256, size=(100, 100, 3), dtype=np.uint8)
+print("Shape:", img.shape)     # (100, 100, 3)
+print("dtype:", img.dtype)     # uint8
+
+# Chuẩn hóa về [0.0, 1.0]
+img_norm = img.astype(np.float32) / 255.0
+print("Min:", img_norm.min())  # ≈ 0.0
+print("Max:", img_norm.max())  # ≈ 1.0
+
+# Mean và std từng kênh màu (axis=(0,1) → theo H và W)
+channel_mean = img_norm.mean(axis=(0, 1))
+channel_std  = img_norm.std(axis=(0, 1))
+print("Mean (R,G,B):", channel_mean.round(4))
+print("Std  (R,G,B):", channel_std.round(4))</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>NumPy</strong> là thư viện nền tảng cho Data Science và AI — Pandas, TensorFlow, PyTorch đều dựa trên nó. Import bằng <code>import numpy as np</code>.</li>
+            <li><strong>ndarray</strong> là cấu trúc cốt lõi — đồng nhất kiểu dữ liệu, kích thước cố định sau khi tạo, shape phải rectangular.</li>
+            <li><strong>Axis</strong>: axis=0 chạy dọc (theo hàng), axis=1 chạy ngang (theo cột). Đây là khái niệm nền tảng xuất hiện lại trong Pandas, TensorFlow.</li>
+            <li><strong>Tạo array</strong>: <code>np.array()</code> từ list, <code>np.zeros()</code>, <code>np.ones()</code>, <code>np.arange()</code>, <code>np.linspace()</code>, <code>np.random.rand()</code>.</li>
+            <li><strong>Indexing 2D</strong>: dùng <code>arr[row, col]</code> — cú pháp với dấu phẩy, không phải <code>arr[row][col]</code>.</li>
+            <li><strong>Slicing</strong>: <code>arr[0, :]</code> lấy hàng, <code>arr[:, 0]</code> lấy cột — cực kỳ hữu ích khi làm việc với data.</li>
+            <li><strong>Thuộc tính</strong>: <code>.shape</code>, <code>.ndim</code>, <code>.size</code>, <code>.dtype</code> giúp kiểm tra cấu trúc array; <code>.astype()</code> để chuyển kiểu.</li>
+            <li><strong>Vectorized ops</strong>: phép tính <code>+, -, *, /</code> áp dụng element-wise không cần vòng lặp — nhanh và gọn hơn nhiều lần.</li>
+            <li><strong>Aggregate functions</strong>: <code>sum()</code>, <code>mean()</code>, <code>max()</code>, <code>min()</code> với tham số <code>axis</code> và <code>keepdims</code>.</li>
+            <li><strong>Broadcasting</strong>: cơ chế tự động "mở rộng" array nhỏ để tính toán với array lớn — quan trọng trong AI. Quy tắc: so sánh shape từ phải sang trái, mỗi chiều phải bằng hoặc một trong hai bằng 1.</li>
+            <li><strong>reshape()</strong> thay đổi shape giữ nguyên tổng phần tử; <strong>flatten()</strong> duỗi về 1D; dùng <code>-1</code> để NumPy tự tính chiều.</li>
+            <li><strong>View vs Copy</strong>: slicing trả về view (cùng bộ nhớ). Dùng <code>.copy()</code> khi cần array độc lập.</li>
+          </ul>
+          <div class="note">
+            <strong>Tìm hiểu thêm?</strong> NumPy documentation đầy đủ tại
+            <a href="https://numpy.org/doc/stable/" target="_blank">numpy.org/doc/stable</a>. Đặc biệt xem thêm: Linear Algebra (<code>np.linalg</code>), FFT (<code>np.fft</code>), và Advanced Indexing (fancy indexing, boolean indexing).
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 21. NumPy — Nền Tảng Data Science &amp; AI</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
 </body>
 </html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài mẫu đầu tiên</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#muc-tieu">Mục tiêu</a>
+      <a href="#cau-truc">1. Cấu trúc bài học</a>
+      <a href="#du-lieu">2. Dữ liệu trong lessons.json</a>
+      <a href="#vi-du">3. Ví dụ code</a>
+      <a href="#bai-tap">4. Bài tập</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>Bài mẫu đầu tiên</h1>
+        <p class="meta">Bài này là khung tham khảo để tạo các bài học mới có mục lục, ví dụ, ghi chú và điều hướng.</p>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu</h2>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> dùng file này làm mẫu cấu trúc khi tạo bài học mới.
+          </div>
+          <p>Sau bài này, bạn biết cách nhân bản template thành một lộ trình mới, cập nhật metadata và viết bài đầu tiên.</p>
+          <ul>
+            <li>Biết vai trò của <code>index.html</code>, <code>lessons.json</code>, <code>style.css</code> và <code>doc-styles.css</code>.</li>
+            <li>Biết cách đặt tên file bài học theo thứ tự.</li>
+            <li>Biết cách tạo mục lục khớp với các <code>section id</code>.</li>
+          </ul>
+        </section>
+
+        <section id="cau-truc">
+          <h2>1. Cấu trúc bài học</h2>
+          <p>Mỗi khóa học nên có một trang danh sách bài và nhiều trang bài học riêng.</p>
+          <pre><code class="language-text">ten-khoa-hoc/
+├── index.html
+├── lessons.json
+├── style.css
+├── doc-styles.css
+├── doc-script.js
+└── 01-gioi-thieu.html</code></pre>
+        </section>
+
+        <section id="du-lieu">
+          <h2>2. Dữ liệu trong lessons.json</h2>
+          <p>Trang chủ đọc <code>lessons.json</code> để hiển thị tiêu đề khóa học, danh mục và danh sách bài.</p>
+          <pre><code class="language-json">{
+  "id": "01",
+  "type": "basic",
+  "title": "Bài mẫu đầu tiên",
+  "file": "01-gioi-thieu.html",
+  "status": "published"
+}</code></pre>
+        </section>
+
+        <section id="vi-du">
+          <h2>3. Ví dụ code</h2>
+          <p>Khối code sẽ tự có nút copy nhờ <code>doc-script.js</code>.</p>
+          <pre><code class="language-javascript">console.log("Hello, docs template!");</code></pre>
+        </section>
+
+        <section id="bai-tap">
+          <h2>4. Bài tập</h2>
+          <ol>
+            <li>Copy thư mục <code>docs-template</code> thành một thư mục mới.</li>
+            <li>Sửa <code>series.title</code>, <code>series.description</code> và danh sách <code>lessons</code>.</li>
+            <li>Tạo file bài 01 và kiểm tra liên kết từ trang chủ.</li>
+          </ol>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Template này tách rõ dashboard khóa học và trang bài học, nên có thể dùng lại cho nhiều chủ đề như CCNA, Docker, Golang hoặc Git.</p>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

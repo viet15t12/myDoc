@@ -1,4 +1,12 @@
 // Tính năng thêm nút Copy vào các khối mã code
+const storagePrefix = location.pathname
+  .split('/')
+  .filter(Boolean)
+  .slice(0, -1)
+  .join('_')
+  .replace(/[^\w-]+/g, '_') || 'docs';
+const tocStorageKey = `${storagePrefix}_toc_collapsed`;
+const visitedStorageKey = `${storagePrefix}_visited`;
 const topnavLeft = document.querySelector('.topnav-left');
 const aside = document.querySelector('aside');
 
@@ -13,13 +21,13 @@ if (topnavLeft && aside) {
     tocToggle.textContent = isCollapsed ? '☰ Mục lục' : '× Ẩn mục lục';
     tocToggle.setAttribute('aria-expanded', String(!isCollapsed));
     try {
-      localStorage.setItem('hoc_git_toc_collapsed', isCollapsed ? '1' : '0');
+      localStorage.setItem(tocStorageKey, isCollapsed ? '1' : '0');
     } catch (e) {}
   };
 
   let isTocCollapsed = false;
   try {
-    isTocCollapsed = localStorage.getItem('hoc_git_toc_collapsed') === '1';
+    isTocCollapsed = localStorage.getItem(tocStorageKey) === '1';
   } catch (e) {}
 
   setTocState(isTocCollapsed);
@@ -74,19 +82,73 @@ if (sections.length > 0) {
   sections.forEach(section => observer.observe(section));
 }
 
-// Map danh sách các bài học động dựa vào thuộc tính `data-lesson-id`
-const lessonLinkMap = {
-  '01': '01-cau-lenh-co-ban-quan-ly-file-thu-muc.html',
-  '02': '02-cach-tao-repository-git.html',
-  '03': '03-cau-hinh-thong-tin-cho-repository.html',
-  '04': '04-thuc-hanh-git-add-commit-status-diff-log.html',
-  '05': '05-cau-hinh-gitignore-de-bo-qua-cac-file-khong-can-giam-sat.html'
-};
+// Tự động tạo breadcrumb và nút Bài trước / Bài sau từ lessons.json
+const currentFile = location.pathname.split('/').pop();
+const topnavRight = document.querySelector('[data-lesson-nav]') || document.querySelector('.topnav-right');
+const breadcrumb = document.querySelector('.topnav-breadcrumb');
+const lessonAnchors = document.querySelectorAll('[data-lesson-id]');
 
-document.querySelectorAll('[data-lesson-id]').forEach(anchor => {
-  const id = anchor.dataset.lessonId;
-  if (id && lessonLinkMap[id]) anchor.href = lessonLinkMap[id];
-});
+if ((topnavRight || breadcrumb || lessonAnchors.length > 0) && currentFile) {
+  fetch('lessons.json')
+    .then(response => response.ok ? response.json() : Promise.reject(response))
+    .then(data => {
+      const publishedLessons = (data.lessons || [])
+        .filter(lesson => lesson.id && lesson.file && lesson.status === 'published');
+      const currentIndex = publishedLessons.findIndex(lesson => lesson.file === currentFile);
+      const currentLesson = publishedLessons[currentIndex];
+
+      const lessonLinkMap = Object.fromEntries(
+        publishedLessons.map(lesson => [lesson.id, lesson.file])
+      );
+
+      lessonAnchors.forEach(anchor => {
+        const id = anchor.dataset.lessonId;
+        if (id && lessonLinkMap[id]) anchor.href = lessonLinkMap[id];
+      });
+
+      if (!currentLesson) return;
+
+      if (breadcrumb) {
+        breadcrumb.innerHTML = `<span>/</span> Bài ${currentLesson.id}`;
+      }
+
+      if (topnavRight) {
+        const previousLesson = publishedLessons[currentIndex - 1];
+        const nextLesson = publishedLessons[currentIndex + 1];
+
+        topnavRight.innerHTML = '';
+
+        if (previousLesson) {
+          const previousLink = document.createElement('a');
+          previousLink.className = 'nav-pill';
+          previousLink.href = previousLesson.file;
+          previousLink.textContent = '← Bài trước';
+          topnavRight.appendChild(previousLink);
+        } else {
+          const previousDisabled = document.createElement('span');
+          previousDisabled.className = 'nav-pill disabled';
+          previousDisabled.textContent = '← Bài trước';
+          topnavRight.appendChild(previousDisabled);
+        }
+
+        if (nextLesson) {
+          const nextLink = document.createElement('a');
+          nextLink.className = 'nav-pill';
+          nextLink.href = nextLesson.file;
+          nextLink.textContent = 'Bài sau →';
+          topnavRight.appendChild(nextLink);
+        } else {
+          const nextDisabled = document.createElement('span');
+          nextDisabled.className = 'nav-pill disabled';
+          nextDisabled.textContent = 'Bài sau →';
+          topnavRight.appendChild(nextDisabled);
+        }
+      }
+    })
+    .catch(error => {
+      console.warn('Không thể tải lessons.json để tạo liên kết bài học:', error);
+    });
+}
 
 // Thanh tiến trình đọc (Reading Progress) được tối ưu bằng requestAnimationFrame hiệu năng cao
 const bar = document.getElementById('readProgress');
@@ -108,11 +170,10 @@ if (bar) {
 
 // Lưu trạng thái bài học đã đọc vào LocalStorage
 try {
-  const visited = JSON.parse(localStorage.getItem('hoc_git_visited') || '[]');
-  const currentFile = location.pathname.split('/').pop();
+  const visited = JSON.parse(localStorage.getItem(visitedStorageKey) || '[]');
   if (currentFile && !visited.includes(currentFile)) {
     visited.push(currentFile);
-    localStorage.setItem('hoc_git_visited', JSON.stringify(visited));
+    localStorage.setItem(visitedStorageKey, JSON.stringify(visited));
   }
 } catch (e) {
   console.warn('Không thể truy cập LocalStorage:', e);

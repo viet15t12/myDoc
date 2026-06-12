@@ -1,6 +1,11 @@
 {
-  "title": "Bộ tài liệu mẫu",
-  "description": "Nội dung bài học mẫu để bắt đầu với cấu trúc tài liệu chung.",
+  "series": {
+    "title": "Bộ tài liệu mẫu",
+    "titleHtml": "Bộ <em>tài liệu</em> mẫu",
+    "description": "Template chung để tạo nhanh các lộ trình học tập dạng bài viết.",
+    "mark": "DOC",
+    "accent": "#38bdf8"
+  },
   "types": [
     {
       "id": "basic",
@@ -19,12 +24,16 @@
     {
       "id": "01",
       "type": "basic",
-      "title": "Giới thiệu cấu trúc tài liệu",
-      "description": "Hướng dẫn cách dùng cấu trúc template, mục đích và cách triển khai.",
+      "title": "Bài mẫu đầu tiên",
+      "description": "Một bài học mẫu đầy đủ phần mở đầu, mục lục, ví dụ code và bài tập.",
       "file": "01-gioi-thieu.html",
-      "sections": 3,
+      "sections": 5,
       "status": "published",
-      "tags": ["template", "intro"]
+      "tags": [
+        "template",
+        "intro",
+        "sample"
+      ]
     },
     {
       "id": "02",
@@ -33,8 +42,11 @@
       "description": "Cách tái sử dụng template để tạo các tài liệu mới nhanh chóng.",
       "file": "02-mo-rong-cau-truc.html",
       "sections": 4,
-      "status": "published",
-      "tags": ["reuse", "guide"]
+      "status": "coming",
+      "tags": [
+        "reuse",
+        "guide"
+      ]
     }
   ]
 }

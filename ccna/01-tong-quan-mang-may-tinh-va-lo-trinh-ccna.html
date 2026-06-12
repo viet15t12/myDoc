@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01. Tổng quan mạng máy tính và lộ trình CCNA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#muc-tieu">Mục tiêu</a>
+      <a href="#mang-la-gi">1. Mạng là gì?</a>
+      <a href="#thiet-bi">2. Thiết bị mạng</a>
+      <a href="#mo-hinh">3. OSI và TCP/IP</a>
+      <a href="#lo-trinh">4. Lộ trình học</a>
+      <a href="#thuc-hanh">5. Thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>01. Tổng quan mạng máy tính và lộ trình CCNA</h1>
+        <p class="meta">
+          Bài mở đầu giúp bạn có bản đồ tổng quan trước khi đi vào địa chỉ IP, subnetting, routing và switching.
+        </p>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu</h2>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> hiểu mạng máy tính ở mức tổng quan, phân biệt thiết bị mạng chính và biết lộ trình học CCNA nên đi theo thứ tự nào.
+          </div>
+          <ul>
+            <li>Hiểu vì sao máy tính cần giao tiếp qua mạng.</li>
+            <li>Phân biệt vai trò cơ bản của router, switch, access point và firewall.</li>
+            <li>Nắm cách dùng mô hình OSI/TCP-IP để phân tích sự cố.</li>
+          </ul>
+        </section>
+
+        <section id="mang-la-gi">
+          <h2>1. Mạng là gì?</h2>
+          <p>Mạng máy tính là tập hợp các thiết bị có thể trao đổi dữ liệu với nhau theo quy tắc chung. Khi bạn mở một website, máy của bạn gửi request qua nhiều thiết bị trung gian trước khi nhận response về.</p>
+          <table>
+            <thead><tr><th>Khái niệm</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td>Host</td><td>Thiết bị đầu cuối như laptop, server, điện thoại.</td></tr>
+              <tr><td>Network</td><td>Nhóm host có thể giao tiếp trong cùng phạm vi địa chỉ.</td></tr>
+              <tr><td>Protocol</td><td>Bộ quy tắc để các thiết bị hiểu nhau.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="thiet-bi">
+          <h2>2. Thiết bị mạng</h2>
+          <p>Trong CCNA, bạn sẽ gặp nhiều nhất là switch và router.</p>
+          <ul>
+            <li><strong>Switch</strong>: kết nối các thiết bị trong cùng LAN, học địa chỉ MAC.</li>
+            <li><strong>Router</strong>: kết nối các mạng khác nhau, quyết định đường đi dựa trên IP.</li>
+            <li><strong>Firewall</strong>: kiểm soát lưu lượng theo chính sách bảo mật.</li>
+          </ul>
+        </section>
+
+        <section id="mo-hinh">
+          <h2>3. OSI và TCP/IP</h2>
+          <p>Mô hình giúp bạn chia nhỏ vấn đề. Ví dụ mất mạng có thể do cáp, VLAN, IP, DNS hoặc ứng dụng.</p>
+          <pre><code class="language-text">Application  - HTTP, DNS, SSH
+Transport    - TCP, UDP
+Internet     - IP, ICMP
+Network Link - Ethernet, Wi-Fi</code></pre>
+        </section>
+
+        <section id="lo-trinh">
+          <h2>4. Lộ trình học</h2>
+          <ol>
+            <li>Nền tảng mạng, OSI/TCP-IP, địa chỉ IPv4.</li>
+            <li>Subnetting và kiểm tra kết nối bằng ping/traceroute.</li>
+            <li>Switching: VLAN, trunk, STP.</li>
+            <li>Routing: static route, OSPF, default gateway.</li>
+            <li>Bảo mật và vận hành: ACL, NAT, DHCP, troubleshooting.</li>
+          </ol>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>5. Thực hành</h2>
+          <p>Cài Cisco Packet Tracer hoặc dùng lab tương đương, sau đó tạo 2 PC nối vào 1 switch và thử cấu hình IP cùng subnet.</p>
+          <pre><code class="language-text">PC1: 192.168.1.10 /24
+PC2: 192.168.1.11 /24
+Test: ping 192.168.1.11</code></pre>
+          <div class="warning">
+            <strong>Lưu ý:</strong> khi hai PC không ping được nhau, kiểm tra cùng subnet, dây nối, trạng thái interface và firewall trước.
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>CCNA không chỉ là học lệnh Cisco; phần quan trọng là hiểu dữ liệu đi qua mạng như thế nào và biết khoanh vùng lỗi theo từng lớp.</p>
+        </section>
+      </article>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

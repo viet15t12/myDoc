@@ -23,7 +23,7 @@
       "title": "Git Basics",
       "description": "Nền tảng Git, repository, commit, branch và workflow căn bản.",
       "url": "../git-basics/index.html",
-      "accent": "#38bdf8",
+      "accent": "#F05032",
       "status": "ready"
     },
     {
@@ -37,18 +37,27 @@
     {
       "id": "ccna",
       "title": "CCNA",
-      "description": "Dự phòng cho lộ trình mạng máy tính và chứng chỉ CCNA.",
-      "url": "",
-      "accent": "#fb923c",
-      "status": "coming"
+      "description": "Lộ trình nền tảng mạng máy tính, subnetting, routing và switching.",
+      "url": "../ccna/index.html",
+      "accent": "#1BA0D7",
+      "status": "ready"
     },
     {
-      "id": "linux-advanced",
-      "title": "Linux Advanced",
-      "description": "Dự phòng cho lộ trình Linux nâng cao.",
-      "url": "",
-      "accent": "#f472b6",
-      "status": "coming"
+      "id": "docker",
+      "title": "Docker",
+      "description": "Container, image, Dockerfile và Docker Compose từ cơ bản.",
+      "url": "../docker/index.html",
+      "accent": "#2496ED",
+      "status": "ready"
+    },
+    {
+      "id": "golang",
+      "title": "Golang",
+      "description": "Lộ trình học Go từ cú pháp nền tảng đến tooling và concurrency.",
+      "url": "../golang/index.html",
+      "accent": "#00ADD8",
+      "status": "ready"
     }
   ]
 }
+

@@ -1,0 +1,53 @@
+{
+  "series": {
+    "title": "Docker từ cơ bản",
+    "titleHtml": "<em>Docker</em> từ cơ bản",
+    "description": "Lộ trình học container, image, Dockerfile, Compose và workflow triển khai ứng dụng.",
+    "mark": "DKR",
+    "logo": "docker.svg",
+    "logoAlt": "Docker logo",
+    "accent": "#2496ED"
+  },
+  "types": [
+    {
+      "id": "container",
+      "title": "Container",
+      "icon": "📦",
+      "color": "#2496ED"
+    },
+    {
+      "id": "image",
+      "title": "Image & Dockerfile",
+      "icon": "🧱",
+      "color": "#facc15"
+    },
+    {
+      "id": "compose",
+      "title": "Compose",
+      "icon": "🧩",
+      "color": "#34d399"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "type": "container",
+      "title": "Docker là gì và chạy container đầu tiên",
+      "description": "Hiểu container khác máy ảo thế nào, image là gì và chạy lệnh Docker đầu tiên.",
+      "file": "01-docker-la-gi-va-chay-container-dau-tien.html",
+      "sections": 6,
+      "status": "published",
+      "tags": ["docker", "container", "image", "hello-world"]
+    },
+    {
+      "id": "02",
+      "type": "image",
+      "title": "Dockerfile căn bản",
+      "description": "FROM, RUN, COPY, WORKDIR, CMD và cách build image riêng.",
+      "file": "02-dockerfile-can-ban.html",
+      "sections": 8,
+      "status": "coming",
+      "tags": ["dockerfile", "build", "image"]
+    }
+  ]
+}

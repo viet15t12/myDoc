@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01. Cài đặt Go và chương trình đầu tiên</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#muc-tieu">Mục tiêu</a>
+      <a href="#go-la-gi">1. Go là gì?</a>
+      <a href="#cai-dat">2. Cài đặt</a>
+      <a href="#module">3. Tạo module</a>
+      <a href="#hello">4. Hello world</a>
+      <a href="#lenh-can-biet">5. Lệnh cần biết</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>01. Cài đặt Go và chương trình đầu tiên</h1>
+        <p class="meta">
+          Bài mở đầu giúp bạn thiết lập môi trường Go, tạo module đầu tiên và chạy chương trình bằng <code>go run</code>.
+        </p>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu</h2>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> cài Go, hiểu module ở mức cơ bản, viết file <code>main.go</code> và chạy chương trình đầu tiên.
+          </div>
+          <ul>
+            <li>Biết Go phù hợp với backend, CLI, network service và hệ thống hiệu năng cao.</li>
+            <li>Cài Go và kiểm tra phiên bản.</li>
+            <li>Tạo module và chạy file <code>main.go</code> đầu tiên.</li>
+          </ul>
+        </section>
+
+        <section id="go-la-gi">
+          <h2>1. Go là gì?</h2>
+          <p>Go là ngôn ngữ biên dịch, cú pháp gọn, tooling mạnh và hỗ trợ concurrency tốt. Điểm hấp dẫn của Go là tốc độ build nhanh, binary dễ triển khai và thư viện chuẩn thực dụng.</p>
+        </section>
+
+        <section id="cai-dat">
+          <h2>2. Cài đặt</h2>
+          <p>Sau khi cài Go, kiểm tra trong terminal:</p>
+          <pre><code class="language-bash">go version</code></pre>
+          <p>Nếu lệnh trả về phiên bản Go, môi trường đã sẵn sàng.</p>
+        </section>
+
+        <section id="module">
+          <h2>3. Tạo module</h2>
+          <p>Module là đơn vị quản lý mã nguồn và dependency trong Go.</p>
+          <pre><code class="language-bash">mkdir hello-go
+cd hello-go
+go mod init example.com/hello-go</code></pre>
+        </section>
+
+        <section id="hello">
+          <h2>4. Hello world</h2>
+          <p>Tạo file <code>main.go</code>:</p>
+          <pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, Go!")
+}</code></pre>
+          <p>Chạy chương trình:</p>
+          <pre><code class="language-bash">go run .</code></pre>
+        </section>
+
+        <section id="lenh-can-biet">
+          <h2>5. Lệnh cần biết</h2>
+          <pre><code class="language-bash">go fmt ./...
+go test ./...
+go build
+go run .</code></pre>
+          <div class="warning">
+            <strong>Lưu ý:</strong> chạy <code>go fmt ./...</code> thường xuyên để code Go giữ đúng style chuẩn của hệ sinh thái.
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Bạn đã có module Go đầu tiên. Bước tiếp theo là học biến, kiểu dữ liệu, function và cách Go xử lý lỗi.</p>
+        </section>
+      </article>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

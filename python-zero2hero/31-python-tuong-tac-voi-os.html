@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>29. Python Tương Tác với OS — os, pathlib, shutil, subprocess</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 29</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#module-os">1. Module <code>os</code></a>
+      <a href="#duong-dan">2. Làm việc với đường dẫn</a>
+      <a href="#pathlib">3. Module <code>pathlib</code></a>
+      <a href="#shutil">4. Module <code>shutil</code></a>
+      <a href="#subprocess">5. Module <code>subprocess</code></a>
+      <a href="#bien-moi-truong">6. Biến môi trường</a>
+      <a href="#glob-walk">7. glob &amp; os.walk</a>
+      <a href="#tempfile">8. File tạm (<code>tempfile</code>)</a>
+      <a href="#cross-platform">9. Viết code đa nền tảng</a>
+      <a href="#du-an-thuc-te">10. Dự án thực tế</a>
+      <a href="#loi-thuong-gap">11. Lỗi thường gặp</a>
+      <a href="#bai-tap">12. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>29. Python Tương Tác với OS</h1>
+        <p class="meta">
+          Python cung cấp bộ thư viện chuẩn phong phú để làm việc trực tiếp với hệ điều hành:
+          <strong>os</strong> · <strong>pathlib</strong> · <strong>shutil</strong> · <strong>subprocess</strong>.
+          Từ quản lý file, thư mục, đến chạy lệnh shell và đọc biến môi trường — tất cả đều cross-platform.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Khi lập trình thực tế, chương trình của chúng ta không chỉ tính toán trong bộ nhớ — nó phải đọc file cấu hình, tạo thư mục output, xóa file tạm, chạy lệnh git, kiểm tra biến môi trường... Những tác vụ đó đều cần tương tác với hệ điều hành (OS).
+          </p>
+          <p>
+            Python cung cấp các module tích hợp sẵn (không cần cài thêm) để thực hiện điều này một cách cross-platform — cùng một đoạn code chạy được trên Windows, macOS và Linux.
+          </p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Module</th><th>Dùng cho</th><th>Ghi chú</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>os</code></td>
+                <td>Thao tác file, thư mục, process, biến môi trường</td>
+                <td>Built-in, cổ điển, đầy đủ nhất</td>
+              </tr>
+              <tr>
+                <td><code>pathlib</code></td>
+                <td>Xử lý đường dẫn kiểu hướng đối tượng</td>
+                <td>Python 3.4+, hiện đại, khuyến nghị dùng thay <code>os.path</code></td>
+              </tr>
+              <tr>
+                <td><code>shutil</code></td>
+                <td>Copy, move, xóa file/thư mục cấp cao</td>
+                <td>Built-in, bổ sung cho <code>os</code></td>
+              </tr>
+              <tr>
+                <td><code>subprocess</code></td>
+                <td>Chạy lệnh shell / chương trình ngoài</td>
+                <td>Built-in, thay thế <code>os.system()</code></td>
+              </tr>
+              <tr>
+                <td><code>glob</code></td>
+                <td>Tìm file theo pattern (<code>*.py</code>, <code>**/*.txt</code>)</td>
+                <td>Built-in</td>
+              </tr>
+              <tr>
+                <td><code>tempfile</code></td>
+                <td>Tạo file/thư mục tạm thời an toàn</td>
+                <td>Built-in</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note">
+            <strong>Tất cả đều là thư viện chuẩn</strong> — không cần <code>pip install</code> bất kỳ thứ gì. Chỉ cần <code>import</code> là dùng được ngay.
+          </div>
+        </section>
+
+        <!-- ======================== MODULE OS ======================== -->
+        <section id="module-os">
+          <h2>1. Module <code>os</code></h2>
+          <p>
+            Module <code>os</code> là cổng kết nối giữa Python và hệ điều hành. Nó cung cấp hàm làm việc với file, thư mục, process và hệ thống.
+          </p>
+
+          <h3>Thông tin hệ thống</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# Tên hệ điều hành: 'posix' (Linux/macOS), 'nt' (Windows)
+print(os.name)
+
+# Platform chi tiết hơn (dùng sys.platform)
+import sys
+print(sys.platform)  # 'linux', 'darwin', 'win32'
+
+# Thư mục hiện tại (current working directory)
+print(os.getcwd())   # /home/viet/projects/NetworkTools
+
+# Tên người dùng hiện tại
+print(os.getlogin())  # viet
+
+# Process ID của chương trình Python đang chạy
+print(os.getpid())    # 12345</code></pre>
+          </div>
+
+          <h3>Thao tác thư mục</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# --- Tạo thư mục ---
+os.mkdir("output")            # Tạo một cấp, lỗi nếu đã tồn tại
+os.makedirs("a/b/c")          # Tạo nhiều cấp lồng nhau
+os.makedirs("a/b/c", exist_ok=True)  # Không lỗi nếu đã tồn tại
+
+# --- Đổi tên / Di chuyển thư mục ---
+os.rename("output", "results")
+
+# --- Xóa thư mục ---
+os.rmdir("results")           # Chỉ xóa được thư mục RỖNG
+# Muốn xóa thư mục có nội dung → dùng shutil.rmtree()
+
+# --- Liệt kê nội dung thư mục ---
+entries = os.listdir(".")     # Trả về list tên file/thư mục
+print(entries)
+
+# --- Đổi thư mục làm việc ---
+os.chdir("/tmp")
+print(os.getcwd())  # /tmp</code></pre>
+          </div>
+
+          <h3>Thao tác file</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# --- Kiểm tra tồn tại ---
+os.path.exists("config.yaml")   # True/False — file hoặc thư mục
+os.path.isfile("config.yaml")   # True nếu là file
+os.path.isdir("output")         # True nếu là thư mục
+
+# --- Đổi tên / Di chuyển file ---
+os.rename("old.txt", "new.txt")
+os.rename("file.txt", "subdir/file.txt")  # Di chuyển + đổi tên
+
+# --- Xóa file ---
+os.remove("temp.txt")           # Xóa file (không xóa được thư mục)
+
+# --- Thông tin file ---
+stat = os.stat("main.py")
+print(stat.st_size)             # Kích thước byte
+print(stat.st_mtime)            # Thời gian sửa đổi lần cuối (timestamp)
+
+import time
+mtime = time.ctime(stat.st_mtime)
+print(mtime)  # Mon Jun  9 14:32:01 2025</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong><code>os.remove()</code> là xóa vĩnh viễn</strong> — không có Recycle Bin / Trash. Luôn kiểm tra <code>os.path.isfile()</code> trước khi xóa để tránh mất dữ liệu quan trọng.
+          </div>
+        </section>
+
+        <!-- ======================== ĐƯỜNG DẪN ======================== -->
+        <section id="duong-dan">
+          <h2>2. Làm việc với đường dẫn (<code>os.path</code>)</h2>
+          <p>
+            <code>os.path</code> cung cấp các hàm xử lý chuỗi đường dẫn theo cách cross-platform — tự động dùng <code>/</code> trên Linux/macOS và <code>\</code> trên Windows.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# --- Nối đường dẫn an toàn ---
+path = os.path.join("home", "viet", "projects", "main.py")
+print(path)
+# Linux/macOS: home/viet/projects/main.py
+# Windows:     home\viet\projects\main.py
+
+# --- Tách phần ---
+full = "/home/viet/projects/main.py"
+
+print(os.path.dirname(full))    # /home/viet/projects   (thư mục cha)
+print(os.path.basename(full))   # main.py               (tên file)
+print(os.path.split(full))      # ('/home/viet/projects', 'main.py')
+print(os.path.splitext(full))   # ('/home/viet/projects/main', '.py')
+
+# --- Đường dẫn tuyệt đối ---
+print(os.path.abspath("main.py"))
+# /home/viet/projects/NetworkTools/main.py
+
+# --- Đường dẫn đến thư mục của script đang chạy ---
+script_dir = os.path.dirname(os.path.abspath(__file__))
+print(script_dir)
+
+# --- Expand ~ (home directory) ---
+home = os.path.expanduser("~")
+config = os.path.join(home, ".config", "myapp")
+print(config)  # /home/viet/.config/myapp</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Hàm</th><th>Trả về</th><th>Ví dụ với <code>/home/viet/main.py</code></th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>os.path.dirname(p)</code></td><td>Thư mục cha</td><td><code>/home/viet</code></td></tr>
+              <tr><td><code>os.path.basename(p)</code></td><td>Tên file/thư mục</td><td><code>main.py</code></td></tr>
+              <tr><td><code>os.path.splitext(p)</code></td><td>Tách phần mở rộng</td><td><code>('/home/viet/main', '.py')</code></td></tr>
+              <tr><td><code>os.path.abspath(p)</code></td><td>Đường dẫn tuyệt đối</td><td><code>/home/viet/main.py</code></td></tr>
+              <tr><td><code>os.path.join(a, b, ...)</code></td><td>Nối đường dẫn</td><td><code>/home/viet/main.py</code></td></tr>
+              <tr><td><code>os.path.exists(p)</code></td><td>Kiểm tra tồn tại</td><td><code>True / False</code></td></tr>
+              <tr><td><code>os.path.getsize(p)</code></td><td>Kích thước byte</td><td><code>4096</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== PATHLIB ======================== -->
+        <section id="pathlib">
+          <h2>3. Module <code>pathlib</code> — Cách hiện đại</h2>
+          <p>
+            <code>pathlib</code> (Python 3.4+) cung cấp class <code>Path</code> để làm việc với đường dẫn theo cách <strong>hướng đối tượng</strong>. Code gọn hơn, trực quan hơn và được khuyến nghị dùng thay <code>os.path</code> trong Python hiện đại.
+          </p>
+
+          <h3>Tạo và khám phá Path</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+# Tạo Path object
+p = Path("/home/viet/projects/main.py")
+cwd = Path(".")          # Thư mục hiện tại
+home = Path.home()       # /home/viet (hay C:\Users\viet)
+
+# --- Thuộc tính ---
+print(p.name)       # main.py
+print(p.stem)       # main           (không có extension)
+print(p.suffix)     # .py
+print(p.suffixes)   # ['.py']        (list, hữu ích với .tar.gz)
+print(p.parent)     # /home/viet/projects
+print(p.parents[1]) # /home/viet
+
+# --- Kiểm tra ---
+print(p.exists())   # True/False
+print(p.is_file())  # True
+print(p.is_dir())   # False
+
+# --- Đường dẫn tuyệt đối ---
+print(Path("main.py").resolve())
+# /home/viet/projects/NetworkTools/main.py</code></pre>
+          </div>
+
+          <h3>Nối đường dẫn với <code>/</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+base = Path("/home/viet")
+
+# Dùng toán tử / để nối — cực kỳ trực quan!
+config = base / ".config" / "myapp" / "settings.yaml"
+print(config)
+# /home/viet/.config/myapp/settings.yaml
+
+# So sánh với os.path.join:
+# os.path.join("/home/viet", ".config", "myapp", "settings.yaml")</code></pre>
+          </div>
+
+          <h3>Đọc, ghi file trực tiếp qua Path</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+p = Path("notes.txt")
+
+# Ghi file — không cần open/close thủ công
+p.write_text("Hello, PathLib!\nDòng thứ hai.\n", encoding="utf-8")
+
+# Đọc file
+content = p.read_text(encoding="utf-8")
+print(content)
+
+# Đọc bytes (ảnh, binary file)
+# p.write_bytes(b"\x89PNG\r\n...")
+# data = p.read_bytes()</code></pre>
+          </div>
+
+          <h3>Tạo thư mục và liệt kê file</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+# Tạo thư mục (kể cả nhiều cấp)
+output = Path("output/reports/2025")
+output.mkdir(parents=True, exist_ok=True)
+
+# Liệt kê nội dung thư mục
+p = Path(".")
+for item in p.iterdir():
+    kind = "📁" if item.is_dir() else "📄"
+    print(f"  {kind} {item.name}")
+
+# Tìm file theo pattern
+for py_file in Path(".").glob("*.py"):
+    print(py_file)
+
+# Tìm đệ quy (recursive) — tất cả .py trong mọi thư mục con
+for py_file in Path(".").rglob("*.py"):
+    print(py_file)</code></pre>
+          </div>
+
+          <h3>Thông tin file</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+import datetime
+
+p = Path("main.py")
+stat = p.stat()
+
+print(f"Kích thước : {stat.st_size:,} bytes")
+print(f"Sửa lần cuối: {datetime.datetime.fromtimestamp(stat.st_mtime)}")
+
+# Đổi tên / di chuyển
+p.rename("app.py")           # Rename hoặc move
+p.replace("backup/app.py")   # Ghi đè nếu đích đã tồn tại
+
+# Xóa
+p.unlink()                   # Xóa file
+p.unlink(missing_ok=True)    # Không lỗi nếu file không tồn tại (Python 3.8+)
+
+# Xóa thư mục rỗng
+Path("empty_dir").rmdir()</code></pre>
+          </div>
+
+          <div class="success">
+            <strong>pathlib vs os.path:</strong> Với Python 3.6+, hãy ưu tiên dùng <code>pathlib.Path</code>. Code ngắn hơn, ít lỗi hơn, và hầu hết thư viện hiện đại (<code>open()</code>, <code>pd.read_csv()</code>, <code>json.load()</code>...) đều chấp nhận <code>Path</code> object thay vì chuỗi.
+          </div>
+
+          <h3>So sánh os.path và pathlib</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Tác vụ</th><th>os.path (cũ)</th><th>pathlib (mới)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Nối đường dẫn</td>
+                <td><code>os.path.join(a, b, c)</code></td>
+                <td><code>Path(a) / b / c</code></td>
+              </tr>
+              <tr>
+                <td>Tên file</td>
+                <td><code>os.path.basename(p)</code></td>
+                <td><code>Path(p).name</code></td>
+              </tr>
+              <tr>
+                <td>Thư mục cha</td>
+                <td><code>os.path.dirname(p)</code></td>
+                <td><code>Path(p).parent</code></td>
+              </tr>
+              <tr>
+                <td>Extension</td>
+                <td><code>os.path.splitext(p)[1]</code></td>
+                <td><code>Path(p).suffix</code></td>
+              </tr>
+              <tr>
+                <td>Kiểm tra tồn tại</td>
+                <td><code>os.path.exists(p)</code></td>
+                <td><code>Path(p).exists()</code></td>
+              </tr>
+              <tr>
+                <td>Tạo thư mục</td>
+                <td><code>os.makedirs(p, exist_ok=True)</code></td>
+                <td><code>Path(p).mkdir(parents=True, exist_ok=True)</code></td>
+              </tr>
+              <tr>
+                <td>Đọc text</td>
+                <td><code>open(p).read()</code></td>
+                <td><code>Path(p).read_text()</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== SHUTIL ======================== -->
+        <section id="shutil">
+          <h2>4. Module <code>shutil</code> — Copy, Move, Xóa cấp cao</h2>
+          <p>
+            <code>shutil</code> (shell utilities) cung cấp các thao tác cấp cao trên file và thư mục mà <code>os</code> không có: copy nguyên vẹn metadata, di chuyển cross-filesystem, xóa thư mục có nội dung, nén file.
+          </p>
+
+          <h3>Copy file</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import shutil
+
+# shutil.copy()   — copy nội dung + quyền file (permissions)
+shutil.copy("source.txt", "dest.txt")
+shutil.copy("source.txt", "backup/")   # Copy vào thư mục, giữ tên
+
+# shutil.copy2()  — copy nội dung + quyền + metadata (timestamps)
+shutil.copy2("source.txt", "backup/source.txt")
+
+# shutil.copyfile() — chỉ copy nội dung, không copy permissions
+shutil.copyfile("source.txt", "dest.txt")
+
+# Copy toàn bộ thư mục (đệ quy)
+shutil.copytree("src_dir", "dst_dir")             # dst_dir phải chưa tồn tại
+shutil.copytree("src_dir", "dst_dir",
+                dirs_exist_ok=True)                # Python 3.8+, OK nếu dst tồn tại
+
+# Copy nhưng bỏ qua một số file
+shutil.copytree("project", "project_backup",
+                ignore=shutil.ignore_patterns("*.pyc", "__pycache__", ".git"))</code></pre>
+          </div>
+
+          <h3>Di chuyển và xóa</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import shutil
+
+# Di chuyển file hoặc thư mục (cross-filesystem, cross-drive)
+shutil.move("old_location/file.txt", "new_location/file.txt")
+shutil.move("old_dir", "new_dir")    # Di chuyển cả thư mục
+
+# Xóa thư mục và TẤT CẢ nội dung bên trong
+shutil.rmtree("output")
+
+# Xóa an toàn hơn — kiểm tra trước
+import os
+if os.path.exists("output"):
+    shutil.rmtree("output")
+    print("Đã xóa thư mục output")</code></pre>
+          </div>
+
+          <h3>Nén và giải nén</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import shutil
+
+# Nén thư mục thành archive
+# Hỗ trợ format: 'zip', 'tar', 'gztar', 'bztar', 'xztar'
+shutil.make_archive(
+    base_name="project_backup",   # Tên file output (không có extension)
+    format="zip",                  # Định dạng nén
+    root_dir=".",                  # Thư mục gốc
+    base_dir="project"             # Thư mục cần nén
+)
+# Tạo ra file: project_backup.zip
+
+# Giải nén
+shutil.unpack_archive("project_backup.zip", "extracted/")
+# Hỗ trợ: .zip, .tar, .tar.gz, .tar.bz2, .tar.xz</code></pre>
+          </div>
+
+          <h3>Thông tin dung lượng ổ đĩa</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import shutil
+
+total, used, free = shutil.disk_usage("/")
+
+def bytes_to_gb(b):
+    return round(b / (1024 ** 3), 2)
+
+print(f"Total : {bytes_to_gb(total)} GB")
+print(f"Used  : {bytes_to_gb(used)} GB")
+print(f"Free  : {bytes_to_gb(free)} GB")</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong><code>shutil.rmtree()</code> nguy hiểm!</strong> Xóa vĩnh viễn toàn bộ thư mục và nội dung bên trong, không qua Trash. Trong production code, hãy log lại trước khi xóa, hoặc dùng <code>send2trash</code> (cần cài) để đưa vào Trash an toàn hơn.
+          </div>
+        </section>
+
+        <!-- ======================== SUBPROCESS ======================== -->
+        <section id="subprocess">
+          <h2>5. Module <code>subprocess</code> — Chạy lệnh Shell</h2>
+          <p>
+            <code>subprocess</code> cho phép Python chạy các lệnh shell, chương trình ngoài, và capture output của chúng. Đây là cách hiện đại thay thế <code>os.system()</code>.
+          </p>
+
+          <h3>subprocess.run() — Cách cơ bản</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+
+# Chạy lệnh và đợi kết thúc
+result = subprocess.run(["ls", "-la"])
+print(result.returncode)   # 0 = thành công
+
+# Capture output (stdout và stderr)
+result = subprocess.run(
+    ["python", "--version"],
+    capture_output=True,   # Bắt stdout + stderr
+    text=True              # Trả về str thay vì bytes
+)
+print(result.stdout)       # Python 3.11.4\n
+print(result.stderr)       # Thông báo lỗi (nếu có)
+print(result.returncode)   # 0
+
+# Raise exception nếu lệnh thất bại (returncode != 0)
+result = subprocess.run(
+    ["git", "status"],
+    capture_output=True,
+    text=True,
+    check=True             # Raise CalledProcessError nếu lỗi
+)</code></pre>
+          </div>
+
+          <h3>Ví dụ thực tế — Tự động hóa Git</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+from pathlib import Path
+
+def git_commit_all(repo_path: str, message: str) -> bool:
+    """Tự động add và commit toàn bộ thay đổi."""
+    repo = Path(repo_path)
+    if not (repo / ".git").exists():
+        print(f"Không phải git repo: {repo_path}")
+        return False
+
+    commands = [
+        ["git", "-C", str(repo), "add", "-A"],
+        ["git", "-C", str(repo), "commit", "-m", message],
+    ]
+
+    for cmd in commands:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"Lỗi: {result.stderr}")
+            return False
+        print(result.stdout.strip())
+
+    return True
+
+# Sử dụng
+git_commit_all("./NetworkTools", "feat: add VRF manager UI")</code></pre>
+          </div>
+
+          <h3>Chạy lệnh Python khác</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+import sys
+
+# Chạy script Python khác
+result = subprocess.run(
+    [sys.executable, "scripts/migrate_db.py", "--version", "2"],
+    capture_output=True,
+    text=True
+)
+print(result.stdout)
+
+# Cài package bằng pip
+def pip_install(package: str) -> bool:
+    result = subprocess.run(
+        [sys.executable, "-m", "pip", "install", package],
+        capture_output=True,
+        text=True
+    )
+    if result.returncode == 0:
+        print(f"✓ Đã cài {package}")
+        return True
+    else:
+        print(f"✗ Lỗi cài {package}: {result.stderr}")
+        return False
+
+pip_install("requests")</code></pre>
+          </div>
+
+          <h3>subprocess với shell=True — Cẩn thận!</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+
+# shell=True cho phép dùng cú pháp shell: pipe, redirect, wildcard
+result = subprocess.run(
+    "ls -la | grep .py",
+    shell=True,
+    capture_output=True,
+    text=True
+)
+print(result.stdout)
+
+# ⚠️ NGUY HIỂM khi kết hợp với user input — Shell Injection!
+user_input = "file.txt; rm -rf /"  # Tấn công
+# subprocess.run(f"cat {user_input}", shell=True)  # ĐỪNG làm thế này!
+
+# ✅ An toàn: dùng list thay vì string
+safe_file = "file.txt"
+subprocess.run(["cat", safe_file], capture_output=True)</code></pre>
+          </div>
+
+          <div class="danger">
+            <strong>Không dùng <code>shell=True</code> với user input chưa validate!</strong> Đây là lỗ hổng bảo mật nghiêm trọng — kẻ tấn công có thể inject lệnh nguy hiểm. Luôn dùng danh sách <code>["cmd", "arg1", "arg2"]</code> khi có user input.
+          </div>
+
+          <h3>Popen — Kiểm soát nâng cao</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+
+# Popen cho phép đọc output theo stream (không đợi hết)
+with subprocess.Popen(
+    ["ping", "-c", "4", "8.8.8.8"],
+    stdout=subprocess.PIPE,
+    text=True
+) as proc:
+    for line in proc.stdout:
+        print(line, end="")   # In từng dòng ngay khi có</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== BIẾN MÔI TRƯỜNG ======================== -->
+        <section id="bien-moi-truong">
+          <h2>6. Biến môi trường (Environment Variables)</h2>
+          <p>
+            Biến môi trường là cách chuẩn để lưu cấu hình nhạy cảm (API key, password, database URL) mà không hardcode vào code. Đây là thực hành bắt buộc trong DevSecOps.
+          </p>
+
+          <h3>Đọc biến môi trường</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# os.environ — dict-like object chứa tất cả env vars
+print(os.environ)            # Toàn bộ (rất nhiều)
+
+# Đọc một biến — KeyError nếu không tồn tại
+api_key = os.environ["OPENAI_API_KEY"]
+
+# Đọc với giá trị mặc định — KHÔNG lỗi nếu không tồn tại
+api_key = os.environ.get("OPENAI_API_KEY", "")
+debug   = os.environ.get("DEBUG", "false").lower() == "true"
+port    = int(os.environ.get("PORT", "8000"))
+
+print(f"API Key: {'***' if api_key else 'chưa đặt'}")
+print(f"Debug: {debug}")
+print(f"Port: {port}")</code></pre>
+          </div>
+
+          <h3>Đặt và xóa biến môi trường</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# Đặt biến (chỉ ảnh hưởng process hiện tại và con của nó)
+os.environ["MY_VAR"] = "hello"
+os.environ["LOG_LEVEL"] = "DEBUG"
+
+# Xóa biến
+del os.environ["MY_VAR"]
+os.environ.pop("LOG_LEVEL", None)   # Không lỗi nếu không tồn tại</code></pre>
+          </div>
+
+          <h3>Dùng file .env với python-dotenv</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-bash"># Cài thư viện
+pip install python-dotenv</code></pre>
+          </div>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># File .env (KHÔNG commit lên git!)
+# DATABASE_URL=postgresql://user:pass@localhost/mydb
+# OPENAI_API_KEY=sk-xxxxxxxxxxxx
+# DEBUG=true
+# PORT=8000
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()   # Tự động tìm file .env ở thư mục hiện tại
+
+db_url  = os.environ.get("DATABASE_URL")
+api_key = os.environ.get("OPENAI_API_KEY")
+debug   = os.environ.get("DEBUG", "false") == "true"
+
+print(f"Database: {db_url}")
+print(f"Debug mode: {debug}")</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Quy tắc bảo mật:</strong> Luôn thêm <code>.env</code> vào <code>.gitignore</code>. Cung cấp file <code>.env.example</code> với các key rỗng để người khác biết cần đặt những biến gì.
+          </div>
+        </section>
+
+        <!-- ======================== GLOB & WALK ======================== -->
+        <section id="glob-walk">
+          <h2>7. glob &amp; os.walk — Tìm kiếm file</h2>
+
+          <h3>glob — Tìm theo pattern</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import glob
+
+# Tìm tất cả file .py trong thư mục hiện tại
+py_files = glob.glob("*.py")
+print(py_files)   # ['main.py', 'utils.py', ...]
+
+# Tìm trong thư mục con cụ thể
+configs = glob.glob("config/*.yaml")
+
+# Tìm đệ quy với ** (cần recursive=True)
+all_py = glob.glob("**/*.py", recursive=True)
+# Tìm tất cả .py trong mọi thư mục con
+
+# Kết hợp pathlib.glob (thường dùng hơn)
+from pathlib import Path
+for f in Path(".").rglob("*.log"):
+    print(f.name, f.stat().st_size)</code></pre>
+          </div>
+
+          <h3>os.walk — Duyệt toàn bộ cây thư mục</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# os.walk yields (dirpath, dirnames, filenames) cho mỗi thư mục
+for dirpath, dirnames, filenames in os.walk("."):
+    # Bỏ qua thư mục ẩn (bắt đầu bằng .)
+    dirnames[:] = [d for d in dirnames if not d.startswith(".")]
+
+    print(f"\n📁 {dirpath}")
+    for filename in filenames:
+        full_path = os.path.join(dirpath, filename)
+        size = os.path.getsize(full_path)
+        print(f"   📄 {filename:30s} {size:>8,} bytes")</code></pre>
+          </div>
+
+          <h3>Ví dụ thực tế — Tính tổng dung lượng thư mục</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+from pathlib import Path
+from collections import defaultdict
+
+def analyze_directory(root: str) -> dict:
+    """Phân tích thư mục: tổng file, dung lượng, thống kê theo extension."""
+    stats = {
+        "total_files": 0,
+        "total_size": 0,
+        "by_extension": defaultdict(lambda: {"count": 0, "size": 0}),
+    }
+
+    for dirpath, _, filenames in os.walk(root):
+        for filename in filenames:
+            fp = os.path.join(dirpath, filename)
+            try:
+                size = os.path.getsize(fp)
+            except OSError:
+                continue
+
+            ext = Path(filename).suffix.lower() or "(no ext)"
+            stats["total_files"] += 1
+            stats["total_size"]  += size
+            stats["by_extension"][ext]["count"] += 1
+            stats["by_extension"][ext]["size"]  += size
+
+    return stats
+
+result = analyze_directory(".")
+print(f"Tổng file : {result['total_files']}")
+print(f"Tổng dung lượng: {result['total_size'] / 1024:.1f} KB")
+print("\nTheo extension:")
+for ext, data in sorted(result["by_extension"].items()):
+    print(f"  {ext:12s}  {data['count']:4d} file   {data['size']/1024:8.1f} KB")</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== TEMPFILE ======================== -->
+        <section id="tempfile">
+          <h2>8. File tạm (<code>tempfile</code>)</h2>
+          <p>
+            Module <code>tempfile</code> tạo file và thư mục tạm thời an toàn — đặt ở đúng thư mục hệ thống, tên ngẫu nhiên tránh xung đột, tự xóa sau khi dùng xong.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import tempfile
+import os
+
+# --- File tạm — tự xóa khi đóng ---
+with tempfile.NamedTemporaryFile(
+    mode="w",
+    suffix=".txt",
+    prefix="myapp_",
+    delete=True,
+    encoding="utf-8"
+) as tmp:
+    print(f"File tạm: {tmp.name}")    # /tmp/myapp_abcd1234.txt
+    tmp.write("Dữ liệu xử lý trung gian\n")
+    tmp.flush()
+    # Làm việc với file...
+# Thoát with block → file bị xóa tự động
+
+# --- Thư mục tạm ---
+with tempfile.TemporaryDirectory(prefix="build_") as tmpdir:
+    print(f"Thư mục tạm: {tmpdir}")   # /tmp/build_xyz789
+    # Làm việc trong thư mục...
+    output = os.path.join(tmpdir, "result.json")
+    with open(output, "w") as f:
+        f.write('{"status": "ok"}')
+# Thoát with block → thư mục + toàn bộ nội dung bị xóa
+
+# --- Lấy thư mục temp hệ thống ---
+print(tempfile.gettempdir())   # /tmp (Linux/macOS) hoặc C:\Users\...\Temp (Windows)</code></pre>
+          </div>
+
+          <div class="success">
+            <strong>Khi nào dùng tempfile?</strong> Khi cần lưu trữ trung gian trong pipeline xử lý data, khi unit test cần tạo file giả, khi render template ra file trước khi gửi — những lúc cần file tạm thời và muốn đảm bảo cleanup tự động.
+          </div>
+        </section>
+
+        <!-- ======================== CROSS-PLATFORM ======================== -->
+        <section id="cross-platform">
+          <h2>9. Viết code đa nền tảng (Cross-platform)</h2>
+          <p>
+            Python chạy trên Windows, macOS và Linux. Nhưng có một số điểm khác biệt cần chú ý khi viết code thao tác OS để đảm bảo code hoạt động đúng trên mọi nền tảng.
+          </p>
+
+          <h3>Phát hiện hệ điều hành</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sys
+import os
+
+# Cách 1: sys.platform
+if sys.platform == "win32":
+    CONFIG_DIR = os.path.expanduser("~/AppData/Roaming/MyApp")
+elif sys.platform == "darwin":
+    CONFIG_DIR = os.path.expanduser("~/Library/Application Support/MyApp")
+else:  # Linux và các Unix khác
+    CONFIG_DIR = os.path.expanduser("~/.config/myapp")
+
+# Cách 2: os.name
+# 'nt'    → Windows
+# 'posix' → Linux, macOS, BSD
+
+# Cách 3: platform module (chi tiết nhất)
+import platform
+print(platform.system())    # 'Windows', 'Darwin', 'Linux'
+print(platform.version())   # Phiên bản OS chi tiết
+print(platform.machine())   # 'AMD64', 'arm64', 'x86_64'</code></pre>
+          </div>
+
+          <h3>Đường dẫn — Dùng pathlib thay vì hardcode</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+# ❌ Hardcode dấu / hoặc \ — bị lỗi trên nền tảng khác
+bad_path = "home/viet/config.txt"       # Lỗi trên Windows
+bad_path2 = "C:\\Users\\viet\\cfg.txt"  # Lỗi trên Linux
+
+# ✅ Dùng pathlib — tự xử lý separator
+good_path = Path.home() / "config.txt"  # Đúng mọi nền tảng
+print(good_path)
+# Linux:   /home/viet/config.txt
+# macOS:   /Users/viet/config.txt
+# Windows: C:\Users\viet\config.txt</code></pre>
+          </div>
+
+          <h3>Lệnh shell theo OS</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import subprocess
+import sys
+
+def clear_screen():
+    """Xóa màn hình terminal cross-platform."""
+    if sys.platform == "win32":
+        subprocess.run(["cls"], shell=True)
+    else:
+        subprocess.run(["clear"])
+
+def open_file_explorer(path: str):
+    """Mở file explorer tại đường dẫn chỉ định."""
+    if sys.platform == "win32":
+        subprocess.run(["explorer", path])
+    elif sys.platform == "darwin":
+        subprocess.run(["open", path])
+    else:
+        subprocess.run(["xdg-open", path])
+
+def get_python_executable() -> str:
+    """Lấy đường dẫn Python executable hiện tại — luôn đúng."""
+    return sys.executable  # Không cần hardcode 'python' hay 'python3'</code></pre>
+          </div>
+
+          <h3>Line ending và encoding</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># ✅ Luôn chỉ định encoding tường minh
+with open("file.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+
+# ✅ Dùng newline="" khi xử lý CSV cross-platform
+import csv
+with open("data.csv", "r", encoding="utf-8", newline="") as f:
+    reader = csv.reader(f)
+
+# Line separator theo OS
+import os
+print(repr(os.linesep))   # '\r\n' (Windows) hoặc '\n' (Linux/macOS)
+
+# Path separator
+print(os.sep)         # '\\' hoặc '/'
+print(os.pathsep)     # ';' (Windows) hoặc ':' (Linux/macOS)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== DỰ ÁN THỰC TẾ ======================== -->
+        <section id="du-an-thuc-te">
+          <h2>10. Dự án thực tế — File Organizer</h2>
+          <p>
+            Viết script tự động sắp xếp file trong thư mục Download theo loại (ảnh, video, document, code...) vào các thư mục con tương ứng.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">"""
+file_organizer.py
+Tự động sắp xếp file trong một thư mục theo loại.
+"""
+import shutil
+import logging
+from pathlib import Path
+from datetime import datetime
+
+# Cấu hình logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S"
+)
+log = logging.getLogger(__name__)
+
+# Bản đồ extension → thư mục đích
+CATEGORY_MAP: dict[str, str] = {
+    # Ảnh
+    ".jpg": "Images", ".jpeg": "Images", ".png": "Images",
+    ".gif": "Images", ".svg": "Images", ".webp": "Images",
+    # Video
+    ".mp4": "Videos", ".mkv": "Videos", ".avi": "Videos",
+    ".mov": "Videos", ".webm": "Videos",
+    # Audio
+    ".mp3": "Audio", ".wav": "Audio", ".flac": "Audio",
+    # Document
+    ".pdf": "Documents", ".docx": "Documents", ".xlsx": "Documents",
+    ".pptx": "Documents", ".txt": "Documents", ".md": "Documents",
+    # Code
+    ".py": "Code", ".js": "Code", ".ts": "Code", ".html": "Code",
+    ".css": "Code", ".java": "Code", ".cpp": "Code", ".go": "Code",
+    # Archive
+    ".zip": "Archives", ".tar": "Archives", ".gz": "Archives",
+    ".rar": "Archives", ".7z": "Archives",
+}
+
+
+def organize(source_dir: str, dry_run: bool = False) -> dict:
+    """
+    Sắp xếp file trong source_dir.
+    dry_run=True: chỉ in kế hoạch, không thực sự di chuyển.
+    Trả về dict thống kê.
+    """
+    source = Path(source_dir).resolve()
+    if not source.is_dir():
+        raise NotADirectoryError(f"Không tìm thấy thư mục: {source}")
+
+    stats = {"moved": 0, "skipped": 0, "errors": 0}
+    log.info(f"{'[DRY RUN] ' if dry_run else ''}Bắt đầu sắp xếp: {source}")
+
+    for file in source.iterdir():
+        if not file.is_file():
+            continue  # Bỏ qua thư mục con
+
+        ext = file.suffix.lower()
+        category = CATEGORY_MAP.get(ext, "Others")
+        dest_dir = source / category
+        dest_file = dest_dir / file.name
+
+        # Xử lý trùng tên
+        if dest_file.exists():
+            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+            dest_file = dest_dir / f"{file.stem}_{ts}{file.suffix}"
+
+        if dry_run:
+            log.info(f"  [PLAN] {file.name:40s} → {category}/")
+            stats["moved"] += 1
+            continue
+
+        try:
+            dest_dir.mkdir(exist_ok=True)
+            shutil.move(str(file), str(dest_file))
+            log.info(f"  ✓ {file.name:40s} → {category}/")
+            stats["moved"] += 1
+        except Exception as e:
+            log.error(f"  ✗ {file.name}: {e}")
+            stats["errors"] += 1
+
+    log.info(f"Hoàn thành: {stats['moved']} di chuyển, "
+             f"{stats['skipped']} bỏ qua, {stats['errors']} lỗi")
+    return stats
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="File Organizer")
+    parser.add_argument("directory", help="Thư mục cần sắp xếp")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Chỉ xem kế hoạch, không di chuyển thực sự")
+    args = parser.parse_args()
+
+    organize(args.directory, dry_run=args.dry_run)
+
+# Chạy:
+#   python file_organizer.py ~/Downloads
+#   python file_organizer.py ~/Downloads --dry-run</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>11. Lỗi thường gặp</h2>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 1</span>
+              <h3 style="margin:0">FileNotFoundError / NotADirectoryError</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+# ❌ Lỗi khi path không tồn tại
+Path("output/report.txt").read_text()   # FileNotFoundError
+
+# ✅ Kiểm tra trước
+p = Path("output/report.txt")
+if p.exists():
+    content = p.read_text()
+else:
+    print(f"File không tồn tại: {p}")
+
+# ✅ Hoặc dùng try/except
+try:
+    content = p.read_text(encoding="utf-8")
+except FileNotFoundError:
+    content = ""   # Giá trị mặc định</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 2</span>
+              <h3 style="margin:0">PermissionError — Không có quyền truy cập</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+
+# ❌ Cố ghi vào thư mục system
+os.makedirs("/etc/myapp")   # PermissionError
+
+# ✅ Luôn dùng thư mục user để lưu dữ liệu ứng dụng
+from pathlib import Path
+app_dir = Path.home() / ".config" / "myapp"
+app_dir.mkdir(parents=True, exist_ok=True)
+
+# ✅ Kiểm tra quyền trước khi thao tác
+if os.access("protected_file.txt", os.R_OK):
+    with open("protected_file.txt") as f:
+        data = f.read()</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 3</span>
+              <h3 style="margin:0">FileExistsError — Thư mục đã tồn tại</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+from pathlib import Path
+
+# ❌ mkdir lỗi nếu thư mục đã tồn tại
+os.mkdir("output")      # FileExistsError nếu "output" đã có
+
+# ✅ Dùng exist_ok=True
+os.makedirs("output", exist_ok=True)
+Path("output").mkdir(exist_ok=True)</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 4</span>
+              <h3 style="margin:0">UnicodeDecodeError khi đọc file</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># ❌ Không chỉ định encoding — mặc định theo OS, dễ lỗi
+with open("data.txt") as f:   # Có thể lỗi trên Windows
+    content = f.read()
+
+# ✅ Luôn chỉ định encoding tường minh
+with open("data.txt", encoding="utf-8") as f:
+    content = f.read()
+
+# ✅ Nếu không biết encoding, dùng errors='replace' để không crash
+with open("unknown.txt", encoding="utf-8", errors="replace") as f:
+    content = f.read()
+
+# ✅ Hoặc dùng chardet để tự động detect encoding
+# pip install chardet
+import chardet
+raw = Path("unknown.txt").read_bytes()
+detected = chardet.detect(raw)
+content = raw.decode(detected["encoding"])</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="error-heading">
+              <span class="error-label">Lỗi 5</span>
+              <h3 style="margin:0">Đường dẫn cứng (hardcoded path)</h3>
+            </div>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+# ❌ Hardcode đường dẫn tuyệt đối — chỉ đúng trên máy tác giả
+config = open("/home/viet/projects/myapp/config.yaml")
+
+# ✅ Đường dẫn tương đối dựa trên vị trí script
+BASE_DIR = Path(__file__).parent          # Thư mục chứa script này
+CONFIG   = BASE_DIR / "config.yaml"       # Luôn tìm đúng file
+DATA_DIR = BASE_DIR / "data"
+
+config = CONFIG.read_text(encoding="utf-8")</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>12. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Khám phá cây thư mục</h3>
+            <p>Viết hàm <code>print_tree(path, indent=0)</code> in cây thư mục dạng cây, tương tự lệnh <code>tree</code> trên Unix.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+def print_tree(path: str | Path, indent: int = 0) -> None:
+    """In cây thư mục, bỏ qua thư mục ẩn."""
+    p = Path(path)
+    prefix = "    " * indent
+    icon = "📁" if p.is_dir() else "📄"
+    print(f"{prefix}{icon} {p.name}")
+
+    if p.is_dir():
+        children = sorted(p.iterdir(), key=lambda x: (x.is_file(), x.name))
+        for child in children:
+            if not child.name.startswith("."):
+                print_tree(child, indent + 1)
+
+print_tree(".")</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Backup script</h3>
+            <p>
+              Viết hàm <code>backup(source_dir, backup_dir)</code>: copy toàn bộ thư mục nguồn vào thư mục backup với tên bao gồm timestamp. Bỏ qua <code>__pycache__</code>, <code>.git</code>, <code>*.pyc</code>.
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import shutil
+from pathlib import Path
+from datetime import datetime
+
+def backup(source_dir: str, backup_dir: str) -> Path:
+    """Tạo backup thư mục với timestamp."""
+    source = Path(source_dir)
+    backup_root = Path(backup_dir)
+
+    # Tạo tên theo timestamp
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dest = backup_root / f"{source.name}_{ts}"
+
+    backup_root.mkdir(parents=True, exist_ok=True)
+
+    shutil.copytree(
+        source,
+        dest,
+        ignore=shutil.ignore_patterns("__pycache__", ".git", "*.pyc", "*.egg-info")
+    )
+
+    size = sum(f.stat().st_size for f in dest.rglob("*") if f.is_file())
+    print(f"✓ Backup tạo tại: {dest}")
+    print(f"  Dung lượng: {size / 1024:.1f} KB")
+    return dest
+
+# Sử dụng
+backup("./NetworkTools", "./backups")</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Tìm file trùng lặp</h3>
+            <p>Viết script tìm các file trùng lặp (cùng tên và kích thước) trong một thư mục.</p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import os
+from pathlib import Path
+from collections import defaultdict
+
+def find_duplicates(root: str) -> dict:
+    """Tìm file trùng lặp theo (tên, kích thước)."""
+    seen = defaultdict(list)
+
+    for dirpath, _, filenames in os.walk(root):
+        for fname in filenames:
+            fp = Path(dirpath) / fname
+            key = (fname, fp.stat().st_size)
+            seen[key].append(str(fp))
+
+    duplicates = {k: v for k, v in seen.items() if len(v) > 1}
+    return duplicates
+
+dupes = find_duplicates(".")
+if dupes:
+    print(f"Tìm thấy {len(dupes)} nhóm file trùng:")
+    for (name, size), paths in dupes.items():
+        print(f"\n  📄 {name} ({size:,} bytes)")
+        for p in paths:
+            print(f"     {p}")
+else:
+    print("Không có file trùng lặp.")</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 4 — Mini challenge: Project initializer</h3>
+            <p>
+              Viết hàm <code>init_project(name, template)</code> tạo cấu trúc thư mục dự án Python chuẩn:
+              <code>src/</code>, <code>tests/</code>, <code>docs/</code>, file <code>README.md</code>,
+              <code>.gitignore</code>, <code>pyproject.toml</code>. Nội dung file được sinh tự động từ tên dự án.
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+GITIGNORE_CONTENT = """\
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+.DS_Store
+"""
+
+def init_project(name: str, base_dir: str = ".") -> Path:
+    """Khởi tạo cấu trúc dự án Python chuẩn."""
+    root = Path(base_dir) / name
+    if root.exists():
+        raise FileExistsError(f"Thư mục '{name}' đã tồn tại!")
+
+    # Tạo cấu trúc
+    dirs = [
+        root / "src" / name.replace("-", "_"),
+        root / "tests",
+        root / "docs",
+    ]
+    for d in dirs:
+        d.mkdir(parents=True)
+
+    # Tạo file
+    (root / "README.md").write_text(
+        f"# {name}\n\nMô tả dự án ở đây.\n", encoding="utf-8"
+    )
+    (root / ".gitignore").write_text(GITIGNORE_CONTENT, encoding="utf-8")
+
+    pkg = root / "src" / name.replace("-", "_")
+    (pkg / "__init__.py").write_text(
+        f'"""Package {name}."""\n__version__ = "0.1.0"\n', encoding="utf-8"
+    )
+    (root / "tests" / "__init__.py").touch()
+
+    (root / "pyproject.toml").write_text(
+        f'[project]\nname = "{name}"\nversion = "0.1.0"\n'
+        f'requires-python = ">=3.11"\n', encoding="utf-8"
+    )
+
+    print(f"✓ Đã tạo dự án '{name}' tại {root.resolve()}")
+    return root
+
+init_project("my-awesome-app")</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong><code>os</code></strong>: <code>getcwd()</code>, <code>listdir()</code>, <code>makedirs(exist_ok=True)</code>, <code>remove()</code>, <code>rename()</code>, <code>stat()</code> — thao tác file và thư mục cơ bản.</li>
+            <li><strong><code>os.path</code></strong>: <code>join()</code>, <code>exists()</code>, <code>isfile()</code>, <code>isdir()</code>, <code>basename()</code>, <code>dirname()</code>, <code>abspath()</code> — xử lý đường dẫn.</li>
+            <li><strong><code>pathlib.Path</code></strong> là cách hiện đại thay <code>os.path</code>: dùng toán tử <code>/</code> để nối đường dẫn, <code>.read_text()</code>, <code>.write_text()</code>, <code>.glob()</code>, <code>.rglob()</code>. Khuyến nghị dùng trong code Python 3.6+.</li>
+            <li><strong><code>shutil</code></strong>: <code>copy()</code>, <code>copy2()</code>, <code>copytree()</code>, <code>move()</code>, <code>rmtree()</code>, <code>make_archive()</code> — thao tác cấp cao. <code>rmtree()</code> xóa vĩnh viễn, cần cẩn thận.</li>
+            <li><strong><code>subprocess.run()</code></strong>: chạy lệnh shell, capture output với <code>capture_output=True, text=True</code>, kiểm tra lỗi với <code>check=True</code>. Không dùng <code>shell=True</code> với user input.</li>
+            <li><strong>Biến môi trường</strong>: <code>os.environ.get("KEY", default)</code> để đọc config an toàn. Dùng <code>python-dotenv</code> cho file <code>.env</code>. Không hardcode secret vào code.</li>
+            <li><strong><code>os.walk()</code></strong>: duyệt đệ quy cây thư mục, trả về <code>(dirpath, dirnames, filenames)</code>.</li>
+            <li><strong><code>tempfile</code></strong>: <code>NamedTemporaryFile</code> và <code>TemporaryDirectory</code> với context manager — tự cleanup sau khi dùng.</li>
+            <li><strong>Cross-platform</strong>: luôn dùng <code>pathlib</code> hoặc <code>os.path.join()</code> cho đường dẫn, luôn chỉ định <code>encoding="utf-8"</code> khi đọc/ghi file text, dùng <code>sys.executable</code> thay vì hardcode <code>"python"</code>.</li>
+            <li><strong>Pattern thường dùng</strong>: kiểm tra tồn tại trước khi thao tác, dùng <code>exist_ok=True</code> với <code>mkdir</code>, dùng <code>missing_ok=True</code> với <code>unlink</code>, bọc thao tác file trong <code>try/except</code>.</li>
+          </ul>
+          <div class="note">
+            <strong>Tìm hiểu thêm?</strong> Python Docs:
+            <a href="https://docs.python.org/3/library/os.html" target="_blank">os</a> ·
+            <a href="https://docs.python.org/3/library/pathlib.html" target="_blank">pathlib</a> ·
+            <a href="https://docs.python.org/3/library/shutil.html" target="_blank">shutil</a> ·
+            <a href="https://docs.python.org/3/library/subprocess.html" target="_blank">subprocess</a>.
+            Ngoài ra, thư viện <a href="https://github.com/tqdm/tqdm" target="_blank">tqdm</a> rất hữu ích khi copy/xử lý nhiều file với progress bar.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 29. Python Tương Tác với OS — os, pathlib, shutil, subprocess</div>
+      </article>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

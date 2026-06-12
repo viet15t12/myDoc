@@ -1,0 +1,53 @@
+{
+  "series": {
+    "title": "Golang từ cơ bản",
+    "titleHtml": "<em>Golang</em> từ cơ bản",
+    "description": "Lộ trình học Go từ cú pháp nền tảng đến module, concurrency, API và tooling thực chiến.",
+    "mark": "GO",
+    "logo": "golang.svg",
+    "logoAlt": "Go logo",
+    "accent": "#00ADD8"
+  },
+  "types": [
+    {
+      "id": "basic",
+      "title": "Cơ bản",
+      "icon": "⭐",
+      "color": "#00ADD8"
+    },
+    {
+      "id": "tooling",
+      "title": "Tooling",
+      "icon": "🛠️",
+      "color": "#facc15"
+    },
+    {
+      "id": "concurrency",
+      "title": "Concurrency",
+      "icon": "⚡",
+      "color": "#34d399"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "type": "basic",
+      "title": "Cài đặt Go và chương trình đầu tiên",
+      "description": "Cài Go, hiểu workspace/module cơ bản và viết chương trình hello world đầu tiên.",
+      "file": "01-cai-dat-go-va-chuong-trinh-dau-tien.html",
+      "sections": 6,
+      "status": "published",
+      "tags": ["golang", "go", "hello world", "module", "go run"]
+    },
+    {
+      "id": "02",
+      "type": "basic",
+      "title": "Biến, kiểu dữ liệu và hằng số",
+      "description": "var, :=, const, string, int, bool và cách Go suy luận kiểu.",
+      "file": "02-bien-kieu-du-lieu-va-hang-so.html",
+      "sections": 8,
+      "status": "coming",
+      "tags": ["variables", "types", "const"]
+    }
+  ]
+}

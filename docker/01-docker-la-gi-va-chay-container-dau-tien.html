@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01. Docker là gì và chạy container đầu tiên</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="doc-styles.css" />
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg> Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 01</span>
+    </div>
+    <div class="topnav-right" data-lesson-nav></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#muc-tieu">Mục tiêu</a>
+      <a href="#docker-la-gi">1. Docker là gì?</a>
+      <a href="#image-container">2. Image và container</a>
+      <a href="#lenh-dau-tien">3. Lệnh đầu tiên</a>
+      <a href="#lenh-co-ban">4. Lệnh cơ bản</a>
+      <a href="#thuc-hanh">5. Thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>01. Docker là gì và chạy container đầu tiên</h1>
+        <p class="meta">
+          Bài mở đầu giúp bạn hiểu Docker giải quyết vấn đề gì, image khác container thế nào và cách chạy container đầu tiên.
+        </p>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu</h2>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> hiểu khái niệm image/container, chạy <code>hello-world</code> và biết một vài lệnh Docker cơ bản.
+          </div>
+          <ul>
+            <li>Hiểu container đóng gói ứng dụng cùng môi trường chạy.</li>
+            <li>Phân biệt image và container.</li>
+            <li>Biết chạy, xem danh sách và xóa container.</li>
+          </ul>
+        </section>
+
+        <section id="docker-la-gi">
+          <h2>1. Docker là gì?</h2>
+          <p>Docker là nền tảng giúp đóng gói ứng dụng vào container. Container nhẹ hơn máy ảo vì dùng chung kernel của hệ điều hành host, nhưng vẫn cô lập tiến trình, filesystem và network ở mức cần thiết.</p>
+        </section>
+
+        <section id="image-container">
+          <h2>2. Image và container</h2>
+          <table>
+            <thead><tr><th>Thành phần</th><th>Cách hiểu nhanh</th></tr></thead>
+            <tbody>
+              <tr><td>Image</td><td>Bản mẫu chỉ đọc, chứa app và dependency.</td></tr>
+              <tr><td>Container</td><td>Một tiến trình đang chạy được tạo từ image.</td></tr>
+              <tr><td>Registry</td><td>Nơi lưu image, ví dụ Docker Hub.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="lenh-dau-tien">
+          <h2>3. Lệnh đầu tiên</h2>
+          <p>Sau khi cài Docker, chạy lệnh kiểm tra:</p>
+          <pre><code class="language-bash">docker run hello-world</code></pre>
+          <p>Docker sẽ tải image nếu máy chưa có, tạo container, chạy chương trình rồi dừng lại.</p>
+        </section>
+
+        <section id="lenh-co-ban">
+          <h2>4. Lệnh cơ bản</h2>
+          <pre><code class="language-bash">docker version
+docker images
+docker ps
+docker ps -a
+docker rm container_id
+docker rmi image_id</code></pre>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>5. Thực hành</h2>
+          <p>Chạy Nginx trong container và mở trình duyệt tại <code>http://localhost:8080</code>.</p>
+          <pre><code class="language-bash">docker run --name web-demo -p 8080:80 nginx</code></pre>
+          <div class="warning">
+            <strong>Lưu ý:</strong> nếu cổng <code>8080</code> đang được ứng dụng khác dùng, đổi sang cổng khác như <code>8081:80</code>.
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Docker giúp môi trường chạy nhất quán giữa máy dev, CI và server. Bước tiếp theo là học Dockerfile để tự build image cho ứng dụng của bạn.</p>
+        </section>
+      </article>
+    </main>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  <script src="doc-script.js"></script>
+</body>
+</html>

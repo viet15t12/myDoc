@@ -1,0 +1,53 @@
+{
+  "series": {
+    "title": "CCNA từ cơ bản",
+    "titleHtml": "<em>CCNA</em> từ cơ bản",
+    "description": "Lộ trình nền tảng mạng máy tính, subnetting, routing, switching và vận hành thiết bị Cisco.",
+    "mark": "NET",
+    "logo": "cisco.svg",
+    "logoAlt": "Cisco logo",
+    "accent": "#1BA0D7"
+  },
+  "types": [
+    {
+      "id": "networking",
+      "title": "Nền tảng mạng",
+      "icon": "🌐",
+      "color": "#1BA0D7"
+    },
+    {
+      "id": "routing",
+      "title": "Routing",
+      "icon": "🧭",
+      "color": "#34d399"
+    },
+    {
+      "id": "switching",
+      "title": "Switching",
+      "icon": "🔀",
+      "color": "#f59e0b"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "type": "networking",
+      "title": "Tổng quan mạng máy tính và lộ trình CCNA",
+      "description": "Hiểu mạng là gì, các mô hình OSI/TCP-IP, thiết bị thường gặp và cách học CCNA hiệu quả.",
+      "file": "01-tong-quan-mang-may-tinh-va-lo-trinh-ccna.html",
+      "sections": 6,
+      "status": "published",
+      "tags": ["ccna", "networking", "osi", "tcp-ip", "router", "switch"]
+    },
+    {
+      "id": "02",
+      "type": "networking",
+      "title": "Địa chỉ IP và Subnetting",
+      "description": "IPv4, subnet mask, CIDR và cách chia mạng con.",
+      "file": "02-dia-chi-ip-va-subnetting.html",
+      "sections": 8,
+      "status": "coming",
+      "tags": ["ipv4", "subnet", "cidr"]
+    }
+  ]
+}
