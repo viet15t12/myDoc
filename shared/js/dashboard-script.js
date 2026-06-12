@@ -10,10 +10,6 @@ const legacyDashboardKeys = {
   'python-zero2hero': {
     visited: 'hoc_python_visited',
     theme: 'py_dashboard_theme'
-  },
-  'lpic-101-102': {
-    visited: 'lpic_101_102_visited',
-    theme: 'lpic_dashboard_theme'
   }
 };
 const legacyDashboardKey = legacyDashboardKeys[pageKey] || {};

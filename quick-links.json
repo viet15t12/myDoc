@@ -27,14 +27,6 @@
       "status": "ready"
     },
     {
-      "id": "lpic-101-102",
-      "title": "LPIC-1 101 & 102",
-      "description": "Lộ trình Linux Professional Institute Certification 101 & 102.",
-      "url": "../lpic-101-102/index.html",
-      "accent": "#34d399",
-      "status": "ready"
-    },
-    {
       "id": "ccna",
       "title": "CCNA",
       "description": "Lộ trình nền tảng mạng máy tính, subnetting, routing và switching.",
@@ -60,4 +52,3 @@
     }
   ]
 }
-
