@@ -4,7 +4,13 @@
     "titleHtml": "Bộ <em>tài liệu</em> mẫu",
     "description": "Template chung để tạo nhanh các lộ trình học tập dạng bài viết.",
     "mark": "DOC",
-    "accent": "#38bdf8"
+    "logo": "",
+    "logoAlt": "",
+    "accent": "#38bdf8",
+    "tip": {
+      "html": "Sử dụng phím <code>/</code> để tập trung nhanh vào ô tìm kiếm.",
+      "title": "MẸO HỌC TẬP"
+    }
   },
   "types": [
     {

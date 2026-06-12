@@ -3,42 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Học Python từ cơ bản</title>
+  <title>Bộ tài liệu mẫu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script>
-    const savedTheme = localStorage.getItem('py_dashboard_theme') || 'dark';
+    const pageKey = location.pathname.split('/').filter(Boolean).slice(0, -1).join('_').replace(/[^\w-]+/g, '_') || 'docs';
+    const savedTheme = localStorage.getItem(`${pageKey}_theme`) || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
   <link rel="stylesheet" href="../shared/css/style.css?v=shared-v3" />
+  <style>
+    .logo-mark {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      color: var(--accent);
+      background: var(--surface2);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+    .course-logo {
+      width: 46px;
+      height: 46px;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+    }
+  </style>
 </head>
 <body>
 
 <header>
   <div class="header-top">
-    <div class="logo">
-      <img src="python.svg" alt="Python Logo" />
-    </div>
+    <div class="logo" id="seriesLogo"><span class="logo-mark" id="seriesMark">DOC</span></div>
     <div class="header-text">
-      <h1 id="seriesTitle">Học <em>Python</em> từ cơ bản</h1>
+      <h1 id="seriesTitle"><em>Tài liệu</em> mẫu</h1>
       <p id="seriesDesc">Đang tải cấu trúc bài học...</p>
     </div>
     <div class="header-actions">
       <div class="header-search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
         <input type="text" id="searchInput" placeholder="Tìm kiếm bài học (Ấn '/' để tìm)..." oninput="doSearch(this.value)" />
       </div>
       <a class="quick-nav-btn" href="../index.html" title="Về trang tổng">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         <span>Trang tổng</span>
       </a>
       <button class="quick-nav-btn accent-btn" type="button" onclick="openQuickNav()" title="Mở dashboard lộ trình">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
         </svg>
         <span>Lộ trình</span>
@@ -72,7 +94,7 @@
 <div class="page">
   <main class="content">
     <div class="sort-bar">
-      <div class="sort-bar-label">Hiển thị <strong id="visibleCount">–</strong> bài học đang khả dụng</div>
+      <div class="sort-bar-label">Hiển thị <strong id="visibleCount">-</strong> bài học đang khả dụng</div>
       <div class="sort-pills">
         <button class="sort-pill active" onclick="setSortMode('order',this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="10" y1="6" x2="21" y2="6"></line><line x1="10" y1="12" x2="21" y2="12"></line><line x1="10" y1="18" x2="21" y2="18"></line><polyline points="3 6 4 7 6 5"></polyline><polyline points="3 12 4 13 6 11"></polyline><polyline points="3 18 4 19 6 17"></polyline></svg>
@@ -101,330 +123,15 @@
       <div class="widget-title">Danh mục chuyên đề</div>
       <div class="filter-list" id="sidebarCats"></div>
     </div>
-    
     <div class="widget card-tip-premium">
-      <div class="tip-box">
-        <strong>💡 MẸO HỌC TẬP</strong>
-        Sử dụng phím <code>/</code> để tập trung nhanh vào ô tìm kiếm bài học nâng cao.
+      <div class="tip-box" id="seriesTip">
+        <strong>MẸO HỌC TẬP</strong>
+        Sử dụng phím <code>/</code> để tập trung nhanh vào ô tìm kiếm.
       </div>
     </div>
   </aside>
 </div>
 
-<script>
-// Giữ nguyên toàn bộ logic JS gốc của bạn, chỉ tối ưu hiệu ứng hiển thị Header khi gộp nhóm
-const VISITED_KEY = 'hoc_python_visited';
-let allLessons = [], allTypes = [], currentCat = 'all', sortMode = 'order';
-const collapsedTypes = new Set();
-
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('py_dashboard_theme', theme);
-  updateThemeIcon(theme);
-}
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  setTheme(current === 'dark' ? 'light' : 'dark');
-}
-function updateThemeIcon(theme) {
-  const btn = document.getElementById('themeToggleBtn');
-  if (!btn) return;
-  if (theme === 'light') {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-  } else {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="18.36" x2="5.64" y2="19.78"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg>`;
-  }
-}
-
-function getVisited() {
-  try { return JSON.parse(localStorage.getItem(VISITED_KEY) || '[]'); } catch { return []; }
-}
-function markVisited(file) {
-  const v = getVisited();
-  if (!v.includes(file)) { v.push(file); localStorage.setItem(VISITED_KEY, JSON.stringify(v)); }
-}
-
-function buildCard(lesson, types, visited) {
-  const isAvailable = lesson.status === 'published' && Boolean(lesson.file);
-  const isDone = isAvailable && visited.includes(lesson.file);
-  const typeDef = types.find(t => t.id === lesson.type) || {};
-  const color = typeDef.color || '#546278';
-
-  const el = document.createElement(isAvailable ? 'a' : 'div');
-  el.className = 'lesson-card' + (isDone ? ' is-done' : '');
-  el.setAttribute('data-status', isAvailable ? 'published' : 'coming');
-  el.setAttribute('data-cat', lesson.type);
-  el.setAttribute('data-search', `${lesson.title} ${lesson.description || ''} ${(lesson.tags || []).join(' ')}`.toLowerCase());
-  el.style.setProperty('--card-color', color);
-
-  if (isAvailable) {
-    el.href = lesson.file;
-    el.addEventListener('click', () => { markVisited(lesson.file); });
-  }
-
-  const metaHtml = isAvailable
-    ? `<div class="card-meta">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections}</strong> mục</span>
-        ${isDone ? '<span class="badge-done">✓ Đã hoàn thành</span>' : ''}
-       </div>`
-    : `<div class="card-meta">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections}</strong> mục</span>
-        <span class="badge-coming">Sắp ra mắt</span>
-       </div>`;
-
-  el.innerHTML = `
-    <div class="card-num">${lesson.id}</div>
-    <div class="card-body">
-      <span class="card-type-tag" style="color:${color}">
-        <span class="dot" style="background:${color}"></span>${typeDef.title || lesson.type}
-      </span>
-      <div class="card-title">${lesson.title}</div>
-      <div class="card-desc">${lesson.description}</div>
-      ${metaHtml}
-    </div>
-    <div class="card-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>`;
-  return el;
-}
-
-function buildTypeHeader(t, count) {
-  const hdr = document.createElement('div');
-  hdr.className = 'type-header';
-  hdr.setAttribute('data-cat', t.id);
-  hdr.innerHTML = `
-    <span class="type-icon">${t.icon}</span>
-    <span class="type-name" style="color:${t.color}">${t.title}</span>
-    <div class="type-actions">
-      <span class="type-count">${count} bài học</span>
-      <button class="toggle-btn" onclick="toggleType('${t.id}',event)">Ẩn</button>
-    </div>
-    <span class="type-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></span>`;
-  return hdr;
-}
-
-function renderAll(lessons, types) {
-  const grid = document.getElementById('lessonGrid');
-  const visited = getVisited();
-
-  const tabNav = document.getElementById('tabNav');
-  tabNav.innerHTML = `<button class="tab-btn active" onclick="filterCat('all',this)">Tất cả bài viết</button>`;
-  types.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn';
-    btn.setAttribute('data-cat', t.id);
-    btn.innerHTML = `<span class="tab-dot" style="background:${t.color}"></span>${t.title}`;
-    btn.onclick = function() { filterCat(t.id, this); };
-    tabNav.appendChild(btn);
-  });
-
-  const sidebarCats = document.getElementById('sidebarCats');
-  sidebarCats.innerHTML = '';
-  const allBtn = document.createElement('button');
-  allBtn.className = 'filter-btn active';
-  allBtn.style.setProperty('--f-color', 'var(--accent)');
-  allBtn.onclick = () => filterCat('all', allBtn);
-  allBtn.innerHTML = `<span class="f-dot" style="background:var(--accent)"></span><span class="f-label">Tất cả bài học</span><span class="filter-count">${lessons.length}</span>`;
-  sidebarCats.appendChild(allBtn);
-
-  types.forEach(t => {
-    const count = lessons.filter(l => l.type === t.id).length;
-    if (!count) return;
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.setAttribute('data-cat', t.id);
-    btn.style.setProperty('--f-color', t.color);
-    btn.onclick = function() { filterCat(t.id, this); };
-    btn.innerHTML = `<span class="f-dot" style="background:${t.color}"></span><span class="f-label">${t.title}</span><span class="filter-count">${count}</span>`;
-    sidebarCats.appendChild(btn);
-  });
-
-  rebuildGrid(lessons, types, visited);
-  document.getElementById('loading').style.display = 'none';
-  grid.style.display = 'flex';
-}
-
-function rebuildGrid(lessons, types, visited) {
-  visited = visited || getVisited();
-  const grid = document.getElementById('lessonGrid');
-  grid.innerHTML = '';
-  
-  if (sortMode === 'order') {
-    grid.className = "lessons-list mode-order";
-    const sorted = [...lessons].sort((a, b) => a.id.localeCompare(b.id));
-    sorted.forEach(l => grid.appendChild(buildCard(l, types, visited)));
-  } else {
-    grid.className = "lessons-list mode-type";
-    const grouped = {};
-    lessons.forEach(l => {
-      if (!grouped[l.type]) grouped[l.type] = [];
-      grouped[l.type].push(l);
-    });
-    Object.values(grouped).forEach(g => g.sort((a, b) => a.id.localeCompare(b.id)));
-    types.forEach(t => {
-      if (!grouped[t.id] || !grouped[t.id].length) return;
-      const hdr = buildTypeHeader(t, grouped[t.id].length);
-      grid.appendChild(hdr);
-      const grp = document.createElement('div');
-      grp.className = 'type-group';
-      grp.setAttribute('data-cat', t.id);
-      grouped[t.id].forEach(l => grp.appendChild(buildCard(l, types, visited)));
-      grid.appendChild(grp);
-    });
-  }
-}
-
-function setSortMode(mode, btn) {
-  sortMode = mode;
-  document.querySelectorAll('.sort-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCat = 'all';
-  document.querySelectorAll('.tab-btn, .filter-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.tab-btn').classList.add('active');
-  document.querySelector('.filter-btn').classList.add('active');
-  rebuildGrid(allLessons, allTypes);
-  applyFilters();
-}
-
-function filterCat(cat, btn) {
-  currentCat = cat;
-  document.querySelectorAll('.tab-btn, .filter-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll(`.tab-btn[data-cat="${cat}"], .filter-btn[data-cat="${cat}"]`).forEach(b => b.classList.add('active'));
-  if (cat === 'all') {
-    document.querySelector('.tab-btn:not([data-cat])').classList.add('active');
-    document.querySelector('.filter-btn:not([data-cat])').classList.add('active');
-  }
-  applyFilters();
-}
-
-function doSearch(q) { applyFilters(q); }
-
-function toggleType(typeId, e) {
-  e.stopPropagation();
-  const btn = e.target;
-  const hdr = btn.closest('.type-header');
-  if (collapsedTypes.has(typeId)) {
-    collapsedTypes.delete(typeId);
-    btn.textContent = 'Ẩn';
-    if(hdr) hdr.classList.remove('collapsed');
-  } else {
-    collapsedTypes.add(typeId);
-    btn.textContent = 'Hiện';
-    if(hdr) hdr.classList.add('collapsed');
-  }
-  applyFilters();
-}
-
-function applyFilters(q = document.getElementById('searchInput').value) {
-  q = q.toLowerCase().trim();
-  const cards = document.querySelectorAll('.lesson-card');
-  const typeGroups = document.querySelectorAll('.type-group');
-  const typeHeaders = document.querySelectorAll('.type-header');
-  let matched = 0;
-
-  cards.forEach(c => {
-    const catMatch = currentCat === 'all' || c.getAttribute('data-cat') === currentCat;
-    const searchMatch = !q || (c.getAttribute('data-search') || '').includes(q);
-    const cat = c.getAttribute('data-cat');
-    const collapsed = sortMode === 'type' && collapsedTypes.has(cat);
-    const show = catMatch && searchMatch && !collapsed;
-    c.style.display = show ? '' : 'none';
-    if (catMatch && searchMatch) matched++;
-  });
-
-  typeHeaders.forEach(h => {
-    const cat = h.getAttribute('data-cat');
-    h.style.display = (currentCat === 'all' || cat === currentCat) ? '' : 'none';
-  });
-  typeGroups.forEach(g => {
-    const cat = g.getAttribute('data-cat');
-    const catMatch = currentCat === 'all' || cat === currentCat;
-    g.style.display = catMatch && !collapsedTypes.has(cat) ? 'grid' : 'none';
-  });
-
-  document.getElementById('visibleCount').textContent = matched;
-  document.getElementById('emptyMsg').style.display =
-    (matched === 0 && (q || currentCat !== 'all')) ? 'flex' : 'none';
-}
-
-// Phím tắt nhanh '/' Focus ô tìm kiếm công nghệ cao
-document.addEventListener('keydown', e => {
-  if (e.key === '/') {
-    if (document.activeElement.tagName !== 'INPUT') {
-      e.preventDefault();
-      document.getElementById('searchInput').focus();
-    }
-  }
-  if (e.key === 'Escape') closeQuickNav();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateThemeIcon(savedTheme);
-  loadQuickLinks();
-});
-
-function openQuickNav() {
-  const overlay = document.getElementById('quickNavOverlay');
-  overlay.removeAttribute('hidden');
-  overlay.classList.add('is-open');
-  overlay.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden'; // Chặn cuộn trang nền
-}
-
-function closeQuickNav(event) {
-  if (event && event.target !== document.getElementById('quickNavOverlay')) return;
-  const overlay = document.getElementById('quickNavOverlay');
-  overlay.classList.remove('is-open');
-  overlay.setAttribute('aria-hidden', 'true');
-  overlay.setAttribute('hidden', '');
-  document.body.style.overflow = '';
-}
-
-function loadQuickLinks() {
-  fetch('../quick-links.json')
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById('quickNavTitle').textContent = data.title || 'Lộ trình học tập';
-      document.getElementById('quickNavDesc').textContent = data.description || '';
-      renderQuickLinks(data.links || []);
-    })
-    .catch(() => {
-      document.getElementById('quickNavDesc').textContent = 'Không tải được cấu trúc dữ liệu.';
-    });
-}
-
-function renderQuickLinks(links) {
-  const grid = document.getElementById('quickNavGrid');
-  grid.innerHTML = '';
-  links.forEach(item => {
-    const isReady = item.status === 'ready' && item.url;
-    const card = document.createElement(isReady ? 'a' : 'div');
-    card.className = 'quick-link-card' + (!isReady ? ' is-coming' : '');
-    card.style.setProperty('--quick-accent', item.accent || 'var(--accent)');
-    if (isReady) card.href = item.url;
-    card.innerHTML = `
-      <span class="quick-link-dot"></span>
-      <span class="quick-link-body">
-        <strong>${item.title}</strong>
-        <small>${item.description || ''}</small>
-      </span>
-      <span class="quick-link-status">${isReady ? 'Khám phá' : 'Sắp có'}</span>`;
-    grid.appendChild(card);
-  });
-}
-
-fetch('lessons.json')
-  .then(r => r.json())
-  .then(data => {
-    allLessons = data.lessons;
-    allTypes = data.types;
-    const title = data.series.title;
-    document.getElementById('seriesTitle').innerHTML = title.replace('Python', '<em>Python</em>');
-    document.getElementById('seriesDesc').textContent = data.series.description;
-    renderAll(allLessons, allTypes);
-    applyFilters();
-  })
-  .catch(() => {
-    document.getElementById('loading').innerHTML = '❌ Lỗi kết nối dữ liệu cấu trúc <code>lessons.json</code>.';
-  });
-</script>
+<script src="../shared/js/dashboard-script.js?v=shared-v3"></script>
 </body>
 </html>

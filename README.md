@@ -7,7 +7,8 @@ Thư mục `docs-template/` là mẫu chung để tạo bộ tài liệu mới. 
 Cách dùng:
 
 1. Sao chép toàn bộ `docs-template/` sang thư mục mới.
-2. Chỉnh `index.html` và `lessons.json` theo nội dung của tài liệu mới.
-3. Giữ các đường dẫn `../shared/css/...` và `../shared/js/...` để dùng lại giao diện/logic chung.
-4. Cập nhật `quick-links.json` ở thư mục gốc nếu muốn khóa mới xuất hiện trong dashboard lộ trình.
-5. Nếu khóa học cần hành vi riêng, tạo file CSS/JS riêng trong thư mục khóa và chỉ override phần cần thiết.
+2. Chỉnh `lessons.json` theo nội dung của tài liệu mới.
+3. Cấu hình giao diện index con trong `lessons.json` tại `series`: `title`, `titleHtml`, `description`, `mark`, `logo`, `logoAlt`, `accent`, `tip`.
+4. Giữ `index.html` theo template chung để dùng lại `../shared/css/...` và `../shared/js/...`.
+5. Cập nhật `quick-links.json` ở thư mục gốc nếu muốn khóa mới xuất hiện trong dashboard lộ trình.
+6. Nếu khóa học cần hành vi riêng, tạo file CSS/JS riêng trong thư mục khóa và chỉ override phần cần thiết.

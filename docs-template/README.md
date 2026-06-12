@@ -8,6 +8,7 @@ Thư mục này là mẫu chung cho các tài liệu mới. Giao diện và logi
 2. Mở `lessons.json` và cập nhật:
    - `series.title`, `series.titleHtml`, `series.description`, `series.mark`
    - `series.logo`, `series.logoAlt`, `series.accent` nếu muốn dùng logo SVG và màu chủ riêng
+   - `series.tip` để đổi nội dung mẹo học tập trên sidebar của index
    - `types` (phân loại bài học)
    - `lessons` (danh sách bài học)
 3. Tạo các file bài học HTML tương ứng với trường `file`.

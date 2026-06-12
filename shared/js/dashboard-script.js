@@ -6,8 +6,19 @@ const pageKey = location.pathname
   .slice(0, -1)
   .join('_')
   .replace(/[^\w-]+/g, '_') || 'docs';
-const VISITED_KEY = `${pageKey}_visited`;
-const THEME_KEY = `${pageKey}_theme`;
+const legacyDashboardKeys = {
+  'python-zero2hero': {
+    visited: 'hoc_python_visited',
+    theme: 'py_dashboard_theme'
+  },
+  'lpic-101-102': {
+    visited: 'lpic_101_102_visited',
+    theme: 'lpic_dashboard_theme'
+  }
+};
+const legacyDashboardKey = legacyDashboardKeys[pageKey] || {};
+const VISITED_KEY = legacyDashboardKey.visited || `${pageKey}_visited`;
+const THEME_KEY = legacyDashboardKey.theme || `${pageKey}_theme`;
 
 let allLessons = [];
 let allTypes = [];
@@ -20,8 +31,9 @@ function getSeries(data) {
     title: data.title || 'Bộ tài liệu mẫu',
     description: data.description || 'Sử dụng cấu trúc này để tạo tài liệu học tập mới.',
     mark: data.mark || 'DOC',
-    logo: data.logo || '',
-    accent: data.accent || ''
+    logo: data.logo || data.logoUrl || data.image || '',
+    accent: data.accent || '',
+    tip: data.tip || ''
   };
 }
 
@@ -34,14 +46,32 @@ function applySeriesBrand(series) {
   const logoHost = document.getElementById('seriesLogo');
   if (!logoHost) return;
 
-  if (series.logo) {
+  const logo = series.logo || series.logoUrl || series.image || '';
+  if (logo) {
     const label = series.logoAlt || `${series.title || 'Course'} logo`;
-    logoHost.innerHTML = `<img class="course-logo" src="${series.logo}" alt="${label}" />`;
+    logoHost.innerHTML = `<img class="course-logo" src="${logo}" alt="${label}" />`;
     return;
   }
 
   const mark = document.getElementById('seriesMark');
   if (mark) mark.textContent = series.mark || 'DOC';
+}
+
+function applySeriesTip(series) {
+  const tipBox = document.getElementById('seriesTip');
+  if (!tipBox) return;
+
+  const tip = series.tip || {};
+  const title = typeof tip === 'string' ? 'MẸO HỌC TẬP' : (tip.title || 'MẸO HỌC TẬP');
+  const content = typeof tip === 'string' ? tip : (tip.content || '');
+  const html = typeof tip === 'object' ? tip.html : '';
+
+  if (!content && !html) {
+    tipBox.closest('.widget')?.setAttribute('hidden', '');
+    return;
+  }
+
+  tipBox.innerHTML = `<strong>${title}</strong>${html || content}`;
 }
 
 function setTheme(theme) {
@@ -140,6 +170,17 @@ function buildCard(lesson, types, visited) {
     el.href = lesson.file;
     el.addEventListener('click', () => markVisited(lesson.file));
   }
+
+  const metaHtml = isAvailable
+    ? `<div class="card-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections || 0}</strong> mục</span>
+        ${isDone ? '<span class="badge-done">✓ Đã hoàn thành</span>' : ''}
+       </div>`
+    : `<div class="card-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> <strong>${lesson.sections || 0}</strong> mục</span>
+        <span class="badge-coming">Sắp ra mắt</span>
+       </div>`;
+
   el.innerHTML = `
     <div class="card-num">${lesson.id}</div>
     <div class="card-body">
@@ -148,10 +189,7 @@ function buildCard(lesson, types, visited) {
       </span>
       <div class="card-title">${lesson.title}</div>
       <div class="card-desc">${lesson.description || ''}</div>
-      <div class="card-meta">
-        <span><strong>${lesson.sections || 0}</strong> mục</span>
-        ${isDone ? '<span class="badge-done">Da hoan thanh</span>' : isAvailable ? '' : '<span class="badge-coming">Sap ra mat</span>'}
-      </div>
+      ${metaHtml}
     </div>
     <div class="card-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg></div>`;
   return el;
@@ -319,6 +357,7 @@ fetch(LESSONS_FILE)
     document.getElementById('seriesTitle').innerHTML = series.titleHtml || series.title || 'Bộ tài liệu mẫu';
     document.getElementById('seriesDesc').textContent = series.description || '';
     applySeriesBrand(series);
+    applySeriesTip(series);
     updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
     loadQuickLinks();
     renderAll(allLessons, allTypes);

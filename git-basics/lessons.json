@@ -336,12 +336,16 @@
     }
   ],
   "series": {
-    "description": "Lộ trình học Git & GitHub bài bản, từ Terminal đến GitHub Actions",
-    "mark": "GIT",
     "title": "Học Git từ cơ bản",
     "titleHtml": "Học <em>Git</em> từ cơ bản",
+    "description": "Lộ trình học Git & GitHub bài bản, từ Terminal đến workflow cộng tác.",
+    "mark": "GIT",
     "logo": "git.svg",
     "logoAlt": "Git logo",
-    "accent": "#F05032"
+    "accent": "#F05032",
+    "tip": {
+      "html": "Thực hành từng lệnh trong một repository thử nghiệm trước khi dùng trên dự án thật.",
+      "title": "MẸO HỌC GIT"
+    }
   }
 }

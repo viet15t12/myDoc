@@ -41,7 +41,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["hardware", "lpic1", "exam101"]
+      "tags": [
+        "hardware",
+        "lpic1",
+        "exam101"
+      ]
     },
     {
       "id": "02",
@@ -52,7 +56,11 @@
       "minutes": 30,
       "sections": 8,
       "status": "published",
-      "tags": ["boot", "systemd", "exam101"]
+      "tags": [
+        "boot",
+        "systemd",
+        "exam101"
+      ]
     },
     {
       "id": "03",
@@ -63,7 +71,11 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["runlevels", "target", "shutdown"]
+      "tags": [
+        "runlevels",
+        "target",
+        "shutdown"
+      ]
     },
     {
       "id": "04",
@@ -74,7 +86,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["partitioning", "disk", "exam101"]
+      "tags": [
+        "partitioning",
+        "disk",
+        "exam101"
+      ]
     },
     {
       "id": "05",
@@ -85,7 +101,11 @@
       "minutes": 30,
       "sections": 7,
       "status": "published",
-      "tags": ["grub", "grub2", "bootloader"]
+      "tags": [
+        "grub",
+        "grub2",
+        "bootloader"
+      ]
     },
     {
       "id": "06",
@@ -96,7 +116,11 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["libraries", "ldd", "shared-objects"]
+      "tags": [
+        "libraries",
+        "ldd",
+        "shared-objects"
+      ]
     },
     {
       "id": "07",
@@ -107,7 +131,11 @@
       "minutes": 25,
       "sections": 7,
       "status": "published",
-      "tags": ["debian", "apt", "dpkg"]
+      "tags": [
+        "debian",
+        "apt",
+        "dpkg"
+      ]
     },
     {
       "id": "08",
@@ -118,7 +146,12 @@
       "minutes": 25,
       "sections": 7,
       "status": "published",
-      "tags": ["rpm", "yum", "dnf", "rhel"]
+      "tags": [
+        "rpm",
+        "yum",
+        "dnf",
+        "rhel"
+      ]
     },
     {
       "id": "09",
@@ -129,7 +162,11 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["virtualization", "kvm", "hypervisor"]
+      "tags": [
+        "virtualization",
+        "kvm",
+        "hypervisor"
+      ]
     },
     {
       "id": "10",
@@ -140,7 +177,11 @@
       "minutes": 20,
       "sections": 9,
       "status": "published",
-      "tags": ["cli", "commands", "basics"]
+      "tags": [
+        "cli",
+        "commands",
+        "basics"
+      ]
     },
     {
       "id": "11",
@@ -151,7 +192,11 @@
       "minutes": 25,
       "sections": 8,
       "status": "published",
-      "tags": ["text-processing", "filter", "text"]
+      "tags": [
+        "text-processing",
+        "filter",
+        "text"
+      ]
     },
     {
       "id": "12",
@@ -162,7 +207,11 @@
       "minutes": 20,
       "sections": 6,
       "status": "published",
-      "tags": ["file-management", "tar", "archive"]
+      "tags": [
+        "file-management",
+        "tar",
+        "archive"
+      ]
     },
     {
       "id": "13",
@@ -173,7 +222,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["pipes", "redirect", "stdout"]
+      "tags": [
+        "pipes",
+        "redirect",
+        "stdout"
+      ]
     },
     {
       "id": "14",
@@ -184,7 +237,12 @@
       "minutes": 30,
       "sections": 8,
       "status": "published",
-      "tags": ["process", "kill", "top", "nice"]
+      "tags": [
+        "process",
+        "kill",
+        "top",
+        "nice"
+      ]
     },
     {
       "id": "15",
@@ -195,7 +253,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["regex", "grep", "search"]
+      "tags": [
+        "regex",
+        "grep",
+        "search"
+      ]
     },
     {
       "id": "16",
@@ -206,7 +268,11 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["vi", "vim", "editor"]
+      "tags": [
+        "vi",
+        "vim",
+        "editor"
+      ]
     },
     {
       "id": "17",
@@ -217,7 +283,11 @@
       "minutes": 30,
       "sections": 8,
       "status": "published",
-      "tags": ["fdisk", "mkfs", "filesystem"]
+      "tags": [
+        "fdisk",
+        "mkfs",
+        "filesystem"
+      ]
     },
     {
       "id": "18",
@@ -228,7 +298,12 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["fsck", "df", "du", "integrity"]
+      "tags": [
+        "fsck",
+        "df",
+        "du",
+        "integrity"
+      ]
     },
     {
       "id": "19",
@@ -239,7 +314,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["mount", "fstab", "umount"]
+      "tags": [
+        "mount",
+        "fstab",
+        "umount"
+      ]
     },
     {
       "id": "20",
@@ -250,7 +329,12 @@
       "minutes": 25,
       "sections": 7,
       "status": "published",
-      "tags": ["permissions", "chmod", "chown", "umask"]
+      "tags": [
+        "permissions",
+        "chmod",
+        "chown",
+        "umask"
+      ]
     },
     {
       "id": "21",
@@ -261,7 +345,11 @@
       "minutes": 15,
       "sections": 4,
       "status": "published",
-      "tags": ["links", "ln", "symlink"]
+      "tags": [
+        "links",
+        "ln",
+        "symlink"
+      ]
     },
     {
       "id": "22",
@@ -272,7 +360,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["find", "locate", "fhs"]
+      "tags": [
+        "find",
+        "locate",
+        "fhs"
+      ]
     },
     {
       "id": "23",
@@ -283,7 +375,11 @@
       "minutes": 45,
       "sections": 10,
       "status": "published",
-      "tags": ["exam", "mock-test", "quiz-101"]
+      "tags": [
+        "exam",
+        "mock-test",
+        "quiz-101"
+      ]
     },
     {
       "id": "24",
@@ -294,7 +390,11 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["shell", "profile", "alias"]
+      "tags": [
+        "shell",
+        "profile",
+        "alias"
+      ]
     },
     {
       "id": "25",
@@ -305,7 +405,11 @@
       "minutes": 35,
       "sections": 8,
       "status": "published",
-      "tags": ["scripting", "bash", "automation"]
+      "tags": [
+        "scripting",
+        "bash",
+        "automation"
+      ]
     },
     {
       "id": "26",
@@ -316,7 +420,12 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["x11", "xorg", "gui", "desktop"]
+      "tags": [
+        "x11",
+        "xorg",
+        "gui",
+        "desktop"
+      ]
     },
     {
       "id": "27",
@@ -327,7 +436,12 @@
       "minutes": 25,
       "sections": 7,
       "status": "published",
-      "tags": ["useradd", "usermod", "shadow", "group"]
+      "tags": [
+        "useradd",
+        "usermod",
+        "shadow",
+        "group"
+      ]
     },
     {
       "id": "28",
@@ -338,7 +452,12 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["cron", "crontab", "at", "automation"]
+      "tags": [
+        "cron",
+        "crontab",
+        "at",
+        "automation"
+      ]
     },
     {
       "id": "29",
@@ -349,7 +468,11 @@
       "minutes": 15,
       "sections": 4,
       "status": "published",
-      "tags": ["locale", "timezone", "env"]
+      "tags": [
+        "locale",
+        "timezone",
+        "env"
+      ]
     },
     {
       "id": "30",
@@ -360,7 +483,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["rsyslog", "journalctl", "logrotate"]
+      "tags": [
+        "rsyslog",
+        "journalctl",
+        "logrotate"
+      ]
     },
     {
       "id": "31",
@@ -371,7 +498,12 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["mta", "smtp", "postfix", "mail"]
+      "tags": [
+        "mta",
+        "smtp",
+        "postfix",
+        "mail"
+      ]
     },
     {
       "id": "32",
@@ -382,7 +514,11 @@
       "minutes": 15,
       "sections": 4,
       "status": "published",
-      "tags": ["cups", "printing", "lpr"]
+      "tags": [
+        "cups",
+        "printing",
+        "lpr"
+      ]
     },
     {
       "id": "33",
@@ -393,7 +529,12 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["tcp-ip", "networking", "ipv4", "ports"]
+      "tags": [
+        "tcp-ip",
+        "networking",
+        "ipv4",
+        "ports"
+      ]
     },
     {
       "id": "34",
@@ -404,7 +545,12 @@
       "minutes": 30,
       "sections": 7,
       "status": "published",
-      "tags": ["iproute2", "nmcli", "ifconfig", "routing"]
+      "tags": [
+        "iproute2",
+        "nmcli",
+        "ifconfig",
+        "routing"
+      ]
     },
     {
       "id": "35",
@@ -415,7 +561,12 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["ping", "traceroute", "ss", "netstat"]
+      "tags": [
+        "ping",
+        "traceroute",
+        "ss",
+        "netstat"
+      ]
     },
     {
       "id": "36",
@@ -426,7 +577,12 @@
       "minutes": 20,
       "sections": 5,
       "status": "published",
-      "tags": ["dns", "resolv.conf", "dig", "hosts"]
+      "tags": [
+        "dns",
+        "resolv.conf",
+        "dig",
+        "hosts"
+      ]
     },
     {
       "id": "37",
@@ -437,7 +593,12 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["security", "sudo", "audit", "ulimit"]
+      "tags": [
+        "security",
+        "sudo",
+        "audit",
+        "ulimit"
+      ]
     },
     {
       "id": "38",
@@ -448,7 +609,11 @@
       "minutes": 25,
       "sections": 6,
       "status": "published",
-      "tags": ["system-security", "tcp-wrappers", "inetd"]
+      "tags": [
+        "system-security",
+        "tcp-wrappers",
+        "inetd"
+      ]
     },
     {
       "id": "39",
@@ -459,7 +624,12 @@
       "minutes": 30,
       "sections": 7,
       "status": "published",
-      "tags": ["ssh", "gpg", "encryption", "openssh"]
+      "tags": [
+        "ssh",
+        "gpg",
+        "encryption",
+        "openssh"
+      ]
     },
     {
       "id": "40",
@@ -470,7 +640,12 @@
       "minutes": 40,
       "sections": 9,
       "status": "published",
-      "tags": ["nginx", "mysql", "docker", "containers"]
+      "tags": [
+        "nginx",
+        "mysql",
+        "docker",
+        "containers"
+      ]
     },
     {
       "id": "41",
@@ -481,7 +656,11 @@
       "minutes": 45,
       "sections": 10,
       "status": "published",
-      "tags": ["exam", "mock-test", "quiz-102"]
+      "tags": [
+        "exam",
+        "mock-test",
+        "quiz-102"
+      ]
     },
     {
       "id": "42",
@@ -492,11 +671,24 @@
       "minutes": 20,
       "sections": 4,
       "status": "published",
-      "tags": ["wrap-up", "summary", "lpic2-path"]
+      "tags": [
+        "wrap-up",
+        "summary",
+        "lpic2-path"
+      ]
     }
   ],
   "series": {
-    "title": "Quản Trị Hệ Thống Linux",
-    "description": "Lộ trình học tập toàn diện chuẩn hóa theo khung chương trình chứng chỉ quốc tế LPIC-1 (Exam 101 & Exam 102)"
+    "title": "LPIC-1 101 & 102",
+    "titleHtml": "<em>LPIC-1</em> 101 & 102",
+    "description": "Lộ trình học tập toàn diện chuẩn hóa theo khung chứng chỉ LPIC-1 Exam 101 & 102.",
+    "mark": "LP",
+    "logo": "logo.svg",
+    "logoAlt": "LPIC logo",
+    "accent": "#CC0000",
+    "tip": {
+      "html": "Ghi nhớ lệnh theo nhóm tác vụ và luyện lại bằng terminal thay vì chỉ đọc lý thuyết.",
+      "title": "MẸO ÔN LPIC"
+    }
   }
 }

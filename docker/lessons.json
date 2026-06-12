@@ -6,7 +6,11 @@
     "mark": "DKR",
     "logo": "docker.svg",
     "logoAlt": "Docker logo",
-    "accent": "#2496ED"
+    "accent": "#2496ED",
+    "tip": {
+      "html": "Sau mỗi bài, chạy lại lệnh bằng image nhỏ như <code>alpine</code> để hiểu rõ container đang làm gì.",
+      "title": "MẸO HỌC DOCKER"
+    }
   },
   "types": [
     {
@@ -37,7 +41,12 @@
       "file": "01-docker-la-gi-va-chay-container-dau-tien.html",
       "sections": 6,
       "status": "published",
-      "tags": ["docker", "container", "image", "hello-world"]
+      "tags": [
+        "docker",
+        "container",
+        "image",
+        "hello-world"
+      ]
     },
     {
       "id": "02",
@@ -47,7 +56,11 @@
       "file": "02-dockerfile-can-ban.html",
       "sections": 8,
       "status": "coming",
-      "tags": ["dockerfile", "build", "image"]
+      "tags": [
+        "dockerfile",
+        "build",
+        "image"
+      ]
     }
   ]
 }

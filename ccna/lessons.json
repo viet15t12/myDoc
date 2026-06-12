@@ -6,7 +6,11 @@
     "mark": "NET",
     "logo": "cisco.svg",
     "logoAlt": "Cisco logo",
-    "accent": "#1BA0D7"
+    "accent": "#1BA0D7",
+    "tip": {
+      "html": "Vẽ sơ đồ mạng và ghi IP/subnet ra giấy trước khi cấu hình hoặc tính toán.",
+      "title": "MẸO HỌC MẠNG"
+    }
   },
   "types": [
     {
@@ -37,7 +41,14 @@
       "file": "01-tong-quan-mang-may-tinh-va-lo-trinh-ccna.html",
       "sections": 6,
       "status": "published",
-      "tags": ["ccna", "networking", "osi", "tcp-ip", "router", "switch"]
+      "tags": [
+        "ccna",
+        "networking",
+        "osi",
+        "tcp-ip",
+        "router",
+        "switch"
+      ]
     },
     {
       "id": "02",
@@ -47,7 +58,11 @@
       "file": "02-dia-chi-ip-va-subnetting.html",
       "sections": 8,
       "status": "coming",
-      "tags": ["ipv4", "subnet", "cidr"]
+      "tags": [
+        "ipv4",
+        "subnet",
+        "cidr"
+      ]
     }
   ]
 }

@@ -33,7 +33,14 @@
       "id": "01",
       "sections": 15,
       "status": "published",
-      "tags": ["biến", "kiểu dữ liệu", "int", "str", "float", "bool"],
+      "tags": [
+        "biến",
+        "kiểu dữ liệu",
+        "int",
+        "str",
+        "float",
+        "bool"
+      ],
       "title": "Biến và Kiểu dữ liệu"
     },
     {
@@ -43,7 +50,11 @@
       "id": "02",
       "sections": 16,
       "status": "published",
-      "tags": ["phép toán", "arithmetic", "operators"],
+      "tags": [
+        "phép toán",
+        "arithmetic",
+        "operators"
+      ],
       "title": "Các phép toán số học"
     },
     {
@@ -53,7 +64,12 @@
       "id": "03",
       "sections": 18,
       "status": "published",
-      "tags": ["string", "chuỗi", "f-string", "format"],
+      "tags": [
+        "string",
+        "chuỗi",
+        "f-string",
+        "format"
+      ],
       "title": "Chuỗi (String) trong Python"
     },
     {
@@ -63,7 +79,12 @@
       "id": "04",
       "sections": 15,
       "status": "published",
-      "tags": ["so sánh", "logic", "comparison", "boolean"],
+      "tags": [
+        "so sánh",
+        "logic",
+        "comparison",
+        "boolean"
+      ],
       "title": "Các phép toán so sánh và logic"
     },
     {
@@ -73,7 +94,13 @@
       "id": "05",
       "sections": 19,
       "status": "published",
-      "tags": ["list", "danh sách", "append", "sort", "slice"],
+      "tags": [
+        "list",
+        "danh sách",
+        "append",
+        "sort",
+        "slice"
+      ],
       "title": "Kiểu dữ liệu List — Danh sách"
     },
     {
@@ -83,7 +110,11 @@
       "id": "06",
       "sections": 15,
       "status": "published",
-      "tags": ["tuple", "immutable", "unpacking"],
+      "tags": [
+        "tuple",
+        "immutable",
+        "unpacking"
+      ],
       "title": "Kiểu dữ liệu Tuple"
     },
     {
@@ -93,7 +124,12 @@
       "id": "07",
       "sections": 14,
       "status": "published",
-      "tags": ["dictionary", "dict", "key", "value"],
+      "tags": [
+        "dictionary",
+        "dict",
+        "key",
+        "value"
+      ],
       "title": "Kiểu dữ liệu Dictionary — Từ điển"
     },
     {
@@ -103,7 +139,12 @@
       "id": "08",
       "sections": 15,
       "status": "published",
-      "tags": ["set", "tập hợp", "union", "intersection"],
+      "tags": [
+        "set",
+        "tập hợp",
+        "union",
+        "intersection"
+      ],
       "title": "Kiểu dữ liệu Set — Tập hợp"
     },
     {
@@ -113,7 +154,13 @@
       "id": "09",
       "sections": 16,
       "status": "published",
-      "tags": ["if", "else", "elif", "điều kiện", "flow control"],
+      "tags": [
+        "if",
+        "else",
+        "elif",
+        "điều kiện",
+        "flow control"
+      ],
       "title": "Cấu trúc điều khiển (if / else)"
     },
     {
@@ -123,7 +170,13 @@
       "id": "10",
       "sections": 19,
       "status": "published",
-      "tags": ["for", "while", "loop", "vòng lặp", "range"],
+      "tags": [
+        "for",
+        "while",
+        "loop",
+        "vòng lặp",
+        "range"
+      ],
       "title": "Vòng lặp For và While"
     },
     {
@@ -133,7 +186,14 @@
       "id": "11",
       "sections": 16,
       "status": "published",
-      "tags": ["function", "hàm", "def", "return", "args", "kwargs"],
+      "tags": [
+        "function",
+        "hàm",
+        "def",
+        "return",
+        "args",
+        "kwargs"
+      ],
       "title": "Hàm (Functions) trong Python"
     },
     {
@@ -143,7 +203,13 @@
       "id": "12",
       "sections": 13,
       "status": "published",
-      "tags": ["file", "open", "read", "write", "with"],
+      "tags": [
+        "file",
+        "open",
+        "read",
+        "write",
+        "with"
+      ],
       "title": "Xử lý file (File Handling)"
     },
     {
@@ -153,7 +219,11 @@
       "id": "13",
       "sections": 10,
       "status": "published",
-      "tags": ["list comprehension", "one-liner", "pythonic"],
+      "tags": [
+        "list comprehension",
+        "one-liner",
+        "pythonic"
+      ],
       "title": "List Comprehension"
     },
     {
@@ -163,7 +233,12 @@
       "id": "14",
       "sections": 9,
       "status": "published",
-      "tags": ["venv", "virtualenv", "environment", "môi trường ảo"],
+      "tags": [
+        "venv",
+        "virtualenv",
+        "environment",
+        "môi trường ảo"
+      ],
       "title": "Môi trường ảo (Virtual Environment)"
     },
     {
@@ -173,7 +248,13 @@
       "id": "15",
       "sections": 14,
       "status": "published",
-      "tags": ["pip","UV", "conda", "package", "requirements"],
+      "tags": [
+        "pip",
+        "UV",
+        "conda",
+        "package",
+        "requirements"
+      ],
       "title": "Python Package Manager — pip, conda, UV"
     },
     {
@@ -182,8 +263,14 @@
       "file": "16-python-type-errors.html",
       "id": "16",
       "sections": 13,
-      "status": "published", 
-      "tags": ["error", "debug", "TypeError", "ValueError", "lỗi"],
+      "status": "published",
+      "tags": [
+        "error",
+        "debug",
+        "TypeError",
+        "ValueError",
+        "lỗi"
+      ],
       "title": "Python Type Errors — Các lỗi phổ biến"
     },
     {
@@ -193,7 +280,13 @@
       "id": "17",
       "sections": 13,
       "status": "published",
-      "tags": ["exception", "try", "except", "finally", "raise"],
+      "tags": [
+        "exception",
+        "try",
+        "except",
+        "finally",
+        "raise"
+      ],
       "title": "Xử lý ngoại lệ — Exception Handling"
     },
     {
@@ -203,7 +296,12 @@
       "id": "18",
       "sections": 15,
       "status": "published",
-      "tags": ["regex", "regular expression", "re", "pattern"],
+      "tags": [
+        "regex",
+        "regular expression",
+        "re",
+        "pattern"
+      ],
       "title": "Biểu thức chính quy — Regular Expressions"
     },
     {
@@ -213,7 +311,13 @@
       "id": "19",
       "sections": 17,
       "status": "published",
-      "tags": ["class", "object", "OOP", "kế thừa", "inheritance"],
+      "tags": [
+        "class",
+        "object",
+        "OOP",
+        "kế thừa",
+        "inheritance"
+      ],
       "title": "Lớp và đối tượng — Classes & Objects"
     },
     {
@@ -223,7 +327,13 @@
       "id": "20",
       "sections": 17,
       "status": "published",
-      "tags": ["decorator", "higher order", "map", "filter", "lambda"],
+      "tags": [
+        "decorator",
+        "higher order",
+        "map",
+        "filter",
+        "lambda"
+      ],
       "title": "Higher Order Functions & Decorators"
     },
     {
@@ -233,7 +343,13 @@
       "id": "21",
       "sections": 14,
       "status": "published",
-      "tags": ["numpy", "ndarray", "data science", "AI", "matrix"],
+      "tags": [
+        "numpy",
+        "ndarray",
+        "data science",
+        "AI",
+        "matrix"
+      ],
       "title": "NumPy — Nền tảng cho Data Science & AI"
     },
     {
@@ -243,7 +359,14 @@
       "id": "22",
       "sections": 11,
       "status": "published",
-      "tags": ["matplotlib", "seaborn", "plotly", "visualization", "chart", "biểu đồ"],
+      "tags": [
+        "matplotlib",
+        "seaborn",
+        "plotly",
+        "visualization",
+        "chart",
+        "biểu đồ"
+      ],
       "title": "Data Visualization — Matplotlib, Seaborn, Plotly"
     },
     {
@@ -253,7 +376,13 @@
       "id": "23",
       "sections": 14,
       "status": "published",
-      "tags": ["pandas", "DataFrame", "csv", "groupby", "data"],
+      "tags": [
+        "pandas",
+        "DataFrame",
+        "csv",
+        "groupby",
+        "data"
+      ],
       "title": "Pandas — Làm việc và Xử lý Dữ liệu"
     },
     {
@@ -263,7 +392,13 @@
       "id": "24",
       "sections": 10,
       "status": "coming",
-      "tags": ["sqlite", "sql", "database", "cơ sở dữ liệu", "query"],
+      "tags": [
+        "sqlite",
+        "sql",
+        "database",
+        "cơ sở dữ liệu",
+        "query"
+      ],
       "title": "Cơ sở dữ liệu SQL — SQLite"
     },
     {
@@ -273,7 +408,13 @@
       "id": "25",
       "sections": 9,
       "status": "coming",
-      "tags": ["tkinter", "GUI", "giao diện", "desktop", "widget"],
+      "tags": [
+        "tkinter",
+        "GUI",
+        "giao diện",
+        "desktop",
+        "widget"
+      ],
       "title": "Tkinter — Xây dựng ứng dụng giao diện"
     },
     {
@@ -283,7 +424,14 @@
       "id": "26",
       "sections": 10,
       "status": "coming",
-      "tags": ["cisco", "network", "netmiko", "paramiko", "ssh", "automation"],
+      "tags": [
+        "cisco",
+        "network",
+        "netmiko",
+        "paramiko",
+        "ssh",
+        "automation"
+      ],
       "title": "Python Network Cisco — Tự động hóa mạng"
     },
     {
@@ -293,7 +441,13 @@
       "id": "27",
       "sections": 10,
       "status": "coming",
-      "tags": ["scraping", "crawling", "BeautifulSoup", "requests", "selenium"],
+      "tags": [
+        "scraping",
+        "crawling",
+        "BeautifulSoup",
+        "requests",
+        "selenium"
+      ],
       "title": "Web Scraping — Thu thập dữ liệu"
     },
     {
@@ -303,7 +457,13 @@
       "id": "28",
       "sections": 11,
       "status": "coming",
-      "tags": ["fastapi", "api", "REST", "async", "backend"],
+      "tags": [
+        "fastapi",
+        "api",
+        "REST",
+        "async",
+        "backend"
+      ],
       "title": "FastAPI — Xây dựng Web API"
     },
     {
@@ -313,7 +473,13 @@
       "id": "29",
       "sections": 10,
       "status": "coming",
-      "tags": ["opencv", "cv2", "image", "hình ảnh", "computer vision"],
+      "tags": [
+        "opencv",
+        "cv2",
+        "image",
+        "hình ảnh",
+        "computer vision"
+      ],
       "title": "OpenCV — Xử lý hình ảnh"
     },
     {
@@ -323,7 +489,13 @@
       "id": "30",
       "sections": 10,
       "status": "coming",
-      "tags": ["ffmpeg", "video", "audio", "media", "automation"],
+      "tags": [
+        "ffmpeg",
+        "video",
+        "audio",
+        "media",
+        "automation"
+      ],
       "title": "FFmpeg — Xử lý video và âm thanh"
     },
     {
@@ -333,12 +505,27 @@
       "id": "31",
       "sections": 9,
       "status": "coming",
-      "tags": ["tips", "tricks", "pythonic", "best practices", "walrus"],
+      "tags": [
+        "tips",
+        "tricks",
+        "pythonic",
+        "best practices",
+        "walrus"
+      ],
       "title": "Tips & Tricks — Những điều bạn ít thấy"
     }
   ],
   "series": {
-    "description": "Lộ trình học Python bài bản, từ nền tảng đến ứng dụng thực chiến",
-    "title": "Học Python từ cơ bản"
+    "title": "Học Python từ cơ bản",
+    "titleHtml": "Học <em>Python</em> từ cơ bản",
+    "description": "Lộ trình học Python bài bản, từ nền tảng đến ứng dụng thực chiến.",
+    "mark": "PY",
+    "logo": "python.svg",
+    "logoAlt": "Python logo",
+    "accent": "#facc15",
+    "tip": {
+      "html": "Dùng phím <code>/</code> để tìm bài nhanh, sau đó học theo thứ tự để giữ mạch kiến thức.",
+      "title": "MẸO HỌC PYTHON"
+    }
   }
 }

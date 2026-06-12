@@ -6,7 +6,11 @@
     "mark": "GO",
     "logo": "golang.svg",
     "logoAlt": "Go logo",
-    "accent": "#00ADD8"
+    "accent": "#00ADD8",
+    "tip": {
+      "html": "Chạy <code>go fmt</code> và <code>go test</code> thường xuyên để giữ code đúng phong cách Go.",
+      "title": "MẸO HỌC GO"
+    }
   },
   "types": [
     {
@@ -37,7 +41,13 @@
       "file": "01-cai-dat-go-va-chuong-trinh-dau-tien.html",
       "sections": 6,
       "status": "published",
-      "tags": ["golang", "go", "hello world", "module", "go run"]
+      "tags": [
+        "golang",
+        "go",
+        "hello world",
+        "module",
+        "go run"
+      ]
     },
     {
       "id": "02",
@@ -47,7 +57,11 @@
       "file": "02-bien-kieu-du-lieu-va-hang-so.html",
       "sections": 8,
       "status": "coming",
-      "tags": ["variables", "types", "const"]
+      "tags": [
+        "variables",
+        "types",
+        "const"
+      ]
     }
   ]
 }
