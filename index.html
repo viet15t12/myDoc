@@ -335,10 +335,19 @@
 
     .project-card[hidden] { display: none; }
 
-    .project-card:hover {
+    .project-card[data-status="ready"]:hover {
       transform: translateY(-5px);
       border-color: color-mix(in srgb, var(--accent-card) 45%, var(--border));
       box-shadow: 0 25px 50px -12px color-mix(in srgb, var(--accent-card) 12%, rgba(0,0,0,0.25));
+    }
+
+    .project-card[data-status="ready"] {
+      cursor: pointer;
+    }
+
+    .project-card[data-status="coming"] {
+      cursor: not-allowed;
+      opacity: 0.62;
     }
 
     .project-head {
@@ -431,7 +440,7 @@
       transition: var(--transition);
     }
 
-    .project-card:hover .open-label {
+    .project-card[data-status="ready"]:hover .open-label {
       color: var(--accent-card);
     }
 
@@ -440,7 +449,7 @@
       transition: var(--transition);
     }
 
-    .project-card:hover .open-icon {
+    .project-card[data-status="ready"]:hover .open-icon {
       color: var(--accent-card);
       transform: translate(3px, -3px);
     }
@@ -559,7 +568,7 @@
         folder: 'git-basics',
         badge: 'git',
         accent: '#38bdf8',
-        status: 'ready',
+        status: 'coming',
         lessons: 20,
         tags: ['git', 'repository', 'commit', 'version control']
       },
@@ -571,7 +580,7 @@
         folder: 'lpic-101-102',
         badge: 'LP',
         accent: '#34d399',
-        status: 'ready',
+        status: 'coming',
         lessons: 42,
         tags: ['linux', 'lpic', 'sysadmin', 'terminal']
       }
@@ -594,7 +603,7 @@
     }
 
     function statusLabel(status) {
-      return status === 'ready' ? 'Đã sẵn sàng' : 'Dự phòng';
+      return status === 'ready' ? 'Đã sẵn sàng' : 'Đang chờ';
     }
 
     function normalize(text) {
@@ -606,9 +615,14 @@
       grid.innerHTML = '';
 
       projects.forEach(project => {
-        const card = document.createElement('a');
+        const isReady = project.status === 'ready';
+        const card = document.createElement(isReady ? 'a' : 'div');
         card.className = 'project-card';
-        card.href = project.href;
+        if (isReady) {
+          card.href = project.href;
+        } else {
+          card.setAttribute('aria-disabled', 'true');
+        }
         card.style.setProperty('--accent-card', project.accent);
         card.style.setProperty('--status-color', project.status === 'ready' ? 'var(--good)' : 'var(--warn)');
         card.dataset.status = project.status;
@@ -627,7 +641,7 @@
             </div>
           </div>
           <div class="card-actions">
-            <span class="open-label">Mở lộ trình</span>
+            <span class="open-label">${isReady ? 'Mở lộ trình' : 'Chờ cập nhật'}</span>
             <svg class="open-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path d="M7 17 17 7"></path>
               <path d="M7 7h10v10"></path>

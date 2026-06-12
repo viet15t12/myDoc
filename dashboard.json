@@ -24,7 +24,7 @@
       "folder": "git-basics",
       "badge": "git",
       "accent": "#F05032",
-      "status": "ready",
+      "status": "coming",
       "lessons": 20,
       "tags": ["git", "repository", "commit", "version control"]
     },
@@ -36,7 +36,7 @@
       "folder": "lpic-101-102",
       "badge": "LP",
       "accent": "#CC0000",
-      "status": "ready",
+      "status": "coming",
       "lessons": 42,
       "tags": ["linux", "lpic", "sysadmin", "terminal"]
     },
@@ -48,7 +48,7 @@
       "folder": "ccna",
       "badge": "NET",
       "accent": "#1BA0D7",
-      "status": "ready",
+      "status": "coming",
       "lessons": 2,
       "tags": ["ccna", "networking", "subnetting", "routing", "switching"]
     },
@@ -60,7 +60,7 @@
       "folder": "docker",
       "badge": "DKR",
       "accent": "#2496ED",
-      "status": "ready",
+      "status": "coming",
       "lessons": 2,
       "tags": ["docker", "container", "image", "compose"]
     },
@@ -72,10 +72,9 @@
       "folder": "golang",
       "badge": "GO",
       "accent": "#00ADD8",
-      "status": "ready",
+      "status": "coming",
       "lessons": 2,
       "tags": ["golang", "go", "backend", "concurrency"]
     }
   ]
 }
-
