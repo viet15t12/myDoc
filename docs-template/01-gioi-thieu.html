@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bài mẫu đầu tiên</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
-  <link rel="stylesheet" href="doc-styles.css" />
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
   <div id="readProgress"></div>
@@ -44,7 +44,7 @@
           </div>
           <p>Sau bài này, bạn biết cách nhân bản template thành một lộ trình mới, cập nhật metadata và viết bài đầu tiên.</p>
           <ul>
-            <li>Biết vai trò của <code>index.html</code>, <code>lessons.json</code>, <code>style.css</code> và <code>doc-styles.css</code>.</li>
+            <li>Biết vai trò của <code>index.html</code>, <code>lessons.json</code> và thư mục dùng chung <code>shared/</code>.</li>
             <li>Biết cách đặt tên file bài học theo thứ tự.</li>
             <li>Biết cách tạo mục lục khớp với các <code>section id</code>.</li>
           </ul>
@@ -56,10 +56,16 @@
           <pre><code class="language-text">ten-khoa-hoc/
 ├── index.html
 ├── lessons.json
-├── style.css
-├── doc-styles.css
-├── doc-script.js
-└── 01-gioi-thieu.html</code></pre>
+├── logo.svg
+└── 01-gioi-thieu.html
+
+shared/
+├── css/
+│   ├── style.css
+│   └── doc-styles.css
+└── js/
+    ├── dashboard-script.js
+    └── doc-script.js</code></pre>
         </section>
 
         <section id="du-lieu">
@@ -76,7 +82,7 @@
 
         <section id="vi-du">
           <h2>3. Ví dụ code</h2>
-          <p>Khối code sẽ tự có nút copy nhờ <code>doc-script.js</code>.</p>
+          <p>Khối code sẽ tự có nút copy nhờ <code>../shared/js/doc-script.js</code>.</p>
           <pre><code class="language-javascript">console.log("Hello, docs template!");</code></pre>
         </section>
 
@@ -101,6 +107,6 @@
   <script>
     hljs.highlightAll();
   </script>
-  <script src="doc-script.js"></script>
+  <script src="../shared/js/doc-script.js"></script>
 </body>
 </html>
