@@ -3,80 +3,1141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=ComingSoon.html" />
-  <link rel="canonical" href="ComingSoon.html" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>23. Pandas — Làm việc và Xử lý Dữ liệu</title>
+  <link rel="stylesheet" href="doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#cai-dat">1. Cài đặt &amp; Import</a>
+      <a href="#series-dataframe">2. Series &amp; DataFrame</a>
+      <a href="#tao-dataframe">3. Tạo DataFrame</a>
+      <a href="#doc-ghi">4. Đọc &amp; Ghi dữ liệu</a>
+      <a href="#kiem-tra">5. Kiểm tra dữ liệu</a>
+      <a href="#truy-xuat">6. Truy xuất: loc &amp; iloc</a>
+      <a href="#loc-du-lieu">7. Lọc dữ liệu</a>
+      <a href="#chinh-sua">8. Chỉnh sửa dữ liệu</a>
+      <a href="#nan">9. Xử lý dữ liệu thiếu NaN</a>
+      <a href="#groupby">10. GroupBy &amp; Thống kê</a>
+      <a href="#ghep-bang">11. Ghép bảng</a>
+      <a href="#text-datetime">12. Text &amp; Datetime</a>
+      <a href="#loi-thuong-gap">13. Lỗi thường gặp</a>
+      <a href="#bai-tap">14. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>23. Pandas — Làm việc và Xử lý Dữ liệu</h1>
+        <p class="meta">
+          <strong>Pandas</strong> là thư viện Python nền tảng cho xử lý dữ liệu dạng bảng.
+          Bài này đi từ cài đặt, hai cấu trúc dữ liệu cốt lõi <strong>Series</strong> và <strong>DataFrame</strong>,
+          đọc/ghi CSV/Excel, truy xuất với <code>loc</code>/<code>iloc</code>, lọc, chỉnh sửa, xử lý <code>NaN</code>,
+          đến <strong>groupby</strong>, ghép bảng và làm sạch dữ liệu thực tế.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Trong thực tế, dữ liệu đến từ nhiều nguồn: file CSV, Excel, JSON, cơ sở dữ liệu SQL, API, log hệ thống,
+            thiết bị mạng, IoT. Nếu dùng Python thuần với <code>list</code>, <code>dict</code>, vòng lặp <code>for</code>
+            để xử lý vài trăm nghìn dòng, code sẽ rất dài và chậm.
+          </p>
+          <p>Pandas giải quyết điều đó bằng cách:</p>
+          <ul>
+            <li>Đọc dữ liệu vào Python từ nhiều định dạng.</li>
+            <li>Kiểm tra, làm sạch, lọc, sửa dữ liệu.</li>
+            <li>Tính toán thống kê, nhóm dữ liệu.</li>
+            <li>Ghép nhiều bảng.</li>
+            <li>Chuẩn bị dữ liệu cho trực quan hóa và Machine Learning.</li>
+          </ul>
+          <div class="note">
+            <strong>Tư duy Pandas quan trọng hơn nhớ lệnh.</strong> Quy trình: đọc → kiểm tra → làm sạch →
+            truy xuất/lọc → biến đổi → thống kê → xuất kết quả. Khi quen quy trình này, bạn tự tra cứu lệnh cụ thể rất nhanh.
+          </div>
+
+          <h3>Ví dụ nhanh so sánh Python thuần và Pandas</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Python thuần — lọc sinh viên điểm > 8
+students = [
+    {"name": "An", "class": "D24CQVT01", "score": 8.5},
+    {"name": "Bình", "class": "D24CQVT01", "score": 7.0},
+    {"name": "Chi", "class": "D24CQCN01", "score": 9.2},
+]
+high_score = [s for s in students if s["score"] > 8]
+
+# Pandas — ngắn hơn, nhanh hơn, dễ mở rộng hơn
+import pandas as pd
+
+df = pd.read_csv("students.csv")
+high_score = df[df["score"] > 8]
+diem_tb_lop = df.groupby("class")["score"].mean()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== CÀI ĐẶT ======================== -->
+        <section id="cai-dat">
+          <h2>1. Cài đặt &amp; Import</h2>
+
+          <h3>Cài đặt thư viện</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-bash"># Cài pandas cơ bản
+pip install pandas
+
+# Kèm hỗ trợ Excel
+pip install pandas openpyxl
+
+# Full stack phân tích dữ liệu
+pip install pandas numpy matplotlib seaborn plotly openpyxl
+
+# Jupyter Notebook
+pip install notebook
+jupyter notebook</code></pre>
+          </div>
+
+          <h3>Import chuẩn</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+import numpy as np</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Không dùng <code>from pandas import *</code>.</strong> Cách này làm rối namespace, khó đọc code
+            và khó debug khi có hàm trùng tên. Luôn dùng alias <code>pd</code> là chuẩn toàn ngành.
+          </div>
+
+          <h3>Kiểm tra phiên bản</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">print(pd.__version__)
+# Pandas 2.x: nhiều cải tiến về hiệu năng, copy-on-write mặc định từ 3.0</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== SERIES & DATAFRAME ======================== -->
+        <section id="series-dataframe">
+          <h2>2. Series &amp; DataFrame</h2>
+
+          <p>Pandas có hai cấu trúc dữ liệu cốt lõi:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Cấu trúc</th><th>Ý nghĩa</th><th>Giống với</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Series</code></td><td>Dữ liệu một chiều có nhãn</td><td>Một cột trong bảng</td></tr>
+              <tr><td><code>DataFrame</code></td><td>Dữ liệu hai chiều — hàng và cột</td><td>Bảng Excel / SQL table</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Series</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+
+# Tạo Series mặc định (index tự động 0, 1, 2, ...)
+scores = pd.Series([8.5, 7.0, 9.2, 6.8])
+print(scores)
+# 0    8.5
+# 1    7.0
+# 2    9.2
+# 3    6.8
+# dtype: float64
+
+# Tạo Series có index tùy chỉnh
+scores = pd.Series(
+    data=[8.5, 7.0, 9.2],
+    index=["An", "Bình", "Chi"]
+)
+print(scores["An"])    # 8.5
+print(scores.loc["Bình"])  # 7.0
+print(scores.iloc[2])  # 9.2</code></pre>
+          </div>
+
+          <h3>Thuộc tính quan trọng của Series</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">print(scores.index)   # Index(['An', 'Bình', 'Chi'], dtype='object')
+print(scores.values)  # [8.5 7.0 9.2]
+print(scores.dtype)   # float64
+print(scores.shape)   # (3,)
+print(scores.size)    # 3</code></pre>
+          </div>
+
+          <h3>DataFrame</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">data = {
+    "name": ["An", "Bình", "Chi", "Dũng"],
+    "class": ["D24CQVT01", "D24CQVT01", "D24CQCN01", "D24CQCN01"],
+    "score": [8.5, 7.0, 9.2, 6.8],
+    "age": [18, 19, 18, 20]
+}
+
+df = pd.DataFrame(data)
+print(df)</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Mỗi cột trong DataFrame là một Series.</strong> Khi viết <code>df["name"]</code>
+            bạn nhận lại một <code>Series</code>. Đây là lý do mọi thao tác trên cột đều có thể dùng các method của Series.
+          </div>
+
+          <h3>Thành phần của DataFrame</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thành phần</th><th>Ý nghĩa</th><th>Lệnh xem</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Row</td><td>Hàng dữ liệu</td><td><code>df.shape[0]</code></td></tr>
+              <tr><td>Column</td><td>Cột dữ liệu</td><td><code>df.columns</code></td></tr>
+              <tr><td>Index</td><td>Nhãn hàng</td><td><code>df.index</code></td></tr>
+              <tr><td>dtype</td><td>Kiểu dữ liệu từng cột</td><td><code>df.dtypes</code></td></tr>
+              <tr><td>Values</td><td>Mảng giá trị thuần</td><td><code>df.values</code> hoặc <code>df.to_numpy()</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TẠO DATAFRAME ======================== -->
+        <section id="tao-dataframe">
+          <h2>3. Tạo DataFrame</h2>
+
+          <h3>Từ dictionary</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.DataFrame({
+    "product": ["Laptop", "Mouse", "Keyboard"],
+    "price": [15_000_000, 250_000, 700_000],
+    "quantity": [5, 30, 12]
+})</code></pre>
+          </div>
+
+          <h3>Từ list of dict</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">records = [
+    {"name": "An", "score": 8.5},
+    {"name": "Bình", "score": 7.0},
+    {"name": "Chi", "score": 9.2},
+]
+df = pd.DataFrame(records)</code></pre>
+          </div>
+
+          <h3>Từ list of list</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">rows = [
+    ["An", "D24CQVT01", 8.5],
+    ["Bình", "D24CQVT01", 7.0],
+    ["Chi", "D24CQCN01", 9.2],
+]
+df = pd.DataFrame(rows, columns=["name", "class", "score"])</code></pre>
+          </div>
+
+          <h3>DataFrame rỗng — khởi tạo trước</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.DataFrame(columns=["name", "class", "score"])
+
+new_row = {"name": "An", "class": "D24CQVT01", "score": 8.5}
+df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Không dùng <code>df.append()</code> trong Pandas 2.x.</strong>
+            Method này đã bị xóa. Thay thế bằng <code>pd.concat()</code>.
+          </div>
+        </section>
+
+        <!-- ======================== ĐỌC GHI ======================== -->
+        <section id="doc-ghi">
+          <h2>4. Đọc &amp; Ghi dữ liệu</h2>
+
+          <h3>Đọc CSV</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.read_csv("students.csv")
+
+# Nếu file dùng dấu chấm phẩy (CSV từ Excel một số vùng)
+df = pd.read_csv("students.csv", sep=";")
+
+# Encoding tiếng Việt
+df = pd.read_csv("students.csv", encoding="utf-8-sig")
+
+# Chỉ đọc một số cột
+df = pd.read_csv("students.csv", usecols=["student_id", "name", "score"])
+
+# Chỉ đọc 100 dòng đầu
+df = pd.read_csv("students.csv", nrows=100)
+
+# Set cột làm index ngay khi đọc
+df = pd.read_csv("students.csv", index_col="student_id")
+
+# File không có header
+df = pd.read_csv(
+    "students_no_header.csv",
+    header=None,
+    names=["student_id", "name", "class", "score"]
+)</code></pre>
+          </div>
+
+          <h3>Ghi CSV</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># index=False: không ghi cột index ra file
+df.to_csv("students_output.csv", index=False, encoding="utf-8-sig")</code></pre>
+          </div>
+
+          <h3>Đọc &amp; ghi Excel</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Cần cài: pip install openpyxl
+df = pd.read_excel("students.xlsx")
+df = pd.read_excel("students.xlsx", sheet_name="Sheet1")
+
+# Ghi ra Excel
+df.to_excel("students_output.xlsx", index=False)
+
+# Ghi nhiều sheet trong một file
+with pd.ExcelWriter("report.xlsx") as writer:
+    df.to_excel(writer, sheet_name="RawData", index=False)
+    df.describe().to_excel(writer, sheet_name="Summary")</code></pre>
+          </div>
+
+          <h3>Đọc JSON</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.read_json("data.json")
+
+# JSON từ API (dạng dict với key là records)
+import requests
+resp = requests.get("https://api.example.com/students").json()
+df = pd.DataFrame(resp["data"])</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Định dạng</th><th>Đọc</th><th>Ghi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>CSV</td><td><code>pd.read_csv()</code></td><td><code>df.to_csv()</code></td></tr>
+              <tr><td>Excel</td><td><code>pd.read_excel()</code></td><td><code>df.to_excel()</code></td></tr>
+              <tr><td>JSON</td><td><code>pd.read_json()</code></td><td><code>df.to_json()</code></td></tr>
+              <tr><td>SQL</td><td><code>pd.read_sql()</code></td><td><code>df.to_sql()</code></td></tr>
+              <tr><td>Parquet</td><td><code>pd.read_parquet()</code></td><td><code>df.to_parquet()</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== KIỂM TRA ======================== -->
+        <section id="kiem-tra">
+          <h2>5. Kiểm tra dữ liệu</h2>
+          <p>
+            Khi nhận một file mới, <strong>không bao giờ xử lý ngay</strong>. Luôn chạy khung kiểm tra này trước:
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("students.csv")
+
+print("===== HEAD =====")
+print(df.head())          # 5 dòng đầu
+
+print("===== SHAPE =====")
+print(df.shape)           # (số_dòng, số_cột)
+
+print("===== INFO =====")
+print(df.info())          # tên cột, kiểu dữ liệu, non-null count
+
+print("===== DESCRIBE =====")
+print(df.describe())      # thống kê cột số
+print(df.describe(include="all"))  # kèm cả cột text
+
+print("===== MISSING =====")
+print(df.isna().sum())    # số NaN mỗi cột
+
+print("===== VALUE COUNTS =====")
+print(df["class"].value_counts())  # phân phối giá trị</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Lệnh</th><th>Trả về</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>df.head(n)</code></td><td>n dòng đầu (mặc định 5)</td></tr>
+              <tr><td><code>df.tail(n)</code></td><td>n dòng cuối</td></tr>
+              <tr><td><code>df.shape</code></td><td>Tuple <code>(rows, cols)</code></td></tr>
+              <tr><td><code>df.info()</code></td><td>Tên cột, dtype, non-null count, memory</td></tr>
+              <tr><td><code>df.describe()</code></td><td>count, mean, std, min, quartile, max</td></tr>
+              <tr><td><code>df.dtypes</code></td><td>Kiểu dữ liệu từng cột</td></tr>
+              <tr><td><code>df.columns</code></td><td>Danh sách tên cột</td></tr>
+              <tr><td><code>df.index</code></td><td>Index hiện tại</td></tr>
+              <tr><td><code>df.isna().sum()</code></td><td>Số NaN mỗi cột</td></tr>
+              <tr><td><code>df["col"].value_counts()</code></td><td>Tần suất từng giá trị</td></tr>
+              <tr><td><code>df["col"].nunique()</code></td><td>Số giá trị duy nhất</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TRUY XUẤT ======================== -->
+        <section id="truy-xuat">
+          <h2>6. Truy xuất dữ liệu: loc &amp; iloc</h2>
+
+          <h3>Lấy cột</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Một cột → Series
+names = df["name"]
+
+# Nhiều cột → DataFrame
+subset = df[["name", "score"]]
+
+# Lưu ý: df["name"] khác df[["name"]]
+# df["name"]   → Series
+# df[["name"]] → DataFrame có 1 cột</code></pre>
+          </div>
+
+          <h3>loc — theo label</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Set index theo mã sinh viên
+df = df.set_index("student_id")
+
+# Lấy một dòng theo label
+print(df.loc["SV001"])
+
+# Lấy một ô cụ thể
+print(df.loc["SV001", "name"])
+
+# Lấy nhiều dòng
+print(df.loc[["SV001", "SV003"]])
+
+# Lấy nhiều dòng, nhiều cột
+print(df.loc[["SV001", "SV003"], ["name", "score"]])
+
+# Slice theo label (bao gồm cả điểm cuối — khác iloc)
+print(df.loc["SV001":"SV003"])</code></pre>
+          </div>
+
+          <h3>iloc — theo vị trí số nguyên</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Lấy một dòng theo vị trí
+print(df.iloc[0])         # dòng đầu tiên
+
+# Lấy một ô cụ thể
+print(df.iloc[0, 2])      # dòng 0, cột 2
+
+# Nhiều dòng liên tiếp (không bao gồm điểm cuối — như Python slice)
+print(df.iloc[0:3])
+
+# Nhiều dòng, nhiều cột
+print(df.iloc[0:3, 0:2])
+
+# Các dòng/cột rời rạc
+print(df.iloc[[0, 2], [1, 3]])</code></pre>
+          </div>
+
+          <div class="diagram">
+            <div class="box">
+              <strong>loc</strong><br/>
+              <small style="color:#64748b">Theo label/index name<br/>loc["SV001", "name"]<br/>Slice bao gồm điểm cuối</small>
+            </div>
+            <div class="arrow">vs</div>
+            <div class="box">
+              <strong>iloc</strong><br/>
+              <small style="color:#64748b">Theo vị trí số nguyên<br/>iloc[0, 2]<br/>Slice không bao gồm điểm cuối</small>
+            </div>
+          </div>
+
+          <div class="warning">
+            <strong>Nhầm loc với iloc</strong> là lỗi rất phổ biến. Quy tắc ghi nhớ: <code>loc</code> hỏi
+            "hàng/cột <em>tên gì</em>?", <code>iloc</code> hỏi "hàng/cột <em>đứng thứ mấy</em>?".
+            Nếu index là <code>"SV001"</code>, viết <code>df.iloc["SV001"]</code> sẽ báo lỗi ngay.
+          </div>
+
+          <h3>at và iat — truy xuất ô đơn nhanh hơn</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># at: theo label — nhanh hơn loc khi chỉ lấy/sửa một ô
+print(df.at["SV001", "name"])
+df.at["SV001", "score"] = 9.0
+
+# iat: theo vị trí — nhanh hơn iloc khi chỉ lấy/sửa một ô
+print(df.iat[0, 2])
+df.iat[0, 2] = 9.0</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== LỌC DỮ LIỆU ======================== -->
+        <section id="loc-du-lieu">
+          <h2>7. Lọc dữ liệu</h2>
+
+          <h3>Lọc theo một điều kiện</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.read_csv("students.csv")
+
+# Sinh viên điểm >= 8
+high_score = df[df["score"] >= 8]
+
+# Sinh viên lớp D24CQVT01
+vt_class = df[df["class"] == "D24CQVT01"]
+
+# Sinh viên không phải lớp D24CQVT01 (toán tử ~)
+other_class = df[~(df["class"] == "D24CQVT01")]</code></pre>
+          </div>
+
+          <h3>Lọc nhiều điều kiện — dùng &amp;, |, ~</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># AND: cả hai điều kiện đúng
+result = df[(df["score"] >= 8) & (df["class"] == "D24CQVT01")]
+
+# OR: ít nhất một điều kiện đúng
+result = df[(df["score"] >= 9) | (df["class"] == "D24CQCN01")]
+
+# Kết hợp nhiều
+result = df[
+    (df["score"] >= 8) &
+    (df["age"] >= 18) &
+    (df["class"] == "D24CQVT01")
+]</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Phải có ngoặc đơn bao quanh mỗi điều kiện.</strong>
+            <code>df[df["score"] >= 8 &amp; df["age"] >= 18]</code> → lỗi vì Python hiểu sai độ ưu tiên toán tử.
+            Luôn viết <code>(df["score"] >= 8) &amp; (df["age"] >= 18)</code>.
+            Đồng thời không dùng <code>and</code>/<code>or</code> của Python — phải dùng <code>&amp;</code>/<code>|</code>.
+          </div>
+
+          <h3>Lọc nâng cao</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># isin — thuộc tập hợp giá trị
+result = df[df["class"].isin(["D24CQVT01", "D24CQVT02"])]
+
+# between — trong khoảng giá trị
+result = df[df["score"].between(7.0, 9.0)]
+
+# str.contains — tìm chuỗi trong cột text
+result = df[df["name"].str.contains("An")]
+
+# query — cú pháp gần giống SQL
+result = df.query("score >= 8 and class == 'D24CQVT01'")
+
+# Lọc bằng loc + điều kiện
+result = df.loc[df["score"] >= 8, ["name", "score"]]</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== CHỈNH SỬA ======================== -->
+        <section id="chinh-sua">
+          <h2>8. Chỉnh sửa dữ liệu</h2>
+
+          <h3>Thêm cột mới</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Thêm cột tính từ cột khác
+df["revenue"] = df["orders"] * df["unit_price"]
+
+# Thêm cột bằng apply
+df["grade"] = df["score"].apply(lambda x: "Giỏi" if x >= 8 else "Khá" if x >= 7 else "TB")
+
+# Thêm cột bằng np.where
+import numpy as np
+df["pass"] = np.where(df["score"] >= 5, "Đậu", "Rớt")</code></pre>
+          </div>
+
+          <h3>Sửa dữ liệu theo điều kiện</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sửa một ô cụ thể
+df.at["SV001", "score"] = 9.0
+df.loc["SV001", "score"] = 9.0
+
+# Sửa theo điều kiện — PHẢI dùng loc
+df.loc[df["score"] >= 8, "rank"] = "Giỏi"
+df.loc[df["score"] < 8, "rank"] = "Khá"</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>SettingWithCopyWarning — cạm bẫy phổ biến.</strong>
+            Không bao giờ sửa dữ liệu qua một bản lọc tạm:
+            <code>df_high = df[df["score"] >= 8]; df_high["rank"] = "Giỏi"</code> — Pandas có thể không sửa
+            vào <code>df</code> gốc. Dùng <code>df.loc[điều_kiện, "rank"] = "Giỏi"</code> hoặc
+            <code>df_high = df[...].copy()</code> rồi sửa trên bản copy.
+          </div>
+
+          <h3>Đổi tên cột</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Đổi tên cột cụ thể
+df = df.rename(columns={"name": "student_name", "score": "final_score"})
+
+# Đổi toàn bộ tên cột
+df.columns = ["student_id", "student_name", "class", "final_score"]</code></pre>
+          </div>
+
+          <h3>Xóa cột và hàng</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Xóa cột (axis=1)
+df = df.drop(columns=["age"])
+df = df.drop(["age", "rank"], axis=1)
+
+# Xóa hàng theo index
+df = df.drop(index=[0, 2])
+df = df.drop(index="SV001")  # nếu index là label
+
+# Xóa hàng theo điều kiện
+df = df[df["score"] >= 5]  # giữ lại, không xóa trực tiếp</code></pre>
+          </div>
+
+          <h3>Ép kiểu dữ liệu</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Xem kiểu dữ liệu
+print(df.dtypes)
+
+# Ép kiểu một cột
+df["score"] = df["score"].astype(float)
+df["student_id"] = df["student_id"].astype(str)
+df["age"] = df["age"].astype(int)
+
+# Ép kiểu nhiều cột
+df = df.astype({"score": float, "age": int})
+
+# Ép sang datetime
+df["date"] = pd.to_datetime(df["date"])
+
+# Ép sang category (tiết kiệm bộ nhớ)
+df["class"] = df["class"].astype("category")</code></pre>
+          </div>
+
+          <h3>Sắp xếp dữ liệu</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sắp xếp theo một cột (tăng dần)
+df = df.sort_values("score")
+
+# Sắp xếp giảm dần
+df = df.sort_values("score", ascending=False)
+
+# Sắp xếp theo nhiều cột
+df = df.sort_values(["class", "score"], ascending=[True, False])
+
+# Reset index sau khi sort
+df = df.sort_values("score").reset_index(drop=True)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== NaN ======================== -->
+        <section id="nan">
+          <h2>9. Xử lý dữ liệu thiếu NaN</h2>
+
+          <p>Dữ liệu thực tế luôn có giá trị thiếu. Pandas dùng <code>NaN</code> (Not a Number) từ NumPy
+            hoặc <code>pd.NA</code> để biểu diễn giá trị thiếu. Xử lý sai sẽ dẫn đến sai kết quả thống kê.</p>
+
+          <h3>Phát hiện giá trị thiếu</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Đếm số NaN mỗi cột
+print(df.isna().sum())
+
+# Tỷ lệ % NaN
+print(df.isna().mean() * 100)
+
+# Kiểm tra từng ô
+print(df.isna())            # DataFrame True/False
+
+# Xem các dòng có NaN
+print(df[df.isna().any(axis=1)])
+
+# Dòng có NaN ở cột cụ thể
+print(df[df["score"].isna()])</code></pre>
+          </div>
+
+          <h3>Xóa hàng/cột có NaN</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Xóa mọi hàng có ít nhất một NaN
+df_clean = df.dropna()
+
+# Xóa hàng chỉ khi có NaN ở cột cụ thể
+df_clean = df.dropna(subset=["score", "name"])
+
+# Xóa cột có hơn 50% NaN
+threshold = len(df) * 0.5
+df_clean = df.dropna(thresh=threshold, axis=1)</code></pre>
+          </div>
+
+          <h3>Điền giá trị NaN</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Điền NaN bằng giá trị cố định
+df["city"] = df["city"].fillna("Unknown")
+df["score"] = df["score"].fillna(0)
+
+# Điền NaN bằng giá trị thống kê
+mean_score = df["score"].mean()
+df["score"] = df["score"].fillna(mean_score)
+
+median_age = df["age"].median()
+df["age"] = df["age"].fillna(median_age)
+
+# Điền theo giá trị trước đó (forward fill) — dữ liệu chuỗi thời gian
+df["sensor"] = df["sensor"].fillna(method="ffill")
+
+# Điền theo giá trị sau đó (backward fill)
+df["sensor"] = df["sensor"].fillna(method="bfill")
+
+# Nội suy tuyến tính
+df["temperature"] = df["temperature"].interpolate()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Không điền NaN bừa.</strong> Phải hiểu ý nghĩa dữ liệu thiếu trước. Điền mean phù hợp
+            với dữ liệu phân phối chuẩn. Điền median khi có outlier. Điền forward fill với dữ liệu sensor.
+            Điền "Unknown" với cột text. Xóa hàng khi số NaN ít và dữ liệu không quan trọng.
+          </div>
+        </section>
+
+        <!-- ======================== GROUPBY ======================== -->
+        <section id="groupby">
+          <h2>10. GroupBy &amp; Thống kê</h2>
+
+          <h3>groupby cơ bản</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.read_csv("students.csv")
+
+# Điểm trung bình theo lớp
+print(df.groupby("class")["score"].mean())
+
+# Số sinh viên theo lớp
+print(df.groupby("class")["name"].count())
+
+# Điểm cao nhất theo lớp
+print(df.groupby("class")["score"].max())
+
+# Tổng hợp nhiều phép tính
+summary = df.groupby("class").agg(
+    so_sv=("name", "count"),
+    diem_tb=("score", "mean"),
+    diem_max=("score", "max"),
+    diem_min=("score", "min"),
+)
+print(summary)</code></pre>
+          </div>
+
+          <h3>groupby nhiều cột</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Nhóm theo nhiều cột
+result = df.groupby(["class", "gender"])["score"].mean()
+
+# Reset index để ra DataFrame phẳng
+result = df.groupby("class", as_index=False)["score"].mean()
+print(result)
+#        class     score
+# 0  D24CQCN01  7.900000
+# 1  D24CQVT01  8.200000</code></pre>
+          </div>
+
+          <h3>Thống kê nhanh trên một cột</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">col = df["score"]
+
+print(col.sum())       # tổng
+print(col.mean())      # trung bình
+print(col.median())    # trung vị
+print(col.std())       # độ lệch chuẩn
+print(col.min())       # nhỏ nhất
+print(col.max())       # lớn nhất
+print(col.count())     # số giá trị không NaN
+print(col.quantile(0.75))  # phân vị Q3</code></pre>
+          </div>
+
+          <h3>pivot_table</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+# Tạo dữ liệu mẫu
+df = pd.DataFrame({
+    "class": ["D24CQVT01", "D24CQVT01", "D24CQCN01", "D24CQCN01"],
+    "gender": ["Nam", "Nữ", "Nam", "Nữ"],
+    "score": [8.5, 7.0, 9.2, 6.8],
+})
+
+# pivot_table: điểm TB theo lớp và giới tính
+pivot = pd.pivot_table(
+    df,
+    values="score",
+    index="class",
+    columns="gender",
+    aggfunc="mean",
+    fill_value=0
+)
+print(pivot)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== GHÉP BẢNG ======================== -->
+        <section id="ghep-bang">
+          <h2>11. Ghép bảng</h2>
+
+          <h3>concat — ghép dọc hoặc ngang</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df1 = pd.DataFrame({"name": ["An", "Bình"], "score": [8.5, 7.0]})
+df2 = pd.DataFrame({"name": ["Chi", "Dũng"], "score": [9.2, 6.8]})
+
+# Ghép dọc (stack rows)
+df_all = pd.concat([df1, df2], ignore_index=True)
+
+# Ghép ngang (stack columns)
+df_wide = pd.concat([df1, df2], axis=1)</code></pre>
+          </div>
+
+          <h3>merge — join như SQL</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">students = pd.DataFrame({
+    "student_id": ["SV001", "SV002", "SV003"],
+    "name": ["An", "Bình", "Chi"],
+    "class_id": [1, 1, 2]
+})
+
+classes = pd.DataFrame({
+    "class_id": [1, 2],
+    "class_name": ["D24CQVT01", "D24CQCN01"]
+})
+
+# INNER JOIN — chỉ giữ hàng có key khớp cả hai bảng
+result = pd.merge(students, classes, on="class_id")
+
+# LEFT JOIN — giữ tất cả hàng bên trái
+result = pd.merge(students, classes, on="class_id", how="left")
+
+# RIGHT JOIN
+result = pd.merge(students, classes, on="class_id", how="right")
+
+# OUTER JOIN
+result = pd.merge(students, classes, on="class_id", how="outer")
+
+# Merge với tên cột khác nhau
+result = pd.merge(students, classes, left_on="class_id", right_on="id")</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>how</th><th>Hành vi</th><th>Tương đương SQL</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>"inner"</code></td><td>Chỉ giữ key khớp cả hai bảng</td><td>INNER JOIN</td></tr>
+              <tr><td><code>"left"</code></td><td>Giữ tất cả hàng bảng trái</td><td>LEFT JOIN</td></tr>
+              <tr><td><code>"right"</code></td><td>Giữ tất cả hàng bảng phải</td><td>RIGHT JOIN</td></tr>
+              <tr><td><code>"outer"</code></td><td>Giữ tất cả hàng cả hai bảng</td><td>FULL OUTER JOIN</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== TEXT & DATETIME ======================== -->
+        <section id="text-datetime">
+          <h2>12. Text &amp; Datetime</h2>
+
+          <h3>Làm việc với cột text — str accessor</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.DataFrame({
+    "name": ["  An Nguyen  ", " Binh Tran", "Chi Le  "]
+})
+
+# Xóa khoảng trắng đầu cuối
+df["name"] = df["name"].str.strip()
+
+# Chuyển chữ hoa/thường
+df["name"] = df["name"].str.lower()
+df["name"] = df["name"].str.upper()
+df["name"] = df["name"].str.title()  # Capitalize Từng Từ
+
+# Tìm kiếm chuỗi
+mask = df["name"].str.contains("nguyen", case=False)
+print(df[mask])
+
+# Thay thế chuỗi
+df["name"] = df["name"].str.replace("Nguyen", "Nguyễn")
+
+# Tách chuỗi
+df[["first", "last"]] = df["name"].str.split(" ", n=1, expand=True)
+
+# Độ dài chuỗi
+df["name_len"] = df["name"].str.len()
+
+# Lấy ký tự đầu tiên
+df["initial"] = df["name"].str[0]</code></pre>
+          </div>
+
+          <h3>Làm việc với ngày giờ — dt accessor</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.DataFrame({
+    "date": ["2026-01-15", "2026-03-22", "2026-07-08"]
+})
+
+# Ép sang datetime
+df["date"] = pd.to_datetime(df["date"])
+
+# Trích xuất thành phần
+df["year"]  = df["date"].dt.year
+df["month"] = df["date"].dt.month
+df["day"]   = df["date"].dt.day
+df["weekday"] = df["date"].dt.day_name()
+
+# Tạo period
+df["month_period"] = df["date"].dt.to_period("M").astype(str)
+
+# Lọc theo khoảng thời gian
+start = pd.Timestamp("2026-01-01")
+end   = pd.Timestamp("2026-06-30")
+result = df[(df["date"] >= start) & (df["date"] <= end)]
+
+# Tính khoảng cách thời gian
+df["days_from_start"] = (df["date"] - df["date"].min()).dt.days</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>13. Lỗi thường gặp</h2>
+
+          <h3>NameError: name 'pd' is not defined</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sai — quên import
+df = pd.read_csv("data.csv")
+
+# Đúng
+import pandas as pd
+df = pd.read_csv("data.csv")</code></pre>
+          </div>
+
+          <h3>FileNotFoundError</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+
+path = Path("students.csv")
+print(path.exists())   # kiểm tra file tồn tại
+print(path.resolve())  # in đường dẫn tuyệt đối</code></pre>
+          </div>
+
+          <h3>Lỗi lọc nhiều điều kiện — thiếu ngoặc</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sai — Python áp dụng & trước >= → TypeError
+df[df["score"] >= 8 & df["age"] >= 18]
+
+# Đúng — mỗi điều kiện phải có ngoặc riêng
+df[(df["score"] >= 8) & (df["age"] >= 18)]</code></pre>
+          </div>
+
+          <h3>Nhầm and/or với &amp;/|</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sai — ValueError: The truth value of a Series is ambiguous
+df[(df["score"] >= 8) and (df["age"] >= 18)]
+
+# Đúng — dùng & và |
+df[(df["score"] >= 8) & (df["age"] >= 18)]</code></pre>
+          </div>
+
+          <h3>SettingWithCopyWarning — sửa trên bản lọc</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sai — có thể không sửa vào df gốc
+df_high = df[df["score"] >= 8]
+df_high["rank"] = "Giỏi"   # SettingWithCopyWarning
+
+# Đúng — cách 1: dùng loc trực tiếp
+df.loc[df["score"] >= 8, "rank"] = "Giỏi"
+
+# Đúng — cách 2: tạo bản copy rõ ràng
+df_high = df[df["score"] >= 8].copy()
+df_high["rank"] = "Giỏi"</code></pre>
+          </div>
+
+          <h3>Encoding tiếng Việt</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Thử tuần tự
+df = pd.read_csv("data.csv", encoding="utf-8")
+df = pd.read_csv("data.csv", encoding="utf-8-sig")   # nếu có BOM
+df = pd.read_csv("data.csv", encoding="cp1258")      # nếu từ Windows tiếng Việt</code></pre>
+          </div>
+
+          <h3>KeyError — tên cột sai</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Kiểm tra tên cột trước
+print(df.columns.tolist())
+
+# Xóa khoảng trắng trong tên cột
+df.columns = df.columns.str.strip()
+
+# Tên cột chứa ký tự đặc biệt
+print(df["Điểm TB"])   # dùng chuỗi thay vì attribute
+# df.Điểm TB  ← cú pháp không hợp lệ</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>14. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Tạo DataFrame sinh viên</h3>
+            <p>
+              Tạo DataFrame có ít nhất 6 sinh viên với các cột <code>student_id</code>, <code>name</code>,
+              <code>class</code>, <code>score</code>, <code>age</code>. In ra 3 dòng đầu, tên cột,
+              kiểu dữ liệu và thống kê tổng quát.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Đọc, kiểm tra &amp; ghi file</h3>
+            <p>
+              Tạo file <code>students.csv</code> từ bài 1. Đọc lại bằng <code>pd.read_csv()</code>.
+              Chạy <code>head</code>, <code>info</code>, <code>describe</code>, <code>isna().sum()</code>.
+              Xuất ra <code>students_output.csv</code> không ghi index.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Lọc dữ liệu</h3>
+            <p>
+              Từ DataFrame sinh viên: lọc sinh viên có <code>score >= 8</code>, lọc theo lớp cụ thể,
+              lọc kết hợp nhiều điều kiện. Dùng cả <code>isin()</code>, <code>between()</code> và <code>query()</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 4 — loc và iloc</h3>
+            <p>
+              Set <code>student_id</code> làm index. Dùng <code>iloc</code> lấy dòng đầu tiên và ô [0, 2].
+              Dùng <code>loc</code> lấy sinh viên theo mã và nhiều cột. So sánh kết quả <code>loc</code> vs <code>iloc</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 5 — Xử lý NaN</h3>
+            <p>
+              Thêm một số giá trị <code>NaN</code> vào cột <code>score</code> và <code>age</code>.
+              Đếm NaN, xóa dòng thiếu, điền điểm thiếu bằng trung bình, điền age thiếu bằng median.
+              So sánh kết quả trước và sau khi xử lý bằng <code>describe()</code>.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 6 — GroupBy</h3>
+            <p>
+              Từ dữ liệu sinh viên: tính điểm trung bình theo lớp, đếm sinh viên theo lớp,
+              tìm điểm cao nhất theo lớp bằng <code>agg()</code> một lần. Xuất kết quả ra Excel hai sheet.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 7 — Làm sạch text</h3>
+            <p>
+              Tạo cột <code>name</code> có khoảng trắng dư và chữ hoa lộn xộn.
+              Xóa khoảng trắng, chuẩn hóa title case. Tách họ và tên thành hai cột riêng.
+              Tìm sinh viên có tên chứa "An".
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 8 — Mini Report</h3>
+            <p>
+              Từ file <code>students.csv</code>, tạo báo cáo: tổng số sinh viên, điểm trung bình toàn trường,
+              điểm TB theo lớp, danh sách sinh viên giỏi (score >= 8).
+              Xuất ra: <code>report_by_class.xlsx</code> và <code>good_students.csv</code>.
+            </p>
+            <div class="pre-wrap">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("students.csv")
+
+# Thống kê tổng
+print(f"Tổng sinh viên: {len(df)}")
+print(f"Điểm TB toàn trường: {df['score'].mean():.2f}")
+
+# Điểm TB theo lớp
+by_class = df.groupby("class", as_index=False).agg(
+    so_sv=("name", "count"),
+    diem_tb=("score", "mean"),
+    diem_max=("score", "max"),
+)
+
+# Sinh viên giỏi
+good = df[df["score"] >= 8][["student_id", "name", "class", "score"]]
+good = good.sort_values("score", ascending=False)
+
+# Xuất file
+with pd.ExcelWriter("report_by_class.xlsx") as writer:
+    by_class.to_excel(writer, sheet_name="ByClass", index=False)
+    df.describe().to_excel(writer, sheet_name="Summary")
+
+good.to_csv("good_students.csv", index=False, encoding="utf-8-sig")
+
+print("Xuất file hoàn tất.")</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Series</strong> là dữ liệu một chiều có nhãn — mỗi cột trong DataFrame là một Series.</li>
+            <li><strong>DataFrame</strong> là bảng dữ liệu hai chiều — đơn vị làm việc chính của Pandas.</li>
+            <li><strong>Đọc/ghi</strong>: <code>pd.read_csv()</code>, <code>pd.read_excel()</code>, <code>to_csv()</code>, <code>to_excel()</code>; nhớ <code>encoding</code> và <code>index=False</code>.</li>
+            <li><strong>Kiểm tra trước khi xử lý</strong>: luôn chạy <code>head</code>, <code>info</code>, <code>describe</code>, <code>isna().sum()</code>.</li>
+            <li><strong>loc</strong> theo label, <strong>iloc</strong> theo vị trí số — không được nhầm hai cái này.</li>
+            <li><strong>Lọc nhiều điều kiện</strong>: luôn dùng <code>&amp;</code>, <code>|</code>, <code>~</code> với ngoặc đơn bao mỗi điều kiện.</li>
+            <li><strong>Sửa dữ liệu theo điều kiện</strong>: dùng <code>df.loc[điều_kiện, "cột"] = ...</code> — không sửa qua bản lọc tạm.</li>
+            <li><strong>NaN</strong>: phân biệt khi nào dùng <code>dropna</code>, <code>fillna(mean)</code>, <code>fillna(median)</code>, <code>fillna("Unknown")</code>, <code>ffill/bfill</code>.</li>
+            <li><strong>groupby + agg</strong>: nhóm dữ liệu và tổng hợp nhiều phép tính một lần.</li>
+            <li><strong>merge</strong>: join bảng như SQL với <code>how="inner"/"left"/"right"/"outer"</code>.</li>
+            <li><strong>str accessor</strong>: xử lý text với <code>.str.strip()</code>, <code>.str.lower()</code>, <code>.str.contains()</code>, <code>.str.split()</code>.</li>
+            <li><strong>dt accessor</strong>: trích xuất year/month/day và làm việc với chuỗi thời gian.</li>
+          </ul>
+          <div class="note">
+            <strong>Lộ trình tiếp theo:</strong> Sau Pandas, bài 24 sẽ đi vào SQL/SQLite — nơi bạn thấy
+            <code>groupby</code> tương đương <code>GROUP BY</code>, <code>merge</code> tương đương <code>JOIN</code>.
+            Kết hợp Pandas + SQL là bộ kỹ năng xử lý dữ liệu cốt lõi cho mọi hướng: Data Engineering,
+            Machine Learning, Network Automation, hay DevSecOps.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 23. Pandas — Làm việc và Xử lý Dữ liệu</div>
+      </article>
+    </main>
+  </div>
+  <script src="doc-script.js"></script>
 </body>
 </html>

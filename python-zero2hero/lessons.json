@@ -251,10 +251,10 @@
       "description": "DataFrame, Series, read_csv, groupby, merge — công cụ xử lý dữ liệu mạnh nhất Python",
       "file": "23-pandas-xu-ly-data.html",
       "id": "23",
-      "sections": 12,
-      "status": "coming",
+      "sections": 14,
+      "status": "published",
       "tags": ["pandas", "DataFrame", "csv", "groupby", "data"],
-      "title": "Pandas — Xử lý và phân tích dữ liệu"
+      "title": "Pandas — Làm việc và Xử lý Dữ liệu"
     },
     {
       "type": "thuvien",
