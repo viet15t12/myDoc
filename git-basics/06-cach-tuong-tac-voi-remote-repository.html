@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Cách tương tác với Remote Repository</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
+  <style>
+    .git-reference-image {
+      margin: 28px 0;
+    }
+
+    .git-reference-image img {
+      display: block;
+      width: min(100%, 889px);
+      margin: 0 auto;
+      border: 1px solid var(--doc-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    }
+
+    .git-reference-image figcaption {
+      margin-top: 8px;
+      color: var(--doc-muted);
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="readProgress"></div>
+
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 06</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="05" href="#05">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="07" href="#07">Bài sau →</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#remote-la-gi">1. Remote Repository là gì?</a>
+      <a href="#mo-hinh-4-vung">2. Mô hình 4 vùng trong Git</a>
+      <a href="#central-repo">3. Central Repository</a>
+      <a href="#lenh-quan-trong">4. Các lệnh Git quan trọng</a>
+      <a href="#phan-biet">5. Phân biệt clone, fetch, pull, push</a>
+      <a href="#thuc-hanh">6. Thực hành: dev1 và dev2</a>
+      <a href="#github-thuc-te">7. Làm việc với GitHub thật</a>
+      <a href="#quy-trinh-nhom">8. Quy trình làm việc nhóm</a>
+      <a href="#commit-message">9. Commit message nên viết thế nào?</a>
+      <a href="#loi-thuong-gap">10. Lỗi thường gặp</a>
+      <a href="#bang-so-sanh">11. Bảng so sánh nhanh</a>
+      <a href="#bai-tap">12. Bài tập tự luyện</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>6. Cách tương tác với Remote Repository</h1>
+        <p class="meta">
+          Tìm hiểu Remote Repository, <code>git remote</code>, <code>git fetch</code>, <code>git pull</code>, <code>git push</code> và cách nhiều lập trình viên đồng bộ mã nguồn qua một kho trung tâm.
+        </p>
+
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở các bài trước, bạn đã làm việc với Git hoàn toàn trên máy cá nhân: tạo repository, commit, xem log, cấu hình <code>.gitignore</code>.
+            Nhưng version control chỉ chạy trên một máy thì không đủ khi nhiều người cùng làm chung một dự án.
+            Bài này giới thiệu <strong>Remote Repository</strong> — kho trung tâm giúp nhiều lập trình viên cùng đẩy (push) và kéo (pull) code qua lại với nhau.
+          </p>
+          <div class="note">
+            <strong>Mục tiêu bài học:</strong> hiểu remote repository là gì, phân biệt rõ <code>clone</code>, <code>fetch</code>, <code>pull</code>, <code>push</code>, và thực hành mô phỏng hai lập trình viên <code>dev1</code>, <code>dev2</code> cùng làm việc với một central repo.
+          </div>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu <strong>Remote Repository</strong> là gì và vì sao cần remote khi làm việc nhóm.</li>
+            <li>Phân biệt <strong>Working Directory</strong>, <strong>Staging Area</strong>, <strong>Local Repository</strong> và <strong>Remote Repository</strong>.</li>
+            <li>Sử dụng đúng các lệnh: <code>git init --bare</code>, <code>git clone</code>, <code>git fetch</code>, <code>git pull</code>, <code>git push</code>.</li>
+            <li>Nắm quy trình cộng tác cơ bản giữa nhiều lập trình viên qua một kho trung tâm.</li>
+            <li>Thực hành mô phỏng hai lập trình viên <code>dev1</code>, <code>dev2</code> cùng làm việc với một central repo.</li>
+          </ul>
+        </section>
+
+        <section id="remote-la-gi">
+          <h2>1. Remote Repository là gì?</h2>
+          <p>
+            <strong>Local Repository</strong> là kho Git nằm trên máy của bạn. Khi chạy <code>git init</code> hoặc <code>git clone</code>, máy bạn có một repository riêng, chứa lịch sử commit và cấu hình Git.
+          </p>
+          <p>
+            <strong>Remote Repository</strong> là kho Git nằm ở nơi khác, thường là:
+          </p>
+          <ul>
+            <li>GitHub</li>
+            <li>GitLab</li>
+            <li>Bitbucket</li>
+            <li>Server nội bộ công ty</li>
+            <li>Một thư mục bare repo dùng để mô phỏng remote khi học</li>
+          </ul>
+          <p>
+            Remote giúp nhiều người cùng làm việc với cùng một dự án. Mỗi người làm trên máy riêng, commit trên local, rồi đồng bộ qua remote bằng <code>push</code> và <code>pull</code>.
+          </p>
+        </section>
+
+        <section id="mo-hinh-4-vung">
+          <h2>2. Mô hình 4 vùng trong Git</h2>
+          <p>Khi học remote, nên nối kiến thức này với mô hình Git cơ bản đã học ở các bài trước:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Vùng</th>
+                <th>Ý nghĩa</th>
+                <th>Lệnh liên quan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Working Directory</strong></td>
+                <td>Nơi bạn sửa file trực tiếp</td>
+                <td>tạo file, sửa file, xóa file</td>
+              </tr>
+              <tr>
+                <td><strong>Staging Area / Index</strong></td>
+                <td>Vùng tạm để chọn file sẽ đưa vào commit</td>
+                <td><code>git add .</code>, <code>git add &lt;file&gt;</code></td>
+              </tr>
+              <tr>
+                <td><strong>Local Repository</strong></td>
+                <td>Lịch sử commit trên máy bạn</td>
+                <td><code>git commit</code>, <code>git log</code></td>
+              </tr>
+              <tr>
+                <td><strong>Remote Repository</strong></td>
+                <td>Kho trung tâm để chia sẻ code</td>
+                <td><code>git clone</code>, <code>git pull</code>, <code>git push</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figure class="git-reference-image">
+            <img
+              src="https://daynhauhoc.s3.dualstack.ap-southeast-1.amazonaws.com/optimized/3X/1/1/1125499c1c0bf4d102d60e1ca46db0c878da03db_2_889x750.png"
+              alt="Sơ đồ 4 vùng trong Git gồm Working Directory, Staging Area, Local Repository và Remote Repository"
+              loading="lazy"
+            />
+            <figcaption>
+              Mô hình 4 vùng trong Git: từ Working Directory sang Staging Area, Local Repository, rồi đồng bộ với Remote Repository.
+            </figcaption>
+          </figure>
+
+          <div class="note">
+            Chiều ngược lại cũng cần nhớ: <code>git pull</code> hoặc <code>git fetch</code> đưa dữ liệu từ Remote Repository về Local Repository và Working Directory.
+          </div>
+        </section>
+
+        <section id="central-repo">
+          <h2>3. Central Repository là gì?</h2>
+          <p>
+            <strong>Central repo</strong> là kho trung tâm để nhiều lập trình viên cùng dùng. Ví dụ mô hình hai lập trình viên cùng làm việc với một central repo:
+          </p>
+
+          <figure class="git-reference-image">
+            <img
+              src="https://1drv.ms/u/c/b377e7494b709524/IQThif4WBFixQLXsCs1XKF6jAdeKXMKnB4pUeon8CgUDhCc?width=1734&amp;height=907"
+              alt="Sơ đồ pull, push, commit giữa Local 1, Central Repo và Local 2"
+              loading="lazy"
+            />
+            <figcaption>
+              Local 1 và Local 2 đều <code>pull</code> dữ liệu mới về từ Central Repo, và <code>push</code> commit của mình lên Central Repo để chia sẻ cho nhau.
+            </figcaption>
+          </figure>
+
+          <p>Mỗi lập trình viên có local repo riêng:</p>
+          <ul>
+            <li><code>dev1</code> làm việc, commit, rồi <code>git push</code> lên central repo.</li>
+            <li><code>dev2</code> muốn lấy thay đổi mới thì chạy <code>git pull</code>.</li>
+            <li><code>dev2</code> sửa tiếp, commit, push lên central repo.</li>
+            <li><code>dev1</code> lại pull về để cập nhật.</li>
+          </ul>
+        </section>
+
+        <section id="lenh-quan-trong">
+          <h2>4. Các lệnh Git quan trọng trong bài</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Lệnh</th>
+                <th>Mục đích</th>
+                <th>Ghi nhớ nhanh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>git init --bare &lt;repo.git&gt;</code></td>
+                <td>Tạo repository dạng bare, thường dùng làm remote/central repo</td>
+                <td>Bare repo không có working directory</td>
+              </tr>
+              <tr>
+                <td><code>git clone &lt;remote&gt; &lt;folder&gt;</code></td>
+                <td>Sao chép remote repo về máy thành local repo</td>
+                <td>Dùng khi bắt đầu tham gia dự án</td>
+              </tr>
+              <tr>
+                <td><code>git status</code></td>
+                <td>Kiểm tra trạng thái file, branch, commit chưa push/pull</td>
+                <td>Lệnh nên dùng thường xuyên</td>
+              </tr>
+              <tr>
+                <td><code>git add .</code></td>
+                <td>Đưa toàn bộ thay đổi vào staging area</td>
+                <td>Chuẩn bị commit</td>
+              </tr>
+              <tr>
+                <td><code>git commit -m "message"</code></td>
+                <td>Lưu thay đổi vào local repo</td>
+                <td>Commit chỉ nằm local nếu chưa push</td>
+              </tr>
+              <tr>
+                <td><code>git push</code></td>
+                <td>Đẩy commit từ local lên remote</td>
+                <td>Chia sẻ thay đổi cho người khác</td>
+              </tr>
+              <tr>
+                <td><code>git pull</code></td>
+                <td>Kéo commit mới từ remote về local và cập nhật working directory</td>
+                <td>Dùng trước khi làm việc hoặc trước khi push</td>
+              </tr>
+              <tr>
+                <td><code>git fetch</code></td>
+                <td>Lấy thông tin commit mới từ remote nhưng chưa tự merge</td>
+                <td>An toàn hơn <code>pull</code> khi muốn kiểm tra trước</td>
+              </tr>
+              <tr>
+                <td><code>git log --oneline --graph --all</code></td>
+                <td>Xem lịch sử commit dạng ngắn, có nhánh</td>
+                <td>Rất hữu ích khi học remote/branch</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="phan-biet">
+          <h2>5. Phân biệt <code>clone</code>, <code>fetch</code>, <code>pull</code>, <code>push</code></h2>
+
+          <h3>5.1. <code>git clone</code></h3>
+          <p>Dùng khi bạn <strong>chưa có dự án trên máy</strong> và muốn lấy toàn bộ repository từ remote.</p>
+          <pre><code>git clone &lt;remote-url&gt;</code></pre>
+          <p>Hoặc đặt tên thư mục đích:</p>
+          <pre><code>git clone &lt;remote-url&gt; dev1</code></pre>
+          <p>Sau khi clone, Git tự tạo liên kết remote mặc định tên là <code>origin</code>. Kiểm tra remote:</p>
+          <pre><code>git remote -v</code></pre>
+
+          <h3>5.2. <code>git fetch</code></h3>
+          <p>Dùng để <strong>lấy thông tin mới từ remote</strong> nhưng chưa trộn vào branch hiện tại.</p>
+          <pre><code>git fetch</code></pre>
+          <p>Sau <code>fetch</code>, bạn có thể xem remote branch:</p>
+          <pre><code>git log --oneline --graph --all</code></pre>
+          <p><code>fetch</code> phù hợp khi bạn muốn kiểm tra trước khi cập nhật code.</p>
+
+          <h3>5.3. <code>git pull</code></h3>
+          <p><code>git pull</code> về bản chất thường là:</p>
+          <pre><code>git fetch + git merge</code></pre>
+          <p>Nó vừa lấy commit mới từ remote, vừa cập nhật branch hiện tại.</p>
+          <pre><code>git pull</code></pre>
+
+          <h3>5.4. <code>git push</code></h3>
+          <p>Dùng để đẩy commit từ local repository lên remote repository.</p>
+          <pre><code>git push</code></pre>
+          <p>Nếu branch local chưa có upstream, thường cần dùng:</p>
+          <pre><code>git push -u origin main</code></pre>
+          <p>Sau lần đầu, các lần sau có thể dùng ngắn gọn:</p>
+          <pre><code>git push</code></pre>
+
+          <div class="warning">
+            <strong>Lưu ý:</strong> <code>clone</code> dùng khi chưa có repo local; <code>pull</code> dùng để cập nhật code mới về; <code>push</code> dùng để chia sẻ commit local lên remote; <code>fetch</code> dùng để kiểm tra remote có gì mới trước khi nhập vào code hiện tại.
+          </div>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>6. Thực hành: mô phỏng dev1 và dev2</h2>
+          <p>
+            Phần này mô phỏng một kho trung tâm <code>central.git</code> và hai lập trình viên <code>dev1</code>, <code>dev2</code> trên cùng máy.
+            Bạn có thể làm trong PowerShell, Git Bash, hoặc terminal của VS Code.
+          </p>
+
+          <div class="step">
+            <h3>Bước 1: Tạo thư mục bài thực hành</h3>
+            <pre><code>mkdir git-remote-practice
+cd git-remote-practice</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Tạo central repository dạng bare</h3>
+            <pre><code>git init --bare central.git</code></pre>
+            <p>Giải thích:</p>
+            <ul>
+              <li><code>central.git</code> đóng vai trò remote repository.</li>
+              <li><code>--bare</code> nghĩa là repository này <strong>không có working directory</strong>.</li>
+              <li>Vì không có working directory nên bạn sẽ không thấy file dự án trực tiếp như <code>README.md</code>, <code>intro.ts</code> ở thư mục này.</li>
+              <li>Dữ liệu commit vẫn được lưu trong cấu trúc nội bộ Git, ví dụ <code>objects</code>, <code>refs</code>, <code>HEAD</code>.</li>
+            </ul>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Clone central repo thành local repo của dev1 và dev2</h3>
+            <pre><code>git clone central.git dev1
+git clone central.git dev2</code></pre>
+            <p>Cấu hình thông tin riêng cho từng người:</p>
+            <pre><code>cd dev1
+git config --local user.name "Dev 1"
+git config --local user.email "dev1@example.com"
+cd ..
+
+cd dev2
+git config --local user.name "Dev 2"
+git config --local user.email "dev2@example.com"
+cd ..</code></pre>
+            <p>Kiểm tra cấu hình:</p>
+            <pre><code>git config --local --list</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Dev1 tạo file đầu tiên và push lên central repo</h3>
+            <pre><code>cd dev1
+echo "Day la repo cua Dev 1" &gt; intro.ts
+git status
+git add .
+git commit -m "Add intro file"
+git push origin main</code></pre>
+            <p>Nếu Git của bạn đang dùng branch <code>master</code> thay vì <code>main</code>, dùng:</p>
+            <pre><code>git push origin master</code></pre>
+            <p>Kiểm tra branch hiện tại:</p>
+            <pre><code>git branch</code></pre>
+            <div class="success">Sau khi push, commit của dev1 đã nằm trên central repo.</div>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Dev2 kéo thay đổi từ central repo về</h3>
+            <pre><code>cd ../dev2
+git pull
+ls</code></pre>
+            <p>Kết quả mong đợi: trong <code>dev2</code> xuất hiện file <code>intro.ts</code> do dev1 tạo.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6: Dev1 thêm file README và push</h3>
+            <pre><code>cd ../dev1
+echo "Xin chao" &gt; README.md
+git add .
+git commit -m "Add README"
+git push</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 7: Dev2 pull để cập nhật README</h3>
+            <pre><code>cd ../dev2
+git pull
+cat README.md</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 8: Dev2 sửa README, thêm file mới và push</h3>
+            <pre><code>echo "Day la mot dong moi" &gt;&gt; README.md
+echo "Vi du file moi" &gt; example.txt
+git add .
+git commit -m "Update README and add example file"
+git push</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 9: Dev1 pull để nhận thay đổi từ dev2</h3>
+            <pre><code>cd ../dev1
+git status
+git pull
+ls
+cat README.md</code></pre>
+            <div class="success">
+              Sau bước này, <code>dev1</code> sẽ thấy <code>README.md</code> có thêm dòng mới từ dev2, và có thêm file <code>example.txt</code>.
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>Vì sao cần central repo?</strong> Nếu máy dev1 hoặc dev2 hỏng, hoặc một người nghỉ việc, người mới vẫn có thể <code>git clone</code> từ central repo để lấy toàn bộ lịch sử dự án.
+          </div>
+        </section>
+
+        <section id="github-thuc-te">
+          <h2>7. Làm việc với GitHub thật</h2>
+          <p>
+            Khi dùng GitHub, remote repository không phải thư mục <code>central.git</code> trên máy nữa mà là một URL GitHub.
+          </p>
+          <p>Ví dụ URL HTTPS:</p>
+          <pre><code>https://github.com/username/project-name.git</code></pre>
+          <p>Ví dụ URL SSH:</p>
+          <pre><code>git@github.com:username/project-name.git</code></pre>
+
+          <h3>7.1. Trường hợp 1: Clone repo có sẵn từ GitHub</h3>
+          <pre><code>git clone https://github.com/username/project-name.git
+cd project-name</code></pre>
+          <p>Sau đó làm việc bình thường:</p>
+          <pre><code>git add .
+git commit -m "Update project"
+git push</code></pre>
+
+          <h3>7.2. Trường hợp 2: Đã có project local, muốn đẩy lên GitHub</h3>
+          <pre><code>git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/username/project-name.git
+git push -u origin main</code></pre>
+          <p>Kiểm tra remote:</p>
+          <pre><code>git remote -v</code></pre>
+        </section>
+
+        <section id="quy-trinh-nhom">
+          <h2>8. Quy trình làm việc nhóm nên nhớ</h2>
+          <p>Một workflow cơ bản khi làm chung dự án:</p>
+          <pre><code># 1. Trước khi sửa code, kéo bản mới nhất
+git pull
+
+# 2. Sửa code
+# edit files...
+
+# 3. Kiểm tra trạng thái
+git status
+
+# 4. Đưa file vào staging
+git add .
+
+# 5. Commit
+git commit -m "Meaningful commit message"
+
+# 6. Đẩy lên remote
+git push</code></pre>
+
+          <p>Quy tắc thực tế:</p>
+          <ol>
+            <li><strong>Luôn <code>git pull</code> trước khi bắt đầu làm</strong> nếu bạn làm trên branch chung.</li>
+            <li>Commit nhỏ, rõ nghĩa, mỗi commit nên giải quyết một việc.</li>
+            <li>Không nên sửa trực tiếp trên <code>main</code> trong dự án thật; nên tạo branch riêng.</li>
+            <li>Không dùng <code>git push --force</code> nếu chưa hiểu rõ hậu quả.</li>
+            <li>Trước khi push, chạy test/build nếu dự án có test/build.</li>
+          </ol>
+        </section>
+
+        <section id="commit-message">
+          <h2>9. Commit message nên viết thế nào?</h2>
+          <p>Commit message nên ngắn, rõ hành động.</p>
+
+          <p>Ví dụ tốt:</p>
+          <pre><code>git commit -m "Add login form"
+git commit -m "Fix routing table import bug"
+git commit -m "Update README with setup guide"
+git commit -m "Refactor Git remote practice notes"</code></pre>
+
+          <p>Ví dụ chưa tốt:</p>
+          <pre><code>git commit -m "01"
+git commit -m "fix"
+git commit -m "update"</code></pre>
+
+          <div class="warning">
+            Tránh các commit message mơ hồ như <code>"fix"</code> hay <code>"update"</code>. Hãy mô tả rõ thay đổi đã làm, ví dụ <code>"Add intro file"</code>, <code>"Update README and add example file"</code>.
+          </div>
+        </section>
+
+        <section id="loi-thuong-gap">
+          <h2>10. Các lỗi thường gặp khi học remote</h2>
+
+          <h3>10.1. <code>fatal: not a git repository</code></h3>
+          <p>Nguyên nhân: bạn đang đứng ngoài thư mục Git. Cách kiểm tra:</p>
+          <pre><code>pwd
+ls -a</code></pre>
+          <p>Phải thấy thư mục <code>.git</code> nếu là repo thường. Với bare repo thì thấy các thư mục như <code>objects</code>, <code>refs</code>, <code>hooks</code> ngay ở gốc.</p>
+
+          <h3>10.2. <code>remote origin already exists</code></h3>
+          <p>Nguyên nhân: repo đã có remote tên <code>origin</code>. Kiểm tra:</p>
+          <pre><code>git remote -v</code></pre>
+          <p>Đổi URL remote:</p>
+          <pre><code>git remote set-url origin &lt;new-url&gt;</code></pre>
+          <p>Hoặc xóa rồi thêm lại:</p>
+          <pre><code>git remote remove origin
+git remote add origin &lt;url&gt;</code></pre>
+
+          <h3>10.3. <code>src refspec main does not match any</code></h3>
+          <p>Nguyên nhân thường gặp: chưa có commit nào, hoặc branch hiện tại không tên là <code>main</code>. Cách xử lý:</p>
+          <pre><code>git status
+git branch
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git push -u origin main</code></pre>
+
+          <h3>10.4. <code>failed to push some refs</code></h3>
+          <p>Nguyên nhân phổ biến: remote có commit mới mà local chưa có. Cách xử lý an toàn:</p>
+          <pre><code>git pull
+# xử lý conflict nếu có
+git push</code></pre>
+
+          <h3>10.5. Conflict khi <code>git pull</code></h3>
+          <p>Nếu hai người sửa cùng một vùng trong cùng một file, Git có thể báo conflict. File conflict có dạng:</p>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Nội dung của bạn
+=======
+Nội dung từ remote
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+          <p>Cách xử lý: mở file, chọn nội dung đúng, xóa các dòng đánh dấu conflict, rồi chạy:</p>
+          <pre><code>git add .
+git commit -m "Resolve merge conflict"
+git push</code></pre>
+          <div class="note">Bài sau sẽ đi sâu hơn vào cách xử lý merge conflict một cách chi tiết.</div>
+        </section>
+
+        <section id="bang-so-sanh">
+          <h2>11. Bảng so sánh nhanh</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Tình huống</th>
+                <th>Lệnh nên dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Muốn tải một repo về máy lần đầu</td>
+                <td><code>git clone &lt;url&gt;</code></td>
+              </tr>
+              <tr>
+                <td>Muốn xem local đang thay đổi gì</td>
+                <td><code>git status</code></td>
+              </tr>
+              <tr>
+                <td>Muốn lưu thay đổi vào lịch sử local</td>
+                <td><code>git add .</code> → <code>git commit -m "..."</code></td>
+              </tr>
+              <tr>
+                <td>Muốn đẩy commit lên GitHub/remote</td>
+                <td><code>git push</code></td>
+              </tr>
+              <tr>
+                <td>Muốn kéo code mới từ remote về</td>
+                <td><code>git pull</code></td>
+              </tr>
+              <tr>
+                <td>Muốn kiểm tra remote có gì mới nhưng chưa nhập vào code</td>
+                <td><code>git fetch</code></td>
+              </tr>
+              <tr>
+                <td>Muốn xem remote đang liên kết</td>
+                <td><code>git remote -v</code></td>
+              </tr>
+              <tr>
+                <td>Muốn đổi URL remote</td>
+                <td><code>git remote set-url origin &lt;url&gt;</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bai-tap">
+          <h2>12. Bài tập tự luyện</h2>
+
+          <div class="qa">
+            <h3>Bài 1: Mô phỏng lại video</h3>
+            <p>Tạo một thư mục mới và thực hiện lại toàn bộ quy trình:</p>
+            <ol>
+              <li>Tạo <code>central.git</code> bằng <code>git init --bare</code>.</li>
+              <li>Clone thành <code>dev1</code>, <code>dev2</code>.</li>
+              <li>Dev1 tạo file, commit, push.</li>
+              <li>Dev2 pull về.</li>
+              <li>Dev2 sửa file, commit, push.</li>
+              <li>Dev1 pull về.</li>
+            </ol>
+            <p>Yêu cầu cuối, bạn phải nhìn thấy lịch sử commit đã được đồng bộ giữa <code>dev1</code>, <code>dev2</code>:</p>
+            <pre><code>git log --oneline --graph --all</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 2: Phân biệt <code>fetch</code> và <code>pull</code></h3>
+            <p>Trong <code>dev1</code>, tạo thêm một commit và push. Sang <code>dev2</code>, chạy:</p>
+            <pre><code>git fetch
+git status
+git log --oneline --graph --all</code></pre>
+            <p>Sau đó mới chạy:</p>
+            <pre><code>git pull</code></pre>
+            <p>Ghi lại khác biệt trước và sau khi <code>pull</code>.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 3: Tạo lỗi để hiểu lỗi</h3>
+            <p>
+              Cố tình để <code>dev1</code> và <code>dev2</code> cùng sửa một dòng trong <code>README.md</code>, sau đó push từ một bên trước.
+              Bên còn lại chạy <code>git pull</code> để quan sát conflict. Mục tiêu: biết đọc ký hiệu conflict và tự xử lý.
+            </p>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>Remote Repository</strong> là kho trung tâm để nhiều người cùng làm việc, khác với Local Repository nằm trên máy bạn.</li>
+            <li><code>git clone</code> dùng khi chưa có repo local.</li>
+            <li><code>git pull</code> dùng để cập nhật code mới từ remote về (tương đương <code>fetch</code> + <code>merge</code>).</li>
+            <li><code>git push</code> dùng để chia sẻ commit local lên remote.</li>
+            <li><code>git fetch</code> dùng để kiểm tra remote có gì mới trước khi nhập vào code hiện tại.</li>
+            <li>Commit chỉ lưu ở local; muốn người khác thấy thì phải <code>push</code>.</li>
+            <li>Remote mặc định sau khi clone thường có tên là <code>origin</code>.</li>
+          </ul>
+          <div class="success">
+            <strong>Quy trình chuẩn khi làm việc nhóm:</strong> <code>git pull</code> → sửa code → <code>git status</code> → <code>git add .</code> → <code>git commit -m "message"</code> → <code>git push</code>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 6. Cách tương tác với Remote Repository
+        </div>
+      </article>
+    </main>
+  </div>
+
+<script src="../shared/js/doc-script.js"></script>
+</body>
+</html>

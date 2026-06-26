@@ -110,12 +110,12 @@
       ]
     },
     {
-      "id": "08",
+      "id": "06",
       "title": "Cách tương tác với Remote Repository",
       "description": "Remote repository, git remote, git fetch, git pull, git push và cách đồng bộ mã nguồn",
       "type": "git",
-      "status": "coming",
-      "file": "08-cach-tuong-tac-voi-remote-repository.html",
+      "status": "published",
+      "file": "06-cach-tuong-tac-voi-remote-repository.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
@@ -127,12 +127,12 @@
       ]
     },
     {
-      "id": "09",
+      "id": "07",
       "title": "Xử lý xung đột trong Git - Merge Conflict",
       "description": "Nguyên nhân xung đột, cách xử lý merge conflict và các tình huống thường gặp",
       "type": "git",
       "status": "coming",
-      "file": "09-xu-ly-xung-dot-trong-git-merge-conflict.html",
+      "file": "07-xu-ly-xung-dot-trong-git-merge-conflict.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
@@ -142,12 +142,12 @@
       ]
     },
     {
-      "id": "10",
+      "id": "08",
       "title": "Câu lệnh GIT CHECKOUT chuyển đổi giữa các commit trong Git",
       "description": "Chuyển đổi giữa commit, branch và khôi phục trạng thái làm việc bằng git checkout",
       "type": "git",
       "status": "coming",
-      "file": "10-cau-lenh-git-checkout-chuyen-doi-giua-cac-commit-trong-git.html",
+      "file": "08-cau-lenh-git-checkout-chuyen-doi-giua-cac-commit-trong-git.html",
       "minutes": 15,
       "sections": 7,
       "tags": [
@@ -158,12 +158,12 @@
       ]
     },
     {
-      "id": "11",
+      "id": "09",
       "title": "Branches - cách làm việc với nhiều nhánh trong Git",
       "description": "Khái niệm branch, tạo nhánh, chuyển nhánh và quy trình làm việc nhiều nhánh",
       "type": "git",
       "status": "coming",
-      "file": "11-branches-cach-lam-viec-voi-nhieu-nhanh-trong-git.html",
+      "file": "09-branches-cach-lam-viec-voi-nhieu-nhanh-trong-git.html",
       "minutes": 25,
       "sections": 9,
       "tags": [
@@ -173,12 +173,12 @@
       ]
     },
     {
-      "id": "12",
+      "id": "10",
       "title": "Git Merge - Kết hợp nội dung từ các nhánh",
       "description": "Kết hợp nội dung giữa các branch bằng git merge",
       "type": "git",
       "status": "coming",
-      "file": "12-git-merge-ket-hop-noi-dung-tu-cac-nhanh.html",
+      "file": "10-git-merge-ket-hop-noi-dung-tu-cac-nhanh.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
@@ -188,12 +188,12 @@
       ]
     },
     {
-      "id": "13",
+      "id": "11",
       "title": "Git Rebase - tái cơ sở cho một nhánh trong Git",
       "description": "Git rebase, tái cơ sở branch, ưu nhược điểm và so sánh với merge",
       "type": "git",
       "status": "coming",
-      "file": "13-git-rebase-tai-co-so-cho-mot-nhanh-trong-git.html",
+      "file": "11-git-rebase-tai-co-so-cho-mot-nhanh-trong-git.html",
       "minutes": 25,
       "sections": 9,
       "tags": [
@@ -203,12 +203,12 @@
       ]
     },
     {
-      "id": "14",
+      "id": "12",
       "title": "Cách xóa nhánh trong GIT",
       "description": "Xóa branch cục bộ và branch trên remote",
       "type": "git",
       "status": "coming",
-      "file": "14-cach-xoa-nhanh-trong-git.html",
+      "file": "12-cach-xoa-nhanh-trong-git.html",
       "minutes": 10,
       "sections": 5,
       "tags": [
@@ -218,12 +218,12 @@
       ]
     },
     {
-      "id": "15",
+      "id": "13",
       "title": "Git Reset - Hủy bỏ commit",
       "description": "Git reset, soft reset, mixed reset và hard reset",
       "type": "git",
       "status": "coming",
-      "file": "15-git-reset-huy-bo-commit.html",
+      "file": "13-git-reset-huy-bo-commit.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
@@ -233,12 +233,12 @@
       ]
     },
     {
-      "id": "16",
+      "id": "14",
       "title": "Git Revert - Quay lại các commit trước đây",
       "description": "Git revert để tạo commit đảo ngược và khôi phục lịch sử an toàn",
       "type": "git",
       "status": "coming",
-      "file": "16-git-revert-quay-lai-cac-commit-truoc-day.html",
+      "file": "14-git-revert-quay-lai-cac-commit-truoc-day.html",
       "minutes": 15,
       "sections": 7,
       "tags": [
@@ -248,12 +248,12 @@
       ]
     },
     {
-      "id": "17",
+      "id": "15",
       "title": "Tạo tài khoản mới trên GitHub",
       "description": "Đăng ký tài khoản GitHub và thiết lập hồ sơ ban đầu",
       "type": "github",
       "status": "coming",
-      "file": "17-tao-tai-khoan-moi-tren-github.html",
+      "file": "15-tao-tai-khoan-moi-tren-github.html",
       "minutes": 10,
       "sections": 5,
       "tags": [
@@ -262,12 +262,12 @@
       ]
     },
     {
-      "id": "18",
+      "id": "16",
       "title": "Tạo Repository mới trong GitHub",
       "description": "Tạo repository trên GitHub, public/private và các thiết lập cơ bản",
       "type": "github",
       "status": "coming",
-      "file": "18-tao-repository-moi-trong-github.html",
+      "file": "16-tao-repository-moi-trong-github.html",
       "minutes": 15,
       "sections": 6,
       "tags": [
@@ -276,12 +276,12 @@
       ]
     },
     {
-      "id": "19",
+      "id": "17",
       "title": "Cách clone dự án từ GitHub về máy",
       "description": "Clone repository từ GitHub về máy bằng HTTPS hoặc SSH",
       "type": "github",
       "status": "coming",
-      "file": "19-cach-clone-du-an-tu-github-ve-may.html",
+      "file": "17-cach-clone-du-an-tu-github-ve-may.html",
       "minutes": 15,
       "sections": 6,
       "tags": [
@@ -290,12 +290,12 @@
       ]
     },
     {
-      "id": "20",
+      "id": "18",
       "title": "Đẩy dự án từ máy cá nhân lên GitHub",
       "description": "Push dự án từ máy cá nhân lên GitHub lần đầu và cập nhật các lần sau",
       "type": "github",
       "status": "coming",
-      "file": "20-day-du-an-tu-may-ca-nhan-len-github.html",
+      "file": "18-day-du-an-tu-may-ca-nhan-len-github.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
@@ -305,12 +305,12 @@
       ]
     },
     {
-      "id": "21",
+      "id": "19",
       "title": "Fork và cập nhật Repo của người khác trên GitHub",
       "description": "Fork repository, đồng bộ với upstream và cập nhật thay đổi",
       "type": "github",
       "status": "coming",
-      "file": "21-fork-va-cap-nhat-repo-cua-nguoi-khac-tren-github.html",
+      "file": "19-fork-va-cap-nhat-repo-cua-nguoi-khac-tren-github.html",
       "minutes": 25,
       "sections": 8,
       "tags": [
@@ -320,12 +320,12 @@
       ]
     },
     {
-      "id": "22",
+      "id": "20",
       "title": "Cách tạo Pull Request trong Github",
       "description": "Tạo Pull Request, review code và quy trình đóng góp mã nguồn",
       "type": "github",
       "status": "coming",
-      "file": "22-cach-tao-pull-request-trong-github.html",
+      "file": "20-cach-tao-pull-request-trong-github.html",
       "minutes": 20,
       "sections": 8,
       "tags": [
