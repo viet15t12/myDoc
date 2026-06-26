@@ -390,8 +390,8 @@
       "description": "SQLite3, CREATE TABLE, INSERT, SELECT, JOIN — kết nối Python với cơ sở dữ liệu SQL",
       "file": "24-co-so-du-lieu-sql-sqlite.html",
       "id": "24",
-      "sections": 10,
-      "status": "coming",
+      "sections": 14,
+      "status": "published",
       "tags": [
         "sqlite",
         "sql",

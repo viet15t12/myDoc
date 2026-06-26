@@ -3,80 +3,1449 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=ComingSoon.html" />
-  <link rel="canonical" href="ComingSoon.html" />
-  <title>Coming soon</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      font-family: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color: #f8fafc;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.22), transparent 34%),
-        radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.22), transparent 32%),
-        #020617;
-    }
-    main {
-      width: min(720px, 100%);
-      padding: 42px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.78);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-    }
-    .eyebrow {
-      margin: 0 0 14px;
-      color: #facc15;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(38px, 8vw, 76px);
-      line-height: 0.95;
-    }
-    p {
-      margin: 0;
-      max-width: 56ch;
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.75;
-    }
-    .status {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 28px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.14);
-      border: 1px solid rgba(147, 197, 253, 0.22);
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: #34d399;
-      box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.14);
-    }
-  </style>
+  <title>24. Cơ sở dữ liệu SQL với SQLite trong Python</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Python Zero2Hero</p>
-    <h1>Coming soon</h1>
-    <p>Bai hoc nay dang duoc bien soan. Noi dung sap len san, gon gang hon, de hieu hon, va co vi du thuc chien hon.</p>
-    <div class="status"><span class="dot"></span>Dang nau noi dung</div>
-  </main>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#sqlite-la-gi">1. SQLite là gì?</a>
+      <a href="#thu-vien-sqlite3">2. Thư viện sqlite3</a>
+      <a href="#tao-database">3. Tạo database &amp; bảng</a>
+      <a href="#kieu-du-lieu">4. Kiểu dữ liệu &amp; ràng buộc</a>
+      <a href="#them-du-lieu">5. Thêm dữ liệu (INSERT)</a>
+      <a href="#truy-van">6. Truy vấn (SELECT)</a>
+      <a href="#loc-sap-xep">7. Lọc, sắp xếp, tìm kiếm</a>
+      <a href="#sua-xoa">8. Sửa &amp; Xóa dữ liệu</a>
+      <a href="#transaction">9. Transaction &amp; SQL Injection</a>
+      <a href="#row-factory">10. row_factory &amp; khóa ngoại</a>
+      <a href="#sqlite-pandas">11. Kết hợp SQLite với Pandas</a>
+      <a href="#crud">12. Chương trình CRUD hoàn chỉnh</a>
+      <a href="#loi-thuong-gap">13. Lỗi thường gặp</a>
+      <a href="#bai-tap">14. Bài tập thực hành</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
+
+    <main>
+      <article class="container">
+        <h1>24. Cơ sở dữ liệu SQL với SQLite trong Python</h1>
+        <p class="meta">
+          <strong>SQLite</strong> là cơ sở dữ liệu quan hệ dạng nhẹ, không cần server, dữ liệu lưu trong một file
+          <code>.db</code> duy nhất. Bài này đi từ khái niệm cơ bản, thư viện chuẩn <code>sqlite3</code>, các lệnh
+          <code>CREATE</code>/<code>INSERT</code>/<code>SELECT</code>/<code>UPDATE</code>/<code>DELETE</code>, transaction,
+          chống SQL Injection, <code>row_factory</code>, khóa ngoại, đến kết hợp với <strong>Pandas</strong> và xây dựng
+          một chương trình CRUD console hoàn chỉnh.
+        </p>
+
+        <!-- ======================== GIỚI THIỆU ======================== -->
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở bài trước, Pandas giúp xử lý dữ liệu dạng bảng trong bộ nhớ. Nhưng khi dữ liệu cần được lưu lại lâu dài,
+            truy vấn theo điều kiện, cập nhật từng phần, hoặc chia sẻ giữa nhiều lần chạy chương trình, ta cần một
+            <strong>cơ sở dữ liệu</strong>. SQLite là lựa chọn nhẹ nhàng nhất để bắt đầu: không cần cài server, không
+            cần tài khoản, chỉ cần một file <code>.db</code> và thư viện <code>sqlite3</code> có sẵn trong Python.
+          </p>
+          <div class="note">
+            <strong>Tư duy quan trọng:</strong> Toàn bộ làm việc với SQLite xoay quanh một luồng cố định:
+            <code>Connection → Cursor → execute SQL → commit → close</code>. Nắm chắc luồng này, bạn chuyển sang
+            PostgreSQL, MySQL hay SQL Server đều rất dễ.
+          </div>
+        </section>
+
+        <!-- ======================== 1. SQLITE LÀ GÌ ======================== -->
+        <section id="sqlite-la-gi">
+          <h2>1. SQLite là gì?</h2>
+          <p>
+            SQLite là hệ quản trị cơ sở dữ liệu quan hệ dạng nhẹ. Khác với PostgreSQL, MySQL hay SQL Server, SQLite
+            không cần chạy server riêng — toàn bộ dữ liệu nằm trong một file duy nhất, ví dụ <code>example.db</code>,
+            <code>students.db</code>, <code>app_data.sqlite</code>.
+          </p>
+
+          <div class="diagram">
+            <pre>Python program
+     |
+     | dùng sqlite3
+     v
+File database SQLite: example.db
+     |
+     v
+Bảng: students, courses, users, orders...</pre>
+          </div>
+
+          <h3>Vì sao học SQLite trước?</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Lý do</th><th>Giải thích</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Không cần cài server</td><td>Chỉ cần <code>import sqlite3</code> — đã có sẵn trong Python</td></tr>
+              <tr><td>Luyện SQL chuẩn</td><td><code>CREATE</code>, <code>INSERT</code>, <code>SELECT</code>, <code>WHERE</code>, <code>JOIN</code>... áp dụng được cho mọi DB lớn hơn</td></tr>
+              <tr><td>Phù hợp ứng dụng nhỏ</td><td>App quản lý sinh viên, quản lý sách, tool cá nhân, app desktop offline</td></tr>
+              <tr><td>Kết hợp tốt với Pandas</td><td><code>pd.read_sql_query()</code> và <code>df.to_sql()</code></td></tr>
+            </tbody>
+          </table>
+
+          <h3>Mô hình dữ liệu quan hệ cơ bản</h3>
+          <p>Ví dụ bảng <code>students</code>:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>id</th><th>name</th><th>age</th><th>grade</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Alice</td><td>20</td><td>A</td></tr>
+              <tr><td>2</td><td>Bob</td><td>15</td><td>B</td></tr>
+              <tr><td>3</td><td>Minh</td><td>11</td><td>C</td></tr>
+              <tr><td>4</td><td>Nhim</td><td>19</td><td>D</td></tr>
+            </tbody>
+          </table>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Thành phần</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Database</td><td>Toàn bộ cơ sở dữ liệu, thường là một file <code>.db</code></td></tr>
+              <tr><td>Table</td><td>Bảng dữ liệu, ví dụ <code>students</code></td></tr>
+              <tr><td>Column</td><td>Cột dữ liệu, ví dụ <code>id</code>, <code>name</code>, <code>age</code>, <code>grade</code></td></tr>
+              <tr><td>Row / Record</td><td>Một dòng dữ liệu</td></tr>
+              <tr><td>Primary Key</td><td>Khóa chính, định danh duy nhất từng dòng</td></tr>
+              <tr><td>Foreign Key</td><td>Khóa ngoại, liên kết dữ liệu giữa các bảng</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ======================== 2. THƯ VIỆN SQLITE3 ======================== -->
+        <section id="thu-vien-sqlite3">
+          <h2>2. Thư viện <code>sqlite3</code> trong Python</h2>
+          <p>Python có sẵn thư viện <code>sqlite3</code>, không cần <code>pip install</code>:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3</code></pre>
+          </div>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Đối tượng</th><th>Vai trò</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Connection</code></td><td>Kết nối tới database</td></tr>
+              <tr><td><code>Cursor</code></td><td>Đối tượng dùng để thực thi SQL</td></tr>
+              <tr><td><code>execute()</code></td><td>Chạy một câu lệnh SQL</td></tr>
+              <tr><td><code>executemany()</code></td><td>Chạy nhiều lần một câu lệnh với nhiều bộ dữ liệu</td></tr>
+              <tr><td><code>fetchone()</code></td><td>Lấy một dòng kết quả</td></tr>
+              <tr><td><code>fetchmany(n)</code></td><td>Lấy <code>n</code> dòng kết quả</td></tr>
+              <tr><td><code>fetchall()</code></td><td>Lấy toàn bộ kết quả</td></tr>
+              <tr><td><code>commit()</code></td><td>Lưu thay đổi vào database</td></tr>
+              <tr><td><code>rollback()</code></td><td>Hủy thay đổi chưa commit</td></tr>
+              <tr><td><code>close()</code></td><td>Đóng kết nối</td></tr>
+            </tbody>
+          </table>
+
+          <div class="diagram">
+            <pre>1. Import sqlite3
+2. Kết nối database
+3. Tạo cursor
+4. Chạy SQL command
+5. Commit nếu có thay đổi dữ liệu
+6. Đóng connection</pre>
+          </div>
+
+          <h3>Connection, Cursor, Execute, Commit, Close</h3>
+          <p><code>Connection</code> là kết nối từ chương trình Python tới database:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">conn = sqlite3.connect("example.db")
+
+conn.commit()
+conn.rollback()
+conn.close()
+cursor = conn.cursor()</code></pre>
+          </div>
+
+          <p><code>Cursor</code> là đối tượng dùng để thực thi câu lệnh SQL:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("CREATE TABLE students (id INTEGER, name TEXT)")
+cursor.execute("SELECT * FROM students")
+cursor.execute("DELETE FROM students WHERE id = 1")</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Đừng quên <code>commit()</code>.</strong> Các lệnh <code>INSERT</code>, <code>UPDATE</code>,
+            <code>DELETE</code>, <code>CREATE TABLE</code>, <code>DROP TABLE</code>, <code>ALTER TABLE</code> cần
+            <code>conn.commit()</code> mới được lưu vĩnh viễn. <code>commit()</code> là phương thức của
+            <strong>connection</strong>, không phải của cursor.
+          </div>
+
+          <p>Nên đóng connection sau khi làm việc xong để giải phóng tài nguyên:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">conn.close()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== 3. TẠO DATABASE & BẢNG ======================== -->
+        <section id="tao-database">
+          <h2>3. Tạo database &amp; bảng</h2>
+
+          <h3>Tạo database rỗng</h3>
+          <p>
+            Khi gọi <code>sqlite3.connect("example.db")</code>, nếu file chưa tồn tại, SQLite sẽ tạo file mới. Nếu
+            file đã tồn tại, SQLite sẽ mở file đó.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect("example.db")
+conn.close()</code></pre>
+          </div>
+
+          <h3>Tạo database ở đúng thư mục chứa file Python</h3>
+          <p>
+            Khi chạy script từ terminal, thư mục làm việc hiện tại có thể khác thư mục chứa file <code>.py</code>.
+            Nên dùng <code>pathlib</code> để tạo đường dẫn chắc chắn hơn:
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+import sqlite3
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "example.db"
+
+conn = sqlite3.connect(DB_PATH)
+conn.close()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Kiểm tra file database</strong> bằng SQLite Viewer / SQLite extension trong VS Code, DB Browser
+            for SQLite, DBeaver, DataGrip, hoặc SQLite CLI.
+          </div>
+
+          <h3>Tạo bảng trong database</h3>
+          <p>Giả sử cần tạo bảng <code>students</code> gồm:</p>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>INTEGER</td><td>Mã định danh</td></tr>
+              <tr><td><code>name</code></td><td>TEXT</td><td>Tên sinh viên</td></tr>
+              <tr><td><code>age</code></td><td>INTEGER</td><td>Tuổi</td></tr>
+              <tr><td><code>grade</code></td><td>TEXT</td><td>Lớp/xếp loại</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect("example.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    age INTEGER,
+    grade TEXT
+)
+""")
+
+conn.commit()
+conn.close()</code></pre>
+          </div>
+
+          <h3>Giải thích câu lệnh SQL</h3>
+          <ul>
+            <li><code>CREATE TABLE IF NOT EXISTS students</code>: tạo bảng <code>students</code> nếu chưa tồn tại — không có <code>IF NOT EXISTS</code> mà bảng đã có sẽ báo lỗi.</li>
+            <li><code>id INTEGER PRIMARY KEY AUTOINCREMENT</code>: <code>id</code> là số nguyên, là khóa chính, tự động tăng khi thêm dòng mới.</li>
+            <li><code>name TEXT NOT NULL</code>: <code>name</code> là văn bản, không được để trống.</li>
+            <li><code>age INTEGER</code>: tuổi là số nguyên.</li>
+            <li><code>grade TEXT</code>: lớp/xếp loại là văn bản.</li>
+          </ul>
+
+          <div class="warning">
+            <strong>Đặt tên bảng/cột rõ nghĩa.</strong> Nên dùng <code>students</code>, <code>courses</code>,
+            <code>student_id</code>, <code>full_name</code>, <code>created_at</code>... Hạn chế đặt tên mơ hồ như
+            <code>table1</code>, <code>data</code>, <code>test</code>, và hạn chế dùng tiếng Việt có dấu trong tên
+            bảng/cột vì dễ gây lỗi khi xử lý giữa các hệ thống.
+          </div>
+        </section>
+
+        <!-- ======================== 4. KIỂU DỮ LIỆU & RÀNG BUỘC ======================== -->
+        <section id="kieu-du-lieu">
+          <h2>4. Kiểu dữ liệu &amp; ràng buộc trong SQLite</h2>
+
+          <h3>Kiểu dữ liệu thường dùng</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Kiểu</th><th>Ý nghĩa</th><th>Ví dụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>NULL</code></td><td>Không có giá trị</td><td><code>NULL</code></td></tr>
+              <tr><td><code>INTEGER</code></td><td>Số nguyên</td><td><code>10</code>, <code>2026</code></td></tr>
+              <tr><td><code>REAL</code></td><td>Số thực</td><td><code>3.14</code>, <code>9.5</code></td></tr>
+              <tr><td><code>TEXT</code></td><td>Chuỗi văn bản</td><td><code>"Alice"</code></td></tr>
+              <tr><td><code>BLOB</code></td><td>Dữ liệu nhị phân</td><td>ảnh, file nhị phân</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-sql">CREATE TABLE products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price REAL,
+    quantity INTEGER,
+    image BLOB
+);</code></pre>
+          </div>
+
+          <h3>Ràng buộc thường dùng</h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Ràng buộc</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>PRIMARY KEY</code></td><td>Khóa chính, định danh duy nhất dòng</td></tr>
+              <tr><td><code>AUTOINCREMENT</code></td><td>Tự động tăng</td></tr>
+              <tr><td><code>NOT NULL</code></td><td>Không được để trống</td></tr>
+              <tr><td><code>UNIQUE</code></td><td>Không được trùng</td></tr>
+              <tr><td><code>DEFAULT</code></td><td>Giá trị mặc định</td></tr>
+              <tr><td><code>CHECK</code></td><td>Kiểm tra điều kiện</td></tr>
+              <tr><td><code>FOREIGN KEY</code></td><td>Khóa ngoại liên kết bảng</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-sql">CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT UNIQUE,
+    age INTEGER CHECK(age >= 0),
+    role TEXT DEFAULT 'user'
+);</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Vì sao có bảng <code>sqlite_sequence</code>?</strong> Khi dùng <code>AUTOINCREMENT</code>, SQLite
+            đảm bảo không tái sử dụng lại các giá trị <code>id</code> cũ đã từng dùng, và tạo thêm bảng nội bộ
+            <code>sqlite_sequence</code> để quản lý việc này. Nếu thấy bảng này xuất hiện, đó không phải lỗi.
+          </div>
+        </section>
+
+        <!-- ======================== 5. THÊM DỮ LIỆU ======================== -->
+        <section id="them-du-lieu">
+          <h2>5. Thêm dữ liệu (INSERT)</h2>
+
+          <h3>Thêm một record — parameterized query</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect("example.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+INSERT INTO students (name, age, grade)
+VALUES (?, ?, ?)
+""", ("Alice", 20, "A"))
+
+conn.commit()
+conn.close()</code></pre>
+          </div>
+          <p>Không cần truyền <code>id</code> vì <code>id</code> tự động tăng.</p>
+
+          <div class="warning">
+            <strong>Vì sao dùng dấu <code>?</code>?</strong> Dấu <code>?</code> là placeholder, giá trị thật được
+            truyền ở tuple phía sau — ví dụ <code>("Alice", 20, "A")</code>. Cách này an toàn hơn so với nối chuỗi
+            SQL thủ công bằng f-string:
+          </div>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># KHÔNG NÊN — dễ lỗi và có nguy cơ SQL Injection
+name, age, grade = "Alice", 20, "A"
+cursor.execute(
+    f"INSERT INTO students (name, age, grade) VALUES ('{name}', {age}, '{grade}')"
+)</code></pre>
+          </div>
+
+          <h3>Thêm nhiều record bằng <code>executemany()</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">students = [
+    ("Bob", 15, "B"),
+    ("Minh", 11, "C"),
+    ("Nhim", 19, "D"),
+]
+
+cursor.executemany("""
+INSERT INTO students (name, age, grade)
+VALUES (?, ?, ?)
+""", students)
+
+conn.commit()</code></pre>
+          </div>
+
+          <p>
+            <code>executemany()</code> nhận một danh sách các tuple, mỗi tuple tương ứng một dòng cần thêm. Kiểm tra
+            số dòng đã thêm bằng <code>cursor.rowcount</code> (không nên phụ thuộc tuyệt đối vào nó cho mọi loại truy vấn).
+          </p>
+
+          <div class="warning">
+            <strong>Sai lầm phổ biến:</strong> dùng <code>execute()</code> với một <em>list nhiều tuple</em> sẽ lỗi
+            hoặc không hoạt động đúng — phải dùng <code>executemany()</code>.
+          </div>
+
+          <div class="warning">
+            <strong>Lỗi <code>NOT NULL</code>:</strong> nếu bảng có <code>name TEXT NOT NULL</code> mà thêm dữ liệu
+            thiếu <code>name</code>, SQLite sẽ báo lỗi vì <code>name</code> không được phép rỗng.
+          </div>
+        </section>
+
+        <!-- ======================== 6. TRUY VẤN ======================== -->
+        <section id="truy-van">
+          <h2>6. Truy vấn dữ liệu bằng <code>SELECT</code></h2>
+
+          <h3>Lấy tất cả cột, tất cả dòng</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("SELECT * FROM students")
+rows = cursor.fetchall()
+
+for row in rows:
+    print(row)
+# (1, 'Alice', 20, 'A')
+# (2, 'Bob', 15, 'B')
+# (3, 'Minh', 11, 'C')
+# (4, 'Nhim', 19, 'D')</code></pre>
+          </div>
+          <p>Mỗi dòng trả về là một <code>tuple</code>.</p>
+
+          <table class="pro-table">
+            <thead>
+              <tr><th>Phương thức</th><th>Kết quả trả về</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>fetchall()</code></td><td>Toàn bộ kết quả còn lại — list các tuple</td></tr>
+              <tr><td><code>fetchone()</code></td><td>Một dòng đầu tiên, hoặc <code>None</code> nếu hết</td></tr>
+              <tr><td><code>fetchmany(n)</code></td><td><code>n</code> dòng kết quả</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("SELECT * FROM students")
+row = cursor.fetchone()
+print(row)
+# (1, 'Alice', 20, 'A')
+
+cursor.execute("SELECT * FROM students")
+rows = cursor.fetchmany(2)
+print(rows)
+# [(1, 'Alice', 20, 'A'), (2, 'Bob', 15, 'B')]</code></pre>
+          </div>
+
+          <h3>Lấy một số cột cụ thể</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("SELECT name, age FROM students")
+rows = cursor.fetchall()
+
+for row in rows:
+    print(row)
+# ('Alice', 20)
+# ('Bob', 15)
+# ('Minh', 11)
+# ('Nhim', 19)</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>Không nên dùng <code>SELECT *</code> quá nhiều</strong> khi bảng lớn. Nên chọn đúng cột cần dùng
+            để tối ưu hơn.
+          </div>
+        </section>
+
+        <!-- ======================== 7. LỌC, SẮP XẾP, TÌM KIẾM ======================== -->
+        <section id="loc-sap-xep">
+          <h2>7. Lọc, sắp xếp, tìm kiếm dữ liệu</h2>
+
+          <h3>Lọc bằng <code>WHERE</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("""
+SELECT name, age
+FROM students
+WHERE age > ?
+""", (13,))
+
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
+# ('Alice', 20)
+# ('Bob', 15)
+# ('Nhim', 19)</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>Vì sao <code>(13,)</code> có dấu phẩy?</strong> Trong Python, tuple một phần tử phải có dấu
+            phẩy. Viết <code>(13)</code> chỉ là số <code>13</code>, không phải tuple — và <code>cursor.execute()</code>
+            sẽ báo lỗi vì cần một tuple chứa tham số.
+          </div>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Lọc theo tên
+cursor.execute("SELECT * FROM students WHERE name = ?", ("Alice",))
+row = cursor.fetchone()
+
+# Lọc theo nhiều điều kiện
+cursor.execute("""
+SELECT * FROM students
+WHERE age > ? AND grade = ?
+""", (13, "A"))
+rows = cursor.fetchall()</code></pre>
+          </div>
+
+          <h3>Các toán tử trong <code>WHERE</code></h3>
+          <table class="pro-table">
+            <thead>
+              <tr><th>Toán tử</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>=</code></td><td>Bằng</td></tr>
+              <tr><td><code>!=</code> / <code>&lt;&gt;</code></td><td>Khác</td></tr>
+              <tr><td><code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></td><td>So sánh lớn/nhỏ</td></tr>
+              <tr><td><code>AND</code> / <code>OR</code></td><td>Kết hợp điều kiện</td></tr>
+              <tr><td><code>IN</code></td><td>Nằm trong danh sách</td></tr>
+              <tr><td><code>BETWEEN</code></td><td>Nằm trong khoảng</td></tr>
+              <tr><td><code>LIKE</code></td><td>Tìm gần đúng theo mẫu</td></tr>
+              <tr><td><code>IS NULL</code> / <code>IS NOT NULL</code></td><td>Kiểm tra NULL</td></tr>
+            </tbody>
+          </table>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-sql">SELECT * FROM students WHERE age BETWEEN 15 AND 20;
+SELECT * FROM students WHERE grade IN ('A', 'B');
+SELECT * FROM students WHERE name LIKE 'A%';
+SELECT * FROM students WHERE age IS NOT NULL;</code></pre>
+          </div>
+
+          <h3>Sắp xếp, giới hạn, tìm kiếm</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Sắp xếp tăng/giảm dần
+cursor.execute("SELECT * FROM students ORDER BY age ASC")
+cursor.execute("SELECT * FROM students ORDER BY age DESC")
+
+# Giới hạn 2 dòng đầu
+cursor.execute("SELECT * FROM students LIMIT 2")
+
+# Lấy 2 dòng, bỏ qua dòng đầu tiên
+cursor.execute("SELECT * FROM students LIMIT 2 OFFSET 1")
+
+# Tìm tên bắt đầu bằng A
+cursor.execute("SELECT * FROM students WHERE name LIKE ?", ("A%",))
+
+# Tìm tên có chứa chữ i
+cursor.execute("SELECT * FROM students WHERE name LIKE ?", ("%i%",))</code></pre>
+          </div>
+
+          <h3>Đếm, tính trung bình, nhóm dữ liệu</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># COUNT
+cursor.execute("SELECT COUNT(*) FROM students")
+count = cursor.fetchone()[0]
+
+# AVG
+cursor.execute("SELECT AVG(age) FROM students")
+avg_age = cursor.fetchone()[0]
+
+# GROUP BY — đếm số sinh viên theo grade
+cursor.execute("""
+SELECT grade, COUNT(*)
+FROM students
+GROUP BY grade
+""")
+rows = cursor.fetchall()
+
+for grade, count in rows:
+    print(grade, count)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== 8. SỬA & XÓA ======================== -->
+        <section id="sua-xoa">
+          <h2>8. Sửa &amp; Xóa dữ liệu</h2>
+
+          <h3>Cập nhật dữ liệu bằng <code>UPDATE</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Nên cập nhật theo id (tên có thể bị trùng)
+cursor.execute("""
+UPDATE students
+SET name = ?
+WHERE id = ?
+""", ("Anton", 1))
+
+# Cập nhật nhiều cột
+cursor.execute("""
+UPDATE students
+SET name = ?, age = ?, grade = ?
+WHERE id = ?
+""", ("Anton", 21, "A+", 1))
+
+print(cursor.rowcount)  # 0 nghĩa là không có dòng nào khớp điều kiện</code></pre>
+          </div>
+
+          <div class="danger">
+            <strong>Cực kỳ cẩn thận khi thiếu <code>WHERE</code>.</strong>
+            <div class="pre-wrap">
+<pre><code class="language-sql">-- NGUY HIỂM: đổi grade của TOÀN BỘ bảng thành 'A'
+UPDATE students SET grade = 'A';
+
+-- AN TOÀN
+UPDATE students SET grade = 'A' WHERE id = 1;</code></pre>
+            </div>
+          </div>
+
+          <h3>Xóa dữ liệu bằng <code>DELETE</code></h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python"># Nên xóa theo id
+cursor.execute("DELETE FROM students WHERE id = ?", (2,))
+conn.commit()</code></pre>
+          </div>
+
+          <div class="danger">
+            <strong>Thiếu <code>WHERE</code> khi <code>DELETE</code> sẽ xóa toàn bộ dữ liệu trong bảng:</strong>
+            <div class="pre-wrap">
+<pre><code class="language-sql">-- NGUY HIỂM: xóa toàn bộ bảng students
+DELETE FROM students;
+
+-- AN TOÀN
+DELETE FROM students WHERE id = 2;</code></pre>
+            </div>
+          </div>
+
+          <h3>Vì sao xóa <code>id = 2</code> thì <code>id</code> không tự dồn lại?</h3>
+          <p>Bảng ban đầu:</p>
+          <table class="pro-table">
+            <thead><tr><th>id</th><th>name</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Anton</td></tr>
+              <tr><td>2</td><td>Bob</td></tr>
+              <tr><td>3</td><td>Minh</td></tr>
+              <tr><td>4</td><td>Nhim</td></tr>
+            </tbody>
+          </table>
+          <p>Sau khi xóa <code>id = 2</code>:</p>
+          <table class="pro-table">
+            <thead><tr><th>id</th><th>name</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Anton</td></tr>
+              <tr><td>3</td><td>Minh</td></tr>
+              <tr><td>4</td><td>Nhim</td></tr>
+            </tbody>
+          </table>
+          <div class="note">
+            SQLite không tự đổi <code>id = 3</code> thành <code>id = 2</code>. Đây là hành vi đúng vì <code>id</code>
+            thường dùng để định danh ổn định. Nếu thêm dòng mới, <code>id</code> tiếp theo có thể là <code>5</code>,
+            đặc biệt khi dùng <code>AUTOINCREMENT</code>.
+          </div>
+        </section>
+
+        <!-- ======================== 9. TRANSACTION & SQL INJECTION ======================== -->
+        <section id="transaction">
+          <h2>9. Transaction, commit/rollback &amp; chống SQL Injection</h2>
+
+          <h3>commit() và rollback()</h3>
+          <p>
+            Transaction là một nhóm thao tác với database — có thể được lưu toàn bộ hoặc hủy toàn bộ.
+            <code>commit()</code> xác nhận và lưu thay đổi; <code>rollback()</code> hủy các thay đổi chưa commit.
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">try:
+    cursor.execute("""
+    INSERT INTO students (name, age, grade)
+    VALUES (?, ?, ?)
+    """, ("Lan", 18, "A"))
+
+    cursor.execute("""
+    INSERT INTO students (name, age, grade)
+    VALUES (?, ?, ?)
+    """, ("Nam", 19, "B"))
+
+    conn.commit()
+
+except sqlite3.Error as e:
+    conn.rollback()
+    print("Có lỗi xảy ra:", e)</code></pre>
+          </div>
+          <p>
+            Ví dụ thực tế: chuyển tiền giữa 2 tài khoản gồm <em>trừ tiền tài khoản A</em> và <em>cộng tiền tài khoản
+            B</em>. Hai thao tác này phải thành công cùng nhau — nếu trừ tiền A thành công nhưng cộng tiền B lỗi,
+            phải <code>rollback()</code> để tránh sai dữ liệu.
+          </p>
+
+          <h3>Viết code an toàn: tránh SQL Injection</h3>
+          <p>SQL Injection xảy ra khi người dùng nhập dữ liệu làm thay đổi cấu trúc câu SQL.</p>
+
+          <div class="danger">
+            <strong>Cách không an toàn — nối chuỗi trực tiếp:</strong>
+            <div class="pre-wrap">
+<pre><code class="language-python">name = input("Nhập tên: ")
+
+cursor.execute(f"""
+SELECT * FROM students
+WHERE name = '{name}'
+""")</code></pre>
+            </div>
+            Nếu người dùng nhập dữ liệu đặc biệt, câu SQL có thể bị biến đổi.
+          </div>
+
+          <div class="success">
+            <strong>Cách an toàn — dùng placeholder <code>?</code>:</strong>
+            <div class="pre-wrap">
+<pre><code class="language-python">name = input("Nhập tên: ")
+
+cursor.execute("""
+SELECT * FROM students
+WHERE name = ?
+""", (name,))
+
+# Nhiều tham số
+age, grade = 18, "A"
+cursor.execute("""
+SELECT * FROM students
+WHERE age >= ? AND grade = ?
+""", (age, grade))</code></pre>
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>Quy tắc quan trọng:</strong> Không nối chuỗi thủ công khi đưa dữ liệu người dùng vào SQL. Luôn
+            dùng placeholder <code>?</code>.
+          </div>
+
+          <h3>Dùng <code>with sqlite3.connect(...)</code> đúng cách</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+with sqlite3.connect("example.db") as conn:
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO students (name, age, grade)
+    VALUES (?, ?, ?)
+    """, ("Lan", 18, "A"))</code></pre>
+          </div>
+          <p>
+            Khi dùng <code>with</code>, nếu không có lỗi, Python sẽ tự commit khi thoát khỏi block; nếu có lỗi,
+            transaction có thể được rollback. Tuy nhiên <code>with sqlite3.connect(...) as conn</code> chỉ quản lý
+            transaction — connection không nhất thiết đóng ngay. Nếu muốn chắc chắn đóng connection, kết hợp
+            <code>contextlib.closing</code>:
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+from contextlib import closing
+
+with closing(sqlite3.connect("example.db")) as conn:
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+        INSERT INTO students (name, age, grade)
+        VALUES (?, ?, ?)
+        """, ("Lan", 18, "A"))</code></pre>
+          </div>
+          <p>Với người mới học, cách đơn giản sau vẫn rất rõ ràng:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">conn = sqlite3.connect("example.db")
+cursor = conn.cursor()
+
+# SQL ở đây
+
+conn.commit()
+conn.close()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== 10. ROW_FACTORY & KHÓA NGOẠI ======================== -->
+        <section id="row-factory">
+          <h2>10. <code>row_factory</code> &amp; khóa ngoại</h2>
+
+          <h3>Dùng row_factory để đọc kết quả dễ hơn</h3>
+          <p>
+            Mặc định, SQLite trả về tuple: <code>(1, "Alice", 20, "A")</code> — phải nhớ <code>row[0]</code> là
+            <code>id</code>, <code>row[1]</code> là <code>name</code>... dễ nhầm khi bảng có nhiều cột. Dùng
+            <code>sqlite3.Row</code> để truy cập theo tên cột:
+          </p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect("example.db")
+conn.row_factory = sqlite3.Row
+
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM students")
+
+rows = cursor.fetchall()
+for row in rows:
+    print(row["id"], row["name"], row["age"], row["grade"])
+
+conn.close()</code></pre>
+          </div>
+          <div class="note">
+            Cách này rất hữu ích trong project thật — truy cập <code>row["name"]</code>, <code>row["age"]</code>
+            thay vì <code>row[1]</code>, <code>row[2]</code>.
+          </div>
+
+          <h3>Quan hệ giữa các bảng và khóa ngoại</h3>
+          <p>Ví dụ: bảng <code>students</code>, <code>courses</code>, và bảng trung gian <code>enrollments</code>:</p>
+          <table class="pro-table">
+            <thead><tr><th>id</th><th>student_id</th><th>course_id</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>1</td><td>1</td></tr>
+              <tr><td>2</td><td>1</td><td>2</td></tr>
+              <tr><td>3</td><td>2</td><td>1</td></tr>
+            </tbody>
+          </table>
+          <p>
+            <code>student_id</code> tham chiếu tới <code>students.id</code>, <code>course_id</code> tham chiếu tới
+            <code>courses.id</code>.
+          </p>
+
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("PRAGMA foreign_keys = ON")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS courses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    course_name TEXT NOT NULL
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS enrollments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+)
+""")
+
+conn.commit()</code></pre>
+          </div>
+
+          <div class="warning">
+            <strong>SQLite cần bật ràng buộc khóa ngoại cho mỗi connection</strong> bằng
+            <code>PRAGMA foreign_keys = ON</code>. Nếu không bật, một số ràng buộc khóa ngoại có thể không được
+            thực thi như mong muốn.
+          </div>
+
+          <h3>JOIN dữ liệu giữa các bảng</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">cursor.execute("""
+SELECT students.name, courses.course_name
+FROM enrollments
+JOIN students ON enrollments.student_id = students.id
+JOIN courses ON enrollments.course_id = courses.id
+""")
+
+rows = cursor.fetchall()
+for row in rows:
+    print(row)</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== 11. SQLITE + PANDAS ======================== -->
+        <section id="sqlite-pandas">
+          <h2>11. Kết hợp SQLite với Pandas</h2>
+
+          <h3>Đọc bảng SQLite thành DataFrame</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect("example.db")
+
+df = pd.read_sql_query("SELECT * FROM students", conn)
+
+conn.close()
+print(df)
+#    id   name  age grade
+# 0   1  Alice   20     A
+# 1   2    Bob   15     B
+# 2   3   Minh   11     C
+# 3   4   Nhim   19     D</code></pre>
+          </div>
+
+          <h3>Đọc dữ liệu có điều kiện</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">df = pd.read_sql_query("""
+SELECT name, age, grade
+FROM students
+WHERE age >= 18
+""", conn)</code></pre>
+          </div>
+
+          <h3>Ghi DataFrame vào SQLite</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import pandas as pd
+import sqlite3
+
+data = {
+    "name": ["Lan", "Hoa", "Nam"],
+    "age": [18, 19, 20],
+    "grade": ["A", "B", "A"],
+}
+df = pd.DataFrame(data)
+
+conn = sqlite3.connect("example.db")
+df.to_sql("students", conn, if_exists="append", index=False)
+conn.close()</code></pre>
+          </div>
+
+          <div class="note">
+            <strong>So sánh nhanh:</strong> <code>groupby</code> trong Pandas tương đương <code>GROUP BY</code> trong
+            SQL; <code>merge</code> tương đương <code>JOIN</code>. Kết hợp Pandas + SQLite là bộ kỹ năng xử lý dữ
+            liệu cốt lõi cho Data Engineering, Machine Learning, hay tự động hóa.
+          </div>
+        </section>
+
+        <!-- ======================== 12. CRUD HOÀN CHỈNH ======================== -->
+        <section id="crud">
+          <h2>12. Một chương trình CRUD hoàn chỉnh</h2>
+          <p>
+            Chương trình quản lý sinh viên dạng console, dùng <code>row_factory</code>, hàm riêng cho từng thao tác
+            (<code>add</code>/<code>get</code>/<code>update</code>/<code>delete</code>), <code>lastrowid</code>,
+            <code>rowcount</code> và placeholder <code>?</code>.
+          </p>
+
+          <h3>Cấu trúc thư mục gợi ý</h3>
+          <div class="diagram">
+            <pre>sqlite-python-lesson/
+│
+├── main.py
+├── school.db
+├── README.md
+│
+├── data/
+│   └── students.csv
+│
+└── src/
+    ├── database.py
+    ├── models.py
+    └── app.py</pre>
+          </div>
+          <ul>
+            <li><code>database.py</code> — chứa hàm <code>get_connection</code>, <code>init_db</code></li>
+            <li><code>models.py</code> — chứa hàm <code>add/get/update/delete</code></li>
+            <li><code>app.py</code> — chứa menu hoặc giao diện</li>
+            <li><code>main.py</code> — điểm chạy chính</li>
+          </ul>
+
+          <h3>database.py</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from pathlib import Path
+import sqlite3
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "school.db"
+
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def init_db():
+    with get_connection() as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS students (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            age INTEGER,
+            grade TEXT
+        )
+        """)</code></pre>
+          </div>
+
+          <h3>models.py</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from src.database import get_connection
+
+
+def add_student(name, age, grade):
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+        INSERT INTO students (name, age, grade)
+        VALUES (?, ?, ?)
+        """, (name, age, grade))
+        return cursor.lastrowid
+
+
+def get_all_students():
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name, age, grade FROM students ORDER BY id")
+        return cursor.fetchall()
+
+
+def get_student_by_id(student_id):
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM students WHERE id = ?", (student_id,))
+        return cursor.fetchone()
+
+
+def update_student(student_id, name, age, grade):
+    """Cập nhật thông tin sinh viên."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+        UPDATE students
+        SET name = ?, age = ?, grade = ?
+        WHERE id = ?
+        """, (name, age, grade, student_id))
+        return cursor.rowcount
+
+
+def delete_student(student_id):
+    """Xóa sinh viên theo id."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM students WHERE id = ?", (student_id,))
+        return cursor.rowcount</code></pre>
+          </div>
+
+          <h3>main.py — menu console</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">from src.database import init_db
+from src.models import (
+    add_student, get_all_students, get_student_by_id,
+    update_student, delete_student
+)
+
+
+def print_students():
+    students = get_all_students()
+
+    if not students:
+        print("Chưa có sinh viên nào.")
+        return
+
+    print("-" * 50)
+    print(f"{'ID':<5}{'Name':<20}{'Age':<10}{'Grade':<10}")
+    print("-" * 50)
+
+    for student in students:
+        print(
+            f"{student['id']:<5}"
+            f"{student['name']:<20}"
+            f"{student['age']:<10}"
+            f"{student['grade']:<10}"
+        )
+    print("-" * 50)
+
+
+def main():
+    init_db()
+
+    while True:
+        print("""
+===== STUDENT MANAGER =====
+1. Xem danh sách sinh viên
+2. Thêm sinh viên
+3. Sửa sinh viên
+4. Xóa sinh viên
+5. Tìm sinh viên theo ID
+0. Thoát
+""")
+        choice = input("Chọn chức năng: ").strip()
+
+        if choice == "1":
+            print_students()
+
+        elif choice == "2":
+            name = input("Tên: ").strip()
+            age = int(input("Tuổi: ").strip())
+            grade = input("Lớp/xếp loại: ").strip()
+            new_id = add_student(name, age, grade)
+            print(f"Đã thêm sinh viên với ID = {new_id}")
+
+        elif choice == "3":
+            student_id = int(input("ID cần sửa: ").strip())
+            student = get_student_by_id(student_id)
+            if student is None:
+                print("Không tìm thấy sinh viên.")
+                continue
+
+            name = input(f"Tên mới [{student['name']}]: ").strip() or student["name"]
+            age_input = input(f"Tuổi mới [{student['age']}]: ").strip()
+            age = int(age_input) if age_input else student["age"]
+            grade = input(f"Lớp mới [{student['grade']}]: ").strip() or student["grade"]
+
+            affected = update_student(student_id, name, age, grade)
+            print("Đã cập nhật." if affected else "Không có dòng nào được cập nhật.")
+
+        elif choice == "4":
+            student_id = int(input("ID cần xóa: ").strip())
+            confirm = input("Bạn chắc chắn muốn xóa? Nhập YES để xác nhận: ").strip()
+
+            if confirm == "YES":
+                affected = delete_student(student_id)
+                print("Đã xóa." if affected else "Không tìm thấy sinh viên.")
+            else:
+                print("Đã hủy thao tác xóa.")
+
+        elif choice == "5":
+            student_id = int(input("ID cần tìm: ").strip())
+            student = get_student_by_id(student_id)
+            print("Không tìm thấy sinh viên." if student is None else dict(student))
+
+        elif choice == "0":
+            print("Tạm biệt.")
+            break
+
+        else:
+            print("Lựa chọn không hợp lệ.")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+          </div>
+
+          <h3>Phụ lục: file mẫu tối giản (một file)</h3>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+
+def main():
+    conn = sqlite3.connect("example.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        age INTEGER,
+        grade TEXT
+    )
+    """)
+
+    cursor.execute("""
+    INSERT INTO students (name, age, grade)
+    VALUES (?, ?, ?)
+    """, ("Alice", 20, "A"))
+
+    cursor.execute("SELECT * FROM students")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        print(row)
+
+    conn.commit()
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+          </div>
+        </section>
+
+        <!-- ======================== 13. LỖI THƯỜNG GẶP ======================== -->
+        <section id="loi-thuong-gap">
+          <h2>13. Lỗi thường gặp khi học <code>sqlite3</code></h2>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Quên import / gõ nhầm tên thư viện</div>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Sai
+import sql3
+
+# Đúng
+import sqlite3</code></pre>
+            </div>
+            <p>Nếu thiếu <code>import sqlite3</code>, Python báo <code>NameError: name 'sqlite3' is not defined</code>.</p>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Quên gọi <code>commit()</code></div>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Sai — dữ liệu có thể chưa được lưu vĩnh viễn
+cursor.execute("INSERT INTO students (name, age, grade) VALUES (?, ?, ?)", ("Alice", 20, "A"))
+conn.close()
+
+# Đúng
+cursor.execute("INSERT INTO students (name, age, grade) VALUES (?, ?, ?)", ("Alice", 20, "A"))
+conn.commit()
+conn.close()</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Gọi <code>commit()</code> trên cursor</div>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Sai
+cursor.commit()
+
+# Đúng — commit() là phương thức của connection
+conn.commit()</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Quên dấu ngoặc khi gọi <code>fetchall</code></div>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Sai — đang lấy object phương thức, không phải dữ liệu
+rows = cursor.fetchall
+
+# Đúng
+rows = cursor.fetchall()</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Dùng <code>execute()</code> khi cần <code>executemany()</code></div>
+            <div class="pre-wrap">
+<pre><code class="language-python">students = [("Bob", 15, "B"), ("Minh", 11, "C")]
+
+# Sai
+cursor.execute("INSERT INTO students (name, age, grade) VALUES (?, ?, ?)", students)
+
+# Đúng
+cursor.executemany("INSERT INTO students (name, age, grade) VALUES (?, ?, ?)", students)</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Thiếu dấu phẩy trong tuple một phần tử</div>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Sai
+cursor.execute("SELECT * FROM students WHERE id = ?", (1))
+
+# Đúng
+cursor.execute("SELECT * FROM students WHERE id = ?", (1,))</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Thiếu dấu phẩy khi khai báo nhiều cột trong <code>CREATE TABLE</code></div>
+            <div class="pre-wrap">
+<pre><code class="language-sql">-- Sai
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT
+    name TEXT NOT NULL
+    age INTEGER
+)
+
+-- Đúng
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    age INTEGER
+)</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Thiếu <code>WHERE</code> khi <code>UPDATE</code>/<code>DELETE</code></div>
+            <div class="pre-wrap">
+<pre><code class="language-sql">-- Sai
+UPDATE students SET name = 'Anton';
+DELETE FROM students;
+
+-- Đúng
+UPDATE students SET name = 'Anton' WHERE id = 1;
+DELETE FROM students WHERE id = 2;</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> Nhầm đường dẫn database</div>
+            <p>Tưởng đang mở <code>E:\project\example.db</code> nhưng script lại tạo database ở thư mục khác.</p>
+            <div class="pre-wrap">
+<pre><code class="language-python"># Giải pháp
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "example.db"</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lỗi</span> <code>database is locked</code></div>
+            <p>
+              <code>sqlite3.OperationalError: database is locked</code> — nguyên nhân có thể là một chương trình
+              khác đang giữ transaction, chưa đóng connection, DB viewer đang khóa database, hoặc có transaction lâu
+              chưa commit.
+            </p>
+            <p>Cách xử lý: đóng DB viewer rồi chạy lại, đảm bảo gọi <code>commit()</code>/<code>close()</code>, tránh
+              mở nhiều connection ghi cùng lúc, hoặc dùng <code>timeout</code>:</p>
+            <div class="pre-wrap">
+<pre><code class="language-python">conn = sqlite3.connect("example.db", timeout=10)</code></pre>
+            </div>
+          </div>
+
+          <div class="qa">
+            <div class="error-heading"><span class="error-label">Lưu ý</span> Lưu chuỗi có dấu tiếng Việt</div>
+            <p>
+              Python 3 xử lý Unicode tốt, SQLite cũng lưu <code>TEXT</code> Unicode được:
+            </p>
+            <div class="pre-wrap">
+<pre><code class="language-python">cursor.execute("""
+INSERT INTO students (name, age, grade)
+VALUES (?, ?, ?)
+""", ("Nguyễn Văn An", 20, "A"))</code></pre>
+            </div>
+            <p>Nếu hiển thị trên terminal bị lỗi font, vấn đề thường nằm ở terminal hoặc encoding hiển thị, không nhất thiết do SQLite.</p>
+          </div>
+        </section>
+
+        <!-- ======================== 14. BÀI TẬP ======================== -->
+        <section id="bai-tap">
+          <h2>14. Bài tập thực hành</h2>
+
+          <div class="exercise">
+            <h3>Bài 1 — Tạo database thư viện</h3>
+            <p>
+              Tạo database <code>library.db</code> với bảng <code>books</code> gồm <code>id</code> (INTEGER PRIMARY
+              KEY AUTOINCREMENT), <code>title</code> (TEXT NOT NULL), <code>author</code> (TEXT NOT NULL),
+              <code>year</code> (INTEGER), <code>price</code> (REAL). Thêm ít nhất 5 quyển sách và in toàn bộ ra màn hình.
+            </p>
+            <div class="pre-wrap">
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    year INTEGER,
+    price REAL
+);</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 2 — Lọc sách</h3>
+            <p>Từ bảng <code>books</code>, viết các truy vấn lấy sách có <code>year >= 2020</code>, sách có
+              <code>price &lt; 200000</code>, sách của một tác giả cụ thể, và sách có tiêu đề chứa chữ "Python".</p>
+            <div class="pre-wrap">
+<pre><code class="language-sql">SELECT * FROM books WHERE title LIKE '%Python%';</code></pre>
+            </div>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 3 — Cập nhật giá sách</h3>
+            <p>Viết hàm <code>update_book_price(book_id, new_price)</code>: cập nhật <code>price</code> theo
+              <code>id</code>, trả về số dòng đã cập nhật, không nối chuỗi SQL thủ công.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 4 — Xóa sách</h3>
+            <p>Viết hàm <code>delete_book(book_id)</code>: xóa sách theo <code>id</code>, hỏi xác nhận trước khi
+              xóa, và in thông báo nếu không tìm thấy sách.</p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 5 — Quản lý sinh viên nâng cao</h3>
+            <p>
+              Tạo database <code>school.db</code> gồm 2 bảng: <code>students</code> (<code>id</code>,
+              <code>name</code> NOT NULL, <code>age</code>) và <code>scores</code> (<code>id</code>,
+              <code>student_id</code>, <code>subject</code>, <code>score</code> REAL). Thêm sinh viên, thêm điểm cho
+              sinh viên, dùng <code>JOIN</code> để in tên sinh viên — môn học — điểm, và tính điểm trung bình từng
+              sinh viên.
+            </p>
+          </div>
+
+          <div class="exercise">
+            <h3>Bài 6 — Kết hợp Pandas</h3>
+            <p>Dùng Pandas đọc bảng <code>students</code> bằng <code>pd.read_sql_query("SELECT * FROM students",
+              conn)</code>. In 5 dòng đầu, tính tuổi trung bình, lọc sinh viên từ 18 tuổi trở lên, và xuất kết quả ra
+              file CSV.</p>
+          </div>
+        </section>
+
+        <!-- ======================== TỔNG KẾT ======================== -->
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>SQLite trong Python xoay quanh quy trình chính:</p>
+          <div class="pre-wrap">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect("example.db")
+cursor = conn.cursor()
+
+cursor.execute("SQL command here")
+
+conn.commit()
+conn.close()</code></pre>
+          </div>
+
+          <p>Sau bài này, bạn cần nắm chắc:</p>
+          <ul>
+            <li><strong>sqlite3</strong> có sẵn trong Python, không cần <code>pip install</code>.</li>
+            <li><strong>Connection</strong> dùng để kết nối database, <strong>Cursor</strong> dùng để chạy SQL.</li>
+            <li>Có thay đổi dữ liệu thì cần <code>conn.commit()</code>; <code>commit()</code> thuộc connection, không thuộc cursor.</li>
+            <li>Dùng <code>executemany()</code> khi thêm nhiều dòng, và placeholder <code>?</code> để truyền dữ liệu an toàn.</li>
+            <li>Cẩn thận với <code>UPDATE</code> và <code>DELETE</code> thiếu <code>WHERE</code>.</li>
+            <li>Nên dùng <code>id</code> làm khóa chính (<code>INTEGER PRIMARY KEY AUTOINCREMENT</code>).</li>
+            <li>Nên đọc kết quả bằng <code>row_factory = sqlite3.Row</code> trong project thật.</li>
+            <li><code>JOIN</code> kết hợp dữ liệu giữa các bảng qua khóa ngoại (<code>FOREIGN KEY</code>, <code>PRAGMA foreign_keys = ON</code>).</li>
+            <li>Kết hợp tốt với Pandas qua <code>pd.read_sql_query()</code> và <code>df.to_sql()</code>.</li>
+            <li>SQLite phù hợp cho học tập, app nhỏ, tool cá nhân và dữ liệu cục bộ.</li>
+          </ul>
+
+          <div class="diagram">
+            <pre>Database file -> Connection -> Cursor -> SQL command -> Result/Commit -> Close</pre>
+          </div>
+
+          <div class="note">
+            <strong>Lộ trình tiếp theo:</strong> Khi nắm chắc luồng làm việc với SQLite, bạn có thể chuyển sang các
+            database lớn hơn như PostgreSQL, MySQL hoặc SQL Server dễ hơn rất nhiều — cú pháp SQL cốt lõi
+            (<code>SELECT</code>, <code>WHERE</code>, <code>JOIN</code>, <code>GROUP BY</code>...) gần như giữ nguyên.
+          </div>
+        </section>
+
+        <div class="footer">Tài liệu: 24. Cơ sở dữ liệu SQL với SQLite trong Python</div>
+      </article>
+    </main>
+  </div>
+  <script src="../shared/js/doc-script.js"></script>
 </body>
 </html>
