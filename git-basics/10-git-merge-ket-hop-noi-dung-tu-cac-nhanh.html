@@ -1,164 +1,449 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Git Merge - Kết hợp nội dung từ các nhánh</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: #f8fafc;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 32px 20px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #f97316;
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 16px 0 8px;
-            font-size: 34px;
-            line-height: 1.2;
-        }
-
-        .description {
-            color: #4b5563;
-            font-size: 18px;
-        }
-
-        .meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .meta-item {
-            padding: 14px;
-            border-radius: 12px;
-            background: #f1f5f9;
-        }
-
-        .meta-label {
-            display: block;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .meta-value {
-            font-weight: 700;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #075985;
-            font-size: 13px;
-        }
-
-        .placeholder {
-            margin-top: 28px;
-            padding: 18px;
-            border-left: 4px solid #f97316;
-            background: #fff7ed;
-            border-radius: 8px;
-        }
-
-        footer {
-            margin-top: 28px;
-            color: #64748b;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10. Git Merge - Kết hợp nội dung từ các nhánh</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
-    <main class="container">
-        <article class="card">
-            <span class="badge">Bài 10</span>
-            <h1>Git Merge - Kết hợp nội dung từ các nhánh</h1>
-            <p class="description">Kết hợp nội dung giữa các branch bằng git merge</p>
+  <div id="readProgress"></div>
 
-            <section class="meta" aria-label="Thông tin bài học">
-                <div class="meta-item">
-                    <span class="meta-label">Series</span>
-                    <span class="meta-value">Học Git từ cơ bản</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Loại</span>
-                    <span class="meta-value">git</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Thời lượng</span>
-                    <span class="meta-value">20 phút</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Số phần</span>
-                    <span class="meta-value">8</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Trạng thái</span>
-                    <span class="meta-value">coming</span>
-                </div>
-            </section>
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 10</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="09" href="#09">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="11" href="#11">Bài sau →</a>
+    </div>
+  </div>
 
-            <section>
-                <h2>Nội dung bài học</h2>
-                <div class="placeholder">
-                    File này được tạo tự động vì còn thiếu trong thư mục bài học.
-                    Bạn có thể thay phần này bằng nội dung chi tiết của bài học.
-                </div>
-            </section>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#merge-la-gi">1. git merge là gì?</a>
+      <a href="#tu-khoa">2. Từ khóa quan trọng</a>
+      <a href="#mo-hinh">3. Mô hình merge A/B</a>
+      <a href="#thuc-hanh">4. Thực hành: tạo commit và branch B</a>
+      <a href="#merge-va-conflict">5. Merge nhánh B vào master và xử lý conflict</a>
+      <a href="#thu-tu-commit">6. Cách hiểu thứ tự commit sau merge</a>
+      <a href="#hai-kieu-merge">7. Hai kiểu merge phổ biến</a>
+      <a href="#quy-trinh-chuan">8. Quy trình chuẩn khi merge branch</a>
+      <a href="#huy-merge">9. Hủy merge nếu chưa muốn xử lý</a>
+      <a href="#khi-nao-merge">10. Khi nào nên merge?</a>
+      <a href="#lien-he-bai-09">11. Liên hệ với conflict khi pull</a>
+      <a href="#bai-tap">12. Bài tập tự luyện</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
 
-            <section>
-                <h2>Tags</h2>
-                <div class="tags">
-        <span class="tag">git</span>
-        <span class="tag">merge</span>
-        <span class="tag">branch</span>
-                </div>
-            </section>
+    <main>
+      <article class="container">
+        <h1>10. Git Merge - Kết hợp nội dung từ các nhánh</h1>
+        <p class="meta">
+          <code>git merge</code> dùng để gộp nội dung từ branch khác vào branch hiện tại — gồm fast-forward merge, three-way merge, và cách xử lý conflict khi cả hai nhánh cùng sửa một vùng nội dung.
+        </p>
 
-            <footer>
-                Tạo tự động lúc: 2026-06-27 05:57:48
-            </footer>
-        </article>
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Bài trước đã học <strong>branch</strong> — cách tách ra nhiều hướng phát triển song song. Bài này tập trung vào cách <strong>kết hợp các branch lại với nhau</strong> bằng lệnh <code>git merge</code>, kể cả khi hai nhánh cùng sửa một vùng nội dung và Git báo conflict.
+          </p>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li><code>git merge</code> dùng để gộp nội dung từ branch khác vào branch hiện tại.</li>
+            <li>Muốn merge branch B vào branch A thì phải checkout sang A trước, sau đó chạy <code>git merge B</code>.</li>
+            <li>Git có thể tự merge nếu thay đổi không đụng nhau.</li>
+            <li>Nếu thay đổi đụng cùng file/cùng dòng, Git báo conflict và cần sửa thủ công.</li>
+            <li>Sau khi sửa conflict, phải <code>git add</code> và <code>git commit</code> để hoàn tất merge.</li>
+            <li>Cách xem lịch sử sau merge bằng <code>git log --oneline --graph --all</code>.</li>
+          </ul>
+        </section>
+
+        <section id="merge-la-gi">
+          <h2>1. git merge là gì?</h2>
+          <p><code>git merge</code> là lệnh dùng để đưa thay đổi từ một branch vào branch hiện tại.</p>
+          <p>Cú pháp:</p>
+          <pre><code>git merge &lt;ten-nhanh-muon-gop-vao&gt;</code></pre>
+          <p>Ví dụ đang ở <code>master</code>, muốn gộp <code>nhanh-b</code> vào <code>master</code>:</p>
+          <pre><code>git checkout master
+git merge nhanh-b</code></pre>
+          <div class="note">Nói ngắn gọn: <strong>đang đứng ở branch nào thì branch đó là nơi nhận thay đổi</strong>.</div>
+        </section>
+
+        <section id="tu-khoa">
+          <h2>2. Từ khóa quan trọng</h2>
+          <table>
+            <thead><tr><th>Từ khóa</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td><code>merge</code></td><td>Gộp nội dung/lịch sử từ branch khác vào branch hiện tại.</td></tr>
+              <tr><td><code>current branch</code></td><td>Branch bạn đang đứng. Đây là branch nhận thay đổi.</td></tr>
+              <tr><td><code>source branch</code></td><td>Branch được đưa vào branch hiện tại.</td></tr>
+              <tr><td><code>merge commit</code></td><td>Commit đặc biệt sinh ra khi Git gộp hai nhánh theo kiểu 3-way merge.</td></tr>
+              <tr><td><code>fast-forward</code></td><td>Trường hợp merge đơn giản, Git chỉ kéo con trỏ branch tiến lên.</td></tr>
+              <tr><td><code>conflict</code></td><td>Xung đột khi Git không tự quyết định được nội dung cuối cùng.</td></tr>
+              <tr><td><code>git status</code></td><td>Kiểm tra trạng thái, đặc biệt hữu ích khi merge conflict.</td></tr>
+              <tr><td><code>git log --graph --all</code></td><td>Xem lịch sử nhánh sau merge.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="mo-hinh">
+          <h2>3. Mô hình merge A/B</h2>
+          <p>Có thể hiểu mô hình merge như sau:</p>
+          <ul>
+            <li>Nhánh A là nhánh chính, ví dụ <code>master</code>. Ban đầu có commit <code>A1</code>, sau đó <code>A2</code>.</li>
+            <li>Từ <code>A2</code>, tách ra nhánh B. Nhánh B có commit <code>B1</code>, <code>B2</code>.</li>
+            <li>Trong lúc đó, nhánh A vẫn tiếp tục có commit <code>A3</code>, <code>A4</code>.</li>
+            <li>Đến lúc cần gộp, ta merge B vào A.</li>
+          </ul>
+
+          <div class="diagram">
+            <div class="box">
+              <h3>master (A)</h3>
+              <p>A1 → A2 → A3 → A4</p>
+            </div>
+            <div class="arrow">⤵</div>
+            <div class="box">
+              <h3>B</h3>
+              <p>(từ A2) → B1 → B2</p>
+            </div>
+          </div>
+          <pre><code>git checkout master
+git merge B</code></pre>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>4. Thực hành: tạo commit A1, A2 và branch B</h2>
+
+          <div class="step">
+            <h3>Bước 1: Tạo repo và commit A1, A2</h3>
+            <pre><code>mkdir merge-practice
+cd merge-practice
+
+git init --bare central-repo.git
+
+git clone central-repo.git dev1
+cd dev1</code></pre>
+            <p>Tạo commit A1:</p>
+            <pre><code>echo "A1" > main.txt
+
+git add .
+git commit -m "A1"
+git push</code></pre>
+            <p>Tạo commit A2:</p>
+            <pre><code>echo "A2" >> main.txt
+
+git add .
+git commit -m "A2"
+git push</code></pre>
+            <p>Xem lịch sử:</p>
+            <pre><code>git log --oneline</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Tạo nhánh B và tạo commit B1, rồi quay lại master tạo A3/A4</h3>
+            <pre><code>git branch B
+git checkout B</code></pre>
+            <p>Tạo commit B1:</p>
+            <pre><code>echo "B1" >> main.txt
+
+git add .
+git commit -m "B1"</code></pre>
+            <p>Nếu cần push branch B lần đầu:</p>
+            <pre><code>git push -u origin B</code></pre>
+            <p>Quay lại nhánh chính, tạo commit A3 và A4:</p>
+            <pre><code>git checkout master
+
+echo "A3" >> main.txt
+git add .
+git commit -m "A3"
+
+echo "A4" >> main.txt
+git add .
+git commit -m "A4"</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Quay lại nhánh B tạo B2</h3>
+            <pre><code>git checkout B
+
+echo "B2" >> main.txt
+git add .
+git commit -m "B2"</code></pre>
+            <p>Lúc này lịch sử có hai hướng:</p>
+            <ul>
+              <li><code>master</code>: <code>A1 -&gt; A2 -&gt; A3 -&gt; A4</code></li>
+              <li><code>B</code>: <code>A1 -&gt; A2 -&gt; B1 -&gt; B2</code></li>
+            </ul>
+            <p>Xem bằng:</p>
+            <pre><code>git log --oneline --graph --all</code></pre>
+          </div>
+        </section>
+
+        <section id="merge-va-conflict">
+          <h2>5. Merge nhánh B vào master và xử lý conflict</h2>
+          <p>Muốn đưa công việc từ B vào master, trước hết phải đứng ở master:</p>
+          <pre><code>git checkout master</code></pre>
+          <p>Sau đó merge B vào master:</p>
+          <pre><code>git merge B</code></pre>
+          <p>Nếu Git tự merge được, quá trình hoàn tất nhanh. Nhưng vì cả hai nhánh cùng sửa file <code>main.txt</code>, Git báo conflict:</p>
+          <pre><code>Auto-merging main.txt
+CONFLICT (content): Merge conflict in main.txt
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+
+          <p>Mở file <code>main.txt</code>, có thể thấy dạng:</p>
+          <pre class="conflict-block"><code><span class="line-plain">A1</span>
+<span class="line-plain">A2</span>
+<span class="line-head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="line-local">A3
+A4</span>
+<span class="line-sep">=======</span>
+<span class="line-remote">B1
+B2</span>
+<span class="line-head">&gt;&gt;&gt;&gt;&gt;&gt;&gt; B</span></code></pre>
+
+          <p>
+            Phần <code>HEAD</code> là nội dung của branch hiện tại (<code>master</code>); phần dưới <code>=======</code> là nội dung đến từ branch <code>B</code>. Người dùng phải sửa lại nội dung cuối cùng, ví dụ:
+          </p>
+          <pre><code>A1
+A2
+B1
+A3
+A4
+B2</code></pre>
+          <p>(hoặc thứ tự khác tùy logic dự án). Sau đó hoàn tất merge:</p>
+          <pre><code>git add main.txt
+git commit -m "resolve merge conflict and merge B into master"</code></pre>
+        </section>
+
+        <section id="thu-tu-commit">
+          <h2>6. Cách hiểu thứ tự commit sau merge</h2>
+          <p>
+            Sau khi merge, <code>git log</code> có thể hiển thị các commit không hoàn toàn theo "nhánh A trước rồi nhánh B sau". Git sắp xếp theo quan hệ cha-con và thời gian commit.
+          </p>
+          <ul>
+            <li>Merge không đơn giản là copy file.</li>
+            <li>Merge kết hợp lịch sử của hai branch.</li>
+            <li>Nếu có conflict, bạn quyết định nội dung cuối cùng.</li>
+            <li>Sau khi commit merge, branch nhận merge chứa cả lịch sử của branch được merge.</li>
+          </ul>
+          <p>Xem lịch sử rõ nhất bằng:</p>
+          <pre><code>git log --oneline --graph --all --decorate</code></pre>
+        </section>
+
+        <section id="hai-kieu-merge">
+          <h2>7. Hai kiểu merge phổ biến</h2>
+
+          <h3>7.1. Fast-forward merge</h3>
+          <p>Xảy ra khi branch hiện tại chưa có commit mới nào kể từ lúc tách branch.</p>
+          <pre><code>main:    A1---A2
+feature:       A3---A4</code></pre>
+          <p>Khi merge:</p>
+          <pre><code>git checkout main
+git merge feature</code></pre>
+          <p>Git chỉ kéo <code>main</code> tiến lên <code>A4</code>, không cần tạo merge commit.</p>
+
+          <h3>7.2. Three-way merge</h3>
+          <p>Xảy ra khi cả hai branch đều có commit mới sau khi tách nhánh.</p>
+          <pre><code>main:    A1---A2---A3---A4
+feature:      \---B1---B2</code></pre>
+          <p>Khi merge, Git tạo <strong>merge commit</strong> để nối hai lịch sử lại với nhau.</p>
+        </section>
+
+        <section id="quy-trinh-chuan">
+          <h2>8. Quy trình chuẩn khi merge branch</h2>
+
+          <div class="step">
+            <h3>Bước 1 — Kiểm tra trạng thái</h3>
+            <pre><code>git status</code></pre>
+            <p>Chỉ nên merge khi working tree sạch.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2 — Cập nhật branch nhận merge</h3>
+            <pre><code>git checkout master
+git pull
+# hoặc
+git checkout main
+git pull</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3 — Merge branch khác vào</h3>
+            <pre><code>git merge ten-nhanh</code></pre>
+            <p>Ví dụ:</p>
+            <pre><code>git merge B</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4 — Nếu có conflict, sửa file</h3>
+            <pre><code>git status</code></pre>
+            <p>Mở file và xóa marker, giữ nội dung đúng:</p>
+            <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+...
+=======
+...
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; B</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5 — Hoàn tất merge</h3>
+            <pre><code>git add .
+git commit -m "merge B into master"</code></pre>
+            <p>Nếu Git đã tự tạo merge commit message, chỉ cần lưu và đóng editor.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6 — Push lên remote</h3>
+            <pre><code>git push</code></pre>
+          </div>
+        </section>
+
+        <section id="huy-merge">
+          <h2>9. Hủy merge nếu chưa muốn xử lý</h2>
+          <p>Nếu merge bị conflict và bạn muốn quay lại trạng thái trước khi merge:</p>
+          <pre><code>git merge --abort</code></pre>
+          <div class="warning">Chỉ dùng <code>git merge --abort</code> khi bạn chưa muốn xử lý conflict lúc này.</div>
+        </section>
+
+        <section id="khi-nao-merge">
+          <h2>10. Khi nào nên merge?</h2>
+          <p>Nên merge khi:</p>
+          <ul>
+            <li>Tính năng trên branch phụ đã hoàn thành.</li>
+            <li>Code đã test ổn.</li>
+            <li>Branch phụ đã cập nhật với branch chính.</li>
+            <li>Không còn thay đổi đang dở dang trong working tree.</li>
+          </ul>
+          <div class="note">
+            Trong làm việc nhóm, thường không merge trực tiếp bằng terminal vào <code>main</code>/<code>master</code>, mà sẽ mở <strong>Pull Request</strong> trên GitHub/GitLab để review trước.
+          </div>
+        </section>
+
+        <section id="lien-he-bai-09">
+          <h2>11. Merge Conflict trong bài này liên hệ với bài Merge Conflict trước</h2>
+          <p>
+            Bài trước đã học cách xử lý conflict khi <code>git pull</code> gặp xung đột. Bài này cho thấy conflict cũng có thể xảy ra khi <code>git merge</code> branch.
+            Bản chất giống nhau:
+          </p>
+          <ul>
+            <li>Git đang cố gộp hai nguồn thay đổi.</li>
+            <li>Có vùng nội dung Git không tự quyết định được.</li>
+            <li>Git chèn marker conflict vào file.</li>
+            <li>Người dùng sửa tay.</li>
+            <li>Sau đó <code>git add</code> và <code>git commit</code>.</li>
+          </ul>
+          <p>Công thức nhớ:</p>
+          <pre><code>git status
+# sửa file conflict
+git add &lt;file&gt;
+git commit</code></pre>
+        </section>
+
+        <section id="bai-tap">
+          <h2>12. Bài tập tự luyện</h2>
+
+          <div class="qa">
+            <h3>Bài 1: Merge không conflict</h3>
+            <pre><code>mkdir merge-no-conflict
+cd merge-no-conflict
+
+git init
+
+echo "home" > index.html
+git add .
+git commit -m "initial"
+
+git checkout -b feature-css
+echo "body { font-family: Arial; }" > style.css
+git add .
+git commit -m "add css"
+
+git checkout master
+git merge feature-css</code></pre>
+            <p>Quan sát: Git có thể merge tự động vì hai branch không sửa cùng file.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 2: Merge có conflict</h3>
+            <pre><code>mkdir merge-conflict-demo
+cd merge-conflict-demo
+
+git init
+
+echo "Title: Git Course" > README.md
+git add .
+git commit -m "initial readme"
+
+git checkout -b branch-a
+echo "Title: Git Branch Course" > README.md
+git add .
+git commit -m "edit title in branch a"
+
+git checkout master
+echo "Title: Git Merge Course" > README.md
+git add .
+git commit -m "edit title in master"
+
+git merge branch-a</code></pre>
+            <p>Sau đó mở <code>README.md</code>, sửa conflict, rồi:</p>
+            <pre><code>git add README.md
+git commit -m "resolve title conflict"</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 3: Xem graph sau merge</h3>
+            <p>Sau mỗi lần merge, chạy:</p>
+            <pre><code>git log --oneline --graph --all --decorate</code></pre>
+            <p>Ghi lại sự khác nhau giữa: merge không conflict, merge có conflict, fast-forward merge, và three-way merge.</p>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>
+            <code>git merge</code> dùng để gộp nội dung từ branch khác vào branch hiện tại. Muốn merge B vào master thì phải đứng ở master rồi chạy <code>git merge B</code>.
+          </p>
+          <ul>
+            <li>Nếu Git tự gộp được (fast-forward hoặc không đụng nội dung), quá trình rất nhanh.</li>
+            <li>Nếu hai branch sửa cùng vùng nội dung, Git báo conflict và tạo merge commit sau khi xử lý (three-way merge).</li>
+            <li>Khi conflict: mở file, xóa marker, giữ nội dung đúng, rồi <code>git add</code> và <code>git commit</code>.</li>
+            <li>Có thể hủy merge dở dang bằng <code>git merge --abort</code>.</li>
+          </ul>
+          <div class="success">
+            Trong làm việc nhóm thật, nên dùng <strong>Pull Request</strong> để review trước khi merge vào nhánh chính, thay vì merge trực tiếp bằng terminal.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 10. Git Merge - Kết hợp nội dung từ các nhánh
+        </div>
+      </article>
     </main>
+  </div>
+
+  <style>
+    .conflict-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      overflow-x: auto;
+    }
+    .conflict-block .line-plain { color: #cbd5e1; }
+    .conflict-block .line-head { color: #fb923c; font-weight: 700; }
+    .conflict-block .line-sep { color: #94a3b8; font-weight: 700; }
+    .conflict-block .line-local { color: #38bdf8; }
+    .conflict-block .line-remote { color: #4ade80; }
+  </style>
+
+<script src="../shared/js/doc-script.js"></script>
 </body>
 </html>

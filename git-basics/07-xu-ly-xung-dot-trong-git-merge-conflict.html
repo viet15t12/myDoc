@@ -1,164 +1,547 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xử lý xung đột trong Git - Merge Conflict</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: #f8fafc;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 32px 20px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #f97316;
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 16px 0 8px;
-            font-size: 34px;
-            line-height: 1.2;
-        }
-
-        .description {
-            color: #4b5563;
-            font-size: 18px;
-        }
-
-        .meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .meta-item {
-            padding: 14px;
-            border-radius: 12px;
-            background: #f1f5f9;
-        }
-
-        .meta-label {
-            display: block;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .meta-value {
-            font-weight: 700;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #075985;
-            font-size: 13px;
-        }
-
-        .placeholder {
-            margin-top: 28px;
-            padding: 18px;
-            border-left: 4px solid #f97316;
-            background: #fff7ed;
-            border-radius: 8px;
-        }
-
-        footer {
-            margin-top: 28px;
-            color: #64748b;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7. Xử lý xung đột trong Git - Merge Conflict</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
-    <main class="container">
-        <article class="card">
-            <span class="badge">Bài 07</span>
-            <h1>Xử lý xung đột trong Git - Merge Conflict</h1>
-            <p class="description">Nguyên nhân xung đột, cách xử lý merge conflict và các tình huống thường gặp</p>
+  <div id="readProgress"></div>
 
-            <section class="meta" aria-label="Thông tin bài học">
-                <div class="meta-item">
-                    <span class="meta-label">Series</span>
-                    <span class="meta-value">Học Git từ cơ bản</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Loại</span>
-                    <span class="meta-value">git</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Thời lượng</span>
-                    <span class="meta-value">20 phút</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Số phần</span>
-                    <span class="meta-value">8</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Trạng thái</span>
-                    <span class="meta-value">coming</span>
-                </div>
-            </section>
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 07</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="06" href="#06">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="08" href="#08">Bài sau →</a>
+    </div>
+  </div>
 
-            <section>
-                <h2>Nội dung bài học</h2>
-                <div class="placeholder">
-                    File này được tạo tự động vì còn thiếu trong thư mục bài học.
-                    Bạn có thể thay phần này bằng nội dung chi tiết của bài học.
-                </div>
-            </section>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#tu-khoa">1. Từ khóa quan trọng</a>
+      <a href="#merge-conflict-la-gi">2. Merge Conflict là gì?</a>
+      <a href="#chua-co-conflict">3. Khi nào chưa có conflict</a>
+      <a href="#co-tinh-tao-conflict">4. Tạo tình huống xung đột</a>
+      <a href="#doc-marker">5. Đọc ký hiệu xung đột</a>
+      <a href="#quy-trinh-5-buoc">6. Quy trình 5 bước xử lý conflict</a>
+      <a href="#thuc-hanh">7. Thực hành đầy đủ trên PowerShell</a>
+      <a href="#ban-chat">8. Khi nào dễ / khó bị conflict</a>
+      <a href="#han-che">9. Cách hạn chế conflict khi làm nhóm</a>
+      <a href="#lenh-huu-ich">10. Lệnh hữu ích khi đang bị conflict</a>
+      <a href="#luu-y">11. Lưu ý quan trọng</a>
+      <a href="#bai-tap">12. Bài tập tự luyện</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
 
-            <section>
-                <h2>Tags</h2>
-                <div class="tags">
-        <span class="tag">git</span>
-        <span class="tag">merge</span>
-        <span class="tag">conflict</span>
-                </div>
-            </section>
+    <main>
+      <article class="container">
+        <h1>7. Xử lý xung đột trong Git - Merge Conflict</h1>
+        <p class="meta">
+          Merge Conflict là gì, vì sao xảy ra, cách đọc ký hiệu <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>, và cách xử lý xung đột giữa hai lập trình viên dùng chung một Central Repo.
+        </p>
 
-            <footer>
-                Tạo tự động lúc: 2026-06-27 05:57:48
-            </footer>
-        </article>
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở bài trước, bạn đã thực hành <code>pull</code>, <code>push</code> giữa nhiều người dùng chung một Central Repo.
+            Khi mọi người làm việc theo trình tự rõ ràng, Git thường tự ghép thay đổi rất êm.
+            Nhưng trong thực tế, hai người có thể cùng sửa một vùng nội dung trên cùng một phiên bản cũ — đó là lúc <strong>Merge Conflict</strong> xuất hiện.
+          </p>
+          <div class="note">
+            Conflict <strong>không phải lỗi hỏng Git</strong>. Đó là lúc Git không tự quyết định được nên giữ nội dung nào, và cần con người quyết định thay.
+          </div>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Hiểu <strong>Merge Conflict</strong> là gì và vì sao xảy ra khi nhiều người cùng sửa một file.</li>
+            <li>Mô phỏng được tình huống xung đột với một Central Repo và hai developer <code>dev1</code>, <code>dev2</code>.</li>
+            <li>Đọc đúng ký hiệu xung đột: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code>.</li>
+            <li>Biết cách sửa conflict thủ công, sau đó <code>git add</code>, <code>git commit</code>, <code>git push</code>.</li>
+            <li>Biết cách hạn chế xung đột khi làm việc nhóm.</li>
+          </ul>
+        </section>
+
+        <section id="tu-khoa">
+          <h2>1. Từ khóa quan trọng trong bài</h2>
+          <table>
+            <thead>
+              <tr><th>Từ khóa</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Central Repository</code></td><td>Kho chứa trung tâm, thường là GitHub/GitLab hoặc bare repo trong máy local để mô phỏng.</td></tr>
+              <tr><td><code>Local Repository</code></td><td>Repository nằm trên máy của từng lập trình viên.</td></tr>
+              <tr><td><code>Dev1</code>, <code>Dev2</code></td><td>Hai người cùng làm việc trên cùng một dự án.</td></tr>
+              <tr><td><code>git pull</code></td><td>Kéo thay đổi mới nhất từ remote về local. Thường gồm <code>fetch</code> + <code>merge</code>.</td></tr>
+              <tr><td><code>git push</code></td><td>Đẩy commit từ local lên remote.</td></tr>
+              <tr><td><code>merge conflict</code></td><td>Xung đột khi Git không tự quyết định được phải giữ nội dung nào.</td></tr>
+              <tr><td><code>HEAD</code></td><td>Phiên bản hiện tại trong local branch của bạn.</td></tr>
+              <tr><td><code>origin/main</code></td><td>Phiên bản trên remote branch <code>main</code>.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="merge-conflict-la-gi">
+          <h2>2. Merge Conflict là gì?</h2>
+          <p>
+            Khi nhiều lập trình viên cùng cộng tác, mỗi người thường xuyên <code>pull</code>, sửa file, <code>commit</code>, rồi <code>push</code>.
+            Nếu Dev1 sửa xong và đẩy lên trước, Dev2 <code>pull</code> về rồi mới sửa tiếp, Git thường không gặp vấn đề.
+          </p>
+          <p>
+            Nhưng nếu hai người cùng lấy một phiên bản cũ của file về máy, rồi mỗi người sửa cùng một vùng nội dung, người push trước sẽ thành công.
+            Người push sau sẽ bị từ chối vì lệch phiên bản so với remote, và khi <code>pull</code> về để cập nhật, Git có thể không tự ghép được — đó là <strong>Merge Conflict</strong>.
+          </p>
+
+          <h3>Sơ đồ tình huống: một Central Repo, hai Developer</h3>
+          <div class="diagram">
+            <div class="box">
+              <h3>Dev1</h3>
+              <p>local repo</p>
+            </div>
+            <div class="arrow">⇄</div>
+            <div class="box">
+              <h3>Central Repo</h3>
+              <p>a.txt</p>
+            </div>
+            <div class="arrow">⇄</div>
+            <div class="box">
+              <h3>Dev2</h3>
+              <p>local repo</p>
+            </div>
+          </div>
+          <p>
+            Cả Dev1 và Dev2 cùng <code>clone</code>/<code>pull</code> file <code>a.txt</code> về từ Central Repo. Nếu cả hai cùng sửa file này dựa trên cùng một phiên bản cũ, nguy cơ conflict xuất hiện ngay khi người thứ hai cố <code>push</code> hoặc <code>pull</code>.
+          </p>
+        </section>
+
+        <section id="chua-co-conflict">
+          <h2>3. Mô phỏng trường hợp chưa có xung đột</h2>
+          <p>Luồng làm việc bình thường, chưa gây conflict:</p>
+          <ol>
+            <li>Dev1 tạo file <code>a.txt</code>, ghi nội dung ban đầu <code>Hello</code>.</li>
+            <li>Dev1 <code>add</code>, <code>commit</code>, rồi <code>push</code> lên Central Repo.</li>
+            <li>Dev2 <code>pull</code> về.</li>
+            <li>Dev2 thấy file <code>a.txt</code> đã được cập nhật, chưa có gì xung đột.</li>
+          </ol>
+          <div class="note">
+            Vì Dev2 đã lấy phiên bản mới nhất <strong>trước khi sửa</strong>, nên Git không có gì phải ghép xung đột.
+          </div>
+        </section>
+
+        <section id="co-tinh-tao-conflict">
+          <h2>4. Cố tình tạo Merge Conflict</h2>
+          <p>Tình huống thực tế hơn — hai người cùng sửa file dựa trên bản cũ:</p>
+          <ol>
+            <li>Dev1 sửa file <code>a.txt</code>, thêm dòng <code>world</code>, rồi <code>commit</code> và <code>push</code> lên Central Repo.</li>
+            <li>Dev2 lúc này <strong>chưa pull</strong> phiên bản mới về.</li>
+            <li>Dev2 vẫn sửa file cũ của mình, thêm dòng <code>Lê Nhật Tùng</code>, rồi <code>commit</code> thay đổi local.</li>
+            <li>Dev2 thử <code>git push</code> nhưng bị từ chối vì remote đã có commit mới từ Dev1.</li>
+            <li>Dev2 chạy <code>git pull</code>, Git cố tự trộn file nhưng không quyết định được nội dung nào nên báo conflict.</li>
+          </ol>
+
+          <p>Lỗi thường gặp khi push bị từ chối:</p>
+          <pre><code>! [rejected]        main -> main (fetch first)
+error: failed to push some refs
+hint: Updates were rejected because the remote contains work that you do not have locally.</code></pre>
+
+          <p>Khi chạy <code>git pull</code>, Git có thể báo:</p>
+          <pre><code>Auto-merging a.txt
+CONFLICT (content): Merge conflict in a.txt
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+
+          <div class="warning">
+            Đây chính là thời điểm xảy ra conflict: remote đang giữ <code>Hello + world</code>, còn local của Dev2 đang giữ <code>Hello + Lê Nhật Tùng</code>. Git không biết bạn muốn giữ dòng nào.
+          </div>
+        </section>
+
+        <section id="doc-marker">
+          <h2>5. Cách đọc ký hiệu xung đột (conflict marker)</h2>
+          <p>
+            Sau khi Git báo conflict, mở file bị lỗi bằng Notepad hoặc VS Code. Bên trong file sẽ có các ký hiệu đặc biệt do Git chèn vào để đánh dấu vùng xung đột.
+          </p>
+
+          <pre class="conflict-block"><code><span class="line-plain">Hello</span>
+<span class="line-head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="line-local">Lê Nhật Tùng</span>
+<span class="line-sep">=======</span>
+<span class="line-remote">world</span>
+<span class="line-head">&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</span></code></pre>
+
+          <table>
+            <thead><tr><th>Vùng</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code></td><td>Bắt đầu vùng xung đột, đánh dấu nội dung <strong>local hiện tại</strong>.</td></tr>
+              <tr><td>Nội dung ngay dưới <code>HEAD</code></td><td>Nội dung ở nhánh/local hiện tại của bạn.</td></tr>
+              <tr><td><code>=======</code></td><td>Đường phân cách giữa hai phiên bản.</td></tr>
+              <tr><td>Nội dung ngay dưới dấu phân cách</td><td>Nội dung đến từ remote (<code>origin/main</code>).</td></tr>
+              <tr><td><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></td><td>Kết thúc vùng xung đột, đánh dấu nguồn của phần remote.</td></tr>
+            </tbody>
+          </table>
+          <p>Dòng <strong>không nằm trong vùng conflict</strong>, ví dụ <code>Hello</code>, là dòng không bị xung đột.</p>
+
+          <p>Người lập trình viên phải tự quyết định:</p>
+          <ul>
+            <li>Giữ nội dung local.</li>
+            <li>Giữ nội dung remote.</li>
+            <li>Giữ cả hai.</li>
+            <li>Viết lại thành nội dung mới đúng hơn.</li>
+          </ul>
+
+          <p>Ví dụ sau khi xử lý, giữ lại cả ba dòng và <strong>xóa hết marker</strong>:</p>
+          <pre><code>Hello
+world
+Lê Nhật Tùng</code></pre>
+
+          <p>Sau đó lưu file, chạy:</p>
+          <pre><code>git add a.txt
+git commit -m "resolve merge conflict in a.txt"
+git push</code></pre>
+          <div class="success">Khi đó conflict đã được xử lý và lịch sử Git tiếp tục làm việc bình thường.</div>
+        </section>
+
+        <section id="quy-trinh-5-buoc">
+          <h2>6. Quy trình chuẩn 5 bước khi gặp conflict</h2>
+
+          <div class="step">
+            <h3>Bước 1 — Kiểm tra trạng thái</h3>
+            <pre><code>git status</code></pre>
+            <p>Git sẽ cho biết file nào đang bị conflict, ví dụ:</p>
+            <pre><code>both modified:   a.txt</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2 — Mở file bị conflict</h3>
+            <p>Mở bằng VS Code:</p>
+            <pre><code>code a.txt</code></pre>
+            <p>Hoặc mở cả thư mục:</p>
+            <pre><code>code .</code></pre>
+            <p>Trên Windows cũng có thể mở bằng Notepad:</p>
+            <pre><code>notepad a.txt</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3 — Đọc marker conflict</h3>
+            <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Nội dung của bạn
+=======
+Nội dung từ nhánh/remote được merge vào
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4 — Sửa file về trạng thái cuối cùng</h3>
+            <p>Tuyệt đối không để lại các dòng marker này trong file:</p>
+            <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+=======
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5 — Đánh dấu đã xử lý và commit</h3>
+            <pre><code>git add a.txt
+git commit -m "resolve merge conflict in a.txt"
+git push</code></pre>
+            <p>Nếu conflict xảy ra khi đang merge hoặc pull, commit sau khi sửa conflict chính là commit hoàn tất quá trình merge.</p>
+          </div>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>7. Thực hành đầy đủ trên Windows PowerShell</h2>
+          <p>Mô phỏng lại đúng tinh thần bài học: một repo trung tâm và hai thư mục local đại diện cho <code>dev1</code>, <code>dev2</code>.</p>
+
+          <div class="step">
+            <h3>Bước 1: Tạo thư mục bài tập</h3>
+            <pre><code>mkdir bai-tap-06
+cd bai-tap-06</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Tạo Central Repository dạng bare repo</h3>
+            <pre><code>git init --bare central-repo.git</code></pre>
+            <p>Bare repo chỉ dùng để nhận <code>push</code> và cung cấp dữ liệu cho <code>pull</code>/<code>clone</code>, không dùng để sửa file trực tiếp.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Clone thành hai thư mục Dev1 và Dev2</h3>
+            <pre><code>git clone .\central-repo.git dev1
+git clone .\central-repo.git dev2</code></pre>
+            <p>Cấu trúc thư mục sau khi clone:</p>
+            <pre><code>bai-tap-06/
+├── central-repo.git/
+├── dev1/
+└── dev2/</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Dev1 tạo file và push lần đầu</h3>
+            <pre><code>cd dev1
+
+"Hello" > a.txt
+
+git add a.txt
+git commit -m "dev1 add a.txt"
+
+git branch -M main
+git push -u origin main</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Dev2 pull về để có file mới</h3>
+            <pre><code>cd ..\dev2
+
+git pull origin main
+type a.txt</code></pre>
+            <p>Kết quả mong muốn:</p>
+            <pre><code>Hello</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6: Dev1 sửa file và push trước</h3>
+            <pre><code>cd ..\dev1
+
+"world" >> a.txt
+
+git add a.txt
+git commit -m "dev1 add world"
+git push</code></pre>
+            <p>Lúc này remote đã có nội dung:</p>
+            <pre><code>Hello
+world</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 7: Dev2 chưa pull nhưng vẫn sửa file cũ</h3>
+            <pre><code>cd ..\dev2
+
+"Lê Nhật Tùng" >> a.txt
+
+git add a.txt
+git commit -m "dev2 edit a.txt"</code></pre>
+            <p>Dev2 đang có nội dung local <code>Hello / Lê Nhật Tùng</code>, còn remote đang có <code>Hello / world</code>.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 8: Dev2 push và bị từ chối</h3>
+            <pre><code>git push</code></pre>
+            <pre><code>! [rejected] main -> main (fetch first)
+error: failed to push some refs</code></pre>
+            <p>Nguyên nhân: remote đã có commit mới từ Dev1 mà Dev2 chưa có.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 9: Dev2 pull về và gặp conflict</h3>
+            <pre><code>git pull origin main</code></pre>
+            <pre><code>Auto-merging a.txt
+CONFLICT (content): Merge conflict in a.txt
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 10: Mở file và sửa conflict</h3>
+            <pre><code>notepad a.txt</code></pre>
+            <p>File đang như sau:</p>
+            <pre><code>Hello
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Lê Nhật Tùng
+=======
+world
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+            <p>Sửa thành (xóa hết marker, giữ cả hai dòng):</p>
+            <pre><code>Hello
+world
+Lê Nhật Tùng</code></pre>
+            <p>Lưu file lại.</p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 11: Hoàn tất xử lý conflict</h3>
+            <pre><code>git add a.txt
+git commit -m "resolve merge conflict in a.txt"
+git push</code></pre>
+            <p>Kiểm tra lại:</p>
+            <pre><code>git status
+git log --oneline --graph --all</code></pre>
+            <div class="success">Conflict đã được xử lý, lịch sử Dev1/Dev2 đồng bộ trở lại trên Central Repo.</div>
+          </div>
+        </section>
+
+        <section id="ban-chat">
+          <h2>8. Khi nào dễ và khi nào khó bị conflict</h2>
+          <table>
+            <thead><tr><th>Git thường merge tự động được nếu...</th><th>Git dễ bị conflict nếu...</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Hai người sửa hai file khác nhau.</td>
+                <td>Hai người sửa cùng một dòng.</td>
+              </tr>
+              <tr>
+                <td>Hai người sửa hai vùng khác nhau trong cùng một file.</td>
+                <td>Một người sửa file, người kia xóa file.</td>
+              </tr>
+              <tr>
+                <td>Một người thêm dòng mới, người kia sửa vùng không liên quan.</td>
+                <td>Hai nhánh cùng đổi tên hoặc di chuyển file theo cách khác nhau.</td>
+              </tr>
+              <tr>
+                <td>—</td>
+                <td>Một người sửa cấu trúc lớn, người kia cũng sửa dựa trên cấu trúc cũ.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note">
+            Nói đơn giản: <strong>conflict không phải lỗi hỏng Git</strong>, mà là Git yêu cầu con người quyết định phiên bản cuối cùng.
+          </div>
+        </section>
+
+        <section id="han-che">
+          <h2>9. Cách hạn chế Merge Conflict khi làm việc nhóm</h2>
+          <table>
+            <thead><tr><th>Cách làm</th><th>Tác dụng</th></tr></thead>
+            <tbody>
+              <tr><td><code>git pull</code> trước khi bắt đầu sửa</td><td>Giúp local mới nhất, giảm nguy cơ sửa trên nền cũ.</td></tr>
+              <tr><td>Commit nhỏ, thường xuyên</td><td>Dễ merge, dễ review, dễ rollback.</td></tr>
+              <tr><td>Không để một file quá nhiều người sửa cùng lúc</td><td>Giảm khả năng sửa cùng dòng.</td></tr>
+              <tr><td>Chia task rõ ràng</td><td>Mỗi người phụ trách vùng code khác nhau.</td></tr>
+              <tr><td>Thường xuyên trao đổi khi sửa file quan trọng</td><td>Tránh hai người cùng sửa cùng logic.</td></tr>
+              <tr><td>Dùng branch riêng cho từng tính năng</td><td>Giúp cô lập thay đổi.</td></tr>
+              <tr><td>Dùng Pull Request / Merge Request</td><td>Có bước review trước khi merge vào nhánh chính.</td></tr>
+              <tr><td>Format code thống nhất</td><td>Tránh conflict do khác format.</td></tr>
+              <tr><td>Không sửa file sinh tự động nếu không cần</td><td>File lock, file build, file generated dễ gây conflict.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="lenh-huu-ich">
+          <h2>10. Một số lệnh hữu ích khi đang bị conflict</h2>
+
+          <h3>Xem file nào bị conflict</h3>
+          <pre><code>git status</code></pre>
+
+          <h3>Xem chi tiết khác biệt</h3>
+          <pre><code>git diff</code></pre>
+
+          <h3>Mở VS Code để sửa conflict</h3>
+          <pre><code>code .</code></pre>
+          <p>VS Code thường hiện các nút:</p>
+          <ul>
+            <li><code>Accept Current Change</code></li>
+            <li><code>Accept Incoming Change</code></li>
+            <li><code>Accept Both Changes</code></li>
+            <li><code>Compare Changes</code></li>
+          </ul>
+
+          <h3>Hủy quá trình merge nếu chưa muốn xử lý</h3>
+          <pre><code>git merge --abort</code></pre>
+          <div class="warning">Chỉ dùng <code>git merge --abort</code> khi bạn muốn quay về trạng thái trước khi merge.</div>
+
+          <h3>Kiểm tra lịch sử sau khi xử lý</h3>
+          <pre><code>git log --oneline --graph --all</code></pre>
+
+          <h3>Đọc nhanh lỗi khi push bị từ chối</h3>
+          <pre><code>Updates were rejected because the remote contains work that you do not have locally.</code></pre>
+          <p>Hiểu là: remote đã có commit mới, local của bạn đang cũ hơn remote, và bạn cần <code>pull</code> trước khi push được tiếp.</p>
+          <pre><code>git pull
+# sửa conflict nếu có
+git add .
+git commit -m "resolve merge conflict"
+git push</code></pre>
+        </section>
+
+        <section id="luu-y">
+          <h2>11. Lưu ý quan trọng khi xử lý conflict</h2>
+
+          <h3>11.1. Không xóa bừa toàn bộ nội dung</h3>
+          <p>Khi thấy marker conflict, không nên xóa hết một bên nếu chưa hiểu ý nghĩa code. Cần đọc kỹ: phần nào của mình, phần nào của người khác, có cần giữ cả hai không, và giữ cả hai có làm sai logic chương trình không.</p>
+
+          <h3>11.2. Không commit khi marker conflict vẫn còn</h3>
+          <p>Trước khi commit, nên tìm trong toàn bộ project:</p>
+          <pre><code>git grep "&lt;&lt;&lt;&lt;&lt;&lt;&lt;"
+git grep "======="
+git grep "&gt;&gt;&gt;&gt;&gt;&gt;&gt;"</code></pre>
+          <p>Nếu còn marker, nghĩa là conflict chưa xử lý sạch.</p>
+
+          <h3>11.3. Sau khi sửa conflict nên chạy/test lại chương trình</h3>
+          <p>Git chỉ biết trộn text, không biết chương trình của bạn còn đúng logic hay không. Sau khi sửa conflict nên chạy lại chương trình, chạy test nếu có, và kiểm tra file có bị mất dòng quan trọng hoặc sai định dạng không.</p>
+
+          <h3>11.4. Commit message nên rõ ràng</h3>
+          <pre><code>git commit -m "resolve merge conflict in a.txt"</code></pre>
+          <div class="warning">Không nên dùng message quá mơ hồ như <code>git commit -m "fix"</code>.</div>
+        </section>
+
+        <section id="bai-tap">
+          <h2>12. Bài tập tự luyện</h2>
+
+          <div class="qa">
+            <h3>Bài 1: Tạo conflict cùng dòng</h3>
+            <ol>
+              <li>Tạo repo trung tâm, clone thành <code>dev1</code> và <code>dev2</code>.</li>
+              <li>Tạo file <code>info.txt</code> với nội dung:
+                <pre><code>Name: PTIT
+Major: Telecom</code></pre>
+              </li>
+              <li>Dev1 sửa dòng <code>Major</code> thành <code>Major: Network Engineering</code>, commit và push.</li>
+              <li>Dev2 chưa pull, sửa dòng <code>Major</code> thành <code>Major: Telecommunications Networks</code>.</li>
+              <li>Dev2 commit, push, pull và tự xử lý conflict.</li>
+            </ol>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 2: Giữ cả hai thay đổi</h3>
+            <p>Tạo conflict trong file <code>todo.txt</code>: Dev1 thêm dòng <code>Learn Git branch</code>, Dev2 thêm dòng <code>Learn Git merge</code>. Khi conflict xảy ra, hãy sửa để giữ cả hai dòng.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 3: Dùng VS Code để xử lý conflict</h3>
+            <p>Lặp lại Bài 1 nhưng mở bằng <code>code .</code>, sau đó thử cả ba nút <code>Accept Current Change</code>, <code>Accept Incoming Change</code>, <code>Accept Both Changes</code> và ghi lại sự khác nhau giữa chúng.</p>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>
+            Merge Conflict xảy ra khi Git không tự quyết định được cách ghép thay đổi. Trong bài này, conflict được mô phỏng bằng một Central Repo và hai developer cùng sửa file <code>a.txt</code>: Dev1 push trước, Dev2 sửa trên bản cũ rồi push bị từ chối; khi Dev2 pull về, Git báo conflict trong file.
+          </p>
+          <ul>
+            <li>Marker conflict gồm <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> (local), <code>=======</code> (phân cách), <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code> (remote).</li>
+            <li>Phải xóa hết marker trước khi commit, và chỉ giữ nội dung đúng cuối cùng.</li>
+            <li>Quy trình chuẩn: <code>git status</code> → mở file → đọc marker → sửa file → <code>git add</code> → <code>git commit</code> → <code>git push</code>.</li>
+            <li>Có thể hạn chế conflict bằng cách pull thường xuyên, commit nhỏ, chia task rõ ràng, dùng branch riêng và Pull Request.</li>
+          </ul>
+          <div class="success">
+            <strong>Điểm quan trọng nhất:</strong> Git chỉ phát hiện và đánh dấu vùng xung đột; chính lập trình viên phải đọc nội dung và quyết định giữ phần nào, bỏ phần nào, hoặc kết hợp cả hai.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 7. Xử lý xung đột trong Git - Merge Conflict
+        </div>
+      </article>
     </main>
+  </div>
+
+  <style>
+    .conflict-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      overflow-x: auto;
+    }
+    .conflict-block .line-plain { color: #cbd5e1; }
+    .conflict-block .line-head { color: #fb923c; font-weight: 700; }
+    .conflict-block .line-sep { color: #94a3b8; font-weight: 700; }
+    .conflict-block .line-local { color: #38bdf8; }
+    .conflict-block .line-remote { color: #4ade80; }
+  </style>
+
+<script src="../shared/js/doc-script.js"></script>
 </body>
 </html>

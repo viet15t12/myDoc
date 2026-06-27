@@ -1,165 +1,371 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Câu lệnh GIT CHECKOUT chuyển đổi giữa các commit trong Git</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: #f8fafc;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 32px 20px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #f97316;
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 16px 0 8px;
-            font-size: 34px;
-            line-height: 1.2;
-        }
-
-        .description {
-            color: #4b5563;
-            font-size: 18px;
-        }
-
-        .meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .meta-item {
-            padding: 14px;
-            border-radius: 12px;
-            background: #f1f5f9;
-        }
-
-        .meta-label {
-            display: block;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .meta-value {
-            font-weight: 700;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #075985;
-            font-size: 13px;
-        }
-
-        .placeholder {
-            margin-top: 28px;
-            padding: 18px;
-            border-left: 4px solid #f97316;
-            background: #fff7ed;
-            border-radius: 8px;
-        }
-
-        footer {
-            margin-top: 28px;
-            color: #64748b;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8. Câu lệnh git checkout - Chuyển đổi giữa các commit</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
-    <main class="container">
-        <article class="card">
-            <span class="badge">Bài 08</span>
-            <h1>Câu lệnh GIT CHECKOUT chuyển đổi giữa các commit trong Git</h1>
-            <p class="description">Chuyển đổi giữa commit, branch và khôi phục trạng thái làm việc bằng git checkout</p>
+  <div id="readProgress"></div>
 
-            <section class="meta" aria-label="Thông tin bài học">
-                <div class="meta-item">
-                    <span class="meta-label">Series</span>
-                    <span class="meta-value">Học Git từ cơ bản</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Loại</span>
-                    <span class="meta-value">git</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Thời lượng</span>
-                    <span class="meta-value">15 phút</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Số phần</span>
-                    <span class="meta-value">7</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Trạng thái</span>
-                    <span class="meta-value">coming</span>
-                </div>
-            </section>
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 08</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="07" href="#07">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="09" href="#09">Bài sau →</a>
+    </div>
+  </div>
 
-            <section>
-                <h2>Nội dung bài học</h2>
-                <div class="placeholder">
-                    File này được tạo tự động vì còn thiếu trong thư mục bài học.
-                    Bạn có thể thay phần này bằng nội dung chi tiết của bài học.
-                </div>
-            </section>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#tu-khoa">1. Từ khóa quan trọng</a>
+      <a href="#head-la-gi">2. Kiến thức nền: HEAD là gì?</a>
+      <a href="#tao-repo-thuc-hanh">3. Tạo repo và nhiều commit</a>
+      <a href="#checkout-commit-cu">4. Checkout về commit cũ</a>
+      <a href="#commit-trong-detached">5. Commit trong detached HEAD</a>
+      <a href="#giai-thich-detached">6. Giải thích detached HEAD</a>
+      <a href="#cu-phap">7. Cú pháp quan trọng</a>
+      <a href="#phan-biet-lenh">8. Phân biệt checkout / switch / restore</a>
+      <a href="#khi-nao-dung">9. Khi nào nên dùng git checkout hash?</a>
+      <a href="#thuc-hanh">10. Quy trình thực hành</a>
+      <a href="#loi-thuong-gap">11. Lỗi thường gặp</a>
+      <a href="#bai-tap">12. Bài tập tự luyện</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
 
-            <section>
-                <h2>Tags</h2>
-                <div class="tags">
-        <span class="tag">git</span>
-        <span class="tag">checkout</span>
-        <span class="tag">commit</span>
-        <span class="tag">branch</span>
-                </div>
-            </section>
+    <main>
+      <article class="container">
+        <h1>8. Câu lệnh git checkout - Chuyển đổi giữa các commit</h1>
+        <p class="meta">
+          Tìm hiểu <code>git checkout &lt;commit-hash&gt;</code>, trạng thái <strong>detached HEAD</strong>, và cách quay lại trạng thái mới nhất của nhánh chính một cách an toàn.
+        </p>
 
-            <footer>
-                Tạo tự động lúc: 2026-06-27 05:57:48
-            </footer>
-        </article>
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Mỗi lần <code>commit</code>, Git tạo ra một mã hash riêng cho commit đó. Dựa vào mã này, bạn có thể quay lại trạng thái dự án ở một thời điểm trước đây bằng <code>git checkout</code>.
+            Ví dụ, tuần trước dự án chạy ổn nhưng tuần này sửa nhiều thứ bị lỗi — bạn có thể checkout về commit tuần trước để xem lại hoặc tiếp tục làm việc từ đó.
+          </p>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li><code>git checkout</code> dùng để chuyển trạng thái thư mục làm việc về một commit cũ.</li>
+            <li>Mỗi commit có một mã hash riêng, có thể dùng vài ký tự đầu nếu không bị trùng.</li>
+            <li>Khi checkout trực tiếp vào commit hash, Git đưa bạn vào trạng thái <strong>detached HEAD</strong>.</li>
+            <li>Detached HEAD không phải lỗi, nhưng cần hiểu để tránh mất commit mới.</li>
+            <li>Có thể quay lại nhánh chính bằng <code>git checkout master</code> hoặc <code>git checkout main</code>.</li>
+            <li>Cách xem lịch sử commit bằng <code>git log</code>, <code>git log --oneline</code>.</li>
+          </ul>
+        </section>
+
+        <section id="tu-khoa">
+          <h2>1. Từ khóa quan trọng</h2>
+          <table>
+            <thead><tr><th>Từ khóa</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td><code>commit</code></td><td>Một mốc lưu trạng thái của dự án.</td></tr>
+              <tr><td><code>hash</code></td><td>Mã định danh duy nhất của commit, ví dụ <code>f62cf8...</code>.</td></tr>
+              <tr><td><code>HEAD</code></td><td>Con trỏ cho biết hiện tại Git đang đứng ở đâu.</td></tr>
+              <tr><td><code>branch</code></td><td>Nhánh làm việc, ví dụ <code>master</code>, <code>main</code>, <code>feature/login</code>.</td></tr>
+              <tr><td><code>detached HEAD</code></td><td>Trạng thái HEAD trỏ trực tiếp vào một commit thay vì trỏ vào một branch.</td></tr>
+              <tr><td><code>git checkout &lt;hash&gt;</code></td><td>Chuyển thư mục làm việc về đúng trạng thái của commit đó.</td></tr>
+              <tr><td><code>git checkout &lt;branch&gt;</code></td><td>Chuyển về một nhánh cụ thể.</td></tr>
+              <tr><td><code>git log</code> / <code>git log --oneline</code></td><td>Xem lịch sử commit (dạng đầy đủ hoặc ngắn gọn).</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="head-la-gi">
+          <h2>2. Kiến thức nền: HEAD là gì?</h2>
+          <p>Trong Git, <code>HEAD</code> giống như "vị trí hiện tại" của bạn trong lịch sử dự án. Bình thường, <code>HEAD</code> không trỏ thẳng vào commit mà trỏ vào một nhánh:</p>
+          <pre><code>HEAD -> master -> commit mới nhất</code></pre>
+          <p>Khi bạn commit thêm, nhánh <code>master</code> tiến lên commit mới, và <code>HEAD</code> vẫn đi theo <code>master</code>.</p>
+          <p>Nhưng khi bạn chạy:</p>
+          <pre><code>git checkout &lt;commit-hash&gt;</code></pre>
+          <p><code>HEAD</code> sẽ trỏ trực tiếp vào commit đó. Git thường báo:</p>
+          <pre><code>You are in 'detached HEAD' state.</code></pre>
+          <p>Nghĩa là bạn đang xem hoặc làm việc tại một commit cũ, nhưng chưa đứng trên một nhánh cụ thể.</p>
+
+          <div class="diagram">
+            <div class="box">
+              <h3>HEAD</h3>
+              <p>→ master</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <h3>master</h3>
+              <p>commit mới nhất</p>
+            </div>
+          </div>
+          <div class="diagram">
+            <div class="box">
+              <h3>HEAD</h3>
+              <p>(detached)</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <h3>commit cũ</h3>
+              <p>không nằm trên branch nào</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="tao-repo-thuc-hanh">
+          <h2>3. Tạo repo thực hành và tạo nhiều commit</h2>
+          <div class="step">
+            <h3>Bước 1: Tạo thư mục bài tập</h3>
+            <pre><code>mkdir exercise-7
+cd exercise-7
+
+git init
+
+echo "Hello" > hello.txt
+mkdir folder1
+echo "Nguyen Van A" > folder1/danhsach.txt
+
+git add .
+git commit -m "create hello file and folder1"</code></pre>
+          </div>
+          <div class="step">
+            <h3>Bước 2: Tạo thêm commit thứ hai</h3>
+            <pre><code>echo "Noi dung A" > a.txt
+
+git add .
+git commit -m "create file a.txt"</code></pre>
+          </div>
+          <div class="step">
+            <h3>Bước 3: Xem lịch sử commit</h3>
+            <pre><code>git log --oneline</code></pre>
+            <p>Kết quả minh họa:</p>
+            <pre><code>0be3db1 create file a.txt
+f62cf8a create hello file and folder1</code></pre>
+          </div>
+        </section>
+
+        <section id="checkout-commit-cu">
+          <h2>4. Checkout về commit cũ</h2>
+          <p>
+            Giả sử commit mới nhất là <code>0be3db1</code>, commit cũ là <code>f62cf8a</code>. Muốn quay về trạng thái commit cũ:
+          </p>
+          <pre><code>git checkout f62cf8a</code></pre>
+          <p>Git có thể báo đang ở trạng thái detached HEAD. Kiểm tra file trong thư mục:</p>
+          <pre><code>ls</code></pre>
+          <p>Trước khi checkout có thể có:</p>
+          <pre><code>a.txt
+hello.txt
+folder1/</code></pre>
+          <p>Sau khi checkout về commit cũ, có thể chỉ còn:</p>
+          <pre><code>hello.txt
+folder1/</code></pre>
+          <div class="note">File được tạo ở commit sau không còn xuất hiện nữa, vì thư mục làm việc đã quay về đúng trạng thái của commit cũ. Đây là hành vi bình thường, không phải mất dữ liệu.</div>
+        </section>
+
+        <section id="commit-trong-detached">
+          <h2>5. Commit mới trong detached HEAD</h2>
+          <p>Đang ở commit cũ, nếu tạo thêm file mới rồi commit:</p>
+          <pre><code>echo "Noi dung B" > b.txt
+
+git add .
+git commit -m "create file b.txt"</code></pre>
+          <p>
+            Lúc này commit mới được tạo ra, nhưng nó <strong>không nằm trên nhánh master/main ban đầu</strong>. Nó nằm trên một hướng lịch sử tách rời. Đây là lý do Git cảnh báo detached HEAD.
+          </p>
+          <div class="diagram">
+            <div class="box">
+              <h3>master/main</h3>
+              <p>C1 → C2 (tiếp tục)</p>
+            </div>
+            <div class="arrow">⤴</div>
+            <div class="box">
+              <h3>detached HEAD</h3>
+              <p>từ C1 → B1 (tách rời)</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="giai-thich-detached">
+          <h2>6. Giải thích detached HEAD</h2>
+          <p>
+            Detached HEAD nghĩa là <code>HEAD</code> bị "tách" khỏi branch. Đây <strong>không phải lỗi nghiêm trọng</strong> — bạn vẫn có thể xem file, sửa file, commit.
+            Nhưng nếu checkout sang branch khác mà không tạo nhánh giữ lại commit mới, commit đó có thể khó tìm lại.
+          </p>
+          <p>Nếu đang ở detached HEAD và muốn giữ công việc mới, nên tạo branch mới:</p>
+          <pre><code>git switch -c recover-work</code></pre>
+          <p>Hoặc dùng cú pháp cũ:</p>
+          <pre><code>git checkout -b recover-work</code></pre>
+          <p>Sau đó, commit mới sẽ được gắn vào branch <code>recover-work</code>.</p>
+          <p>Nếu chỉ muốn quay lại nhánh chính:</p>
+          <pre><code>git checkout master
+# hoặc
+git checkout main</code></pre>
+          <div class="warning">
+            Nếu bạn rời khỏi detached HEAD (ví dụ checkout sang <code>master</code>) mà <strong>chưa tạo branch giữ lại commit mới</strong>, commit đó sẽ rất khó tìm lại sau này.
+          </div>
+        </section>
+
+        <section id="cu-phap">
+          <h2>7. Cú pháp quan trọng</h2>
+          <h3>Xem lịch sử commit</h3>
+          <pre><code>git log
+git log --oneline
+git log --oneline --graph --all</code></pre>
+          <h3>Checkout về một commit cũ</h3>
+          <pre><code>git checkout &lt;commit-hash&gt;</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>git checkout f62cf8a</code></pre>
+          <p>Bạn không cần gõ đủ toàn bộ hash. Thường <strong>6–8 ký tự đầu</strong> là đủ, miễn là không trùng với commit khác.</p>
+          <h3>Quay lại nhánh chính</h3>
+          <pre><code>git checkout master
+git checkout main</code></pre>
+          <h3>Tạo nhánh mới từ trạng thái hiện tại</h3>
+          <pre><code>git switch -c ten-nhanh-moi
+git checkout -b ten-nhanh-moi</code></pre>
+        </section>
+
+        <section id="phan-biet-lenh">
+          <h2>8. Phân biệt checkout, switch, restore</h2>
+          <p>
+            Trong Git cũ, <code>checkout</code> làm nhiều việc cùng lúc: chuyển branch, checkout commit, khôi phục file. Vì vậy người mới dễ nhầm.
+            Git mới tách thành các lệnh rõ hơn:
+          </p>
+          <table>
+            <thead><tr><th>Việc cần làm</th><th>Lệnh cũ</th><th>Lệnh mới nên biết</th></tr></thead>
+            <tbody>
+              <tr><td>Chuyển nhánh</td><td><code>git checkout &lt;branch&gt;</code></td><td><code>git switch &lt;branch&gt;</code></td></tr>
+              <tr><td>Tạo và chuyển sang nhánh mới</td><td><code>git checkout -b &lt;branch&gt;</code></td><td><code>git switch -c &lt;branch&gt;</code></td></tr>
+              <tr><td>Khôi phục file</td><td><code>git checkout -- &lt;file&gt;</code></td><td><code>git restore &lt;file&gt;</code></td></tr>
+              <tr><td>Xem commit cũ</td><td><code>git checkout &lt;hash&gt;</code></td><td>vẫn thường dùng <code>git checkout &lt;hash&gt;</code></td></tr>
+            </tbody>
+          </table>
+          <p>Trong bài này, trọng tâm là <strong>checkout commit cũ</strong>.</p>
+        </section>
+
+        <section id="khi-nao-dung">
+          <h2>9. Khi nào nên dùng git checkout &lt;hash&gt;?</h2>
+          <p>Dùng khi:</p>
+          <ul>
+            <li>Muốn xem lại code ở một phiên bản cũ.</li>
+            <li>Muốn kiểm tra bug bắt đầu xuất hiện từ commit nào.</li>
+            <li>Muốn so sánh trạng thái dự án trước và sau một thay đổi.</li>
+            <li>Muốn lấy lại một đoạn code cũ.</li>
+            <li>Muốn thử nghiệm nhanh từ một commit cũ.</li>
+          </ul>
+          <div class="warning">
+            Không nên dùng bừa bãi để "quay về vĩnh viễn" nếu bạn chưa hiểu detached HEAD. Nếu mục tiêu là xóa commit mới nhất hoặc quay nhánh về commit cũ, cần học thêm <code>git reset</code> hoặc <code>git revert</code>.
+          </div>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>10. Quy trình thực hành đề xuất</h2>
+          <div class="step">
+            <h3>Bước 1: Tạo 3 commit</h3>
+            <pre><code>mkdir checkout-practice
+cd checkout-practice
+
+git init
+
+echo "Version 1" > app.txt
+git add .
+git commit -m "version 1"
+
+echo "Version 2" >> app.txt
+git add .
+git commit -m "version 2"
+
+echo "Version 3" >> app.txt
+git add .
+git commit -m "version 3"
+
+git log --oneline</code></pre>
+            <p>Giả sử log là:</p>
+            <pre><code>c333333 version 3
+b222222 version 2
+a111111 version 1</code></pre>
+          </div>
+          <div class="step">
+            <h3>Bước 2: Checkout về version 1</h3>
+            <pre><code>git checkout a111111
+cat app.txt</code></pre>
+          </div>
+          <div class="step">
+            <h3>Bước 3: Quay lại nhánh chính</h3>
+            <pre><code>git checkout master
+# hoặc git checkout main</code></pre>
+          </div>
+        </section>
+
+        <section id="loi-thuong-gap">
+          <h2>11. Lỗi thường gặp</h2>
+          <h3>Lỗi 1 — Tưởng file bị mất</h3>
+          <p>Khi checkout về commit cũ, file mới tạo ở các commit sau có thể biến mất khỏi thư mục. Đây là hành vi bình thường vì Git đang đưa thư mục về đúng trạng thái cũ. Muốn quay lại hiện tại:</p>
+          <pre><code>git checkout master</code></pre>
+
+          <h3>Lỗi 2 — Commit trong detached HEAD rồi quên tạo branch</h3>
+          <p>Nếu đang detached HEAD mà commit tiếp, hãy tạo nhánh để giữ lại:</p>
+          <pre><code>git switch -c save-my-work</code></pre>
+
+          <h3>Lỗi 3 — Dùng hash quá ngắn</h3>
+          <p>Nếu gõ quá ít ký tự hash, Git có thể không xác định được commit nào. Nên dùng khoảng 6–8 ký tự đầu:</p>
+          <pre><code>git checkout f62cf8a</code></pre>
+        </section>
+
+        <section id="bai-tap">
+          <h2>12. Bài tập tự luyện</h2>
+          <div class="qa">
+            <h3>Bài 1: Tạo 3 commit và checkout từng commit</h3>
+            <ol>
+              <li>Tạo repo mới.</li>
+              <li>Tạo file <code>note.txt</code>.</li>
+              <li>Commit 3 lần, mỗi lần thêm một dòng.</li>
+              <li>Dùng <code>git log --oneline</code> lấy hash.</li>
+              <li>Checkout lần lượt về commit 1, 2, 3.</li>
+              <li>Quan sát nội dung file thay đổi như thế nào.</li>
+            </ol>
+          </div>
+          <div class="qa">
+            <h3>Bài 2: Thử detached HEAD</h3>
+            <ol>
+              <li>Checkout về commit đầu tiên.</li>
+              <li>Tạo file <code>old-test.txt</code> rồi commit.</li>
+              <li>Chạy <code>git log --oneline --graph --all</code>.</li>
+              <li>Tạo branch để giữ commit: <code>git switch -c old-test-branch</code>.</li>
+            </ol>
+          </div>
+          <div class="qa">
+            <h3>Bài 3: Quay lại branch chính</h3>
+            <p>Sau khi checkout commit cũ, quay lại branch chính bằng <code>git checkout master</code> hoặc <code>git checkout main</code>, sau đó kiểm tra:</p>
+            <pre><code>git status
+git log --oneline</code></pre>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>
+            <code>git checkout &lt;commit-hash&gt;</code> giúp bạn quay về trạng thái của một commit bất kỳ. Khi checkout trực tiếp vào commit, Git đưa bạn vào trạng thái <strong>detached HEAD</strong>.
+            Trạng thái này không phải lỗi, nhưng nếu tiếp tục commit thì nên tạo branch mới để giữ công việc.
+          </p>
+          <div class="success">
+            Muốn quay về hiện tại, checkout lại branch chính bằng <code>git checkout master</code> hoặc <code>git checkout main</code>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 8. Câu lệnh git checkout - Chuyển đổi giữa các commit
+        </div>
+      </article>
     </main>
+  </div>
+
+<script src="../shared/js/doc-script.js"></script>
 </body>
 </html>

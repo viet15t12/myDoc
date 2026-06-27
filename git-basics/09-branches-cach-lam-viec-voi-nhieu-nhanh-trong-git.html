@@ -1,164 +1,432 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Branches - cách làm việc với nhiều nhánh trong Git</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #1f2937;
-            background: #f8fafc;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 32px 20px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #f97316;
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 16px 0 8px;
-            font-size: 34px;
-            line-height: 1.2;
-        }
-
-        .description {
-            color: #4b5563;
-            font-size: 18px;
-        }
-
-        .meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .meta-item {
-            padding: 14px;
-            border-radius: 12px;
-            background: #f1f5f9;
-        }
-
-        .meta-label {
-            display: block;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .meta-value {
-            font-weight: 700;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #075985;
-            font-size: 13px;
-        }
-
-        .placeholder {
-            margin-top: 28px;
-            padding: 18px;
-            border-left: 4px solid #f97316;
-            background: #fff7ed;
-            border-radius: 8px;
-        }
-
-        footer {
-            margin-top: 28px;
-            color: #64748b;
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9. Branches - Cách làm việc với nhiều nhánh trong Git</title>
+  <link rel="stylesheet" href="../shared/css/doc-styles.css" />
 </head>
 <body>
-    <main class="container">
-        <article class="card">
-            <span class="badge">Bài 09</span>
-            <h1>Branches - cách làm việc với nhiều nhánh trong Git</h1>
-            <p class="description">Khái niệm branch, tạo nhánh, chuyển nhánh và quy trình làm việc nhiều nhánh</p>
+  <div id="readProgress"></div>
 
-            <section class="meta" aria-label="Thông tin bài học">
-                <div class="meta-item">
-                    <span class="meta-label">Series</span>
-                    <span class="meta-value">Học Git từ cơ bản</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Loại</span>
-                    <span class="meta-value">git</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Thời lượng</span>
-                    <span class="meta-value">25 phút</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Số phần</span>
-                    <span class="meta-value">9</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">Trạng thái</span>
-                    <span class="meta-value">coming</span>
-                </div>
-            </section>
+  <div class="topnav">
+    <div class="topnav-left">
+      <a href="index.html">← Trang chủ</a>
+      <span class="topnav-breadcrumb"><span>/</span> Bài 09</span>
+    </div>
+    <div class="topnav-right">
+      <a class="nav-pill" data-lesson-id="08" href="#08">← Bài trước</a>
+      <a class="nav-pill" data-lesson-id="10" href="#10">Bài sau →</a>
+    </div>
+  </div>
 
-            <section>
-                <h2>Nội dung bài học</h2>
-                <div class="placeholder">
-                    File này được tạo tự động vì còn thiếu trong thư mục bài học.
-                    Bạn có thể thay phần này bằng nội dung chi tiết của bài học.
-                </div>
-            </section>
+  <div class="layout">
+    <aside>
+      <h2>Mục lục</h2>
+      <a href="#gioi-thieu">Giới thiệu</a>
+      <a href="#muc-tieu">Mục tiêu bài học</a>
+      <a href="#branch-la-gi">1. Branch là gì?</a>
+      <a href="#tu-khoa">2. Từ khóa quan trọng</a>
+      <a href="#vi-sao-can-branch">3. Vì sao cần branch?</a>
+      <a href="#hai-lenh-co-ban">4. Hai lệnh cơ bản: tạo và chuyển branch</a>
+      <a href="#head-theo-branch">5. HEAD đi theo branch hiện tại</a>
+      <a href="#thuc-hanh">6. Thực hành: Central Repo và hai Developer</a>
+      <a href="#khac-nhau-giua-branch">7. Sự khác nhau giữa các branch</a>
+      <a href="#cu-phap-can-nho">8. Cú pháp Git branch cần nhớ</a>
+      <a href="#uncommitted">9. Lưu ý về uncommitted changes</a>
+      <a href="#workflow-nhom">10. Mô hình làm việc branch trong nhóm</a>
+      <a href="#dat-ten">11. Quy tắc đặt tên branch</a>
+      <a href="#bai-tap">12. Bài tập tự luyện</a>
+      <a href="#tong-ket">Tổng kết</a>
+    </aside>
 
-            <section>
-                <h2>Tags</h2>
-                <div class="tags">
-        <span class="tag">git</span>
-        <span class="tag">branch</span>
-        <span class="tag">workflow</span>
-                </div>
-            </section>
+    <main>
+      <article class="container">
+        <h1>9. Branches - Cách làm việc với nhiều nhánh trong Git</h1>
+        <p class="meta">
+          Branch là gì, vì sao cần dùng, cách tạo/chuyển branch bằng <code>git branch</code>, <code>git checkout</code>, <code>git switch</code>, và cách push branch mới lên remote.
+        </p>
 
-            <footer>
-                Tạo tự động lúc: 2026-06-27 05:57:48
-            </footer>
-        </article>
+        <section id="gioi-thieu">
+          <h2>Giới thiệu</h2>
+          <p>
+            Ở các bài trước, bạn đã làm việc chủ yếu trên một dòng lịch sử duy nhất (<code>master</code>/<code>main</code>) và đã biết cách quay lại commit cũ bằng <code>git checkout</code>.
+            Bài này giới thiệu <strong>Branch</strong> — cách tạo ra nhiều hướng phát triển song song trong cùng một repository, để nhiều người hoặc nhiều tính năng có thể làm việc độc lập mà không ảnh hưởng nhánh chính.
+          </p>
+        </section>
+
+        <section id="muc-tieu">
+          <h2>Mục tiêu bài học</h2>
+          <ul>
+            <li>Branch là gì và vì sao cần dùng branch.</li>
+            <li>Branch giúp nhiều người hoặc nhiều tính năng làm việc song song.</li>
+            <li>Cách tạo branch mới bằng <code>git branch &lt;ten-nhanh&gt;</code>.</li>
+            <li>Cách xem danh sách branch bằng <code>git branch -l</code> hoặc <code>git branch</code>.</li>
+            <li>Cách chuyển branch bằng <code>git checkout &lt;ten-nhanh&gt;</code>.</li>
+            <li>Cách tạo file/commit riêng trên từng branch.</li>
+            <li>Cách push branch mới lên remote bằng <code>git push -u origin &lt;ten-nhanh&gt;</code>.</li>
+            <li>Vì sao mỗi branch có thể có file và lịch sử khác nhau.</li>
+          </ul>
+        </section>
+
+        <section id="branch-la-gi">
+          <h2>1. Branch là gì?</h2>
+          <p>
+            Branch là một nhánh phát triển độc lập trong Git. Thay vì mọi người cùng sửa trực tiếp trên <code>master</code> hoặc <code>main</code>, ta có thể tách ra nhiều nhánh để làm việc riêng.
+          </p>
+          <p>Ví dụ:</p>
+          <ul>
+            <li><code>master</code>/<code>main</code>: nhánh chính, chứa code ổn định.</li>
+            <li><code>feature/login</code>: nhánh làm chức năng đăng nhập.</li>
+            <li><code>bugfix/header</code>: nhánh sửa lỗi giao diện header.</li>
+            <li><code>experiment/api</code>: nhánh thử nghiệm API mới.</li>
+          </ul>
+          <p>Khi công việc trên branch ổn, ta có thể gộp branch đó trở lại nhánh chính bằng <code>git merge</code> (bài tiếp theo).</p>
+
+          <div class="diagram">
+            <div class="box">
+              <h3>main</h3>
+              <p>nhánh chính</p>
+            </div>
+            <div class="arrow">⇉</div>
+            <div class="box">
+              <h3>feature</h3>
+              <p>bugfix · experiment</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="tu-khoa">
+          <h2>2. Từ khóa quan trọng</h2>
+          <table>
+            <thead><tr><th>Từ khóa</th><th>Ý nghĩa</th></tr></thead>
+            <tbody>
+              <tr><td><code>branch</code></td><td>Nhánh làm việc trong Git.</td></tr>
+              <tr><td><code>master/main</code></td><td>Nhánh chính của repository.</td></tr>
+              <tr><td><code>HEAD</code></td><td>Vị trí hiện tại Git đang đứng. Khi chuyển branch, HEAD chuyển theo branch đó.</td></tr>
+              <tr><td><code>git branch</code></td><td>Xem hoặc tạo branch.</td></tr>
+              <tr><td><code>git checkout &lt;branch&gt;</code></td><td>Chuyển sang branch khác.</td></tr>
+              <tr><td><code>git switch &lt;branch&gt;</code></td><td>Lệnh mới hơn để chuyển branch.</td></tr>
+              <tr><td><code>git push -u origin &lt;branch&gt;</code></td><td>Đẩy branch mới lên remote và thiết lập upstream.</td></tr>
+              <tr><td><code>upstream branch</code></td><td>Branch remote mà branch local đang theo dõi.</td></tr>
+              <tr><td><code>remote repository</code></td><td>Repo trung tâm, ví dụ GitHub hoặc bare repo để mô phỏng.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="vi-sao-can-branch">
+          <h2>3. Vì sao cần branch?</h2>
+          <p>
+            Thông thường có một nhánh chính gọi là <code>main</code> hoặc <code>master</code>. Nhưng dự án thực tế không chỉ đi theo một đường thẳng:
+            có thể nhiều người cùng tham gia, mỗi người làm một phần khác nhau, hoặc một người muốn thử nghiệm một hướng mới nhưng chưa chắc thành công.
+          </p>
+          <p>
+            Branch giúp tạo ra nhiều hướng phát triển khác nhau. Nếu thử nghiệm thất bại, nhánh chính vẫn an toàn. Nếu thành công, nhánh phụ có thể được merge trở lại nhánh chính.
+          </p>
+        </section>
+
+        <section id="hai-lenh-co-ban">
+          <h2>4. Hai lệnh cơ bản: tạo branch và chuyển branch</h2>
+          <p>Tạo branch mới:</p>
+          <pre><code>git branch &lt;ten-nhanh&gt;</code></pre>
+          <p>Chuyển sang branch khác:</p>
+          <pre><code>git checkout &lt;ten-nhanh&gt;</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>git branch nhanh-1
+git checkout nhanh-1</code></pre>
+          <p>Cách viết hiện đại hơn:</p>
+          <pre><code>git switch nhanh-1</code></pre>
+          <p>Tạo và chuyển sang branch mới cùng lúc:</p>
+          <pre><code>git checkout -b nhanh-1
+# hoặc
+git switch -c nhanh-1</code></pre>
+        </section>
+
+        <section id="head-theo-branch">
+          <h2>5. HEAD đi theo branch hiện tại</h2>
+          <p>
+            Khi đang ở <code>master</code>, mọi commit mới sẽ nằm trên <code>master</code>. Khi checkout sang <code>nhanh-1</code>, <code>HEAD</code> chuyển sang <code>nhanh-1</code>, và mọi commit mới sẽ nằm trên <code>nhanh-1</code>.
+          </p>
+          <div class="diagram">
+            <div class="box">
+              <h3>main</h3>
+              <p>C1 → C2 → M1</p>
+            </div>
+            <div class="arrow">⤴</div>
+            <div class="box">
+              <h3>nhanh-1</h3>
+              <p>(từ C2) → N1 → N2</p>
+            </div>
+          </div>
+          <p>
+            <code>N1</code>, <code>N2</code> là commit trên nhánh <code>nhanh-1</code>; <code>M1</code> là commit trên nhánh chính. Hai nhánh có thể có file và nội dung khác nhau.
+          </p>
+        </section>
+
+        <section id="thuc-hanh">
+          <h2>6. Thực hành: tạo Central Repo và clone cho hai Developer</h2>
+
+          <div class="step">
+            <h3>Bước 1: Tạo Central Repo và clone ra hai thư mục</h3>
+            <pre><code>mkdir branch-practice
+cd branch-practice
+
+git init --bare central-repo.git
+
+git clone central-repo.git dev1
+git clone central-repo.git dev2</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 2: Dev1 tạo file và push lên remote</h3>
+            <pre><code>cd dev1
+
+echo "tap tin 1" > f1.txt
+echo "tap tin 2" > f2.txt
+
+git add .
+git commit -m "create f1 and f2"
+git push</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 3: Dev2 pull dữ liệu về</h3>
+            <pre><code>cd ../dev2
+git pull
+ls</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 4: Dev1 tạo branch mới và chuyển sang branch đó</h3>
+            <pre><code>cd ../dev1
+git branch nhanh-1</code></pre>
+            <p>Xem danh sách branch:</p>
+            <pre><code>git branch -l
+# hoặc
+git branch</code></pre>
+            <p>Kết quả ví dụ:</p>
+            <pre><code>* master
+  nhanh-1</code></pre>
+            <p>Dấu <code>*</code> cho biết branch hiện tại. Muốn chuyển sang <code>nhanh-1</code>:</p>
+            <pre><code>git checkout nhanh-1</code></pre>
+            <p>Kiểm tra lại:</p>
+            <pre><code>git branch</code></pre>
+            <pre><code>  master
+* nhanh-1</code></pre>
+          </div>
+
+          <div class="step">
+            <h3>Bước 5: Commit trên branch mới và push branch lên remote</h3>
+            <p>Khi đang ở <code>nhanh-1</code>, tạo file mới:</p>
+            <pre><code>echo "dang o trong nhanh 1" > file-trong-nhanh-1.txt
+
+git add .
+git commit -m "create first file in nhanh-1"</code></pre>
+            <p>Nếu chạy <code>git push</code> ngay, Git có thể báo branch local chưa có upstream. Khi đó dùng:</p>
+            <pre><code>git push -u origin nhanh-1</code></pre>
+            <p>
+              Trong đó: <code>origin</code> là remote repository, <code>nhanh-1</code> là branch muốn push lên remote, và <code>-u</code> thiết lập upstream để lần sau chỉ cần <code>git push</code> hoặc <code>git pull</code>.
+            </p>
+          </div>
+
+          <div class="step">
+            <h3>Bước 6: Dev2 checkout branch từ remote</h3>
+            <p>Sau khi Dev1 push branch <code>nhanh-1</code> lên remote, Dev2 có thể lấy branch đó về:</p>
+            <pre><code>cd ../dev2
+git fetch
+git checkout nhanh-1</code></pre>
+            <p>
+              Nếu remote có branch <code>origin/nhanh-1</code>, Git có thể tự tạo local branch <code>nhanh-1</code> tracking remote branch đó.
+              Dev2 sau đó cũng có thể làm việc trên <code>master</code> hoặc <code>nhanh-1</code>, tạo file riêng, commit riêng.
+            </p>
+          </div>
+
+          <div class="note">
+            Trong từng branch có thể có dữ liệu khác nhau. Đến một thời điểm, ta cần gộp các branch lại với nhau — nội dung đó chuyển sang bài tiếp theo: <code>git merge</code>.
+          </div>
+        </section>
+
+        <section id="khac-nhau-giua-branch">
+          <h2>7. Sự khác nhau giữa các branch</h2>
+          <p>Khi ở <code>master</code>, có thể chỉ thấy:</p>
+          <pre><code>f1.txt
+f2.txt</code></pre>
+          <p>Khi ở <code>nhanh-1</code>, có thể thấy thêm:</p>
+          <pre><code>f1.txt
+f2.txt
+file-trong-nhanh-1.txt</code></pre>
+          <div class="note">
+            Điểm quan trọng: branch không chỉ là tên. Mỗi branch có <strong>lịch sử commit và trạng thái file riêng</strong>.
+          </div>
+          <p>Lệnh chuyển qua lại để quan sát:</p>
+          <pre><code>git checkout master
+ls
+
+git checkout nhanh-1
+ls</code></pre>
+        </section>
+
+        <section id="cu-phap-can-nho">
+          <h2>8. Cú pháp Git branch cần nhớ</h2>
+          <h3>Xem branch</h3>
+          <pre><code>git branch
+# hoặc
+git branch -l</code></pre>
+          <h3>Tạo branch mới</h3>
+          <pre><code>git branch ten-nhanh</code></pre>
+          <p>Ví dụ:</p>
+          <pre><code>git branch feature-login</code></pre>
+          <h3>Chuyển sang branch khác</h3>
+          <pre><code>git checkout ten-nhanh
+# hoặc cách mới
+git switch ten-nhanh</code></pre>
+          <h3>Tạo branch mới và chuyển vào luôn</h3>
+          <pre><code>git checkout -b ten-nhanh
+# hoặc
+git switch -c ten-nhanh</code></pre>
+          <h3>Push branch mới lên remote</h3>
+          <pre><code>git push -u origin ten-nhanh</code></pre>
+          <h3>Xóa branch local</h3>
+          <pre><code>git branch -d ten-nhanh</code></pre>
+          <p>Nếu branch chưa merge và vẫn muốn xóa:</p>
+          <pre><code>git branch -D ten-nhanh</code></pre>
+        </section>
+
+        <section id="uncommitted">
+          <h2>9. Lưu ý quan trọng về uncommitted changes</h2>
+          <p>
+            Nếu bạn tạo file hoặc sửa file nhưng <strong>chưa commit</strong>, sau đó checkout sang branch khác, thay đổi đó có thể đi theo sang branch mới nếu Git thấy không xung đột.
+          </p>
+          <pre><code>echo "test" > temp.txt
+
+git checkout nhanh-1</code></pre>
+          <p>File <code>temp.txt</code> có thể vẫn xuất hiện ở <code>nhanh-1</code> vì nó chưa thuộc commit nào. Đây là điểm người mới rất dễ nhầm.</p>
+          <div class="warning">
+            Quy tắc an toàn: trước khi chuyển branch, nên kiểm tra <code>git status</code>. Nếu có thay đổi quan trọng, hãy commit hoặc <code>git stash</code> trước khi checkout.
+          </div>
+          <pre><code>git status
+
+# nếu có thay đổi quan trọng:
+git add .
+git commit -m "save work before switching branch"
+# hoặc
+git stash</code></pre>
+        </section>
+
+        <section id="workflow-nhom">
+          <h2>10. Mô hình làm việc branch trong nhóm</h2>
+          <pre><code>main/master
+    ↓ tạo branch
+feature/login
+    ↓ code, commit, push
+push -u origin feature/login
+    ↓ mở Pull Request hoặc merge
+main/master</code></pre>
+          <div class="diagram">
+            <div class="box">
+              <h3>main</h3>
+              <p>init → base → hotfix</p>
+            </div>
+            <div class="arrow">⇄</div>
+            <div class="box">
+              <h3>feature-login</h3>
+              <p>login-ui → login-api</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="box">
+              <h3>merge</h3>
+              <p>về main</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="dat-ten">
+          <h2>11. Quy tắc đặt tên branch</h2>
+          <p>Nên đặt tên branch rõ nghĩa, viết thường, không dấu, dùng dấu gạch chéo <code>/</code> hoặc gạch ngang <code>-</code>.</p>
+          <p>Ví dụ tốt:</p>
+          <pre><code>feature/login-page
+feature/user-profile
+bugfix/fix-navbar
+hotfix/payment-error
+docs/git-branch-lesson</code></pre>
+          <p>Không nên đặt tên mơ hồ:</p>
+          <pre><code>nhanh1
+test
+abc
+viet-branch-moi</code></pre>
+        </section>
+
+        <section id="bai-tap">
+          <h2>12. Bài tập tự luyện</h2>
+
+          <div class="qa">
+            <h3>Bài 1: Tạo branch và quan sát file khác nhau</h3>
+            <pre><code>mkdir branch-demo
+cd branch-demo
+
+git init
+
+echo "main file" > main.txt
+git add .
+git commit -m "initial commit"
+
+git branch feature-a
+git checkout feature-a
+
+echo "feature file" > feature.txt
+git add .
+git commit -m "add feature file"
+
+ls
+
+git checkout master
+ls</code></pre>
+            <p>Quan sát: <code>feature.txt</code> chỉ xuất hiện khi đang ở branch <code>feature-a</code>.</p>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 2: Push branch lên remote</h3>
+            <pre><code>git branch feature-login
+git checkout feature-login
+
+echo "login page" > login.html
+git add .
+git commit -m "add login page"
+
+git push -u origin feature-login</code></pre>
+          </div>
+
+          <div class="qa">
+            <h3>Bài 3: Dùng git switch</h3>
+            <p>Thực hành lại Bài 1 nhưng thay <code>checkout</code> bằng <code>switch</code>:</p>
+            <pre><code>git switch -c feature-b
+git switch master
+git switch feature-b</code></pre>
+          </div>
+        </section>
+
+        <section id="tong-ket">
+          <h2>Tổng kết</h2>
+          <p>
+            Branch giúp tạo nhiều hướng phát triển song song trong cùng một repository. Lệnh chính cần nhớ là <code>git branch</code> để tạo/xem branch, và <code>git checkout &lt;branch&gt;</code> (hoặc <code>git switch &lt;branch&gt;</code>) để chuyển branch.
+          </p>
+          <ul>
+            <li>Khi branch mới được push lên remote lần đầu, dùng <code>git push -u origin &lt;branch&gt;</code>.</li>
+            <li>Mỗi branch có thể có file, nội dung và lịch sử commit khác nhau.</li>
+            <li>Trước khi chuyển branch, nên kiểm tra <code>git status</code> để tránh nhầm lẫn với thay đổi chưa commit.</li>
+          </ul>
+          <div class="success">
+            Bài tiếp theo sẽ dùng <code>git merge</code> để gộp các branch lại với nhau.
+          </div>
+        </section>
+
+        <div class="footer">
+          Tài liệu: 9. Branches - Cách làm việc với nhiều nhánh trong Git
+        </div>
+      </article>
     </main>
+  </div>
+
+<script src="../shared/js/doc-script.js"></script>
 </body>
 </html>
